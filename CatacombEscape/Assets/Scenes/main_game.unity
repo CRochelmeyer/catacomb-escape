@@ -373,7 +373,7 @@ GameObject:
   - 114: {fileID: 131927974}
   m_Layer: 5
   m_Name: TileSlot1 (1)
-  m_TagString: handDrag
+  m_TagString: handTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -414,7 +414,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 131927972}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
@@ -1194,7 +1194,7 @@ GameObject:
   - 114: {fileID: 403184024}
   m_Layer: 5
   m_Name: TileSlot1
-  m_TagString: handTile
+  m_TagString: handDefault
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1426,7 +1426,7 @@ GameObject:
   - 114: {fileID: 450920410}
   m_Layer: 5
   m_Name: TileSlot4
-  m_TagString: handTile
+  m_TagString: handDefault
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1765,7 +1765,7 @@ GameObject:
   - 114: {fileID: 623222692}
   m_Layer: 5
   m_Name: TileSlot2 (1)
-  m_TagString: handDrag
+  m_TagString: handTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1806,7 +1806,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 623222690}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
@@ -1819,8 +1819,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 28d18a8895bc1404f93a9096b49ff16b, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2752,7 +2752,7 @@ GameObject:
   - 114: {fileID: 1174826072}
   m_Layer: 5
   m_Name: TileSlot3 (1)
-  m_TagString: handDrag
+  m_TagString: handTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2793,7 +2793,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1174826070}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
@@ -2863,7 +2863,7 @@ GameObject:
   - 114: {fileID: 1212086135}
   m_Layer: 5
   m_Name: TileSlot2
-  m_TagString: handTile
+  m_TagString: handDefault
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3426,7 +3426,7 @@ GameObject:
   - 114: {fileID: 1373423850}
   m_Layer: 5
   m_Name: TileSlot4 (1)
-  m_TagString: handDrag
+  m_TagString: handTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3467,7 +3467,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1373423848}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
@@ -3537,7 +3537,7 @@ GameObject:
   - 114: {fileID: 1383131785}
   m_Layer: 5
   m_Name: TileSlot3
-  m_TagString: handTile
+  m_TagString: handDefault
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
