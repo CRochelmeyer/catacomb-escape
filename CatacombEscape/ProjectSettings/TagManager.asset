@@ -6,6 +6,8 @@ TagManager:
   tags:
   - handTile
   - GridPanel
+  - bottomPanel
+  - handDrag
   layers:
   - Default
   - TransparentFX
@@ -48,4 +50,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 555678183
+    locked: 0
+  - name: grid
+    uniqueID: 843690733
     locked: 0

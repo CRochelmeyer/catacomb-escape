@@ -4,11 +4,14 @@ using System.Collections;
 
 public class GameLogic : MonoBehaviour
 {
+    int interval = 1;
+    float nextTime = 0;
     //sprite holders drag sprites via inspector
     public Sprite[] tileSprite;
     public Sprite[] gridSprite;
-    public Image[] gridPanels;
-    public Image[] handTiles;
+    public GameObject BtmPanel;
+    public GameObject[] gridPanels;
+    public GameObject[] handTiles;
     //initiate a static instance of gamelogic to be used globally...
     public static GameLogic instance = null;
 
@@ -20,6 +23,23 @@ public class GameLogic : MonoBehaviour
 
     public void GenerateHand()
     {
+        //approaching hand generation via grabbing each individual UI element and updating the sprite image and render...didnt work out 13/04
+        //actaullyworking just rendered tiny and behind default image too...13/04
+        handTiles = GameObject.FindGameObjectsWithTag("handDrag");
+         //check for null
+         if (handTiles != null)
+         {
+             for (int i = 0; i < handTiles.Length; i++)
+             {
+                Debug.Log(handTiles[i]);
+                //set background image as sprite using spriterenderer had sizing/scale issues...
+                 handTiles[i].GetComponent<Image>().sprite = tileSprite[Random.Range(0, tileSprite.Length)] as Sprite;
+                 Debug.Log("trying to find component" + handTiles[i].GetComponent<Image>());
+                 Debug.Log("tilesprite[] " + tileSprite[Random.Range(0, tileSprite.Length)]);
+             }
+         }
+         //trying new method of grabbing BottomPanel panel and adding child comp...
+       // BtmPanel = GameObject.FindGameObjectWithTag("bottomPanel");
         Debug.Log("generatingHand");
     }
     //awake called behind start
@@ -65,6 +85,12 @@ public class GameLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //do this every second
+        if (Time.time >= nextTime)
+        {
+            Debug.Log("mouse x: " + Input.mousePosition.x + " mouse y: " + Input.mousePosition.y);
+            nextTime += interval;
+        }
 
     }
 }

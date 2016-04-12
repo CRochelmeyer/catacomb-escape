@@ -52,11 +52,13 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d00345ddc507fad498ed7923a4f6fed3, type: 3}
   - {fileID: 21300000, guid: 082dcc4fda808f544abe760a862f7fe2, type: 3}
   gridSprite:
-  - {fileID: 21300000, guid: 5a5cd70b43c3a1d44bc67a2a3372c281, type: 3}
-  - {fileID: 21300000, guid: 1684284ec47b0594888edb02c845220f, type: 3}
   - {fileID: 21300000, guid: 63c11c7b287b78c499b5189cf9f3e73b, type: 3}
   - {fileID: 21300000, guid: d5fb98141cbcd824c9c3b056f8374233, type: 3}
   - {fileID: 21300000, guid: 11781d4aff7e42440bdf5c8cebefafe6, type: 3}
+  - {fileID: 21300000, guid: 5a5cd70b43c3a1d44bc67a2a3372c281, type: 3}
+  - {fileID: 21300000, guid: 1684284ec47b0594888edb02c845220f, type: 3}
+  gridPanels: []
+  handTiles: []
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
