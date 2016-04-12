@@ -29,14 +29,14 @@ public class GameLogic : MonoBehaviour
         //approaching hand generation via grabbing each individual UI element and updating the sprite image and render...didnt work out 13/04
         //actaullyworking just rendered tiny and behind default image too...13/04
         handTiles = GameObject.FindGameObjectsWithTag("handDefault");
-        Debug.Log("handtiles length : " + handTiles.Length);
+        //Debug.Log("handtiles length : " + handTiles.Length);
         BtmPanel = GameObject.FindGameObjectWithTag("bottomPanel");
          //check for null
          if (handTiles != null)
          {
              for (int i = 0; i < handTiles.Length; i++)
              {
-                Debug.Log(handTiles[i]);
+               // Debug.Log(handTiles[i]);
                 //set background image as sprite using spriterenderer had sizing/scale issues...
                 // handTiles[i].GetComponent<Image>().sprite = tileSprite[Random.Range(0, tileSprite.Length)] as Sprite;
                 //clone object 
@@ -55,10 +55,10 @@ public class GameLogic : MonoBehaviour
                 //above method with bool set to false solved instantiating flipped object....   
                 //newObject.transform.parent = handTiles[i].transform.parent;
                 
-                Debug.Log(handTiles[i].transform.parent + "   ");
+                //Debug.Log(handTiles[i].transform.parent + "   ");
                 //test[i] = GameObject.Instantiate(handTiles[i], handTiles[i].transform.position, Quaternion.identity);
-                Debug.Log("trying to find component" + handTiles[i] + " :: " + i + " :::" + handTiles.Length + "l");
-                 Debug.Log("tilesprite[] " + tileSprite[Random.Range(0, tileSprite.Length)]);
+               // Debug.Log("trying to find component" + handTiles[i] + " :: " + i + " :::" + handTiles.Length + "l");
+                 //Debug.Log("tilesprite[] " + tileSprite[Random.Range(0, tileSprite.Length)]);
              }
          }
          //trying new method of grabbing BottomPanel panel and adding child comp...
@@ -68,7 +68,7 @@ public class GameLogic : MonoBehaviour
 
     public void NextLevel()
     {
-        Debug.Log("level " + level);
+        Debug.Log("Previous Level " + level);
         level++;
         //degenerate handtiles
         handTiles = GameObject.FindGameObjectsWithTag("handDrag");
@@ -83,7 +83,7 @@ public class GameLogic : MonoBehaviour
             gridPanels[i].GetComponent<Image>().sprite = null;
         }
         //initialise 
-        Debug.Log("level " + level);
+        Debug.Log("New Level " + level);
         this.Awake();
     }
     //awake called behind start
@@ -122,11 +122,11 @@ public class GameLogic : MonoBehaviour
         gridPanels = GameObject.FindGameObjectsWithTag("GridPanel");
         if (gridPanels != null)
         {
-            for (int i = 0; i < gridPanels.Length; i++)
+           /* for (int i = 0; i < gridPanels.Length; i++)
             {
                 Debug.Log("gridpanels I : " + gridPanels[i] + " ::: " + i + " spritename : "+gridPanels[5].GetComponent<Image>().sprite);
-            }
-            gridPanels[0].GetComponent<Image>().sprite = gridSprite[1] as Sprite;
+            }*/
+            gridPanels[18].GetComponent<Image>().sprite = gridSprite[1] as Sprite;
             gridPanels[1].GetComponent<Image>().sprite = gridSprite[2] as Sprite;
             for (int i =0; i< green;i++)
             {
