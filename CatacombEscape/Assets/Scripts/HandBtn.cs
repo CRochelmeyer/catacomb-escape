@@ -5,11 +5,15 @@ public class HandBtn : MonoBehaviour {
     public GameObject[] handTiles;
     public GameObject[] _hand;
     public Canvas ui;
-    GameObject GameManager;
+    public GameLogic gameLogic;
     public void getHand()
     {
-        Debug.Log("onClick");   
 
+        Debug.Log("onClick");
+        //grab gameLogic (gameManager?) into gamelogic
+        gameLogic = FindObjectOfType<GameLogic>();
+        //execute gamelogic function generate hand
+        gameLogic.GenerateHand();
       /*  _hand = GameObject.FindGameObjectsWithTag("handTile");
         Debug.Log("found with tag");
         RectTransform panel = GameObject.Find("BottomPanel");

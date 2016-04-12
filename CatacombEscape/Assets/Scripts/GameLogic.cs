@@ -7,7 +7,8 @@ public class GameLogic : MonoBehaviour
     //sprite holders drag sprites via inspector
     public Sprite[] tileSprite;
     public Sprite[] gridSprite;
-    public Image[] gridPanels; 
+    public Image[] gridPanels;
+    public Image[] handTiles;
     //initiate a static instance of gamelogic to be used globally...
     public static GameLogic instance = null;
 
@@ -34,16 +35,17 @@ public class GameLogic : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        DontDestroyOnLoad(gameObject);
         InitGame();
     }
     //init game method
     void InitGame()
     {
         //setup board with rng sprites
-        generateBoard(level);
+        GenerateBoard(level);
     }
 
-    public void generateBoard(int level)
+    public void GenerateBoard(int level)
     {
         //simple alg for #of green/red tiles based on level
         //using int to truncate .decimals

@@ -848,6 +848,7 @@ GameObject:
   - 92: {fileID: 351136818}
   - 124: {fileID: 351136817}
   - 81: {fileID: 351136816}
+  - 114: {fileID: 351136821}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -922,6 +923,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &351136821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 351136815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ba8fbe4797329840832a6a19d607ea4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameManager: {fileID: 158638, guid: 37b2ffb950f6f3849a616425a5133f41, type: 2}
 --- !u!1 &352078508
 GameObject:
   m_ObjectHideFlags: 0
@@ -2875,7 +2888,7 @@ GameObject:
   - 114: {fileID: 1317209531}
   m_Layer: 5
   m_Name: Tile (3)
-  m_TagString: Untagged
+  m_TagString: handTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3120,6 +3133,10 @@ Prefab:
     - target: {fileID: 199088, guid: bb479fde36d9ed348b12f5db44bfbf5b, type: 2}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 199088, guid: bb479fde36d9ed348b12f5db44bfbf5b, type: 2}
+      propertyPath: m_TagString
+      value: handTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb479fde36d9ed348b12f5db44bfbf5b, type: 2}
@@ -4401,7 +4418,7 @@ GameObject:
   - 114: {fileID: 1946630871}
   m_Layer: 5
   m_Name: Tile (1)
-  m_TagString: Untagged
+  m_TagString: handTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4550,7 +4567,7 @@ GameObject:
   - 114: {fileID: 2130109234}
   m_Layer: 5
   m_Name: Tile (2)
-  m_TagString: Untagged
+  m_TagString: handTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
