@@ -10,6 +10,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     //public Transform parentToReturn = null;
     public Image id;
     public string imageID;
+    public GameLogic gameLogic;
     public void OnBeginDrag(PointerEventData eventData)
     {
         Debug.Log("OnbeginDrag");
@@ -36,9 +37,11 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         float y = Input.mousePosition.y;
 
         Debug.Log("x : " + x + "y : " + y);
-        GameLogic Main = new GameLogic();
+        //make use of the game object to pass
+        //GameLogic Main = new GameLogic();
         imageID = id.sprite.ToString();
-        Main.TestPassing(imageID, x, y);
+        gameLogic = GameObject.FindObjectOfType<GameLogic>();
+        gameLogic.TestPassing(imageID, x, y);
         //this.transform.SetParent(parentToReturn);
         //send mouse position and string of the sprite name to logic
     }

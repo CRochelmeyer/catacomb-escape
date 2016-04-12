@@ -12,6 +12,9 @@ public class GameLogic : MonoBehaviour
     public GameObject BtmPanel;
     public GameObject[] gridPanels;
     public GameObject[] handTiles;
+    public GameObject boardHolder;
+    //create tile gameboard 2d array
+    public Tile[,] gameBoard = new Tile[5, 6];
     //initiate a static instance of gamelogic to be used globally...
     public static GameLogic instance = null;
 
@@ -62,9 +65,31 @@ public class GameLogic : MonoBehaviour
        // BtmPanel = GameObject.FindGameObjectWithTag("bottomPanel");
         Debug.Log("generatingHand");
     }
+
+    public void NextLevel()
+    {
+        Debug.Log("level " + level);
+        level++;
+        //degenerate handtiles
+        handTiles = GameObject.FindGameObjectsWithTag("handDrag");
+        for (int i = 0; i < handTiles.Length; i++)
+            {
+            Destroy(handTiles[i]);
+            }
+        //degenerate grid tiles
+        gridPanels = GameObject.FindGameObjectsWithTag("GridPanel");
+        for (int i=0; i<gridPanels.Length; i++)
+        {
+            gridPanels[i].GetComponent<Image>().sprite = null;
+        }
+        //initialise 
+        Debug.Log("level " + level);
+        this.Awake();
+    }
     //awake called behind start
     void Awake()
     {
+        Debug.Log("GameLogic awake)");
         //if instance is null create instance of this GameLogic 
         if (instance == null)
         {
@@ -76,13 +101,13 @@ public class GameLogic : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
-        InitGame();
+        InitGame(level);
     }
     //init game method
-    void InitGame()
+    void InitGame(int plevel)
     {
         //setup board with rng sprites
-        GenerateBoard(level);
+        GenerateBoard(plevel);
     }
 
     public void GenerateBoard(int level)
@@ -93,6 +118,27 @@ public class GameLogic : MonoBehaviour
         Debug.Log("green " + green);
         int red = (int)(level * .5);
         Debug.Log("red " + red);
+        //grab grid panels
+        gridPanels = GameObject.FindGameObjectsWithTag("GridPanel");
+        if (gridPanels != null)
+        {
+            for (int i = 0; i < gridPanels.Length; i++)
+            {
+                Debug.Log("gridpanels I : " + gridPanels[i] + " ::: " + i + " spritename : "+gridPanels[5].GetComponent<Image>().sprite);
+            }
+            gridPanels[0].GetComponent<Image>().sprite = gridSprite[1] as Sprite;
+            gridPanels[1].GetComponent<Image>().sprite = gridSprite[2] as Sprite;
+            for (int i =0; i< green;i++)
+            {
+                gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite = gridSprite[3] as Sprite;
+            }
+            for (int i =0; i< red; i++)
+            {
+                if (gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite)
+                gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite = gridSprite[4] as Sprite;
+            }
+            
+        }
 
     }
     // Use this for initialization
