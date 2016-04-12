@@ -5,10 +5,11 @@ public class HandBtn : MonoBehaviour {
     public GameObject[] handTiles;
     public GameObject[] _hand;
     public Canvas ui;
-
+    GameObject GameManager;
     public void getHand()
     {
-        Debug.Log("onClick");
+        Debug.Log("onClick");   
+
       /*  _hand = GameObject.FindGameObjectsWithTag("handTile");
         Debug.Log("found with tag");
         RectTransform panel = GameObject.Find("BottomPanel");
