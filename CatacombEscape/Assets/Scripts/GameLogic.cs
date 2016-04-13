@@ -135,7 +135,10 @@ public class GameLogic : MonoBehaviour
             for (int i =0; i< red; i++)
             {
                 if (gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite)
-                gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite = gridSprite[4] as Sprite;
+				{
+                	gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite = gridSprite[4] as Sprite;
+					gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().color = new Color(255f,255f,255f,255f);
+				}
             }
             
         }
