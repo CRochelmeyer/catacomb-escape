@@ -50,7 +50,8 @@ public class GameLogic : MonoBehaviour
                 //assign new object correct parents
                 newObject.transform.SetParent(BtmPanel.transform, false);
                 //use handdefaults to instantiate objects with rng sprite below and add script....
-                newObject.GetComponent<Image>().sprite = tileSprite[Random.Range(0, tileSprite.Length)] as Sprite;
+				newObject.GetComponent<Image>().sprite = tileSprite[Random.Range(0, tileSprite.Length)] as Sprite;
+				newObject.GetComponent<Image>().color = new Color(255f,255f,255f,255f);
                 newObject.AddComponent<Draggable>();
                 //above method with bool set to false solved instantiating flipped object....   
                 //newObject.transform.parent = handTiles[i].transform.parent;
@@ -80,7 +81,8 @@ public class GameLogic : MonoBehaviour
         gridPanels = GameObject.FindGameObjectsWithTag("GridPanel");
         for (int i=0; i<gridPanels.Length; i++)
         {
-            gridPanels[i].GetComponent<Image>().sprite = null;
+			gridPanels[i].GetComponent<Image>().sprite = null;
+			gridPanels[i].GetComponent<Image>().color = new Color(255f,255f,255f,255f);
         }
         //initialise 
         Debug.Log("New Level " + level);
@@ -114,9 +116,11 @@ public class GameLogic : MonoBehaviour
     {
         //simple alg for #of green/red tiles based on level
         //using int to truncate .decimals
-        int green = (int) (level * 1.5F);
+        //int green = (int) (level * 1.5f);
+		int green = Random.Range(1, 4);
         Debug.Log("green " + green);
-        int red = (int)(level * .5);
+        //int red = (int)(level * .5);
+		int red = Random.Range(1, 4);
         Debug.Log("red " + red);
         //grab grid panels
         gridPanels = GameObject.FindGameObjectsWithTag("GridPanel");
@@ -127,14 +131,17 @@ public class GameLogic : MonoBehaviour
                 Debug.Log("gridpanels I : " + gridPanels[i] + " ::: " + i + " spritename : "+gridPanels[5].GetComponent<Image>().sprite);
             }*/
             gridPanels[18].GetComponent<Image>().sprite = gridSprite[1] as Sprite;
+			gridPanels[18].GetComponent<Image>().color = new Color(255f,255f,255f,255f);
             gridPanels[1].GetComponent<Image>().sprite = gridSprite[2] as Sprite;
+			gridPanels[1].GetComponent<Image>().color = new Color(255f,255f,255f,255f);
             for (int i =0; i< green;i++)
             {
-                gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite = gridSprite[3] as Sprite;
+				gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite = gridSprite[3] as Sprite;
+				gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().color = new Color(255f,255f,255f,255f);
             }
             for (int i =0; i< red; i++)
             {
-                if (gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite)
+            	if (gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite)
 				{
                 	gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite = gridSprite[4] as Sprite;
 					gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().color = new Color(255f,255f,255f,255f);
@@ -163,4 +170,3 @@ public class GameLogic : MonoBehaviour
 
     }
 }
-
