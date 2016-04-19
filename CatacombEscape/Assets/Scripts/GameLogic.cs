@@ -212,11 +212,13 @@ public class GameLogic : MonoBehaviour
 				Debug.Log("Random" + i + "= " + randomPanels[i]);
 			}
 
+			//Draw all green tiles
             for (int i =0; i< green; i++)
 			{
 				gridPanels[randomPanels[i]].GetComponent<Image>().color = new Color(255f,255f,255f,255f);
 				gridPanels[randomPanels[i]].GetComponent<Image>().sprite = gridSprite[3] as Sprite;
             }
+			//Draw all red tiles
             for (int i =0; i< red; i++)
             {
             	//if (gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite)

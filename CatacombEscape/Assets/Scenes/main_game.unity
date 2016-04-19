@@ -96,7 +96,7 @@ GameObject:
   - 222: {fileID: 26363127}
   - 114: {fileID: 26363126}
   m_Layer: 0
-  m_Name: 4x1
+  m_Name: 41
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -399,7 +399,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 3de57c1b440e2ee49ada5bed05f37e56, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e770881434dbd8a4d8cdfbfd4b57cd58, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -483,7 +483,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 08c0ab5036faec84f900949578e1df84, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b94bea46b8880c549be5caa3fe694a52, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -508,7 +508,7 @@ GameObject:
   - 222: {fileID: 305040788}
   - 114: {fileID: 305040787}
   m_Layer: 0
-  m_Name: 2x2
+  m_Name: 22
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -816,7 +816,7 @@ GameObject:
   - 222: {fileID: 396602619}
   - 114: {fileID: 396602618}
   m_Layer: 0
-  m_Name: 5x4
+  m_Name: 54
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -919,7 +919,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: .39199999}
+  m_Color: {r: .5, g: .5, b: .5, a: .39199999}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -967,7 +967,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: .483999997}
 --- !u!1 &418093571
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,7 +979,7 @@ GameObject:
   - 222: {fileID: 418093574}
   - 114: {fileID: 418093573}
   m_Layer: 0
-  m_Name: 1x4
+  m_Name: 14
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1046,7 +1046,7 @@ GameObject:
   - 222: {fileID: 484789455}
   - 114: {fileID: 484789454}
   m_Layer: 0
-  m_Name: 4x2
+  m_Name: 42
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1146,7 +1146,7 @@ GameObject:
   - 222: {fileID: 531785519}
   - 114: {fileID: 531785518}
   m_Layer: 0
-  m_Name: 3x3
+  m_Name: 33
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1213,7 +1213,7 @@ GameObject:
   - 222: {fileID: 540277492}
   - 114: {fileID: 540277491}
   m_Layer: 0
-  m_Name: 5x1
+  m_Name: 51
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1281,7 +1281,7 @@ GameObject:
   - 114: {fileID: 545349315}
   m_Layer: 0
   m_Name: GridPanels
-  m_TagString: GridPanel
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1418,15 +1418,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: .39199999}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 6d3e1d59a2be0bc468c9b9285e2613c3, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1450,7 +1450,7 @@ GameObject:
   - 222: {fileID: 634059577}
   - 114: {fileID: 634059576}
   m_Layer: 0
-  m_Name: 3x2
+  m_Name: 32
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1628,7 +1628,7 @@ GameObject:
   - 114: {fileID: 694367863}
   m_Layer: 0
   m_Name: Grid
-  m_TagString: GridPanel
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1694,7 +1694,7 @@ GameObject:
   - 222: {fileID: 741630687}
   - 114: {fileID: 741630686}
   m_Layer: 0
-  m_Name: 1x1
+  m_Name: 11
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1781,15 +1781,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: .595588207, g: .597521126, b: .613105536, a: .671999991}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: d539adb1fb8e10843974fa1f9ee0a9c1, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1874,7 +1874,7 @@ GameObject:
   - 222: {fileID: 793457697}
   - 114: {fileID: 793457696}
   m_Layer: 0
-  m_Name: 1x0
+  m_Name: 10
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1941,7 +1941,7 @@ GameObject:
   - 222: {fileID: 834794718}
   - 114: {fileID: 834794717}
   m_Layer: 0
-  m_Name: 2x4
+  m_Name: 24
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2008,7 +2008,7 @@ GameObject:
   - 222: {fileID: 867208532}
   - 114: {fileID: 867208531}
   m_Layer: 0
-  m_Name: 0x4
+  m_Name: 04
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2232,7 +2232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: .39199999}
+  m_Color: {r: .5, g: .5, b: .5, a: .39199999}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2274,7 +2274,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: .483999997}
 --- !u!222 &1000263032
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2364,7 +2364,7 @@ GameObject:
   - 222: {fileID: 1061882093}
   - 114: {fileID: 1061882092}
   m_Layer: 0
-  m_Name: 3x0
+  m_Name: 30
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2431,7 +2431,7 @@ GameObject:
   - 222: {fileID: 1064622176}
   - 114: {fileID: 1064622175}
   m_Layer: 0
-  m_Name: 0x0
+  m_Name: 00
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2449,10 +2449,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 545349317}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -192, y: 240}
-  m_SizeDelta: {x: -384, y: -480}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 48, y: -48}
+  m_SizeDelta: {x: 96, y: 96}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1064622175
 MonoBehaviour:
@@ -2690,7 +2690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: .39199999}
+  m_Color: {r: .5, g: .5, b: .5, a: .39199999}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2732,7 +2732,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: .483999997}
 --- !u!222 &1122474288
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2750,7 +2750,7 @@ GameObject:
   - 222: {fileID: 1175954858}
   - 114: {fileID: 1175954857}
   m_Layer: 0
-  m_Name: 2x0
+  m_Name: 20
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2817,7 +2817,7 @@ GameObject:
   - 222: {fileID: 1205549568}
   - 114: {fileID: 1205549567}
   m_Layer: 0
-  m_Name: 2x1
+  m_Name: 21
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2920,7 +2920,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: .39199999}
+  m_Color: {r: .5, g: .5, b: .5, a: .39199999}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2962,7 +2962,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: .483999997}
 --- !u!222 &1228882744
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2980,7 +2980,7 @@ GameObject:
   - 222: {fileID: 1238773261}
   - 114: {fileID: 1238773260}
   m_Layer: 0
-  m_Name: 5x2
+  m_Name: 52
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3140,7 +3140,7 @@ GameObject:
   - 222: {fileID: 1287668120}
   - 114: {fileID: 1287668119}
   m_Layer: 0
-  m_Name: 4x0
+  m_Name: 40
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3282,7 +3282,7 @@ GameObject:
   - 222: {fileID: 1301649813}
   - 114: {fileID: 1301649812}
   m_Layer: 0
-  m_Name: 1x3
+  m_Name: 13
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3442,7 +3442,7 @@ GameObject:
   - 222: {fileID: 1358541435}
   - 114: {fileID: 1358541434}
   m_Layer: 0
-  m_Name: 5x3
+  m_Name: 53
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3576,7 +3576,7 @@ GameObject:
   - 222: {fileID: 1406930693}
   - 114: {fileID: 1406930692}
   m_Layer: 0
-  m_Name: 4x4
+  m_Name: 44
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3910,7 +3910,7 @@ GameObject:
   - 222: {fileID: 1550951637}
   - 114: {fileID: 1550951636}
   m_Layer: 0
-  m_Name: 0x3
+  m_Name: 03
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3977,7 +3977,7 @@ GameObject:
   - 222: {fileID: 1554817915}
   - 114: {fileID: 1554817914}
   m_Layer: 0
-  m_Name: 3x1
+  m_Name: 31
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4044,7 +4044,7 @@ GameObject:
   - 222: {fileID: 1672101415}
   - 114: {fileID: 1672101414}
   m_Layer: 0
-  m_Name: 1x2
+  m_Name: 12
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4111,7 +4111,7 @@ GameObject:
   - 222: {fileID: 1690011431}
   - 114: {fileID: 1690011430}
   m_Layer: 0
-  m_Name: 3x4
+  m_Name: 34
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4178,7 +4178,7 @@ GameObject:
   - 222: {fileID: 1713205636}
   - 114: {fileID: 1713205635}
   m_Layer: 0
-  m_Name: 0x2
+  m_Name: 02
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4245,7 +4245,7 @@ GameObject:
   - 222: {fileID: 1807835479}
   - 114: {fileID: 1807835478}
   m_Layer: 0
-  m_Name: 2x3
+  m_Name: 23
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4312,7 +4312,7 @@ GameObject:
   - 222: {fileID: 1912571342}
   - 114: {fileID: 1912571341}
   m_Layer: 0
-  m_Name: 4x3
+  m_Name: 43
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4379,7 +4379,7 @@ GameObject:
   - 222: {fileID: 1951173740}
   - 114: {fileID: 1951173739}
   m_Layer: 0
-  m_Name: 5x0
+  m_Name: 50
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4475,7 +4475,7 @@ GameObject:
   - 222: {fileID: 2140761682}
   - 114: {fileID: 2140761681}
   m_Layer: 0
-  m_Name: 0x1
+  m_Name: 01
   m_TagString: GridPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

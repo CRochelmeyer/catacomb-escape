@@ -12,4 +12,9 @@ public class MenuBehavior : MonoBehaviour {
 	void Update () {
 	
 	}
+
+	public void LoadScene(string sceneName)
+	{
+		Application.LoadLevel(sceneName);
+	}
 }
