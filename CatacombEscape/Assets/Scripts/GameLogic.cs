@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using System.Collections.Generic;
 
 public class GameLogic : MonoBehaviour
 {
@@ -102,10 +102,17 @@ public class GameLogic : MonoBehaviour
 	}
 	
 	public void GenerateHand()
-	{
-		//approaching hand generation via grabbing each individual UI element and updating the sprite image and render...didnt work out 13/04
-		//actaullyworking just rendered tiny and behind default image too...13/04
-		handTiles = GameObject.FindGameObjectsWithTag("handDefault");
+    {       
+        //using this button to test tile and direction implementation
+        List<string> testList = new List<string>();
+        testList.Add("UP");
+        testList.Add("DOWN");
+        Tile testTile = new Tile(testList, "tile_1way_vertical");
+        testTile.test();
+
+        //approaching hand generation via grabbing each individual UI element and updating the sprite image and render...didnt work out 13/04
+        //actaullyworking just rendered tiny and behind default image too...13/04
+        handTiles = GameObject.FindGameObjectsWithTag("handDefault");
 		//Debug.Log("handtiles length : " + handTiles.Length);
 		btmPanel = GameObject.FindGameObjectWithTag("bottomPanel");
 		//check for null
@@ -165,7 +172,7 @@ public class GameLogic : MonoBehaviour
 		Debug.Log("New Level " + level);
 		this.Awake();
 	}
-
+    
     public void GenerateBoard(int level)
     {
         //simple alg for #of green/red tiles based on level
