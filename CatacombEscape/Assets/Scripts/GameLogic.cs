@@ -10,7 +10,6 @@ public class GameLogic : MonoBehaviour
     public Sprite[] tileSprite;
     public Sprite[] gridSprite;
     public GameObject btmPanel;
-    public GameObject[] gridPanels;
     public GameObject[] handTiles;
     public GameObject boardHolder;
     //create tile gameboard 2d array
@@ -19,6 +18,8 @@ public class GameLogic : MonoBehaviour
     public static GameLogic instance = null;
 
     private int level = 1;
+	private GridPanels gridPanelsScript;
+	private GameObject[] gridPanels;
 
     //awake called behind start
     void Awake()
@@ -36,7 +37,7 @@ public class GameLogic : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
 
-		//FindGridPanels();
+		FindGridPanels();
 
         InitGame(level);
 	}
@@ -44,8 +45,7 @@ public class GameLogic : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		Debug.Log("GameLogic start)");
-		
+		Debug.Log("GameLogic start");
 	}
 	
 	// Update is called once per frame
@@ -60,14 +60,23 @@ public class GameLogic : MonoBehaviour
 	}
 
     //init game method
-    void InitGame(int plevel)
+    void InitGame(int pLevel)
     {
         //setup board with rng sprites
-        GenerateBoard(plevel);
+        GenerateBoard(pLevel);
 	}
-	/*
-	void FindGridPanels ();
+
+	void FindGridPanels()
 	{
+		gridPanelsScript = GameObject.FindGameObjectWithTag ("GridPanelsScript").GetComponent<GridPanels> ();
+		gridPanels = new GameObject[30];
+
+		for (int i = 0; i < gridPanels.Length; i++)
+		{
+			gridPanels[i] = gridPanelsScript.GetGridPanel(i);
+		}
+
+		/*
 		GameObject[] tempPanels;
 		GameObject gridPanel = GameObject.FindGameObjectWithTag("GridPanel");
 
@@ -82,8 +91,8 @@ public class GameLogic : MonoBehaviour
 			foreach(RigidBody body in bodies) {
 				objects.Add(body.gameObject);
 			}
-		}
-	}*/
+		}*/
+	}
 
 	public void TestPassing(string pImageId, float px, float py)
 	{
@@ -151,7 +160,7 @@ public class GameLogic : MonoBehaviour
 			Destroy(handTiles[i]);
 		}
 		//degenerate grid tiles
-		gridPanels = GameObject.FindGameObjectsWithTag("GridPanel");
+		//gridPanels = GameObject.FindGameObjectsWithTag("GridPanel");
 		for (int i=0; i<gridPanels.Length; i++)
 		{
 			gridPanels[i].GetComponent<Image>().sprite = null;
@@ -173,7 +182,7 @@ public class GameLogic : MonoBehaviour
 		int red = Random.Range(1, 4);
         Debug.Log("red " + red);
         //grab grid panels
-        gridPanels = GameObject.FindGameObjectsWithTag("GridPanel");
+        //gridPanels = GameObject.FindGameObjectsWithTag("GridPanel");
         if (gridPanels != null)
         {
            /* for (int i = 0; i < gridPanels.Length; i++)
@@ -226,7 +235,7 @@ public class GameLogic : MonoBehaviour
 				gridPanels[randomPanels[i]].GetComponent<Image>().sprite = gridSprite[3] as Sprite;
             }
 			//Draw all red tiles
-            for (int i =0; i< red; i++)
+            for (int i = 0+green; i < red+green; i++)
             {
             	//if (gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite)
 				//{

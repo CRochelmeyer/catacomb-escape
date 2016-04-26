@@ -9,6 +9,7 @@ TagManager:
   - bottomPanel
   - handDrag
   - handDefault
+  - GridPanelsScript
   layers:
   - Default
   - TransparentFX
