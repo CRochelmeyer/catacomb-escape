@@ -698,7 +698,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 23f035dd52cbc0149983e95cdb2b2005, type: 2}
+  - {fileID: 2100000, guid: 6c99ed570f167ce42929bd5cdee10469, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -1708,7 +1708,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 8a98313e926ef3c43ad06e1e063e7fba, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 18007fc1806c1a94d8a8d0352917c100, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

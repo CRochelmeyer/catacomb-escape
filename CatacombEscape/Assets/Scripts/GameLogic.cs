@@ -182,8 +182,8 @@ public class GameLogic : MonoBehaviour
             {
                 Debug.Log("gridpanels I : " + gridPanels[i] + " ::: " + i + " spritename : "+gridPanels[5].GetComponent<Image>().sprite);
             }*/
-			int downPanel = Random.Range(20, 30);
-			int upPanel = Random.Range(0, 10);
+			int downPanel = Random.Range(25, 30);
+			int upPanel = Random.Range(0, 5);
 			int[] randomPanels = new int[green+red];
 			Debug.Log("green + red = " + randomPanels.Length);
 
