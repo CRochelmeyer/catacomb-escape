@@ -22,6 +22,7 @@ public class Tile : MonoBehaviour {
         _tileID = pID;
         _isActive = true;
         _isOccupied = false;
+        generateEntry();
 
     }
     //move validator
@@ -54,6 +55,11 @@ public class Tile : MonoBehaviour {
                     break;
                 }
         }
+    }
+
+    private void generateEntry()
+    {
+     
     }
     public void test()
     {
