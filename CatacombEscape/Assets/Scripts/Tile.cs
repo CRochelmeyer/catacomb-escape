@@ -16,6 +16,14 @@ public class Tile : MonoBehaviour {
         _isOccupied = false;
         _isActive = true;
     }
+    //constructor to automatically generate _entry based on id
+    public Tile(string pID)
+    {
+        _tileID = pID;
+        _isActive = true;
+        _isOccupied = false;
+
+    }
     //move validator
     public void ValidMove(string pMove)
     {
