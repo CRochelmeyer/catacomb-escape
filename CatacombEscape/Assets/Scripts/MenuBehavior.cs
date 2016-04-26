@@ -22,4 +22,9 @@ public class MenuBehavior : MonoBehaviour {
 	{
 		Application.Quit ();
 	}
+	
+	public void ResetPlayerPrefs()
+	{
+		PlayerPrefs.SetString ("FirstPlay", "true");
+	}
 }
