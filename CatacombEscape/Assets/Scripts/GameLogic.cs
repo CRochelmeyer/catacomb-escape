@@ -228,7 +228,7 @@ public class GameLogic : MonoBehaviour
 				gridPanels[randomPanels[i]].GetComponent<Image>().sprite = gridSprite[3] as Sprite;
             }
 			//Draw all red tiles
-            for (int i =0; i< red; i++)
+            for (int i = 0+green; i < red+green; i++)
             {
             	//if (gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite)
 				//{
