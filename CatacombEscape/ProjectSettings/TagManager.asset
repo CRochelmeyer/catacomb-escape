@@ -10,6 +10,7 @@ TagManager:
   - handDrag
   - handDefault
   - GridPanelsScript
+  - PauseUI
   layers:
   - Default
   - TransparentFX

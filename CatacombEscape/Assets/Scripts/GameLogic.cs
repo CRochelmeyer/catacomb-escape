@@ -24,7 +24,7 @@ public class GameLogic : MonoBehaviour
     //awake called behind start
     void Awake()
     {
-        Debug.Log("GameLogic awake)");
+        Debug.Log("GameLogic awake");
         //if instance is null create instance of this GameLogic 
         if (instance == null)
         {
@@ -38,6 +38,8 @@ public class GameLogic : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
 		FindGridPanels();
+
+		PlayerPrefs.SetString ("Paused", "true");
 
         InitGame(level);
 	}
@@ -224,7 +226,7 @@ public class GameLogic : MonoBehaviour
 			//Draw all green tiles
             for (int i =0; i< green; i++)
 			{
-				gridPanels[randomPanels[i]].GetComponent<Image>().color = new Color(255f,255f,255f,255f);
+				gridPanels[randomPanels[i]].GetComponent<Image>().color = new Color(255f,255f,255f,150f);
 				gridPanels[randomPanels[i]].GetComponent<Image>().sprite = gridSprite[3] as Sprite;
             }
 			//Draw all red tiles
@@ -232,7 +234,7 @@ public class GameLogic : MonoBehaviour
             {
             	//if (gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite)
 				//{
-					gridPanels[randomPanels[i]].GetComponent<Image>().color = new Color(255f,255f,255f,255f);
+					gridPanels[randomPanels[i]].GetComponent<Image>().color = new Color(255f,255f,255f,150f);
 					gridPanels[randomPanels[i]].GetComponent<Image>().sprite = gridSprite[4] as Sprite;
 				//}
             }
