@@ -109,6 +109,8 @@ public class GameLogic : MonoBehaviour
         testList.Add("DOWN");
         Tile testTile = new Tile(testList, "tile_1way_vertical");
         testTile.test();
+        Tile testTile1 = new Tile("tile_up_right_down_left");
+        testTile1.test();
 
         //approaching hand generation via grabbing each individual UI element and updating the sprite image and render...didnt work out 13/04
         //actaullyworking just rendered tiny and behind default image too...13/04
