@@ -39,7 +39,7 @@ public class GameLogic : MonoBehaviour
 
 		FindGridPanels();
 
-		PlayerPrefs.SetString ("Paused", "true");
+		PlayerPrefs.SetString ("Paused", "false");
 
         InitGame(level);
 	}
