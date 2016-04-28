@@ -9,8 +9,9 @@ TagManager:
   - bottomPanel
   - handDrag
   - handDefault
-  - GridPanelsScript
+  - Scripts
   - PauseUI
+  - GridPanelsScript
   layers:
   - Default
   - TransparentFX
