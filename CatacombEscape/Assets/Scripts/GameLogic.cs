@@ -70,7 +70,7 @@ public class GameLogic : MonoBehaviour
 
 	void FindGridPanels()
 	{
-		gridPanelsScript = GameObject.FindGameObjectWithTag ("GridPanelsScript").GetComponent<GridPanels> ();
+		gridPanelsScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<GridPanels> ();
 		gridPanels = new GameObject[30];
 
 		for (int i = 0; i < gridPanels.Length; i++)
