@@ -14,9 +14,10 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-		if (PlayerPrefs.GetString ("Paused") != "true")
-		{
-			// Debug.Log("OnbeginDrag");
+        Debug.Log("Player settings drag");
+		//if (PlayerPrefs.GetString ("Paused") != "true")
+		//{
+			Debug.Log("OnbeginDrag");
 			//Debug.Log("this <image>: " + this.GetComponent<Image>());
 			// id to grab image source file to pass as a parameter for logic
 			id = this.GetComponent<Image> ();
@@ -24,16 +25,16 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
 			//save the parent incase of returns
 			// parentToReturn = this.transform.parent;
-		}
+		//}
     }
 
     public void OnDrag(PointerEventData eventData)
 	{
-		if (PlayerPrefs.GetString ("Paused") != "true")
-		{
-			//Debug.Log("onDrag");
+		//if (PlayerPrefs.GetString ("Paused") != "true")
+		//{
+			Debug.Log("onDrag");
 			this.transform.position = eventData.position;
-		}
+		//}
 	}
 
     public void OnEndDrag(PointerEventData eventData)

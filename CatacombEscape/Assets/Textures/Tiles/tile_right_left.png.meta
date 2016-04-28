@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:CatacombEscape/Assets/Textures/Tiles/tile_right_left.png.meta
 guid: 8c2e56342af17f949b3ab0b72f662163
 timeCreated: 1461641164
 licenseType: Pro
+=======
+guid: e6b3a8fc635702440b155410a8217663
+timeCreated: 1461640476
+licenseType: Free
+>>>>>>> d726c279f920381fbff94e57813228ee965ffeb4:CatacombEscape/Assets/Textures/Tiles/tile_right_left.png.meta
 TextureImporter:
   fileIDToRecycleName: {}
   serializedVersion: 2
@@ -17,13 +23,13 @@ TextureImporter:
   bumpmap:
     convertToNormalMap: 0
     externalNormalMap: 0
-    heightScale: .25
+    heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
   generateCubemap: 0
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 8
+  cubemapConvolutionSteps: 7
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -1
@@ -42,7 +48,7 @@ TextureImporter:
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
-  spritePivot: {x: .5, y: .5}
+  spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
   alphaIsTransparency: 1
@@ -50,6 +56,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites: []
+    outline: []
   spritePackingTag: 
   userData: 
   assetBundleName: 
