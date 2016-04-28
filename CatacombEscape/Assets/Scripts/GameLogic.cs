@@ -70,15 +70,16 @@ public class GameLogic : MonoBehaviour
 
 	void FindGridPanels()
 	{
-		gridPanelsScript = GameObject.FindGameObjectWithTag ("GridPanelsScript").GetComponent<GridPanels> ();
+        gridPanelsScript = GameObject.FindGameObjectWithTag ("GridPanelsScript").GetComponent<GridPanels> ();
 		gridPanels = new GameObject[30];
 
 		for (int i = 0; i < gridPanels.Length; i++)
 		{
 			gridPanels[i] = gridPanelsScript.GetGridPanel(i);
+            //Debug.Log(gridPanels[i].name); all gridpanels are moved it 
 		}
-
-		/*
+        Debug.Log("gridpanelsFound");
+        /*
 		GameObject[] tempPanels;
 		GameObject gridPanel = GameObject.FindGameObjectWithTag("GridPanel");
 
@@ -94,8 +95,27 @@ public class GameLogic : MonoBehaviour
 				objects.Add(body.gameObject);
 			}
 		}*/
-	}
-
+    }
+    public void UpdateDrag(Tile ptile , float px, float py)
+    {
+        int _ele = 0;
+        //temp values of row/col for range comparison as the grid are 92x92
+        int _tempRow = 0;
+        int _tempCol = 0;
+        //forloop int i <row
+        for (int i =0; i<6; i++)
+        {
+            _tempRow += 100;
+            //forloop int j <col
+            for (int j = 0; j<5; j++)
+            {
+                _tempCol += 100;
+                Debug.Log("gridPanels"+_ele+"X: "+gridPanels[_ele].transform.position.x);
+                _ele++;
+            }
+        }
+        gridPanels[7].GetComponent<Image>().sprite = tileSprite[3];
+    }
 	public void TestPassing(string pImageId, float px, float py)
 	{
 		Debug.Log("image id " + pImageId + " x y " + px + " " + py);

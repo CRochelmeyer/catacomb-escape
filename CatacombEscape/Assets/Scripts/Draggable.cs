@@ -10,6 +10,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     //public Transform parentToReturn = null;
     public Image id;
     public string imageID;
+    private Tile tile;
     public GameLogic gameLogic;
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -18,13 +19,14 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 		//if (PlayerPrefs.GetString ("Paused") != "true")
 		//{
 			Debug.Log("OnbeginDrag");
-			//Debug.Log("this <image>: " + this.GetComponent<Image>());
 			// id to grab image source file to pass as a parameter for logic
 			id = this.GetComponent<Image> ();
-			//Debug.Log("id.sprite " + id.sprite);
-
-			//save the parent incase of returns
-			// parentToReturn = this.transform.parent;
+            //setting imageID
+            imageID = id.sprite.ToString();
+        //creating tile based on grabbed image
+            tile = new Tile(imageID);
+			//save the parent incase of returns from invalid drags
+			//parentToReturn = this.transform.parent;
 		//}
     }
 
@@ -44,16 +46,18 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         float x = Input.mousePosition.x;
         float y = Input.mousePosition.y;
 
-       /* this section is for using endDrag to communicate mouse position for 
-       logic to determine cell area
+        //this section is for using endDrag to communicate mouse position for 
+        //logic to determine cell area
+        
        Debug.Log("x : " + x + "y : " + y);
         //make use of the game object to pass
         //GameLogic Main = new GameLogic();
         imageID = id.sprite.ToString();
         gameLogic = GameObject.FindObjectOfType<GameLogic>();
-       gameLogic.TestPassing(imageID, x, y);
+        gameLogic.TestPassing(imageID, x, y);
+        gameLogic.UpdateDrag(tile,x,y);
         //this.transform.SetParent(parentToReturn);
         //send mouse position and string of the sprite name to logic
-        */
+       
     }
 }
