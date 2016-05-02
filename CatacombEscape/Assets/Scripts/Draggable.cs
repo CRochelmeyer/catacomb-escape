@@ -58,6 +58,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         gameLogic.UpdateDrag(tile,x,y);
         //this.transform.SetParent(parentToReturn);
         //send mouse position and string of the sprite name to logic
+        //testing arrayhandler
+        Debug.Log("return cell: "+gameLogic.GetComponent<ArrayHandler>().FindLocation(new Vector2(x, y)) );
        
     }
 }
