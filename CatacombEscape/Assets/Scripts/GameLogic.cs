@@ -109,6 +109,7 @@ public class GameLogic : MonoBehaviour
 			}
 		}*/
     }
+
     public void UpdateDrag(Tile ptile , string pcell)
     {
         //grab index based on pcell in cellindex dictionary
@@ -126,11 +127,12 @@ public class GameLogic : MonoBehaviour
             {
                 _spriteIndex = i;
                 gridPanels[_gridIndex].GetComponent<Image>().sprite = tileSprite[_spriteIndex] as Sprite;
-                gridPanels[_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 150f);
+                gridPanels[_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
                 break;
             }
         }
     }
+
 	public void TestPassing(string pImageId, float px, float py)
 	{
 		Debug.Log("image id " + pImageId + " x y " + px + " " + py);
@@ -231,7 +233,7 @@ public class GameLogic : MonoBehaviour
 			int downPanel = Random.Range(25, 30);
 			int upPanel = Random.Range(0, 5);
 			int[] randomPanels = new int[green+red];
-			Debug.Log("green + red = " + randomPanels.Length);
+			//Debug.Log("green + red = " + randomPanels.Length);
 
 			for (int i=0; i< randomPanels.Length; i++)
 				randomPanels[i] = 30;
@@ -264,7 +266,7 @@ public class GameLogic : MonoBehaviour
 
 					}
 				}
-				Debug.Log("Random" + i + "= " + randomPanels[i]);
+				//Debug.Log("Random" + i + "= " + randomPanels[i]);
 			}
 
 			//Draw all green tiles

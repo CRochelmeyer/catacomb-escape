@@ -61,7 +61,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         cell = gameLogic.GetComponent<ArrayHandler>().FindLocation(new Vector2(x, y));
         //cal update drag from gamelogic with tile and cell index
         gameLogic.UpdateDrag(tile, cell);
-
+		Destroy (this.gameObject);
 
     }
 }
