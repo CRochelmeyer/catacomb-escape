@@ -10,20 +10,21 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     //public Transform parentToReturn = null;
     public Image id;
     public string imageID;
+    private string cell;
     private Tile tile;
     public GameLogic gameLogic;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("Player settings drag");
+        //Debug.Log("Player settings drag");
 		//if (PlayerPrefs.GetString ("Paused") != "true")
 		//{
-			Debug.Log("OnbeginDrag");
+			//Debug.Log("OnbeginDrag");
 			// id to grab image source file to pass as a parameter for logic
 			id = this.GetComponent<Image> ();
             //setting imageID
-            imageID = id.sprite.ToString();
-        //creating tile based on grabbed image
+            imageID = id.sprite.name.ToString();
+            //creating tile based on grabbed image
             tile = new Tile(imageID);
 			//save the parent incase of returns from invalid drags
 			//parentToReturn = this.transform.parent;
@@ -34,7 +35,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 	{
 		//if (PlayerPrefs.GetString ("Paused") != "true")
 		//{
-			Debug.Log("onDrag");
+			//Debug.Log("onDrag");
 			this.transform.position = eventData.position;
 		//}
 	}
@@ -48,18 +49,19 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         //this section is for using endDrag to communicate mouse position for 
         //logic to determine cell area
-        
-       Debug.Log("x : " + x + "y : " + y);
         //make use of the game object to pass
         //GameLogic Main = new GameLogic();
         imageID = id.sprite.ToString();
         gameLogic = GameObject.FindObjectOfType<GameLogic>();
-        gameLogic.TestPassing(imageID, x, y);
-        gameLogic.UpdateDrag(tile,x,y);
         //this.transform.SetParent(parentToReturn);
         //send mouse position and string of the sprite name to logic
         //testing arrayhandler
-        Debug.Log("return cell: "+gameLogic.GetComponent<ArrayHandler>().FindLocation(new Vector2(x, y)) );
-       
+        //Debug.Log("return cell: "+gameLogic.GetComponent<ArrayHandler>().FindLocation(new Vector2(x, y)) );
+        //assign cell 
+        cell = gameLogic.GetComponent<ArrayHandler>().FindLocation(new Vector2(x, y));
+        //cal update drag from gamelogic with tile and cell index
+        gameLogic.UpdateDrag(tile, cell);
+
+
     }
 }

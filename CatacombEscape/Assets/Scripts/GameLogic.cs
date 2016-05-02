@@ -2,8 +2,10 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+
 public class GameLogic : MonoBehaviour
 {
+    Dictionary<string, int> cellindex = new Dictionary<string, int>();
     int interval = 1;
     float nextTime = 0;
     //sprite holders drag sprites via inspector
@@ -48,6 +50,17 @@ public class GameLogic : MonoBehaviour
 	void Start()
 	{
 		Debug.Log("GameLogic start");
+        //fill cellindex dictionary
+        //temp index int to fill dictonary
+        int temp = 0;
+        for (int i =0; i<6; i++)
+        {
+            for (int j = 0; j<5; j++ )
+            {
+                cellindex.Add(i.ToString() + j.ToString(), temp);
+                temp++;
+            }
+        }
 	}
 	
 	// Update is called once per frame
@@ -96,25 +109,27 @@ public class GameLogic : MonoBehaviour
 			}
 		}*/
     }
-    public void UpdateDrag(Tile ptile , float px, float py)
+    public void UpdateDrag(Tile ptile , string pcell)
     {
-        int _ele = 0;
-        //temp values of row/col for range comparison as the grid are 92x92
-        int _tempRow = 0;
-        int _tempCol = 0;
-        //forloop int i <row
-        for (int i =0; i<6; i++)
+        //grab index based on pcell in cellindex dictionary
+        int _gridIndex =0;
+        int _spriteIndex =0;
+        cellindex.TryGetValue(pcell, out _gridIndex);
+        Debug.Log("_index :" + _gridIndex);
+        Debug.Log("tile id :" + ptile._tileID.ToString());
+        //grab corresponding gridsprite[index] based on ptile
+        for (int i = 0; i < tileSprite.Length; i++)
         {
-            _tempRow += 100;
-            //forloop int j <col
-            for (int j = 0; j<5; j++)
+            string temp1 = tileSprite[i].name.ToString();
+            string temp2 = ptile._tileID.ToString();
+            if (string.Compare(temp1, temp2) == 0 )
             {
-                _tempCol += 100;
-                Debug.Log("gridPanels"+_ele+"X: "+gridPanels[_ele].transform.position.x);
-                _ele++;
+                _spriteIndex = i;
+                gridPanels[_gridIndex].GetComponent<Image>().sprite = tileSprite[_spriteIndex] as Sprite;
+                gridPanels[_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 150f);
+                break;
             }
         }
-        gridPanels[7].GetComponent<Image>().sprite = tileSprite[3];
     }
 	public void TestPassing(string pImageId, float px, float py)
 	{

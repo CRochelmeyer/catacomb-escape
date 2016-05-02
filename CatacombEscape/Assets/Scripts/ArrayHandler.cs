@@ -32,23 +32,22 @@ public class ArrayHandler : MonoBehaviour
         //return var
         string _cell = "";
         //cell 00 xy max - padding
-        Debug.Log("FindLocation :" + pCoord);
-        Debug.Log("cellsizex :" + _cellsizex);
-        Debug.Log("cellsizesy :" + _cellsizey);
+       // Debug.Log("FindLocation :" + pCoord);
+        //Debug.Log("cellsizex :" + _cellsizex);
+        //Debug.Log("cellsizesy :" + _cellsizey);
         for (int row = 0; row < _row; row++)
         {
             for (int col = 0; col < _col; col++)
             {
-                Debug.Log("before ifcell = " + _cell);
+                //Debug.Log("before ifcell = " + _cell);
                 if ( (_cell == "") && (pCoord.x < (_cellsizex * (col + 1))) && (pCoord.y > (_yMax - (_cellsizey * (row + 1))) ) && (pCoord.y <= _yMax) && (pCoord.y >= _yMin) && (pCoord.x >= _xMin) && (pCoord.x <= _xMax) )
                 {
-                    Debug.Log("ArrayHandler If :" + row + " " + col);
+                    //Debug.Log("ArrayHandler If :" + row + " " + col);
                     _cell = row.ToString() + col.ToString();
                     Debug.Log("cell = " + _cell);
                     //using break to end the loop prematurely once _cell has been located
                     break;
                 }
-                else { Debug.Log("ArrayHandler else :" + row + " " + col); }
             }
             //using break to end the loop prematurely once _cell has been located
             if (_cell != "")

@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Tile : MonoBehaviour {
+public class Tile  {
 
-    private List<string> _entry { get; set; }
-    private string _tileID { get; set; }
-    private bool _isOccupied { get; set; }
-    private bool _isActive { get; set; }
+    public List<string> _entry { get; set; }
+    public string _tileID {get; set;}
+    public bool _isOccupied { get; set; }
+    public bool _isActive { get; set; }
 
 
     public Tile(List<string> pEntry, string pID)
