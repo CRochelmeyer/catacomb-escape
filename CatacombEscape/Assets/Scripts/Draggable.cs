@@ -62,6 +62,5 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         //cal update drag from gamelogic with tile and cell index
         gameLogic.UpdateDrag(tile, cell);
 		Destroy (this.gameObject);
-
     }
 }

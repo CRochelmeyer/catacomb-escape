@@ -5,7 +5,10 @@ using System.Collections.Generic;
 
 public class GameLogic : MonoBehaviour
 {
+    //dictionary to match cell strings of 00-04 10-14 to an index from 0-29
     Dictionary<string, int> cellindex = new Dictionary<string, int>();
+    //dictionary to store event tile clone name and original grid panel location int
+    Dictionary<string, string> eventindex = new Dictionary<string, string>();
     int interval = 1;
     float nextTime = 0;
     //sprite holders drag sprites via inspector
@@ -18,10 +21,10 @@ public class GameLogic : MonoBehaviour
     public Tile[,] gameBoard = new Tile[5, 6];
     //initiate a static instance of gamelogic to be used globally...
     public static GameLogic instance = null;
-
     private int level = 1;
 	private GridPanels gridPanelsScript;
 	private GameObject[] gridPanels;
+    private Tile[,] tileBoard = new Tile[6,5];
 
     //awake called behind start
     void Awake()
@@ -61,6 +64,7 @@ public class GameLogic : MonoBehaviour
                 temp++;
             }
         }
+        GenerateBoardLogic();
 	}
 	
 	// Update is called once per frame
@@ -116,8 +120,8 @@ public class GameLogic : MonoBehaviour
         int _gridIndex =0;
         int _spriteIndex =0;
         cellindex.TryGetValue(pcell, out _gridIndex);
-        Debug.Log("_index :" + _gridIndex);
-        Debug.Log("tile id :" + ptile._tileID.ToString());
+        //Debug.Log("_index :" + _gridIndex);
+        //Debug.Log("tile id :" + ptile._tileID.ToString());
         //grab corresponding gridsprite[index] based on ptile
         for (int i = 0; i < tileSprite.Length; i++)
         {
@@ -133,9 +137,37 @@ public class GameLogic : MonoBehaviour
         }
     }
 
-	public void TestPassing(string pImageId, float px, float py)
+	public void GenerateBoardLogic()
 	{
-		Debug.Log("image id " + pImageId + " x y " + px + " " + py);
+        Tile temptile;
+        for (int row = 0; row<6; row++)
+        {
+            for (int col =0; col<5; col++)
+            {
+                int temp =0;
+                cellindex.TryGetValue(row.ToString() + col.ToString(), out temp);
+                if (gridPanels[temp].GetComponent<Image>().sprite != null)
+                {
+                    temptile = new Tile(gridPanels[temp].GetComponent<Image>().sprite.name.ToString());
+                    tileBoard[row, col] = temptile;
+                    Debug.Log("tileboard Added " + temp);
+                }
+            }
+        }
+        Debug.Log("teststest");
+        //add eventgreen eventred
+        foreach (KeyValuePair<string,string>pair in eventindex )
+        {
+            string temp = pair.Key.ToString();
+            Debug.Log(temp);
+            int temprow = System.Int32.Parse(temp.Substring(0, 1));
+            int tempcol = System.Int32.Parse(temp.Substring(1, 1));
+            temptile = new Tile(pair.Value);
+            tileBoard[temprow,tempcol] = temptile;
+            Debug.Log("added event tiles");
+            Debug.Log("temp row " + temprow + " tempcol " + tempcol);
+        }
+        eventindex.Clear();
 	}
 	
 	public void GenerateHand()
@@ -294,6 +326,10 @@ public class GameLogic : MonoBehaviour
 				panelClone.transform.localScale = new Vector3 (1,1,1);
 				panelClone.GetComponent<Image>().sprite = gridSprite[3] as Sprite;
 				panelClone.GetComponent<Image>().color = new Color(255f,255f,255f,150f);
+                //store event green tile into eventgreen list
+                //Debug.Log("event greens :" + panelClone.GetComponent<Image>().sprite.name.ToString() + " ::: " + tempPanel.name);
+                eventindex.Add(tempPanel.name, panelClone.GetComponent<Image>().sprite.name.ToString());
+                
             }
 			//Draw all red tiles
             for (int i = 0+green; i < red+green; i++)
@@ -306,6 +342,9 @@ public class GameLogic : MonoBehaviour
 				panelClone.transform.localScale = new Vector3 (1,1,1);
 				panelClone.GetComponent<Image>().sprite = gridSprite[4] as Sprite;
 				panelClone.GetComponent<Image>().color = new Color(255f,255f,255f,150f);
+                //store event red tiles into eventred list
+                eventindex.Add(tempPanel.name, panelClone.GetComponent<Image>().sprite.name.ToString());
+
             }
             
         }
