@@ -10,9 +10,11 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     //public Transform parentToReturn = null;
     public Image id;
     public string imageID;
-    private string cell;
-    private Tile tile;
-    public GameLogic gameLogic;
+	public GameLogic gameLogic;
+
+	private string cell;
+	private Tile tile;
+	private Vector3 locationToReturn;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -27,7 +29,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             //creating tile based on grabbed image
             tile = new Tile(imageID);
 			//save the parent incase of returns from invalid drags
-			//parentToReturn = this.transform.parent;
+			locationToReturn = this.transform;
 		//}
     }
 

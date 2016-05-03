@@ -92,22 +92,7 @@ public class GameLogic : MonoBehaviour
             //Debug.Log(gridPanels[i].name); all gridpanels are moved it 
 		}
         Debug.Log("gridpanelsFound");
-        /*
-		GameObject[] tempPanels;
-		GameObject gridPanel = GameObject.FindGameObjectWithTag("GridPanel");
-
-		tempPanels =
-
-
-		var objects = new Array();
-		RigidBody[] bodies;
-		void Example()
-		{
-			bodies = GetComponentsInChildren<RigidBody>();
-			foreach(RigidBody body in bodies) {
-				objects.Add(body.gameObject);
-			}
-		}*/
+        
     }
 
     public void UpdateDrag(Tile ptile , string pcell)
