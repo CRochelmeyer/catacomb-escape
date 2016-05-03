@@ -7,6 +7,7 @@ public class PauseBehaviour : MonoBehaviour
 
 	public void LoadScene(string sceneName)
 	{
+		PlayerPrefs.SetString ("Paused", "false");
 		Application.LoadLevel(sceneName);
 	}
 
