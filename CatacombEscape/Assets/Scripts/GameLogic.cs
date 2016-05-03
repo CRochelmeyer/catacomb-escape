@@ -194,12 +194,21 @@ public class GameLogic : MonoBehaviour
 	{
 		Debug.Log("Previous Level " + level);
 		level++;
+
 		//degenerate handtiles
 		handTiles = GameObject.FindGameObjectsWithTag("handDrag");
 		for (int i = 0; i < handTiles.Length; i++)
 		{
 			Destroy(handTiles[i]);
 		}
+
+		//degenerate eventTiles
+		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
+		for (int i = 0; i < eventTiles.Length; i++)
+		{
+			Destroy(eventTiles[i]);
+		}
+
 		//degenerate grid tiles
 		//gridPanels = GameObject.FindGameObjectsWithTag("GridPanel");
 		for (int i=0; i<gridPanels.Length; i++)
@@ -214,48 +223,53 @@ public class GameLogic : MonoBehaviour
     
     public void GenerateBoard(int level)
     {
-        //simple alg for #of green/red tiles based on level
-        //using int to truncate .decimals
-        //int green = (int) (level * 1.5f);
+        //generate number of green tiles
+		//random of 1 to 3 tiles inclusive
 		int green = Random.Range(1, 4);
         Debug.Log("green " + green);
-        //int red = (int)(level * .5);
+		
+		//generate number of red tiles
+		//random of 1 to 3 tiles inclusive
 		int red = Random.Range(1, 4);
         Debug.Log("red " + red);
-        //grab grid panels
-        //gridPanels = GameObject.FindGameObjectsWithTag("GridPanel");
+		
         if (gridPanels != null)
-        {
-           /* for (int i = 0; i < gridPanels.Length; i++)
-            {
-                Debug.Log("gridpanels I : " + gridPanels[i] + " ::: " + i + " spritename : "+gridPanels[5].GetComponent<Image>().sprite);
-            }*/
+		{
+			GameObject gridPanelsParent = gridPanels[0].transform.parent.gameObject;
+
+			//exit tile location will be somewhere in the bottom row
 			int downPanel = Random.Range(25, 30);
+			//entrance tile location will be somewhere in the top row
 			int upPanel = Random.Range(0, 5);
+
 			int[] randomPanels = new int[green+red];
 			//Debug.Log("green + red = " + randomPanels.Length);
 
+			//initialise location of all event panels to be 30 (default)
 			for (int i=0; i< randomPanels.Length; i++)
 				randomPanels[i] = 30;
 			
-			//set ladder up tile
+			//set exit tile
             gridPanels[downPanel].GetComponent<Image>().sprite = gridSprite[1] as Sprite;
 			gridPanels[downPanel].GetComponent<Image>().color = new Color(255f,255f,255f,255f);
-			//set ladder down tile
+			//set entrance tile
 			gridPanels[upPanel].GetComponent<Image>().sprite = gridSprite[2] as Sprite;
 			gridPanels[upPanel].GetComponent<Image>().color = new Color(255f,255f,255f,255f);
 
 			//set random panel numbers for red and green tile placement
 			for (int i=0; i< randomPanels.Length; i++)
 			{
+				//check that a successful location is chosen (no longer 30)
 				while( randomPanels[i] == 30 )
 				{
 					int randNo = Random.Range(0, 30);
+					//check that location is not same as entrance or exit tile
 					if (randNo != downPanel && randNo != upPanel)
 					{
 						randomPanels[i] = randNo;
 						for (int j=0; j<i; j++)
 						{
+							//check that location is not already taken
 							if (randNo == randomPanels[j] )
 							{
 								randomPanels[i] = 30;
@@ -272,17 +286,26 @@ public class GameLogic : MonoBehaviour
 			//Draw all green tiles
             for (int i =0; i< green; i++)
 			{
-				gridPanels[randomPanels[i]].GetComponent<Image>().color = new Color(255f,255f,255f,150f);
-				gridPanels[randomPanels[i]].GetComponent<Image>().sprite = gridSprite[3] as Sprite;
+				GameObject tempPanel = gridPanels[randomPanels[i]];
+				GameObject panelClone = Instantiate (tempPanel);
+				panelClone.transform.SetParent (gridPanelsParent.transform);
+				panelClone.tag = "eventTile";
+				panelClone.transform.localPosition = tempPanel.transform.localPosition;
+				panelClone.transform.localScale = new Vector3 (1,1,1);
+				panelClone.GetComponent<Image>().sprite = gridSprite[3] as Sprite;
+				panelClone.GetComponent<Image>().color = new Color(255f,255f,255f,150f);
             }
 			//Draw all red tiles
             for (int i = 0+green; i < red+green; i++)
             {
-            	//if (gridPanels[Random.Range(2, gridPanels.Length)].GetComponent<Image>().sprite)
-				//{
-					gridPanels[randomPanels[i]].GetComponent<Image>().color = new Color(255f,255f,255f,150f);
-					gridPanels[randomPanels[i]].GetComponent<Image>().sprite = gridSprite[4] as Sprite;
-				//}
+				GameObject tempPanel = gridPanels[randomPanels[i]];
+				GameObject panelClone = Instantiate (tempPanel);
+				panelClone.transform.SetParent (gridPanelsParent.transform);
+				panelClone.tag = "eventTile";
+				panelClone.transform.localPosition = tempPanel.transform.localPosition;
+				panelClone.transform.localScale = new Vector3 (1,1,1);
+				panelClone.GetComponent<Image>().sprite = gridSprite[4] as Sprite;
+				panelClone.GetComponent<Image>().color = new Color(255f,255f,255f,150f);
             }
             
         }

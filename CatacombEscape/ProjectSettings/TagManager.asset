@@ -12,6 +12,7 @@ TagManager:
   - Scripts
   - PauseUI
   - GridPanelsScript
+  - eventTile
   layers:
   - Default
   - TransparentFX
