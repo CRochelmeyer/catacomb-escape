@@ -29,7 +29,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             //creating tile based on grabbed image
             tile = new Tile(imageID);
 			//save the parent incase of returns from invalid drags
-			locationToReturn = this.transform;
+			locationToReturn = this.transform.localPosition;
 		//}
     }
 
