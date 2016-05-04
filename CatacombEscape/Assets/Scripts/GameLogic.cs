@@ -9,6 +9,7 @@ public class GameLogic : MonoBehaviour
     private bool gameover = false;
     private bool emptyhand = false;
     private bool nextlevel = false;
+    private int PlayerStamina = 100;
 
 
     //dictionary to match cell strings of 00-04 10-14 to an index from 0-29
@@ -92,30 +93,25 @@ public class GameLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //check if hand is empty, draw it using tag handDrag
-        handTiles = GameObject.FindGameObjectsWithTag("handDrag");
-        if (handTiles.Length == 0)
-        {
-            //assign emptyhand bool
-            emptyhand = true;
-        }
         //check if handTiles has been filled
         if (emptyhand)
         {
             //generate hand
             GenerateHand();
         }
-            //check if next level...
-            if (nextlevel)
-            {
-                NextLevel();
-            }
-
+        //check if next level...
+        if (nextlevel)
+        {
+            NextLevel();
+        }
+        PlayerInit();
         
     }
     //init game method
     void InitGame(int pLevel)
     {
+        //initialise player data
+        PlayerInit();
         //setup board with rng sprites
         GenerateBoard(pLevel);
         //generate hand 
@@ -138,6 +134,7 @@ public class GameLogic : MonoBehaviour
 
     public void UpdateDrag(Tile ptile , string pcell)
     {
+        Debug.Log("updatedrag");
         //grab index based on pcell in cellindex dictionary
         int _gridIndex =0;
         int _spriteIndex =0;
@@ -149,16 +146,32 @@ public class GameLogic : MonoBehaviour
         {
             string temp1 = tileSprite[i].name.ToString();
             string temp2 = ptile._tileID.ToString();
+            Debug.Log(temp1 + "::::" + temp2);
             if (string.Compare(temp1, temp2) == 0 )
             {
                 _spriteIndex = i;
                 gridPanels[_gridIndex].GetComponent<Image>().sprite = tileSprite[_spriteIndex] as Sprite;
                 gridPanels[_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
+                //decreaste stamina
+                PlayerStamina--;
                 break;
             }
         }
+        //check if hand is empty, draw it using tag handDrag
+        handTiles = GameObject.FindGameObjectsWithTag("handDrag");
+        if (handTiles.Length == 0)
+        {
+            //assign emptyhand bool
+            emptyhand = true;
+        }
     }
-
+    public void PlayerInit()
+    {
+        tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
+        tempObj.GetComponent<Text>().text = PlayerStamina + "/100";
+        tempObj = GameObject.FindGameObjectWithTag("StamBar");
+        tempObj.GetComponent<Slider>().value = PlayerStamina;
+    }
 	public void GenerateBoardLogic()
 	{
         Debug.Log("tileboard generated ::" + level);

@@ -51,8 +51,6 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         id = this.GetComponent<Image>();
         //setting imageID
         imageID = id.sprite.name.ToString();
-        //creating tile based on grabbed image
-        imageID = id.sprite.ToString();
         gameLogic = GameObject.FindObjectOfType<GameLogic>();
         //this.transform.SetParent(parentToReturn);
         //send mouse position and string of the sprite name to logic

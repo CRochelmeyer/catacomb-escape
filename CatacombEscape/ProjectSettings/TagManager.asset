@@ -13,6 +13,8 @@ TagManager:
   - PauseUI
   - GridPanelsScript
   - eventTile
+  - PlayerStam
+  - StamBar
   layers:
   - Default
   - TransparentFX
