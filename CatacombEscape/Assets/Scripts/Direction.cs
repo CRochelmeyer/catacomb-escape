@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Direction : MonoBehaviour {
-    Dictionary<string, string> movedir = new Dictionary<string, string>();
+    Dictionary<string, string> oppositedir = new Dictionary<string, string>();
+    
     //pass by ref to Move() for tile updates
     public void Move(Tile pCurrent, Tile pNext , Tile[,] board)
     {
@@ -14,10 +15,14 @@ public class Direction : MonoBehaviour {
             //check if move is valid
             if (dir != "invalid move")
             {
-                //change isOccupied
-                pCurrent._isOccupied = false;
-                pNext._isOccupied = true;
-                //call movement function
+                //check if direction movement is valid
+                if (pCurrent.ValidMove(dir) && pNext.ValidEntry(dir) )
+                {
+                    //change isOccupied
+                    pCurrent._isOccupied = false;
+                    pNext._isOccupied = true;
+                    //call movement function
+                }
             }
             else
             {

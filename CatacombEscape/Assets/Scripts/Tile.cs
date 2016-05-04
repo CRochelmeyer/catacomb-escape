@@ -55,35 +55,77 @@ public class Tile  {
         _isDummy = true;
     }
     //move validator
-    public void ValidMove(string pMove)
+    public bool ValidMove(string pMove)
     {
+        bool move = false;
         switch (pMove.ToUpper())
         {
             case "UP":
                 {
                     _entry.Contains("UP");
+                    move = true;
                     Debug.Log("Possible up");
                     break;
                 }
             case "RIGHT":
                 {
                     _entry.Contains("RIGHT");
+                    move = true;
                     Debug.Log("Possible right");
                     break;
                 }
             case "DOWN":
                 {
                     _entry.Contains("DOWN");
+                    move = true;
                     Debug.Log("Possible down");
                     break;
                 }
             case "LEFT":
                 {
                     _entry.Contains("LEFT");
+                    move = true;
                     Debug.Log("Possible left");
                     break;
                 }
         }
+        return move;
+    }
+    public bool ValidEntry(string pEntry)
+    {
+        bool entry = false;
+        switch (pEntry.ToLower())
+        {
+            case "up":
+                {
+                    _entry.Contains("down");
+                    entry = true;
+                    Debug.Log("can enter ");
+                    break;
+                }
+            case "left":
+                {
+                    _entry.Contains("right");
+                    entry = true;
+                    Debug.Log("can enter ");
+                    break;
+                }
+            case "down":
+                {
+                    _entry.Contains("up");
+                    entry = true;
+                    Debug.Log("can enter ");
+                    break;
+                }
+            case "right":
+                {
+                    _entry.Contains("left");
+                    entry = true;
+                    Debug.Log("can enter ");
+                    break;
+                }
+        }
+        return entry;
     }
 
     private void generateEntry()
