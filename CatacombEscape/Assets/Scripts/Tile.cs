@@ -93,38 +93,56 @@ public class Tile  {
     }
     public bool ValidEntry(string pEntry)
     {
-        bool entry = false;
-        switch (pEntry.ToLower())
+        Debug.Log("pentry :" + pEntry);
+        for (int i = 0; i < _entry.Count; i++)
         {
-            case "up":
-                {
-                    _entry.Contains("down");
-                    entry = true;
-                    Debug.Log("can enter ");
-                    break;
-                }
-            case "left":
-                {
-                    _entry.Contains("right");
-                    entry = true;
-                    Debug.Log("can enter ");
-                    break;
-                }
-            case "down":
-                {
-                    _entry.Contains("up");
-                    entry = true;
-                    Debug.Log("can enter ");
-                    break;
-                }
-            case "right":
-                {
-                    _entry.Contains("left");
-                    entry = true;
-                    Debug.Log("can enter ");
-                    break;
-                }
+            Debug.Log("entry "+_entry[i]);
         }
+        bool entry = false;
+        if (_entry != null)
+        {
+            Debug.Log("ValidEntry if "+pEntry);
+            switch (pEntry.ToLower())
+            {
+                case "up":
+                    {
+                        if (_entry.Contains("down"))
+                        {
+                            entry = true;
+                            Debug.Log("can enter up");
+                        }
+                        break;
+                    }
+                case "left":
+                    {
+                        if(_entry.Contains("right"))
+                        {
+                            entry = true;
+                            Debug.Log("can enter left");
+                        }
+                        break;
+                    }
+                case "down":
+                    {
+                        if (_entry.Contains("up"))
+                        {
+                            entry = true;
+                            Debug.Log("can enter down");
+                        }
+                        break;
+                    }
+                case "right":
+                    {
+                        if (_entry.Contains("left"))
+                        {
+                            entry = true;
+                            Debug.Log("can enter right");
+                        }
+                        break;
+                    }
+            }
+        }
+        Debug.Log("return valid entry "+entry);
         return entry;
     }
 

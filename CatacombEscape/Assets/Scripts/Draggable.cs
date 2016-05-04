@@ -38,7 +38,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        //Debug.Log("OnEndDrag");
+        Debug.Log("OnEndDrag");
         //use these x,y to pass thru to logic to identify array cell block
         float x = Input.mousePosition.x;
         float y = Input.mousePosition.y;
@@ -59,8 +59,18 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         //assign cell 
         cell = gameLogic.GetComponent<ArrayHandler>().FindLocation(new Vector2(x, y));
         tile = new Tile(imageID, cell);
+        tile.test();
+        //check if its a valid placement based on player location.
         //cal update drag from gamelogic with tile and cell index
-        gameLogic.UpdateDrag(tile, cell);
-		Destroy (this.gameObject);
+        if (gameLogic.ValidDrag(tile, cell))
+        {
+            Debug.Log("Destroy handtile");
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Debug.Log("Return handtile");
+            this.gameObject.GetComponent<Transform>().localPosition = locationToReturn;
+        }
     }
 }
