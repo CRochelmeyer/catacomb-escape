@@ -8,25 +8,31 @@ public class Tile  {
     public bool _isOccupied { get; set; }
     public bool _isActive { get; set; }
     public bool _isEntrySet { get; set; }
+    public bool _isDummy { get; set; }
     public string _event { get; set; }
+    public string _boardLocation { get; set; }
 
 
-    public Tile(List<string> pEntry, string pID)
+    public Tile(List<string> pEntry, string pID , string pboardloc)
     {
-        Debug.Log("tile 2param");
+        Debug.Log("tile 3param");
         _entry = pEntry;
         _tileID = pID.ToLower();
         _isOccupied = false;
         _isActive = true;
         _isEntrySet = true;
+        _isDummy = false;
+        _boardLocation = pboardloc;
     }
     //constructor to automatically generate _entry based on id
-    public Tile(string pID)
+    public Tile(string pID , string pboardloc)
     {
         Debug.Log("tile 1 param");
         _tileID = pID.ToLower();
         _isActive = true;
+        _isDummy = false;
         _isOccupied = false;
+        _boardLocation = pboardloc;
         //initiate _entry
         _entry = new List<string>();
         if (_tileID.Contains("event") )
@@ -41,6 +47,12 @@ public class Tile  {
             generateEntry();
         }
 
+    }
+    public Tile(int pint)
+    {
+        //dummy constructor
+        _isActive = false;
+        _isDummy = true;
     }
     //move validator
     public void ValidMove(string pMove)
@@ -158,14 +170,19 @@ public class Tile  {
     }
     public void test()
     {
-        Debug.Log("entry : " +_entry );
-        Debug.Log("_tileID : " + _tileID);
-        Debug.Log("isOccupied : " + _isOccupied);
-        Debug.Log("isActive : " + _isActive);
-        for(int i =0; i< _entry.Count; i++)
+        if (_isDummy == false)
         {
-            Debug.Log(_entry[i]);
+            Debug.Log("_tileID : " + _tileID);
+            Debug.Log("isOccupied : " + _isOccupied);
+            Debug.Log("isActive : " + _isActive);
+            if (_entry != null)
+            {
+                for (int i = 0; i < _entry.Count; i++)
+                {
+                    Debug.Log(_entry[i]);
+                }
+                Debug.Log("is in loc :" + _boardLocation);
+            }
         }
     }
-
 }

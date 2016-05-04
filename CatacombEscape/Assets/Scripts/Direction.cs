@@ -3,5 +3,8 @@ using System.Collections;
 
 public class Direction : MonoBehaviour {
 
-    enum Entry { Up, Right, Down, Left };
+    public void Move(Tile pCurrent, Tile pNext , Tile[,] board)
+    {
+        
+    }
 }
