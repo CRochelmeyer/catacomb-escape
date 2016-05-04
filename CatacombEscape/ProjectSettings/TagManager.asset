@@ -15,6 +15,7 @@ TagManager:
   - eventTile
   - PlayerStam
   - StamBar
+  - Grid
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - 
   - 
   - Tile
-  - 
+  - Player
   - 
   - 
   - 
@@ -60,4 +61,7 @@ TagManager:
     locked: 0
   - name: grid
     uniqueID: 843690733
+    locked: 0
+  - name: Player
+    uniqueID: 185884357
     locked: 0

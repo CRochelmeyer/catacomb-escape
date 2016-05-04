@@ -11,6 +11,9 @@ public class GameLogic : MonoBehaviour
     private bool nextlevel = false;
     private int PlayerStamina = 100;
     private string PlayerLoc="";
+    Direction validmove = new Direction();
+    PlayerMove movePlayer = new PlayerMove();
+
     //dictionary to match cell strings of 00-04 10-14 to an index from 0-29
     Dictionary<string, int> cellindex = new Dictionary<string, int>();
     //dictionary to store event tile clone name and original grid panel location int
@@ -104,6 +107,7 @@ public class GameLogic : MonoBehaviour
             NextLevel();
         }
         PlayerInit();
+        PlayerClick();
         
     }
     //init game method
@@ -132,7 +136,6 @@ public class GameLogic : MonoBehaviour
     }
     public bool ValidDrag(Tile ptile, string pcell)
     {
-        Direction validmove = new Direction();
         //find player position
         if (PlayerLoc == "")
         {
@@ -220,6 +223,32 @@ public class GameLogic : MonoBehaviour
             emptyhand = true;
         }
     }
+    
+    public void PlayerClick()
+    {
+        //check for left click
+        if(Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("mouseClick");
+            string clickLoc = "";
+            clickLoc = this.GetComponent<ArrayHandler>().FindLocation(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+            if(clickLoc != "" && tileBoard[System.Int32.Parse(clickLoc.Substring(0, 1)), System.Int32.Parse(clickLoc.Substring(1,1))]._isEntrySet )
+            {
+                if (validmove.MoveDirection(PlayerLoc, clickLoc) != "invalid move" )
+                {
+                    //valid move
+                    validmove.Move(PlayerLoc, clickLoc, ref tileBoard);
+                    int tempindex = 0;
+                    cellindex.TryGetValue(PlayerLoc, out tempindex);
+                    movePlayer.UpdatePlayer(tempindex, gridPanels);
+                }
+            }
+        }
+    }
+    public void PlayerMove(string pNext)
+    {
+        validmove.Move(PlayerLoc, pNext ,ref tileBoard);
+    }
     public void PlayerInit()
     {
         tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
@@ -297,6 +326,10 @@ public class GameLogic : MonoBehaviour
                         Debug.Log("found entrance and set player");
                         tileBoard[row, col]._isOccupied = true;
                         PlayerLoc = row.ToString() + col.ToString();
+                        //draw player
+                        int pindex = 0;
+                        cellindex.TryGetValue(PlayerLoc, out pindex);
+                        movePlayer.DrawPlayer(pindex,gridPanels);
                         Debug.Log(PlayerLoc);
                     }
                 }

@@ -1586,7 +1586,7 @@ GameObject:
   - 114: {fileID: 545349315}
   m_Layer: 0
   m_Name: GridPanels
-  m_TagString: Untagged
+  m_TagString: Grid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4203,7 +4203,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 492612, guid: a897d4f4255ce494d85ea121cd6b39ea, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 11411794, guid: a897d4f4255ce494d85ea121cd6b39ea, type: 2}
       propertyPath: panel00

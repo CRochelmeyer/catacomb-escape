@@ -6,7 +6,7 @@ public class Direction : MonoBehaviour {
     Dictionary<string, string> oppositedir = new Dictionary<string, string>();
 
     //pass by ref to Move() for tile updates
-    public void Move(Tile pCurrent, Tile pNext, Tile[,] pboard)
+    public void Move(Tile pCurrent, Tile pNext, ref Tile[,] pboard)
     {
         //check pCurrent is where the player is...
         if (pCurrent._isOccupied == true)
@@ -30,8 +30,8 @@ public class Direction : MonoBehaviour {
             }
         }
     }
-    //directional check for placing tiles no tile required just cell locations...and board...should be reversed order for ValidEntry
-    public bool Move(string pCurrent , string pNext , Tile[,] pboard)
+    //overloading above method with string string tile[,]
+    public void Move(string pCurrent , string pNext ,ref Tile[,] pboard)
     {
         Debug.Log("move string params");
         //current row/col
@@ -40,15 +40,7 @@ public class Direction : MonoBehaviour {
         //next row/col
         int nextrow = System.Int32.Parse(pNext.Substring(0, 1));
         int nextcol = System.Int32.Parse(pNext.Substring(1, 1));
-        bool move = false;
-        string dir = "";
-        dir = MoveDirection(pCurrent, pNext);
-        Debug.Log("Dir =" + dir);
-        Debug.Log(pboard[nextrow, nextcol].ValidEntry(dir));
-        if ( pboard[nextrow, nextcol].ValidEntry(dir))
-        { move = true; }
-
-        return move;
+        this.Move( pboard[currow, curcol] , pboard[nextrow, nextcol] , ref pboard);
     }
     //Placement for checking valid tile placements of tiles
     public bool ValidPlacement(string pCurrent, Tile pNext )
