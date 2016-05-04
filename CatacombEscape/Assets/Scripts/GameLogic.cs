@@ -15,8 +15,6 @@ public class GameLogic : MonoBehaviour
     Dictionary<string, int> cellindex = new Dictionary<string, int>();
     //dictionary to store event tile clone name and original grid panel location int
     Dictionary<string, string> eventindex = new Dictionary<string, string>();
-    int interval = 1;
-    float nextTime = 0;
     //sprite holders drag sprites via inspector
     public Sprite[] tileSprite;
     public Sprite[] gridSprite;
@@ -107,26 +105,6 @@ public class GameLogic : MonoBehaviour
             //generate hand
             GenerateHand();
         }
-      /*  //check tileBoard exists
-        if (tileBoard.Length != 0)
-        {
-            //check if next level is available exit = bottom of the grid 50-54
-            for (int row = 5; row < 6; row++)
-            {
-                for (int col = 0; col < 5; col++)
-                {
-                    //if tile within bottom row matches exit name
-                    if (tileBoard[row, col]._tileID == "tile_entrance_exit")
-                    {
-                        if (tileBoard[row, col]._isOccupied)
-                        {
-                            //nextlevel bool = true;
-                            nextlevel = true;
-                        }
-                    }
-                }
-            }
-        }*/
             //check if next level...
             if (nextlevel)
             {
@@ -189,6 +167,7 @@ public class GameLogic : MonoBehaviour
         //check if tileboard is empty
         if (tileBoard.Length != 0)
         {
+            //generate tileboard...
             Debug.Log("tileboard gen if");
             for (int row = 0; row < 6; row++)
             {
@@ -203,7 +182,6 @@ public class GameLogic : MonoBehaviour
                     }
                 }
             }
-            Debug.Log("teststest");
             //add eventgreen eventred
             foreach (KeyValuePair<string, string> pair in eventindex)
             {
@@ -219,7 +197,40 @@ public class GameLogic : MonoBehaviour
             //clear eventindex
             eventindex.Clear();
         }
-}
+        //check tileBoard exists
+        if (tileBoard.Length != 0)
+        {
+            //check if next level is available exit = bottom of the grid 50-54
+            for (int row = 5; row < 6; row++)
+            {
+                for (int col = 0; col < 5; col++)
+                {
+                    //if tile within bottom row matches exit name
+                    if (tileBoard[row, col]._tileID == "tile_entrance_exit")
+                    {
+                        Debug.Log("found tile exit");
+                        if (tileBoard[row, col]._isOccupied)
+                        {
+                            Debug.Log("next levle set to true");
+                            //nextlevel bool = true;
+                            nextlevel = true;
+                        }
+                    }
+                }
+            }
+            //find entrance and set player location
+            for (int row =0; row<1; row++)
+            {
+                for (int col = 0; col<5; col++)
+                {
+                    if (tileBoard[row,col]._boardLocation == "tile_entrance_exit")
+                    {
+                        tileBoard[row, col]._isOccupied = true;
+                    }
+                }
+            }
+        }
+    }
 	
 	public void GenerateHand()
     {       
