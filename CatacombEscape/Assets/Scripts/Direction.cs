@@ -5,8 +5,14 @@ using System.Collections.Generic;
 public class Direction : MonoBehaviour {
     Dictionary<string, string> oppositedir = new Dictionary<string, string>();
 
+    //current row/col
+    int currow = 0;
+    int curcol = 0;
+    //next row/col
+    int nextrow = 0;
+    int nextcol = 0;
     //pass by ref to Move() for tile updates
-    public void Move(Tile pCurrent, Tile pNext, ref Tile[,] pboard)
+    public void Move(Tile pCurrent, Tile pNext, ref Tile[,] pboard ,int crow,int ccol, int nrow, int ncol)
     {
         //check pCurrent is where the player is...
         if (pCurrent._isOccupied == true)
@@ -19,8 +25,9 @@ public class Direction : MonoBehaviour {
                 if (pCurrent.ValidMove(dir) && pNext.ValidEntry(dir))
                 {
                     //change isOccupied
-                    pCurrent._isOccupied = false;
-                    pNext._isOccupied = true;
+                    pboard[crow, ccol]._isOccupied = false;
+                    Debug.Log(" new occupied "+pNext._boardLocation);
+                    pboard[nrow, ncol]._isOccupied = true;
                     //call movement function
                 }
             }
@@ -34,13 +41,14 @@ public class Direction : MonoBehaviour {
     public void Move(string pCurrent , string pNext ,ref Tile[,] pboard)
     {
         Debug.Log("move string params");
+        Debug.Log("pCur " + pCurrent + "pNext " + pNext);
         //current row/col
-        int currow = System.Int32.Parse(pCurrent.Substring(0, 1));
-        int curcol = System.Int32.Parse(pCurrent.Substring(1, 1));
+        currow = System.Int32.Parse(pCurrent.Substring(0, 1));
+        curcol = System.Int32.Parse(pCurrent.Substring(1, 1));
         //next row/col
-        int nextrow = System.Int32.Parse(pNext.Substring(0, 1));
-        int nextcol = System.Int32.Parse(pNext.Substring(1, 1));
-        this.Move( pboard[currow, curcol] , pboard[nextrow, nextcol] , ref pboard);
+        nextrow = System.Int32.Parse(pNext.Substring(0, 1));
+        nextcol = System.Int32.Parse(pNext.Substring(1, 1));
+        this.Move( pboard[currow, curcol] , pboard[nextrow, nextcol] , ref pboard,currow,curcol,nextrow,nextcol);
     }
     //Placement for checking valid tile placements of tiles
     public bool ValidPlacement(string pCurrent, Tile pNext )
@@ -64,11 +72,14 @@ public class Direction : MonoBehaviour {
         string dir = "";
         int tempmove = 0;
         //current row/col
-        int currow = System.Int32.Parse(pCurrent.Substring(0,1));
-        int curcol = System.Int32.Parse(pCurrent.Substring(1, 1));
+        currow = System.Int32.Parse(pCurrent.Substring(0,1));
+        curcol = System.Int32.Parse(pCurrent.Substring(1, 1));
         //next row/col
-        int nextrow = System.Int32.Parse(pNext.Substring(0, 1));
-        int nextcol = System.Int32.Parse(pNext.Substring(1, 1));
+        if(pNext != null && pNext != "")
+        {
+            nextrow = System.Int32.Parse(pNext.Substring(0, 1));
+            nextcol = System.Int32.Parse(pNext.Substring(1, 1));
+        }
         //check row are equal
         if ( (currow - nextrow) == 0)
         {

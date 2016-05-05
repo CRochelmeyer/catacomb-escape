@@ -95,20 +95,22 @@ public class GameLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log("UPdate");
         //check if handTiles has been filled
-        if (emptyhand)
+        if (emptyhand == true)
         {
             //generate hand
             GenerateHand();
+            emptyhand = false;
+            Debug.Log("emptyhand get hand");
         }
+        PlayerInit();
+        PlayerClick();
         //check if next level...
         if (nextlevel)
         {
             NextLevel();
         }
-        PlayerInit();
-        PlayerClick();
-        
     }
     //init game method
     void InitGame(int pLevel)
@@ -118,7 +120,7 @@ public class GameLogic : MonoBehaviour
         //setup board with rng sprites
         GenerateBoard();
         //generate hand 
-        GenerateHand();
+       //GenerateHand();
 	}
 
 	void FindGridPanels()
@@ -134,28 +136,15 @@ public class GameLogic : MonoBehaviour
         Debug.Log("gridpanelsFound");
         
     }
-    public bool ValidDrag(Tile ptile, string pcell)
+    public bool ValidDrag( Tile ptile, string pcell)
     {
-        //find player position
-        if (PlayerLoc == "")
-        {
-            //if player location is "" default find it...   
-            for (int row = 0; row < 6; row++)
-            {
-                for (int col = 0; col < 5; col++)
-                {
-                    if (tileBoard[row, col]._isOccupied)
-                    {
-                        PlayerLoc = tileBoard[row, col]._boardLocation;
-                    }
-                }
-            }
-        }
+        int rowmove = 0;
+        int colmove = 0;
         bool ValidDrag = false;
         Debug.Log("validdrag");
         Debug.Log("Player Loc: " + PlayerLoc);
-        int rowmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(0, 1))) - (System.Int32.Parse(PlayerLoc.Substring(0, 1))));
-        int colmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(1, 1))) - (System.Int32.Parse(PlayerLoc.Substring(1, 1))));
+        rowmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(0, 1))) - (System.Int32.Parse(PlayerLoc.Substring(0, 1))));
+        colmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(1, 1))) - (System.Int32.Parse(PlayerLoc.Substring(1, 1))));
         Debug.Log("rowmove :" + rowmove);
         Debug.Log("colmove :" + colmove);
         //check that the drag to is within range of player location 1 unit vertically or horizontally if so ValidPlacement to see if a clear path is available
@@ -169,7 +158,6 @@ public class GameLogic : MonoBehaviour
                 if (validmove.ValidPlacement(PlayerLoc, ptile) )
                 {
                     Debug.Log("valid vert movement");
-                    UpdateDrag(ptile, pcell);
                     ValidDrag = true;
                 }
             }
@@ -183,14 +171,13 @@ public class GameLogic : MonoBehaviour
                 if (validmove.ValidPlacement(PlayerLoc,ptile) )
                 {
                     Debug.Log("Valid hori movement");
-                    UpdateDrag(ptile, pcell);
                     ValidDrag = true;
                 }
             }
         }
         return ValidDrag;
     }
-    public void UpdateDrag(Tile ptile , string pcell)
+    public void UpdateDrag( Tile ptile , string pcell)
     {
         Debug.Log("updatedrag");
         //grab index based on pcell in cellindex dictionary
@@ -204,12 +191,18 @@ public class GameLogic : MonoBehaviour
         {
             string temp1 = tileSprite[i].name.ToString();
             string temp2 = ptile._tileID.ToString();
-            Debug.Log(temp1 + "::::" + temp2);
+            //Debug.Log(temp1 + "::::" + temp2);
             if (string.Compare(temp1, temp2) == 0 )
             {
                 _spriteIndex = i;
                 gridPanels[_gridIndex].GetComponent<Image>().sprite = tileSprite[_spriteIndex] as Sprite;
                 gridPanels[_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
+                //update tileBoard
+                Debug.Log("ptile test");
+                ptile.test();
+                tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(0, 1))] = ptile;
+                Debug.Log("boardTile test update drag");
+                tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(0, 1))].test();
                 //decreaste stamina
                 PlayerStamina--;
                 break;
@@ -217,30 +210,59 @@ public class GameLogic : MonoBehaviour
         }
         //check if hand is empty, draw it using tag handDrag
         handTiles = GameObject.FindGameObjectsWithTag("handDrag");
-        if (handTiles.Length == 0)
+        Debug.Log("empty hand bool?" + handTiles.Length);
+        if (handTiles.Length == 1)
         {
             //assign emptyhand bool
             emptyhand = true;
         }
+        Debug.Log("empty hand?" + emptyhand);
     }
     
     public void PlayerClick()
     {
         //check for left click
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(1))
         {
-            Debug.Log("mouseClick");
             string clickLoc = "";
             clickLoc = this.GetComponent<ArrayHandler>().FindLocation(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
-            if(clickLoc != "" && tileBoard[System.Int32.Parse(clickLoc.Substring(0, 1)), System.Int32.Parse(clickLoc.Substring(1,1))]._isEntrySet )
+            int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
+            int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
+            Debug.Log("mouseClick");
+            for(int i =0; i<6; i++)
+            {
+                for (int j =0;j<5;j++)
+                {
+                    if (tileBoard[i, j]._isDummy != true)
+                    {
+                        if (tileBoard[i, j]._boardLocation == clickLoc)
+                        {
+                            temprow = i;
+                            tempcol = j;
+                            Debug.Log("Assgn temp rowcol"+i +j); 
+                        }
+                    }
+                }
+            }
+            Debug.Log("clickloc !+ " + clickLoc);
+            Debug.Log(temprow + " " + tempcol);
+            Debug.Log("test tileboard");
+            Debug.Log(tileBoard[temprow,tempcol]._isEntrySet);
+            Debug.Log(tileBoard[temprow,tempcol]._tileID);
+            Debug.Log("test tileboard");
+            if ((clickLoc != "") && (tileBoard[temprow, tempcol]._isEntrySet) )
             {
                 if (validmove.MoveDirection(PlayerLoc, clickLoc) != "invalid move" )
                 {
+                    Debug.Log("not invalid move");
                     //valid move
-                    validmove.Move(PlayerLoc, clickLoc, ref tileBoard);
+                    validmove.Move(PlayerLoc, clickLoc,ref tileBoard);
                     int tempindex = 0;
                     cellindex.TryGetValue(PlayerLoc, out tempindex);
                     movePlayer.UpdatePlayer(tempindex, gridPanels);
+                    //update Playerloc
+                    PlayerLoc = clickLoc;
+                    Debug.Log("new player loc" + PlayerLoc +" :: "+clickLoc);
                 }
             }
         }
@@ -382,6 +404,7 @@ public class GameLogic : MonoBehaviour
 	
 	public void NextLevel()
 	{
+        emptyhand = true;
 		Debug.Log("Previous Level " + level);
 		level++;
         //initilaise tileBoard list a new

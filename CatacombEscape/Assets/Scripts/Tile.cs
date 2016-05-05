@@ -93,11 +93,6 @@ public class Tile  {
     }
     public bool ValidEntry(string pEntry)
     {
-        Debug.Log("pentry :" + pEntry);
-        for (int i = 0; i < _entry.Count; i++)
-        {
-            Debug.Log("entry "+_entry[i]);
-        }
         bool entry = false;
         if (_entry != null)
         {
@@ -235,6 +230,7 @@ public class Tile  {
             Debug.Log("_tileID : " + _tileID);
             Debug.Log("isOccupied : " + _isOccupied);
             Debug.Log("isActive : " + _isActive);
+            Debug.Log("is set :" + _isEntrySet);
             if (_entry != null)
             {
                 for (int i = 0; i < _entry.Count; i++)
