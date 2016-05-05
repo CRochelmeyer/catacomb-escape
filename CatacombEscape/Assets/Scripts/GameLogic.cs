@@ -11,8 +11,6 @@ public class GameLogic : MonoBehaviour
     private bool nextlevel = false;
     private int PlayerStamina = 100;
     private string PlayerLoc="";
-    Direction validmove = new Direction();
-    PlayerMove movePlayer = new PlayerMove();
 
     //dictionary to match cell strings of 00-04 10-14 to an index from 0-29
     Dictionary<string, int> cellindex = new Dictionary<string, int>();
@@ -28,8 +26,11 @@ public class GameLogic : MonoBehaviour
     public Tile[,] gameBoard = new Tile[5, 6];
     //initiate a static instance of gamelogic to be used globally...
     public static GameLogic instance = null;
+
     private int level = 1;
 	private GridPanels gridPanelsScript;
+	private Direction validMove;
+	private PlayerMove movePlayer;
 	private GameObject[] gridPanels;
     private Tile[,] tileBoard;
 
@@ -37,6 +38,10 @@ public class GameLogic : MonoBehaviour
     void Awake()
     {
         Debug.Log("GameLogic awake");
+		
+		validMove = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<Direction> ();
+		movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
+
         //fill cellindex dictionary
         //temp index int to fill dictonary
         cellindex.Clear();
@@ -64,6 +69,7 @@ public class GameLogic : MonoBehaviour
 		FindGridPanels();
 
 		PlayerPrefs.SetString ("Paused", "false");
+		PlayerPrefs.SetString ("GeneratedBoard", "false");
 
         InitGame(level);
         tileBoard = new Tile[6, 5];
@@ -94,8 +100,14 @@ public class GameLogic : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        //Debug.Log("UPdate");
+	{
+
+		if (PlayerPrefs.GetString ("GeneratedBoard") == "false")
+		{
+			GenerateBoard();
+			PlayerPrefs.SetString ("GeneratedBoard", "true");
+		}
+
         //check if handTiles has been filled
         if (emptyhand == true)
         {
@@ -104,28 +116,31 @@ public class GameLogic : MonoBehaviour
             emptyhand = false;
             Debug.Log("emptyhand get hand");
         }
-        PlayerInit();
+        UpdateUI();
         PlayerClick();
         //check if next level...
         if (nextlevel)
-        {
-            NextLevel();
+		{
+			PlayerPrefs.SetString ("GeneratedBoard", "false");
+			NextLevel();
         }
     }
+
     //init game method
     void InitGame(int pLevel)
     {
         //initialise player data
-        PlayerInit();
+		UpdateUI();
         //setup board with rng sprites
-        GenerateBoard();
-        //generate hand 
-       //GenerateHand();
+		GenerateBoard();
+		PlayerPrefs.SetString ("GeneratedBoard", "true");
+		//generate hand 
+    	//GenerateHand();
 	}
 
 	void FindGridPanels()
 	{
-        gridPanelsScript = GameObject.FindGameObjectWithTag ("GridPanelsScript").GetComponent<GridPanels> ();
+        gridPanelsScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<GridPanels> ();
 		gridPanels = new GameObject[30];
 
 		for (int i = 0; i < gridPanels.Length; i++)
@@ -136,6 +151,7 @@ public class GameLogic : MonoBehaviour
         Debug.Log("gridpanelsFound");
         
     }
+
     public bool ValidDrag( Tile ptile, string pcell)
     {
         int rowmove = 0;
@@ -155,7 +171,7 @@ public class GameLogic : MonoBehaviour
             if (colmove == 0 )
             {
                 //check if path is available
-                if (validmove.ValidPlacement(PlayerLoc, ptile) )
+                if (validMove.ValidPlacement(PlayerLoc, ptile) )
                 {
                     Debug.Log("valid vert movement");
                     ValidDrag = true;
@@ -168,7 +184,7 @@ public class GameLogic : MonoBehaviour
             if (colmove == 1)
             {
                 //check if path is available
-                if (validmove.ValidPlacement(PlayerLoc,ptile) )
+                if (validMove.ValidPlacement(PlayerLoc,ptile) )
                 {
                     Debug.Log("Valid hori movement");
                     ValidDrag = true;
@@ -177,6 +193,7 @@ public class GameLogic : MonoBehaviour
         }
         return ValidDrag;
     }
+
     public void UpdateDrag( Tile ptile , string pcell)
     {
         Debug.Log("updatedrag");
@@ -208,7 +225,7 @@ public class GameLogic : MonoBehaviour
                 break;
             }
         }
-        //check if hand is empty, draw it using tag handDrag
+        //check if hand is empty (one remaining to be destroyed), draw it using tag handDrag
         handTiles = GameObject.FindGameObjectsWithTag("handDrag");
         Debug.Log("empty hand bool?" + handTiles.Length);
         if (handTiles.Length == 1)
@@ -252,11 +269,11 @@ public class GameLogic : MonoBehaviour
             Debug.Log("test tileboard");
             if ((clickLoc != "") && (tileBoard[temprow, tempcol]._isEntrySet) )
             {
-                if (validmove.MoveDirection(PlayerLoc, clickLoc) != "invalid move" )
+                if (validMove.MoveDirection(PlayerLoc, clickLoc) != "invalid move" )
                 {
                     Debug.Log("not invalid move");
                     //valid move
-                    validmove.Move(PlayerLoc, clickLoc,ref tileBoard);
+                    validMove.Move(PlayerLoc, clickLoc,ref tileBoard);
                     int tempindex = 0;
                     cellindex.TryGetValue(PlayerLoc, out tempindex);
                     movePlayer.UpdatePlayer(tempindex, gridPanels);
@@ -269,15 +286,17 @@ public class GameLogic : MonoBehaviour
     }
     public void PlayerMove(string pNext)
     {
-        validmove.Move(PlayerLoc, pNext ,ref tileBoard);
+        validMove.Move(PlayerLoc, pNext ,ref tileBoard);
     }
-    public void PlayerInit()
+
+    public void UpdateUI()
     {
         tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
         tempObj.GetComponent<Text>().text = PlayerStamina + "/100";
         tempObj = GameObject.FindGameObjectWithTag("StamBar");
         tempObj.GetComponent<Slider>().value = PlayerStamina;
     }
+
 	public void GenerateBoardLogic()
 	{
         Debug.Log("tileboard generated ::" + level);
@@ -430,6 +449,9 @@ public class GameLogic : MonoBehaviour
 			gridPanels[i].GetComponent<Image>().sprite = null;
 			gridPanels[i].GetComponent<Image>().color = new Color(255f,255f,255f,0f);
 		}
+		
+		PlayerPrefs.SetString ("GeneratedBoard", "false");
+
 		//initialise 
 		Debug.Log("New Level " + level);
 		this.Awake();
