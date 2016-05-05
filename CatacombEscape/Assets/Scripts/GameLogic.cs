@@ -7,7 +7,7 @@ public class GameLogic : MonoBehaviour
 {
     //boolean game conditions
     private bool gameover = false;
-    private bool emptyhand = false;
+    private bool emptyhand = true;
     private bool nextlevel = false;
     private int PlayerStamina = 100;
     private string PlayerLoc="";
@@ -116,7 +116,7 @@ public class GameLogic : MonoBehaviour
         //initialise player data
         PlayerInit();
         //setup board with rng sprites
-        GenerateBoard(pLevel);
+        GenerateBoard();
         //generate hand 
         GenerateHand();
 	}
@@ -419,7 +419,7 @@ public class GameLogic : MonoBehaviour
         }
 	}
 
-    public void GenerateBoard(int level)
+    public void GenerateBoard()
     {
         //generate number of green tiles
         //random of 1 to 3 tiles inclusive
