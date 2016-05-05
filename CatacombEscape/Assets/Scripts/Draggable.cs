@@ -65,6 +65,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (gameLogic.ValidDrag(tile, cell))
         {
             Debug.Log("Destroy handtile");
+            gameLogic.UpdateDrag(tile, cell);
             Destroy(this.gameObject);
         }
         else
