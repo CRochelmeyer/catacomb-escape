@@ -119,18 +119,12 @@ public class GameLogic : MonoBehaviour
         UpdateUI();
         PlayerClick();
         //check if next level...
-<<<<<<< HEAD
-        if (nextlevel == true)
-        {
-            NextLevel();
-=======
         if (nextlevel)
 		{
 			PlayerPrefs.SetString ("GeneratedBoard", "false");
 			NextLevel();
->>>>>>> 357cdae21330134bce7a894fe3a5019cca61c9fa
         }
-    }
+        }
 
     //init game method
     void InitGame(int pLevel)
