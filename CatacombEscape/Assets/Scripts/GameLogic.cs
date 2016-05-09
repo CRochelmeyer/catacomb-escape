@@ -107,7 +107,7 @@ public class GameLogic : MonoBehaviour
         PlayerInit();
         PlayerClick();
         //check if next level...
-        if (nextlevel)
+        if (nextlevel == true)
         {
             NextLevel();
         }
@@ -133,7 +133,7 @@ public class GameLogic : MonoBehaviour
 			gridPanels[i] = gridPanelsScript.GetGridPanel(i);
             //Debug.Log(gridPanels[i].name); all gridpanels are moved it 
 		}
-        Debug.Log("gridpanelsFound");
+        //Debug.Log("gridpanelsFound");
         
     }
     public bool ValidDrag( Tile ptile, string pcell)
@@ -142,11 +142,11 @@ public class GameLogic : MonoBehaviour
         int colmove = 0;
         bool ValidDrag = false;
         Debug.Log("validdrag");
-        Debug.Log("Player Loc: " + PlayerLoc);
+        //Debug.Log("Player Loc: " + PlayerLoc);
         rowmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(0, 1))) - (System.Int32.Parse(PlayerLoc.Substring(0, 1))));
         colmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(1, 1))) - (System.Int32.Parse(PlayerLoc.Substring(1, 1))));
-        Debug.Log("rowmove :" + rowmove);
-        Debug.Log("colmove :" + colmove);
+        //Debug.Log("rowmove :" + rowmove);
+        //Debug.Log("colmove :" + colmove);
         //check that the drag to is within range of player location 1 unit vertically or horizontally if so ValidPlacement to see if a clear path is available
         //if the difference between both cell's row is abs 1 moving vertically
         if (rowmove == 1)
@@ -181,9 +181,10 @@ public class GameLogic : MonoBehaviour
     {
         Debug.Log("updatedrag");
         //grab index based on pcell in cellindex dictionary
-        int _gridIndex =0;
+        int _gridIndex = 33;
         int _spriteIndex =0;
         cellindex.TryGetValue(pcell, out _gridIndex);
+        Debug.Log("gridindex " + _gridIndex);
         //Debug.Log("_index :" + _gridIndex);
         //Debug.Log("tile id :" + ptile._tileID.ToString());
         //grab corresponding gridsprite[index] based on ptile
@@ -192,7 +193,7 @@ public class GameLogic : MonoBehaviour
             string temp1 = tileSprite[i].name.ToString();
             string temp2 = ptile._tileID.ToString();
             //Debug.Log(temp1 + "::::" + temp2);
-            if (string.Compare(temp1, temp2) == 0 )
+            if (string.Compare(temp1, temp2) == 0 && _gridIndex != 33 )
             {
                 _spriteIndex = i;
                 gridPanels[_gridIndex].GetComponent<Image>().sprite = tileSprite[_spriteIndex] as Sprite;
@@ -200,9 +201,9 @@ public class GameLogic : MonoBehaviour
                 //update tileBoard
                 Debug.Log("ptile test");
                 ptile.test();
-                tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(0, 1))] = ptile;
+                tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))] = ptile;
                 Debug.Log("boardTile test update drag");
-                tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(0, 1))].test();
+                tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].test();
                 //decreaste stamina
                 PlayerStamina--;
                 break;
@@ -229,21 +230,6 @@ public class GameLogic : MonoBehaviour
             int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
             int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
             Debug.Log("mouseClick");
-            for(int i =0; i<6; i++)
-            {
-                for (int j =0;j<5;j++)
-                {
-                    if (tileBoard[i, j]._isDummy != true)
-                    {
-                        if (tileBoard[i, j]._boardLocation == clickLoc)
-                        {
-                            temprow = i;
-                            tempcol = j;
-                            Debug.Log("Assgn temp rowcol"+i +j); 
-                        }
-                    }
-                }
-            }
             Debug.Log("clickloc !+ " + clickLoc);
             Debug.Log(temprow + " " + tempcol);
             Debug.Log("test tileboard");
@@ -305,7 +291,7 @@ public class GameLogic : MonoBehaviour
             foreach (KeyValuePair<string, string> pair in eventindex)
             {
                 string tempstring = pair.Key.ToString();
-                Debug.Log(tempstring);
+                //Debug.Log(tempstring);
                 int temprow = System.Int32.Parse(tempstring.Substring(0, 1));
                 int tempcol = System.Int32.Parse(tempstring.Substring(1, 1));
                 temptile = new Tile(pair.Value, pair.Key);
@@ -447,12 +433,12 @@ public class GameLogic : MonoBehaviour
         //generate number of green tiles
         //random of 1 to 3 tiles inclusive
         int green = Random.Range(1, 4);
-        Debug.Log("green " + green);
+        //Debug.Log("green " + green);
 
         //generate number of red tiles
         //random of 1 to 3 tiles inclusive
         int red = Random.Range(1, 4);
-        Debug.Log("red " + red);
+        //Debug.Log("red " + red);
 
         if (gridPanels != null)
         {
