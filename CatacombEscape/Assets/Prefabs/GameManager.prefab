@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 161780, guid: cd091e002fcb4a545a01255e0f1dee3f, type: 2}
+  tempobj: {fileID: 0}
   rb2d: {fileID: 0}
 --- !u!114 &11404004
 MonoBehaviour:
@@ -80,8 +81,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 953e5ca60b8ef5e46a3031318afda439, type: 3}
   gridSprite:
   - {fileID: 21300000, guid: 63c11c7b287b78c499b5189cf9f3e73b, type: 3}
-  - {fileID: 21300000, guid: e19c72e0aec8d884389ace6780c18ca2, type: 3}
-  - {fileID: 21300000, guid: e19c72e0aec8d884389ace6780c18ca2, type: 3}
+  - {fileID: 21300000, guid: a4e52dc4700e70e4882a63b457eec826, type: 3}
+  - {fileID: 21300000, guid: 8790bd9a00ef71f41b441ab5789c8296, type: 3}
   - {fileID: 21300000, guid: 5a5cd70b43c3a1d44bc67a2a3372c281, type: 3}
   - {fileID: 21300000, guid: 1684284ec47b0594888edb02c845220f, type: 3}
   btmPanel: {fileID: 0}
@@ -112,12 +113,12 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: gridSprite.Array.data[1]
       value: 
-      objectReference: {fileID: 21300000, guid: e19c72e0aec8d884389ace6780c18ca2,
+      objectReference: {fileID: 21300000, guid: a4e52dc4700e70e4882a63b457eec826,
         type: 3}
     - target: {fileID: 0}
       propertyPath: gridSprite.Array.data[2]
       value: 
-      objectReference: {fileID: 21300000, guid: e19c72e0aec8d884389ace6780c18ca2,
+      objectReference: {fileID: 21300000, guid: 8790bd9a00ef71f41b441ab5789c8296,
         type: 3}
     - target: {fileID: 0}
       propertyPath: tileSprite.Array.data[0]

@@ -19,21 +19,21 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public void OnBeginDrag(PointerEventData eventData)
     {
         //Debug.Log("Player settings drag");
-		//if (PlayerPrefs.GetString ("Paused") != "true")
-		//{
+		if (PlayerPrefs.GetString ("Paused") != "true")
+		{
 			//Debug.Log("OnbeginDrag");
 			//save the parent incase of returns from invalid drags
 			locationToReturn = this.transform.localPosition;
-		//}
+		}
     }
 
     public void OnDrag(PointerEventData eventData)
 	{
-		//if (PlayerPrefs.GetString ("Paused") != "true")
-		//{
+		if (PlayerPrefs.GetString ("Paused") != "true")
+		{
 			//Debug.Log("onDrag");
 			this.transform.position = eventData.position;
-		//}
+		}
 	}
 
     public void OnEndDrag(PointerEventData eventData)
@@ -62,7 +62,12 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         tile.test();
         //check if its a valid placement based on player location.
         //cal update drag from gamelogic with tile and cell index
+<<<<<<< HEAD
         if (cell != null )
+=======
+		/*
+        if (gameLogic.ValidDrag(tile, cell))
+>>>>>>> 357cdae21330134bce7a894fe3a5019cca61c9fa
         {
             Debug.Log("Destroy handtile");
             gameLogic.UpdateDrag(tile, cell);
@@ -74,5 +79,12 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             Debug.Log("Return handtile " + cell);
             this.gameObject.GetComponent<Transform>().localPosition = locationToReturn;
         }
-    }
+        */
+
+		gameLogic.UpdateDrag(tile, cell);
+		Debug.Log("Destroy handtile");
+		Destroy(this.gameObject);
+	}
 }
+
+

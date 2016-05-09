@@ -11,7 +11,7 @@ TagManager:
   - handDefault
   - Scripts
   - PauseUI
-  - GridPanelsScript
+  - Scripts
   - eventTile
   - PlayerStam
   - StamBar
