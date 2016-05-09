@@ -62,23 +62,26 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         tile.test();
         //check if its a valid placement based on player location.
         //cal update drag from gamelogic with tile and cell index
-		/*
+        if (cell != null )
+        {
+            Debug.Log("Destroy handtile");
+            gameLogic.UpdateDrag(tile, cell);
+            Destroy(this.gameObject);
+        }
+        /*
         if (gameLogic.ValidDrag(tile, cell))
         {
             Debug.Log("Destroy handtile");
             gameLogic.UpdateDrag(tile, cell);
             Destroy(this.gameObject);
         }
+        */
         else
         {
-            Debug.Log("Return handtile");
+            
+            Debug.Log("Return handtile " + cell);
             this.gameObject.GetComponent<Transform>().localPosition = locationToReturn;
         }
-        */
-
-		gameLogic.UpdateDrag(tile, cell);
-		Debug.Log("Destroy handtile");
-		Destroy(this.gameObject);
 	}
 }
 

@@ -27,7 +27,7 @@ public class Tile  {
     //constructor to automatically generate _entry based on id
     public Tile(string pID , string pboardloc)
     {
-        Debug.Log("tile 1 param");
+        //Debug.Log("tile 1 param");
         _tileID = pID.ToLower();
         _isActive = true;
         _isDummy = false;
@@ -37,13 +37,13 @@ public class Tile  {
         _entry = new List<string>();
         if (_tileID.Contains("event") )
         {
-            Debug.Log("If gen event");
+            //Debug.Log("If gen event");
             _isEntrySet = false;
             GenerateEvent();
         }
         else
         {
-            Debug.Log("else gen entry");
+            //Debug.Log("else gen entry");
             generateEntry();
         }
 
@@ -143,7 +143,7 @@ public class Tile  {
 
     private void generateEntry()
     {
-        Debug.Log("start entry for " + _tileID);
+        //Debug.Log("start entry for " + _tileID);
         //int to hold start and end of indexof(_) 
         int con_start = 0;
         int con_end = 0;
@@ -211,7 +211,7 @@ public class Tile  {
     }
     public void GenerateEvent()
     {
-        Debug.Log("Generate Event");
+        //Debug.Log("Generate Event");
         int con_start;
         string dir = "";
         con_start = this._tileID.IndexOf("_");
@@ -221,7 +221,7 @@ public class Tile  {
         //+1 to start from after the first _ 
         //2nd param is a counter thus con_end - con_start and -1 to start before 2nd _
         dir = this._tileID.Substring((con_start + 1));
-        Debug.Log("event dir " + dir);
+        //Debug.Log("event dir " + dir);
     }
     public void test()
     {
