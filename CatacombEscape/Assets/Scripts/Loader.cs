@@ -9,12 +9,23 @@ public class Loader : MonoBehaviour
     void Awake()
     {
         if (GameLogic.instance == null)
-		{
-			//Debug.Log("instantiating GridPanelsPrefab");
-			//Instantiate(GridPanelsPrefab);
+        {
+            //Debug.Log("instantiating GridPanelsPrefab");
+            //Instantiate(GridPanelsPrefab);
 
             Debug.Log("instantiating GameManager");
             Instantiate(GameManager);
         }
-    }
+    }/*
+    void Start()
+    {
+        if (GameLogic.instance == null)
+        {
+            //Debug.Log("instantiating GridPanelsPrefab");
+            //Instantiate(GridPanelsPrefab);
+
+            Debug.Log("instantiating GameManager");
+            Instantiate(GameManager);
+        }
+    }*/
 }
