@@ -28,9 +28,9 @@ public class ArrayHandler : MonoBehaviour
         int _row = 6;
         //coordinates based of grid
         int _yMin = 138;
-        int _yMax = 851;
+        int _yMax = 860;
         int _xMin = 0;
-        int _xMax = 594;
+        int _xMax = 600;
         int _padd = 0;
         int _bpadd = 0;
         int _cellsizex = (_xMax - _xMin) / _col + _padd;
