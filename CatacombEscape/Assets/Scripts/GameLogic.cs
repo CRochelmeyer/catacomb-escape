@@ -82,6 +82,7 @@ public class GameLogic : MonoBehaviour
             }
         }
         GenerateBoardLogic();
+        Debug.Log("End Awake");
 	}
 
 	// Use this for initialization
@@ -219,7 +220,7 @@ public class GameLogic : MonoBehaviour
                 _spriteIndex = i;
                 gridPanels[_gridIndex].GetComponent<Image>().sprite = tileSprite[_spriteIndex] as Sprite;
                 gridPanels[_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
-                Debug.Log("checking logic event:" + tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._event);
+                //Debug.Log("checking logic event:" + tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._event);
                 //update tileBoard
                 //check tileBoard cell doesnt exist a event cell already
                 if (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._event != "")

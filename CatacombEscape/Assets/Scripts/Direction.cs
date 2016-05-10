@@ -29,7 +29,7 @@ public class Direction : MonoBehaviour
                 {
                     Debug.Log("Dir in move check :" + dir);
                     //check if direction movement is valid
-                    if ( ValidMove(dir,pCurrent,pNext) )
+                    if ( ValidMovement(dir,pCurrent,pNext) )
                     {
                         Debug.Log("valid move/entry");  
                         //change isOccupied
@@ -175,10 +175,18 @@ public class Direction : MonoBehaviour
         return validmove;
     }
 
-    public bool ValidMove(string pdir,Tile pCurrent, Tile pNext)
+    public bool ValidMovement(string pdir,Tile pCurrent, Tile pNext)
     {
+        Debug.Log("pCurrent VM ::start");
+        pCurrent.test();
+        Debug.Log("pCurrent VM ::end");
+        Debug.Log("pNext VM ::start");
+        pNext.test();
+        Debug.Log("pNext VM ::end");
+        Debug.Log("ValidMovement :" + pCurrent.ValidMove(pdir) +" ::: "+pNext.ValidEntry(pdir));
+
         bool valid = false;
-        if (pCurrent.ValidMove(pdir) && pNext.ValidEntry(pdir) )
+        if ( (pCurrent.ValidMove(pdir)) && (pNext.ValidEntry(pdir)) )
         {
             valid = true;
         }

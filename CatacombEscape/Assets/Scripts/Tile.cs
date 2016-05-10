@@ -65,28 +65,28 @@ public class Tile  {
         {
             case "UP":
                 {
-                    _entry.Contains("UP");
+                    _entry.Contains("up");
                     move = true;
                     Debug.Log("Possible up");
                     break;
                 }
             case "RIGHT":
                 {
-                    _entry.Contains("RIGHT");
+                    _entry.Contains("right");
                     move = true;
                     Debug.Log("Possible right");
                     break;
                 }
             case "DOWN":
                 {
-                    _entry.Contains("DOWN");
+                    _entry.Contains("down");
                     move = true;
                     Debug.Log("Possible down");
                     break;
                 }
             case "LEFT":
                 {
-                    _entry.Contains("LEFT");
+                    _entry.Contains("left");
                     move = true;
                     Debug.Log("Possible left");
                     break;
@@ -97,7 +97,6 @@ public class Tile  {
     public bool ValidEntry(string pEntry)
     {
         bool entry = false;
-        Debug.Log("Valid Entry " + _tileID + ":::" + _boardLocation);
         if (_isEntrySet)
         {
             Debug.Log("Entry is set");
