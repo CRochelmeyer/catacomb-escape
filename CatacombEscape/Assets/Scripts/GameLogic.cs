@@ -247,27 +247,33 @@ public class GameLogic : MonoBehaviour
             int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
             int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
             Debug.Log("mouseClick");
-            Debug.Log("clickloc !+ " + clickLoc);
+            /*Debug.Log("clickloc !+ " + clickLoc);
             Debug.Log(temprow + " " + tempcol);
             Debug.Log("test tileboard");
             Debug.Log(tileBoard[temprow,tempcol]._isEntrySet);
             Debug.Log(tileBoard[temprow,tempcol]._tileID);
-            Debug.Log("test tileboard");
+            Debug.Log("test tileboard");*/
             if ((clickLoc != "") && (tileBoard[temprow, tempcol]._isEntrySet) && (PlayerLoc != "") )
             {
                 Debug.Log("clickLoc if");
-                if (validMove.MoveDirection(PlayerLoc, clickLoc) != "invalid move" )
+                if (validMove.MoveDirection(PlayerLoc, clickLoc) != "invalid move" && validMove.InRange(PlayerLoc, clickLoc) )
                 {
                     Debug.Log("not invalid move");
                     //valid move
-                    validMove.Move(PlayerLoc, clickLoc,ref tileBoard);
-                    int tempindex = 0;
-                    cellindex.TryGetValue(PlayerLoc, out tempindex);
-                    movePlayer.UpdatePlayer(tempindex, gridPanels);
-                    //update Playerloc
-                    PlayerLoc = clickLoc;
-                    Debug.Log("new player loc" + PlayerLoc +" :: "+clickLoc);
+                    if(validMove.Move(PlayerLoc, clickLoc,ref tileBoard) )
+                    {
+                        int tempindex = 0;
+                        cellindex.TryGetValue(PlayerLoc, out tempindex);
+                        movePlayer.UpdatePlayer(tempindex, gridPanels);
+                        //update Playerloc
+                        PlayerLoc = clickLoc;
+                        Debug.Log("new player loc" + PlayerLoc + " :: " + clickLoc);
+                    }
                 }
+            }
+            else
+            {
+                Debug.Log("Invalid player move");
             }
         }
     }

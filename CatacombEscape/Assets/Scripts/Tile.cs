@@ -94,9 +94,11 @@ public class Tile  {
     public bool ValidEntry(string pEntry)
     {
         bool entry = false;
-        if (_entry != null)
+        Debug.Log("Valid Entry " + _tileID + ":::" + _boardLocation);
+        if (_isEntrySet)
         {
-            Debug.Log("ValidEntry if "+pEntry);
+            Debug.Log("Entry is set");
+            //Debug.Log("ValidEntry if "+pEntry);
             switch (pEntry.ToLower())
             {
                 case "up":
@@ -156,6 +158,7 @@ public class Tile  {
             _entry.Add("right");
             _entry.Add("down");
             _entry.Add("left");
+            _isEntrySet = true;
         }
         //loop to grab and and add to _entry of directional pathways based on _tileID
         //check if con_end isat the last _ location for the condition

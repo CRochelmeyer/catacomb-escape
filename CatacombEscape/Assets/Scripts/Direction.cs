@@ -13,33 +13,41 @@ public class Direction : MonoBehaviour
     int nextrow = 0;
     int nextcol = 0;
     //pass by ref to Move() for tile updates
-    public void Move(Tile pCurrent, Tile pNext, ref Tile[,] pboard ,int crow,int ccol, int nrow, int ncol)
+    public bool Move(Tile pCurrent, Tile pNext, ref Tile[,] pboard ,int crow,int ccol, int nrow, int ncol)
     {
-        //check pCurrent is where the player is...
+        bool valid = false;
+        //check pCurrent is where the player is...and the move to location is within range...
         if (pCurrent._isOccupied == true)
         {
-            string dir = MoveDirection(pCurrent._boardLocation, pNext._boardLocation);
-            //check if move is valid
-            if (dir != "invalid move")
+            //check is within movement range
+            if (InRange(pCurrent._boardLocation, pNext._boardLocation))
             {
-                //check if direction movement is valid
-                if (pCurrent.ValidMove(dir) && pNext.ValidEntry(dir))
+                Debug.Log("inRange");
+                string dir = MoveDirection(pCurrent._boardLocation, pNext._boardLocation);
+                //check if move is valid
+                if (dir != "invalid move")
                 {
-                    //change isOccupied
-                    pboard[crow, ccol]._isOccupied = false;
-                    Debug.Log(" new occupied "+pNext._boardLocation);
-                    pboard[nrow, ncol]._isOccupied = true;
-                    //call movement function
+                    Debug.Log("Dir in move check :" + dir);
+                    //check if direction movement is valid
+                    if ( ValidMove(dir,pCurrent,pNext) )
+                    {
+                        Debug.Log("valid move/entry");  
+                        //change isOccupied
+                        pboard[crow, ccol]._isOccupied = false;
+                        Debug.Log(" new occupied " + pNext._boardLocation);
+                        pboard[nrow, ncol]._isOccupied = true;
+                        Debug.Log("Valid move updated");
+                        valid = true;
+                        //call movement function
+                    }
                 }
-            }
-            else
-            {
-                Debug.Log(dir);
+
             }
         }
+        return valid;
     }
     //overloading above method with string string tile[,]
-    public void Move(string pCurrent , string pNext ,ref Tile[,] pboard)
+    public bool Move(string pCurrent , string pNext ,ref Tile[,] pboard)
     {
         Debug.Log("move string params");
         Debug.Log("pCur " + pCurrent + "pNext " + pNext);
@@ -49,7 +57,7 @@ public class Direction : MonoBehaviour
         //next row/col
         nextrow = System.Int32.Parse(pNext.Substring(0, 1));
         nextcol = System.Int32.Parse(pNext.Substring(1, 1));
-        this.Move( pboard[currow, curcol] , pboard[nextrow, nextcol] , ref pboard,currow,curcol,nextrow,nextcol);
+        return this.Move( pboard[currow, curcol] , pboard[nextrow, nextcol] , ref pboard,currow,curcol,nextrow,nextcol);
     }
     //Placement for checking valid tile placements of tiles
     public bool ValidPlacement(string pCurrent, Tile pNext )
@@ -60,7 +68,7 @@ public class Direction : MonoBehaviour
         Debug.Log("direction :" +dir);
         if (dir != "")
         {
-           if( pNext.ValidEntry(dir))
+           if( pNext.ValidEntry(dir) )
             {
                 placement = true;
             }
@@ -70,7 +78,7 @@ public class Direction : MonoBehaviour
     //public string return directional string based on current index and next index
     public string MoveDirection (string pCurrent, string pNext )
     {
-        string dir = "";
+        string dir = "invalid move";
         int tempmove = 0;
         //current row/col
         Debug.Log("moveDirection " + pCurrent + ":: " + pNext);
@@ -83,10 +91,11 @@ public class Direction : MonoBehaviour
             nextcol = System.Int32.Parse(pNext.Substring(1, 1));
         }
         //check row are equal resulting in horizontal movement
-        if ( (currow - nextrow) == 0)
+        if ( Mathf.Abs(currow - nextrow) == 0)
         {
+            dir = "invalid move";
             //movements sideways check col
-            tempmove = curcol - nextcol;
+            tempmove = (curcol - nextcol);
             switch (tempmove)
             {
                 case -1:
@@ -129,6 +138,50 @@ public class Direction : MonoBehaviour
                     }
             }
         }
+        Debug.Log("Movedirections:::directions " + dir);
         return dir;
+    }
+
+    public bool InRange(string pCurrent, string pNext)
+    {
+        bool validmove = false;
+        int rowmove = 0;
+        int colmove = 0;
+        currow = System.Int32.Parse(pCurrent.Substring(0, 1));
+        curcol = System.Int32.Parse(pCurrent.Substring(1, 1));
+        nextrow = System.Int32.Parse(pNext.Substring(0, 1));
+        nextcol = System.Int32.Parse(pNext.Substring(1, 1));
+        rowmove = Mathf.Abs(currow - nextrow);
+        colmove = Mathf.Abs(curcol - nextcol);
+
+        //if abs of rowmove = 1 then moving vertically...
+        if (rowmove == 1)
+        {
+            //check that it isnt also moving horizontally.
+            if (colmove == 0)
+            {
+                validmove = true;
+            }
+        }
+        //moving horizontally
+        else if (rowmove == 0)
+        {
+            //and that it is moving horizontall one unit
+            if (colmove == 1)
+            {
+                validmove = true;
+            }
+        }
+        return validmove;
+    }
+
+    public bool ValidMove(string pdir,Tile pCurrent, Tile pNext)
+    {
+        bool valid = false;
+        if (pCurrent.ValidMove(pdir) && pNext.ValidEntry(pdir) )
+        {
+            valid = true;
+        }
+        return valid;
     }
 }
