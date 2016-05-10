@@ -58,12 +58,14 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         //Debug.Log("return cell: "+gameLogic.GetComponent<ArrayHandler>().FindLocation(new Vector2(x, y)) );
         //assign cell 
         cell = gameLogic.GetComponent<ArrayHandler>().FindLocation(new Vector2(x, y));
-        tile = new Tile(imageID, cell);
-        tile.test();
+        Debug.Log("Draggable cell :" + cell);
         //check if its a valid placement based on player location.
         //cal update drag from gamelogic with tile and cell index
-        if (cell != null )
+        //check cell isnt empty "" and that the cell isnt already an exit etc...
+        GameObject temp = GameObject.Find(cell);
+        if (cell != "" && temp.GetComponent<Image>().sprite == null )
         {
+            tile = new Tile(imageID, cell);
             Debug.Log("Destroy handtile");
             gameLogic.UpdateDrag(tile, cell);
             Destroy(this.gameObject);

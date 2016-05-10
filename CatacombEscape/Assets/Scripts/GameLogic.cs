@@ -22,6 +22,7 @@ public class GameLogic : MonoBehaviour
     public GameObject btmPanel;
     public GameObject[] handTiles;
     public GameObject tempObj;
+    public string exit;
     //create tile gameboard 2d array
     public Tile[,] gameBoard = new Tile[5, 6];
     //initiate a static instance of gamelogic to be used globally...
@@ -87,44 +88,45 @@ public class GameLogic : MonoBehaviour
 	void Start()
 	{
 		Debug.Log("GameLogic start");
-        Debug.Log(" show arrays");
-        for (int row = 0; row < 6; row++)
-        {
-            for (int col = 0; col < 5; col++)
-            {
-                this.tileBoard[row, col].test();
-            }
-        }
-
     }
 
     // Update is called once per frame
     void Update()
 	{
-		//Debug.Log("Update");
-		if (PlayerPrefs.GetString ("GeneratedBoard") == "false")
-		{
-			InitGame(level);
-			PlayerPrefs.SetString ("GeneratedBoard", "true");
-		}
-
-        //check if handTiles has been filled
-        if (emptyhand == true)
-        {
-            //generate hand
-            GenerateHand();
-            emptyhand = false;
-            Debug.Log("emptyhand get hand");
-        }
-        UpdateUI();
-        PlayerClick();
-        //check if next level...
-        if (nextlevel)
-		{
-			PlayerPrefs.SetString ("GeneratedBoard", "false");
-			NextLevel();
-        }
-        }
+            //Debug.Log("Update");
+            if (PlayerPrefs.GetString("GeneratedBoard") == "false")
+            {
+                InitGame(level);
+                PlayerPrefs.SetString("GeneratedBoard", "true");
+            }
+            //check if handTiles has been filled
+            if (emptyhand == true)
+            {
+                //generate hand
+                GenerateHand();
+                emptyhand = false;
+                Debug.Log("emptyhand get hand");
+            }
+            UpdateUI();
+            PlayerClick();
+            //check if next level...
+            if (PlayerLoc == exit)
+            {
+                nextlevel = true;
+            }
+            if (nextlevel)
+            {
+                nextlevel = false;
+                PlayerPrefs.SetString("GeneratedBoard", "false");
+                NextLevel();
+            }
+            if (gameover)
+            {
+            Debug.Log("Game Over");
+            Destroy(gameObject);
+            Application.LoadLevel("Menu");
+            }
+    }
 
     //init game method
     void InitGame(int pLevel)
@@ -216,12 +218,22 @@ public class GameLogic : MonoBehaviour
                 _spriteIndex = i;
                 gridPanels[_gridIndex].GetComponent<Image>().sprite = tileSprite[_spriteIndex] as Sprite;
                 gridPanels[_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
+                Debug.Log("checking logic event:" + tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._event);
                 //update tileBoard
-                Debug.Log("ptile test");
-                ptile.test();
-                tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))] = ptile;
+                //check tileBoard cell doesnt exist a event cell already
+                if (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._event != "")
+                {
+                    Debug.Log("is an event");
+                    tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].UpdateTile(ptile);
+                }
+                else
+                {
+                    Debug.Log("else update drag");
+                    tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))] = ptile;
+                }
                 Debug.Log("boardTile test update drag");
                 tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].test();
+                Debug.Log("boardTile test end");
                 //decreaste stamina
                 PlayerStamina--;
                 break;
@@ -248,28 +260,52 @@ public class GameLogic : MonoBehaviour
             int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
             int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
             Debug.Log("mouseClick");
-            Debug.Log("clickloc !+ " + clickLoc);
+            /*Debug.Log("clickloc !+ " + clickLoc);
             Debug.Log(temprow + " " + tempcol);
             Debug.Log("test tileboard");
             Debug.Log(tileBoard[temprow,tempcol]._isEntrySet);
             Debug.Log(tileBoard[temprow,tempcol]._tileID);
-            Debug.Log("test tileboard");
+            Debug.Log("test tileboard");*/
             if ((clickLoc != "") && (tileBoard[temprow, tempcol]._isEntrySet) && (PlayerLoc != "") )
             {
-                Debug.Log("clickLoc if");
-                if (validMove.MoveDirection(PlayerLoc, clickLoc) != "invalid move" )
+                //Debug.Log("clickLoc if");
+                if (validMove.MoveDirection(PlayerLoc, clickLoc) != "invalid move" && validMove.InRange(PlayerLoc, clickLoc) )
                 {
                     Debug.Log("not invalid move");
                     //valid move
-                    validMove.Move(PlayerLoc, clickLoc,ref tileBoard);
-                    int tempindex = 0;
-                    cellindex.TryGetValue(PlayerLoc, out tempindex);
-                    movePlayer.UpdatePlayer(tempindex, gridPanels);
-                    //update Playerloc
-                    PlayerLoc = clickLoc;
-                    Debug.Log("new player loc" + PlayerLoc +" :: "+clickLoc);
+                    if(validMove.Move(PlayerLoc, clickLoc,ref tileBoard) )
+                    {
+                        int tempindex = 0;
+                        cellindex.TryGetValue(PlayerLoc, out tempindex);
+                        movePlayer.UpdatePlayer(tempindex, gridPanels);
+                        //update Playerloc
+                        PlayerLoc = clickLoc;
+                        //play event for event tiles
+                        if (tileBoard[System.Int32.Parse(PlayerLoc.Substring(0, 1)), System.Int32.Parse(PlayerLoc.Substring(1, 1))]._event != "")
+                        {
+                            PlayEvent(PlayerLoc);
+                        }
+                        //Debug.Log("new player loc" + PlayerLoc + " :: " + clickLoc);
+                        PlayerStamina -= 2;
+                        UpdateUI();
+                    }
                 }
             }
+            else
+            {
+                //Debug.Log("Invalid player move");
+            }
+        }
+    }
+    public void PlayEvent(string pcell)
+    {
+        if(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive)
+        {
+            //play event = remove stamina and destroy the event clone...
+            PlayerStamina += tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].combat;
+            tempObj = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
+            Destroy(tempObj);
+            tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive = false;
         }
     }
     public void PlayerMove(string pNext)
@@ -283,6 +319,11 @@ public class GameLogic : MonoBehaviour
         tempObj.GetComponent<Text>().text = PlayerStamina + "/100";
         tempObj = GameObject.FindGameObjectWithTag("StamBar");
         tempObj.GetComponent<Slider>().value = PlayerStamina;
+        if (PlayerStamina == 0)
+        {
+            Debug.Log("GameOver " + gameover);
+            gameover = true;
+        }
     }
 
 	public void GenerateBoardLogic()
@@ -300,7 +341,7 @@ public class GameLogic : MonoBehaviour
                 for (int col = 0; col < 5; col++)
                 {
                     cellindex.TryGetValue(row.ToString() + col.ToString(), out temp);
-                    Debug.Log(temp + " temp");
+                    //Debug.Log(temp + " temp");
                     if (gridPanels[temp].GetComponent<Image>().sprite != null)
                     {
                         temptile = new Tile(gridPanels[temp].GetComponent<Image>().sprite.name.ToString(), row.ToString() + col.ToString());
@@ -318,7 +359,9 @@ public class GameLogic : MonoBehaviour
                 int tempcol = System.Int32.Parse(tempstring.Substring(1, 1));
                 temptile = new Tile(pair.Value, pair.Key);
                 tileBoard[temprow, tempcol] = temptile;
-               //Debug.Log("added event tiles");
+                Debug.Log("added event tiles");
+                temptile.test();
+                Debug.Log("end add event tiles");
                //Debug.Log("temp row " + temprow + " tempcol " + tempcol);
             }
             //clear eventindex
@@ -337,12 +380,7 @@ public class GameLogic : MonoBehaviour
                     if (tileBoard[row, col]._tileID == "tile_exit")
                     {
                         Debug.Log("found tile exit");
-                        if (tileBoard[row, col]._isOccupied)
-                        {
-                            Debug.Log("next levle set to true");
-                            //nextlevel bool = true;
-                            nextlevel = true;
-                        }
+                        exit = row.ToString() + col.ToString();
                     }
                 }
             }
