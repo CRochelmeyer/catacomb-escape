@@ -19,7 +19,7 @@ public class PlayerMove : MonoBehaviour
     }
     public void UpdatePlayer(int pLoc, GameObject[] pGrid)
     {
-        Debug.Log("UpdatePlayer");
+    
         player = GameObject.FindGameObjectWithTag("Player");
         Vector3 current = player.transform.localPosition;
         int speed = 2;

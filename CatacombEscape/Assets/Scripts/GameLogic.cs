@@ -207,10 +207,22 @@ public class GameLogic : MonoBehaviour
                 _spriteIndex = i;
                 gridPanels[_gridIndex].GetComponent<Image>().sprite = tileSprite[_spriteIndex] as Sprite;
                 gridPanels[_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
+                Debug.Log("checking logic event:" + tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._event);
                 //update tileBoard
-                tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))] = ptile;
+                //check tileBoard cell doesnt exist a event cell already
+                if (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._event != "")
+                {
+                    Debug.Log("is an event");
+                    tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].UpdateTile(ptile);
+                }
+                else
+                {
+                    Debug.Log("else update drag");
+                    tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))] = ptile;
+                }
                 Debug.Log("boardTile test update drag");
                 tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].test();
+                Debug.Log("boardTile test end");
                 //decreaste stamina
                 PlayerStamina--;
                 break;
@@ -257,7 +269,14 @@ public class GameLogic : MonoBehaviour
                         movePlayer.UpdatePlayer(tempindex, gridPanels);
                         //update Playerloc
                         PlayerLoc = clickLoc;
+                        //play event for event tiles
+                        if (tileBoard[System.Int32.Parse(PlayerLoc.Substring(0, 1)), System.Int32.Parse(PlayerLoc.Substring(1, 1))]._event != "")
+                        {
+                            PlayEvent(PlayerLoc);
+                        }
                         //Debug.Log("new player loc" + PlayerLoc + " :: " + clickLoc);
+                        PlayerStamina -= 2;
+                        UpdateUI();
                     }
                 }
             }
@@ -266,6 +285,13 @@ public class GameLogic : MonoBehaviour
                 //Debug.Log("Invalid player move");
             }
         }
+    }
+    public void PlayEvent(string pcell)
+    {
+        //play event = remove stamina and destroy the event clone...
+        PlayerStamina += tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].combat;
+        tempObj = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
+        Destroy(tempObj);
     }
     public void PlayerMove(string pNext)
     {
@@ -313,7 +339,9 @@ public class GameLogic : MonoBehaviour
                 int tempcol = System.Int32.Parse(tempstring.Substring(1, 1));
                 temptile = new Tile(pair.Value, pair.Key);
                 tileBoard[temprow, tempcol] = temptile;
-               //Debug.Log("added event tiles");
+                Debug.Log("added event tiles");
+                temptile.test();
+                Debug.Log("end add event tiles");
                //Debug.Log("temp row " + temprow + " tempcol " + tempcol);
             }
             //clear eventindex

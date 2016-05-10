@@ -10,6 +10,7 @@ public class Tile  {
     public bool _isEntrySet { get; set; }
     public bool _isDummy { get; set; }
     public string _event { get; set; }
+    public int combat { get; set; }
     public string _boardLocation { get; set; }
 
 
@@ -21,6 +22,7 @@ public class Tile  {
         _isOccupied = false;
         _isActive = true;
         _isEntrySet = true;
+        _event = "";
         _isDummy = false;
         _boardLocation = pboardloc;
     }
@@ -32,6 +34,7 @@ public class Tile  {
         _isActive = true;
         _isDummy = false;
         _isOccupied = false;
+        _event = "";
         _boardLocation = pboardloc;
         //initiate _entry
         _entry = new List<string>();
@@ -225,6 +228,29 @@ public class Tile  {
         //2nd param is a counter thus con_end - con_start and -1 to start before 2nd _
         dir = this._tileID.Substring((con_start + 1));
         //Debug.Log("event dir " + dir);
+        if (dir == "green")
+        {
+            _event = "green";
+            combat = Random.Range(0, 5);
+        }
+
+        else if (dir == "red")
+        {
+            _event = "red";
+            combat = Random.Range(-8, -1);
+        }
+    }
+    //primary used for generating event tiles updating event tiles...
+    public void UpdateTile(Tile pTile)
+    {
+        Debug.Log("UpdateTile");
+        _tileID = pTile._tileID;
+        _isActive = pTile._isActive;
+        _entry = new List<string>();
+        _isDummy = pTile._isDummy;
+        _isOccupied = pTile._isOccupied;
+        _boardLocation = pTile._boardLocation;
+        generateEntry();
     }
     public void test()
     {
@@ -234,6 +260,8 @@ public class Tile  {
             Debug.Log("isOccupied : " + _isOccupied);
             Debug.Log("isActive : " + _isActive);
             Debug.Log("is set :" + _isEntrySet);
+            Debug.Log("is event: " + _event);
+            Debug.Log("is combat: " + combat);
             if (_entry != null)
             {
                 for (int i = 0; i < _entry.Count; i++)
