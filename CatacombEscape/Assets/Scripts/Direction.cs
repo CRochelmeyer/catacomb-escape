@@ -73,6 +73,7 @@ public class Direction : MonoBehaviour
         string dir = "";
         int tempmove = 0;
         //current row/col
+        Debug.Log("moveDirection " + pCurrent + ":: " + pNext);
         currow = System.Int32.Parse(pCurrent.Substring(0,1));
         curcol = System.Int32.Parse(pCurrent.Substring(1, 1));
         //next row/col
@@ -81,7 +82,7 @@ public class Direction : MonoBehaviour
             nextrow = System.Int32.Parse(pNext.Substring(0, 1));
             nextcol = System.Int32.Parse(pNext.Substring(1, 1));
         }
-        //check row are equal
+        //check row are equal resulting in horizontal movement
         if ( (currow - nextrow) == 0)
         {
             //movements sideways check col
@@ -105,6 +106,7 @@ public class Direction : MonoBehaviour
                     }
             }
         }
+        //else check if its vertical movement
         else
         {
             tempmove = currow - nextrow;

@@ -150,7 +150,7 @@ public class Tile  {
         //temp string holder for storing directions
         string dir = "";
         //check if the tile being create is the entry/exit tile...
-        if (this._tileID == "tile_entrance_exit"  )
+        if (this._tileID == "tile_entrance" || this._tileID == "tile_exit"  )
         {
             _entry.Add("up");
             _entry.Add("right");

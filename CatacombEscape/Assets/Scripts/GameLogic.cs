@@ -253,8 +253,9 @@ public class GameLogic : MonoBehaviour
             Debug.Log(tileBoard[temprow,tempcol]._isEntrySet);
             Debug.Log(tileBoard[temprow,tempcol]._tileID);
             Debug.Log("test tileboard");
-            if ((clickLoc != "") && (tileBoard[temprow, tempcol]._isEntrySet) )
+            if ((clickLoc != "") && (tileBoard[temprow, tempcol]._isEntrySet) && (PlayerLoc != "") )
             {
+                Debug.Log("clickLoc if");
                 if (validMove.MoveDirection(PlayerLoc, clickLoc) != "invalid move" )
                 {
                     Debug.Log("not invalid move");
@@ -298,6 +299,7 @@ public class GameLogic : MonoBehaviour
                 for (int col = 0; col < 5; col++)
                 {
                     cellindex.TryGetValue(row.ToString() + col.ToString(), out temp);
+                    Debug.Log(temp + " temp");
                     if (gridPanels[temp].GetComponent<Image>().sprite != null)
                     {
                         temptile = new Tile(gridPanels[temp].GetComponent<Image>().sprite.name.ToString(), row.ToString() + col.ToString());
@@ -331,7 +333,7 @@ public class GameLogic : MonoBehaviour
                 for (int col = 0; col < 5; col++)
                 {
                     //if tile within bottom row matches exit name
-                    if (tileBoard[row, col]._tileID == "tile_entrance_exit")
+                    if (tileBoard[row, col]._tileID == "tile_exit")
                     {
                         Debug.Log("found tile exit");
                         if (tileBoard[row, col]._isOccupied)
@@ -348,7 +350,7 @@ public class GameLogic : MonoBehaviour
             {
                 for (int col = 0; col < 5; col++)
                 {
-                    if (tileBoard[row, col]._tileID == "tile_entrance_exit")
+                    if (tileBoard[row, col]._tileID == "tile_entrance")
                     {
                         Debug.Log("found entrance and set player");
                         tileBoard[row, col]._isOccupied = true;
