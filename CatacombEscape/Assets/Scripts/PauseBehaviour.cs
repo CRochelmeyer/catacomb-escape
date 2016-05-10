@@ -7,6 +7,8 @@ public class PauseBehaviour : MonoBehaviour
 
 	public void LoadScene(string sceneName)
 	{
+		GameObject gameManager = GameObject.FindGameObjectWithTag ("GameController");
+		Destroy (gameManager);
 		PlayerPrefs.SetString ("Paused", "false");
 		PlayerPrefs.SetString ("GeneratedBoard", "false");
 		Application.LoadLevel(sceneName);
