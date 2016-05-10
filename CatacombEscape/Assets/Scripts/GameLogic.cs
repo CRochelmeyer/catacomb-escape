@@ -22,6 +22,7 @@ public class GameLogic : MonoBehaviour
     public GameObject btmPanel;
     public GameObject[] handTiles;
     public GameObject tempObj;
+    public string exit;
     //create tile gameboard 2d array
     public Tile[,] gameBoard = new Tile[5, 6];
     //initiate a static instance of gamelogic to be used globally...
@@ -92,30 +93,40 @@ public class GameLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
-		//Debug.Log("Update");
-		if (PlayerPrefs.GetString ("GeneratedBoard") == "false")
-		{
-			InitGame(level);
-			PlayerPrefs.SetString ("GeneratedBoard", "true");
-		}
-
-        //check if handTiles has been filled
-        if (emptyhand == true)
-        {
-            //generate hand
-            GenerateHand();
-            emptyhand = false;
-            Debug.Log("emptyhand get hand");
-        }
-        UpdateUI();
-        PlayerClick();
-        //check if next level...
-        if (nextlevel)
-		{
-			PlayerPrefs.SetString ("GeneratedBoard", "false");
-			NextLevel();
-        }
-        }
+            //Debug.Log("Update");
+            if (PlayerPrefs.GetString("GeneratedBoard") == "false")
+            {
+                InitGame(level);
+                PlayerPrefs.SetString("GeneratedBoard", "true");
+            }
+            //check if handTiles has been filled
+            if (emptyhand == true)
+            {
+                //generate hand
+                GenerateHand();
+                emptyhand = false;
+                Debug.Log("emptyhand get hand");
+            }
+            UpdateUI();
+            PlayerClick();
+            //check if next level...
+            if (PlayerLoc == exit)
+            {
+                nextlevel = true;
+            }
+            if (nextlevel)
+            {
+                nextlevel = false;
+                PlayerPrefs.SetString("GeneratedBoard", "false");
+                NextLevel();
+            }
+            if (gameover)
+            {
+            Debug.Log("Game Over");
+            Destroy(gameObject);
+            Application.LoadLevel("Menu");
+            }
+    }
 
     //init game method
     void InitGame(int pLevel)
@@ -288,10 +299,14 @@ public class GameLogic : MonoBehaviour
     }
     public void PlayEvent(string pcell)
     {
-        //play event = remove stamina and destroy the event clone...
-        PlayerStamina += tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].combat;
-        tempObj = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
-        Destroy(tempObj);
+        if(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive)
+        {
+            //play event = remove stamina and destroy the event clone...
+            PlayerStamina += tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].combat;
+            tempObj = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
+            Destroy(tempObj);
+            tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive = false;
+        }
     }
     public void PlayerMove(string pNext)
     {
@@ -304,6 +319,11 @@ public class GameLogic : MonoBehaviour
         tempObj.GetComponent<Text>().text = PlayerStamina + "/100";
         tempObj = GameObject.FindGameObjectWithTag("StamBar");
         tempObj.GetComponent<Slider>().value = PlayerStamina;
+        if (PlayerStamina == 0)
+        {
+            Debug.Log("GameOver " + gameover);
+            gameover = true;
+        }
     }
 
 	public void GenerateBoardLogic()
@@ -360,12 +380,7 @@ public class GameLogic : MonoBehaviour
                     if (tileBoard[row, col]._tileID == "tile_exit")
                     {
                         Debug.Log("found tile exit");
-                        if (tileBoard[row, col]._isOccupied)
-                        {
-                            Debug.Log("next levle set to true");
-                            //nextlevel bool = true;
-                            nextlevel = true;
-                        }
+                        exit = row.ToString() + col.ToString();
                     }
                 }
             }
