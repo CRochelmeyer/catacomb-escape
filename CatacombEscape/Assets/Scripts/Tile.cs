@@ -185,12 +185,12 @@ public class Tile  {
                 if (dir == "up" || dir == "right" || dir == "down" || dir == "left")
                 {
                     this._entry.Add(dir);
-                    Debug.Log("good " + dir);
+                    //Debug.Log("good " + dir);
                     _isEntrySet = true;
                 }
                 else
                 {
-                    Debug.Log("bad " + dir);
+                    //Debug.Log("bad " + dir);
                     _isEntrySet = false;
                 }
                 //Debug.Log("lastindex" + _tileID.LastIndexOf("_"));
@@ -201,12 +201,12 @@ public class Tile  {
             if (dir == "up" || dir == "right" || dir == "down" || dir == "left")
             {
                 this._entry.Add(dir);
-                Debug.Log("good " + dir);
+                //Debug.Log("good " + dir);
                 _isEntrySet = true;
             }
             else 
             {
-                Debug.Log("bad " + dir);
+                //Debug.Log("bad " + dir);
                 _isEntrySet = false;
             }
         }

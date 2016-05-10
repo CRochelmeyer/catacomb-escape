@@ -87,15 +87,6 @@ public class GameLogic : MonoBehaviour
 	void Start()
 	{
 		Debug.Log("GameLogic start");
-        Debug.Log(" show arrays");
-        for (int row = 0; row < 6; row++)
-        {
-            for (int col = 0; col < 5; col++)
-            {
-                this.tileBoard[row, col].test();
-            }
-        }
-
     }
 
     // Update is called once per frame
@@ -217,8 +208,6 @@ public class GameLogic : MonoBehaviour
                 gridPanels[_gridIndex].GetComponent<Image>().sprite = tileSprite[_spriteIndex] as Sprite;
                 gridPanels[_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
                 //update tileBoard
-                Debug.Log("ptile test");
-                ptile.test();
                 tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))] = ptile;
                 Debug.Log("boardTile test update drag");
                 tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].test();
@@ -256,7 +245,7 @@ public class GameLogic : MonoBehaviour
             Debug.Log("test tileboard");*/
             if ((clickLoc != "") && (tileBoard[temprow, tempcol]._isEntrySet) && (PlayerLoc != "") )
             {
-                Debug.Log("clickLoc if");
+                //Debug.Log("clickLoc if");
                 if (validMove.MoveDirection(PlayerLoc, clickLoc) != "invalid move" && validMove.InRange(PlayerLoc, clickLoc) )
                 {
                     Debug.Log("not invalid move");
@@ -268,13 +257,13 @@ public class GameLogic : MonoBehaviour
                         movePlayer.UpdatePlayer(tempindex, gridPanels);
                         //update Playerloc
                         PlayerLoc = clickLoc;
-                        Debug.Log("new player loc" + PlayerLoc + " :: " + clickLoc);
+                        //Debug.Log("new player loc" + PlayerLoc + " :: " + clickLoc);
                     }
                 }
             }
             else
             {
-                Debug.Log("Invalid player move");
+                //Debug.Log("Invalid player move");
             }
         }
     }
@@ -306,7 +295,7 @@ public class GameLogic : MonoBehaviour
                 for (int col = 0; col < 5; col++)
                 {
                     cellindex.TryGetValue(row.ToString() + col.ToString(), out temp);
-                    Debug.Log(temp + " temp");
+                    //Debug.Log(temp + " temp");
                     if (gridPanels[temp].GetComponent<Image>().sprite != null)
                     {
                         temptile = new Tile(gridPanels[temp].GetComponent<Image>().sprite.name.ToString(), row.ToString() + col.ToString());
