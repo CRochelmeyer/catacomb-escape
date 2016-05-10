@@ -10,7 +10,7 @@ public class PauseBehaviour : MonoBehaviour
 		GameObject gameManager = GameObject.FindGameObjectWithTag ("GameController");
 		Destroy (gameManager);
 		PlayerPrefs.SetString ("Paused", "false");
-		PlayerPrefs.SetString ("GeneratedBoard", "false");
+		//PlayerPrefs.SetString ("GeneratedBoard", "false");
 		Application.LoadLevel(sceneName);
 	}
 
