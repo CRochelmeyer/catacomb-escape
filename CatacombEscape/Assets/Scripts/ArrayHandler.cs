@@ -12,8 +12,14 @@ public class ArrayHandler : MonoBehaviour
     bot left x : 0                  bot right x : 568
     bot left y : 138                bot right y : 138
 
-    border padding = 4x 4y
+    border padding = 5x 5y
     grid padding = 10x 10y
+
+	y = 678
+	x = 568
+
+	
+
     */
     public string FindLocation(Vector2 pCoord)
     {
@@ -22,11 +28,11 @@ public class ArrayHandler : MonoBehaviour
         int _row = 6;
         //coordinates based of grid
         int _yMin = 138;
-        int _yMax = 816;
+        int _yMax = 860;
         int _xMin = 0;
-        int _xMax = 568;
-        int _padd = 5;
-        int _bpadd = 4;
+        int _xMax = 600;
+        int _padd = 0;
+        int _bpadd = 0;
         int _cellsizex = (_xMax - _xMin) / _col + _padd;
         int _cellsizey = (_yMax - _yMin) / _row +_padd;
         //return var

@@ -101,10 +101,10 @@ public class GameLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
-
+		//Debug.Log("Update");
 		if (PlayerPrefs.GetString ("GeneratedBoard") == "false")
 		{
-			GenerateBoard();
+			InitGame(level);
 			PlayerPrefs.SetString ("GeneratedBoard", "true");
 		}
 
@@ -134,6 +134,7 @@ public class GameLogic : MonoBehaviour
         //setup board with rng sprites
 		GenerateBoard();
 		PlayerPrefs.SetString ("GeneratedBoard", "true");
+		Debug.Log("GenerateBoard complete");
 		//generate hand 
     	//GenerateHand();
 	}
