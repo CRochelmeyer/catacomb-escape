@@ -20,9 +20,9 @@ public class PlayerMove : MonoBehaviour
     public void UpdatePlayer(int pLoc, GameObject[] pGrid)
     {
     
-        player = GameObject.FindGameObjectWithTag("Player");
-        Vector3 current = player.transform.localPosition;
+        //player = GameObject.FindGameObjectWithTag("Player");
+        //Vector3 current = player.transform.localPosition;
         int speed = 2;
-        player.transform.localPosition = Vector3.MoveTowards(current, pGrid[pLoc].transform.localPosition, (speed * Time.deltaTime));
+        //player.transform.localPosition = Vector3.MoveTowards(current, pGrid[pLoc].transform.localPosition, (speed * Time.deltaTime));
     }
 }
