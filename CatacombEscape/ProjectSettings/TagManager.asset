@@ -11,11 +11,12 @@ TagManager:
   - handDefault
   - Scripts
   - PauseUI
-  - Scripts
+  - ScriptsPrefab
   - eventTile
   - PlayerStam
   - StamBar
   - Grid
+  - GridPanelsScript
   layers:
   - Default
   - TransparentFX

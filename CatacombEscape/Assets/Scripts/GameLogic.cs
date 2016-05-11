@@ -54,7 +54,7 @@ public class GameLogic : MonoBehaviour
                 cellindex.Add(i.ToString() + j.ToString(), temp);
                 temp++;
             }
-        }
+		}
         //if instance is null create instance of this GameLogic 
         if (instance == null)
         {
@@ -65,12 +65,12 @@ public class GameLogic : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
+		//DontDestroyOnLoad(gameObject);
 
 		FindGridPanels();
 
 		PlayerPrefs.SetString ("Paused", "false");
-		PlayerPrefs.SetString ("GeneratedBoard", "false");
+		//PlayerPrefs.SetString ("GeneratedBoard", "false");
 
         InitGame(level);
         tileBoard = new Tile[6, 5];
@@ -94,39 +94,40 @@ public class GameLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
-            //Debug.Log("Update");
-            if (PlayerPrefs.GetString("GeneratedBoard") == "false")
-            {
-                InitGame(level);
-                PlayerPrefs.SetString("GeneratedBoard", "true");
-            }
-            //check if handTiles has been filled
-            if (emptyhand == true)
-            {
-                //generate hand
-                GenerateHand();
-                emptyhand = false;
-                Debug.Log("emptyhand get hand");
-            }
-            UpdateUI();
-            PlayerClick();
-            //check if next level...
-            if (PlayerLoc == exit)
-            {
-                nextlevel = true;
-            }
-            if (nextlevel)
-            {
-                nextlevel = false;
-                PlayerPrefs.SetString("GeneratedBoard", "false");
-                NextLevel();
-            }
-            if (gameover)
-            {
-            Debug.Log("Game Over");
-            Destroy(gameObject);
-            Application.LoadLevel("Menu");
-            }
+        //Debug.Log("Update");
+        /*
+		if (PlayerPrefs.GetString("GeneratedBoard") == "false")
+        {
+            InitGame(level);
+            PlayerPrefs.SetString("GeneratedBoard", "true");
+        }*/
+        //check if handTiles has been filled
+        if (emptyhand == true)
+        {
+            //generate hand
+            GenerateHand();
+            emptyhand = false;
+            Debug.Log("emptyhand get hand");
+        }
+        UpdateUI();
+        PlayerClick();
+        //check if next level...
+        if (PlayerLoc == exit)
+        {
+            nextlevel = true;
+        }
+        if (nextlevel)
+        {
+            nextlevel = false;
+            //PlayerPrefs.SetString("GeneratedBoard", "false");
+            NextLevel();
+        }
+        if (gameover)
+        {
+	        Debug.Log("Game Over");
+	        Destroy(gameObject);
+	        Application.LoadLevel("Menu");
+        }
     }
 
     //init game method
@@ -136,8 +137,7 @@ public class GameLogic : MonoBehaviour
 		UpdateUI();
         //setup board with rng sprites
 		GenerateBoard();
-		PlayerPrefs.SetString ("GeneratedBoard", "true");
-		Debug.Log("GenerateBoard complete");
+		//PlayerPrefs.SetString ("GeneratedBoard", "true");
 		//generate hand 
     	//GenerateHand();
 	}
@@ -146,11 +146,12 @@ public class GameLogic : MonoBehaviour
 	{
         gridPanelsScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<GridPanels> ();
 		gridPanels = new GameObject[30];
+		Debug.Log("Find grid panels");
 
 		for (int i = 0; i < gridPanels.Length; i++)
 		{
 			gridPanels[i] = gridPanelsScript.GetGridPanel(i);
-            //Debug.Log(gridPanels[i].name); all gridpanels are moved it 
+            Debug.Log(gridPanels[i].name);
 		}
         //Debug.Log("gridpanelsFound");
         
@@ -478,7 +479,7 @@ public class GameLogic : MonoBehaviour
 			gridPanels[i].GetComponent<Image>().color = new Color(255f,255f,255f,0f);
 		}
 		
-		PlayerPrefs.SetString ("GeneratedBoard", "false");
+		//PlayerPrefs.SetString ("GeneratedBoard", "false");
 
 		//initialise 
 		Debug.Log("New Level " + level);
