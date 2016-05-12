@@ -240,7 +240,7 @@ public class GameLogic : MonoBehaviour
                     Debug.Log("else update drag");
                     tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))] = ptile;
                 }
-                Debug.Log("boardTile test update drag");
+                Debug.Log("boardTile test update drag to cell "+pcell);
                 tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].test();
                 Debug.Log("boardTile test end");
                 //decreaste stamina
@@ -277,19 +277,22 @@ public class GameLogic : MonoBehaviour
             Debug.Log("test tileboard");*/
             if ((clickLoc != "") && (tileBoard[temprow, tempcol]._isEntrySet) && (PlayerLoc != "") )
             {
+                Debug.Log("clickloc 1" + clickLoc);
                 //Debug.Log("clickLoc if");
                 if (validMove.MoveDirection(PlayerLoc, clickLoc) != "invalid move" && validMove.InRange(PlayerLoc, clickLoc) )
                 {
                     Debug.Log("not invalid move");
                     //valid move
-                    if(validMove.Move(PlayerLoc, clickLoc,ref tileBoard) )
+                    Debug.Log("clickloc 2" + clickLoc);
+                    if (validMove.Move(PlayerLoc, clickLoc,ref tileBoard) )
                     {
+                        Debug.Log("clickloc 3" + clickLoc);
                         int tempindex = 0;
-                        cellindex.TryGetValue(PlayerLoc, out tempindex);
-                        movePlayer.UpdatePlayer(tempindex, gridPanels);
+                        cellindex.TryGetValue(clickLoc, out tempindex);
+                        movePlayer.UpdatePlayer(tempindex, gridPanels, validMove.MoveDirection(PlayerLoc,clickLoc));
                         //update Playerloc
                         PlayerLoc = clickLoc;
-                        //play event for event tiles
+                        //play event for event tiles    
                         if (tileBoard[System.Int32.Parse(PlayerLoc.Substring(0, 1)), System.Int32.Parse(PlayerLoc.Substring(1, 1))]._event != "")
                         {
                             PlayEvent(PlayerLoc);
@@ -406,7 +409,7 @@ public class GameLogic : MonoBehaviour
                         //draw player
                         int pindex = 0;
                         cellindex.TryGetValue(PlayerLoc, out pindex);
-                        //movePlayer.DrawPlayer(pindex,gridPanels);
+                        movePlayer.DrawPlayer(pindex,gridPanels);
                         Debug.Log(PlayerLoc);
                     }
                 }

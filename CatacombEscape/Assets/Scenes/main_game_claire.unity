@@ -1586,7 +1586,7 @@ GameObject:
   - 114: {fileID: 545349315}
   m_Layer: 0
   m_Name: GridPanels
-  m_TagString: Untagged
+  m_TagString: Grid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2084,7 +2084,7 @@ GameObject:
   - 95: {fileID: 707135258}
   m_Layer: 5
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4419,6 +4419,10 @@ Prefab:
       propertyPath: pauseUI
       value: 
       objectReference: {fileID: 1709046312}
+    - target: {fileID: 132600, guid: a897d4f4255ce494d85ea121cd6b39ea, type: 2}
+      propertyPath: m_TagString
+      value: Scripts
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a897d4f4255ce494d85ea121cd6b39ea, type: 2}
   m_IsPrefabParent: 0
