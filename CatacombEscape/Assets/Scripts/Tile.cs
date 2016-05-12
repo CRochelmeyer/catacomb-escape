@@ -26,6 +26,7 @@ public class Tile  {
         _isDummy = false;
         _boardLocation = pboardloc;
     }
+
     //constructor to automatically generate _entry based on id
     public Tile(string pID , string pboardloc)
     {
@@ -51,12 +52,14 @@ public class Tile  {
         }
 
     }
+
     public Tile(int pint)
     {
         //dummy constructor
         _isActive = false;
         _isDummy = true;
     }
+
     //move validator
     public bool ValidMove(string pMove)
     {
@@ -94,6 +97,7 @@ public class Tile  {
         }
         return move;
     }
+
     public bool ValidEntry(string pEntry)
     {
         bool entry = false;
@@ -214,6 +218,7 @@ public class Tile  {
         }
        
     }
+
     public void GenerateEvent()
     {
         //Debug.Log("Generate Event");
@@ -239,6 +244,7 @@ public class Tile  {
             combat = Random.Range(-8, -1);
         }
     }
+
     //primary used for generating event tiles updating event tiles...
     public void UpdateTile(Tile pTile)
     {
@@ -251,6 +257,7 @@ public class Tile  {
         _boardLocation = pTile._boardLocation;
         generateEntry();
     }
+
     public void test()
     {
         if (_isDummy == false)

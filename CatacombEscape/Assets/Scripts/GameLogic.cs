@@ -10,7 +10,8 @@ public class GameLogic : MonoBehaviour
     private bool emptyhand = true;
     private bool nextlevel = false;
     private int PlayerStamina = 100;
-    private string PlayerLoc="";
+	private string PlayerLoc="";
+	private string mouseLocation = null;
 
     //dictionary to match cell strings of 00-04 10-14 to an index from 0-29
     Dictionary<string, int> cellindex = new Dictionary<string, int>();
@@ -22,7 +23,7 @@ public class GameLogic : MonoBehaviour
     public GameObject btmPanel;
     public GameObject[] handTiles;
     public GameObject tempObj;
-    public string exit;
+	public string exit;
     //create tile gameboard 2d array
     public Tile[,] gameBoard = new Tile[5, 6];
     //initiate a static instance of gamelogic to be used globally...
@@ -140,6 +141,12 @@ public class GameLogic : MonoBehaviour
 		//PlayerPrefs.SetString ("GeneratedBoard", "true");
 		//generate hand 
     	//GenerateHand();
+	}
+
+	public string MouseLocation
+	{
+		get{ return mouseLocation; }
+		set{ mouseLocation = value; }
 	}
 
 	void FindGridPanels()

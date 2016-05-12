@@ -402,6 +402,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
+--- !u!1 &96145805 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 132600, guid: a897d4f4255ce494d85ea121cd6b39ea, type: 2}
+  m_PrefabInternal: {fileID: 1517946771}
+--- !u!114 &96145810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 96145805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5461fa0324abea046b0ea63dbf0eaace, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &125074394
 GameObject:
   m_ObjectHideFlags: 0
@@ -2818,6 +2833,9 @@ GameObject:
   - 224: {fileID: 1064622174}
   - 222: {fileID: 1064622176}
   - 114: {fileID: 1064622175}
+  - 223: {fileID: 1064622179}
+  - 114: {fileID: 1064622177}
+  - 114: {fileID: 1064622178}
   m_Layer: 0
   m_Name: 00
   m_TagString: GridPanel
@@ -2875,6 +2893,50 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1064622173}
+--- !u!114 &1064622177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1064622173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &1064622178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1064622173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5461fa0324abea046b0ea63dbf0eaace, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!223 &1064622179
+Canvas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1064622173}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!1 &1091052137
 GameObject:
   m_ObjectHideFlags: 0
