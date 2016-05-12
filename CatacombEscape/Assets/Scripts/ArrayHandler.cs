@@ -61,6 +61,7 @@ public class ArrayHandler : MonoBehaviour
                 break;
             }
         }
+        Debug.Log("testing ArrayH cell size x :" + _cellsizex + " y: " + _cellsizey + "going into cell :"+_cell);
         return _cell;
     }
 }
