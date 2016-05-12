@@ -38,52 +38,53 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("OnEndDrag");
-        //use these x,y to pass thru to logic to identify array cell block
-        float x = Input.mousePosition.x;
-        float y = Input.mousePosition.y;
+		if (PlayerPrefs.GetString ("Paused") != "true")
+		{
+			Debug.Log ("OnEndDrag");
+			//use these x,y to pass thru to logic to identify array cell block
+			float x = Input.mousePosition.x;
+			float y = Input.mousePosition.y;
 
-        //this section is for using endDrag to communicate mouse position for 
-        //logic to determine cell area
-        //make use of the game object to pass
-        //GameLogic Main = new GameLogic();
-        // id to grab image source file to pass as a parameter for logic
-        id = this.GetComponent<Image>();
-        //setting imageID
-        imageID = id.sprite.name.ToString();
-        gameLogic = GameObject.FindObjectOfType<GameLogic>();
-        //this.transform.SetParent(parentToReturn);
-        //send mouse position and string of the sprite name to logic
-        //testing arrayhandler
-        //Debug.Log("return cell: "+gameLogic.GetComponent<ArrayHandler>().FindLocation(new Vector2(x, y)) );
-        //assign cell 
-        cell = gameLogic.GetComponent<ArrayHandler>().FindLocation(new Vector2(x, y));
-        Debug.Log("Draggable cell :" + cell);
-        //check if its a valid placement based on player location.
-        //cal update drag from gamelogic with tile and cell index
-        //check cell isnt empty "" and that the cell isnt already an exit etc...
-        GameObject temp = GameObject.Find(cell);
-        if (cell != "" && temp.GetComponent<Image>().sprite == null )
-        {
-            tile = new Tile(imageID, cell);
-            Debug.Log("Destroy handtile");
-            gameLogic.UpdateDrag(tile, cell);
-            Destroy(this.gameObject);
-        }
-        /*
-        if (gameLogic.ValidDrag(tile, cell))
-        {
-            Debug.Log("Destroy handtile");
-            gameLogic.UpdateDrag(tile, cell);
-            Destroy(this.gameObject);
-        }
-        */
-        else
-        {
-            
-            Debug.Log("Return handtile " + cell);
-            this.gameObject.GetComponent<Transform>().localPosition = locationToReturn;
-        }
+			//this section is for using endDrag to communicate mouse position for 
+			//logic to determine cell area
+			//make use of the game object to pass
+			//GameLogic Main = new GameLogic();
+			// id to grab image source file to pass as a parameter for logic
+			id = this.GetComponent<Image> ();
+			//setting imageID
+			imageID = id.sprite.name.ToString ();
+			gameLogic = GameObject.FindObjectOfType<GameLogic> ();
+			//this.transform.SetParent(parentToReturn);
+			//send mouse position and string of the sprite name to logic
+			//testing arrayhandler
+			//Debug.Log("return cell: "+gameLogic.GetComponent<ArrayHandler>().FindLocation(new Vector2(x, y)) );
+			//assign cell 
+			cell = gameLogic.GetComponent<ArrayHandler> ().FindLocation (new Vector2 (x, y));
+			Debug.Log ("Draggable cell :" + cell);
+			//check if its a valid placement based on player location.
+			//cal update drag from gamelogic with tile and cell index
+			//check cell isnt empty "" and that the cell isnt already an exit etc...
+			GameObject temp = GameObject.Find (cell);
+			if (cell != "" && temp.GetComponent<Image> ().sprite == null) {
+				tile = new Tile (imageID, cell);
+				Debug.Log ("Destroy handtile");
+				gameLogic.UpdateDrag (tile, cell);
+				Destroy (this.gameObject);
+			}
+	        /*
+	        if (gameLogic.ValidDrag(tile, cell))
+	        {
+	            Debug.Log("Destroy handtile");
+	            gameLogic.UpdateDrag(tile, cell);
+	            Destroy(this.gameObject);
+	        }
+	        */
+	        else {
+	            
+				Debug.Log ("Return handtile " + cell);
+				this.gameObject.GetComponent<Transform> ().localPosition = locationToReturn;
+			}
+		}
 	}
 }
 

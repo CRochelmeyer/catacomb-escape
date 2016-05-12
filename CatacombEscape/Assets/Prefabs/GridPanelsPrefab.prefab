@@ -14,7 +14,7 @@ GameObject:
   - 114: {fileID: 11480452}
   m_Layer: 0
   m_Name: GridPanelsPrefab
-  m_TagString: ScriptsPrefab
+  m_TagString: Scripts
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
