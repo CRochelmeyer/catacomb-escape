@@ -11,9 +11,9 @@ public class PlayerMove : MonoBehaviour
     {
         Debug.Log("DrawPlayer");
         Vector3 v3location = pGrid[pLoc].transform.localPosition;
-        //player = GameObject.Find("Character");
-        //player.transform.localPosition = (new Vector3(v3location.x, v3location.y, 1));
-        //player.transform.localScale.Set(55, 55, 0);
+        player = GameObject.Find("Character");
+        player.transform.localPosition = (new Vector3(v3location.x, v3location.y, 1));
+        player.transform.localScale.Set(55, 55, 0);
         tempobj = GameObject.FindGameObjectWithTag("Grid");
         //player.transform.SetParent(tempobj.transform, false);
     }
