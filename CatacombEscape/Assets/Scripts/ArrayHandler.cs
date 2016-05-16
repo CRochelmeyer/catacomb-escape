@@ -17,12 +17,10 @@ public class ArrayHandler : MonoBehaviour
 
 	y = 678
 	x = 568
-
-	
-
     */
+
     public string FindLocation(Vector2 pCoord)
-    {
+    {/*
         //static grid dimensions for now
         int _col = 5;
         int _row = 6;
@@ -38,7 +36,7 @@ public class ArrayHandler : MonoBehaviour
         //return var
         string _cell = "";
         //cell 00 xy max - padding
-       // Debug.Log("FindLocation :" + pCoord);
+        //Debug.Log("FindLocation :" + pCoord);
         //Debug.Log("cellsizex :" + _cellsizex);
         //Debug.Log("cellsizesy :" + _cellsizey);
         for (int row = 0; row < _row; row++)
@@ -60,9 +58,13 @@ public class ArrayHandler : MonoBehaviour
             {
                 break;
             }
-        }
+        }*/
 
-        Debug.Log("testing ArrayH cell size x :" + _cellsizex + " y: " + _cellsizey + "going into cell :"+_cell);
+		GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic> ();
+		Debug.Log (gameLogic.MouseLocation);
+		string _cell = gameLogic.MouseLocation;
+
+        //Debug.Log("testing ArrayH cell size x :" + _cellsizex + " y: " + _cellsizey + "going into cell :"+_cell);
         return _cell;
     }
 }

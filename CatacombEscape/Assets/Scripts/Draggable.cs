@@ -48,12 +48,11 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			//this section is for using endDrag to communicate mouse position for 
 			//logic to determine cell area
 			//make use of the game object to pass
-			//GameLogic Main = new GameLogic();
+			gameLogic = GameObject.FindObjectOfType<GameLogic> ();
 			// id to grab image source file to pass as a parameter for logic
 			id = this.GetComponent<Image> ();
 			//setting imageID
 			imageID = id.sprite.name.ToString ();
-			gameLogic = GameObject.FindObjectOfType<GameLogic> ();
 			//this.transform.SetParent(parentToReturn);
 			//send mouse position and string of the sprite name to logic
 			//testing arrayhandler
@@ -68,7 +67,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			Debug.Log ("Draggable cell :" + cell);
 			GameObject temp = GameObject.Find (cell);
 
-			if (cell != "" && temp.GetComponent<Image> ().sprite == null) {
+			if (cell != "" && temp.GetComponent<Image> ().sprite == null)
+			{
 				tile = new Tile (imageID, cell);
 				Debug.Log ("Destroy handtile");
 				gameLogic.UpdateDrag (tile, cell);

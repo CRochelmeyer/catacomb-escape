@@ -102,6 +102,7 @@ public class GameLogic : MonoBehaviour
             InitGame(level);
             PlayerPrefs.SetString("GeneratedBoard", "true");
         }*/
+
         //check if handTiles has been filled
         if (emptyhand == true)
         {
@@ -110,19 +111,24 @@ public class GameLogic : MonoBehaviour
             emptyhand = false;
             Debug.Log("emptyhand get hand");
         }
+
+		//UpdateMouseLocation ();
         UpdateUI();
         PlayerClick();
+
         //check if next level...
         if (PlayerLoc == exit)
         {
             nextlevel = true;
         }
+
         if (nextlevel)
         {
             nextlevel = false;
             //PlayerPrefs.SetString("GeneratedBoard", "false");
             NextLevel();
         }
+
         if (gameover)
         {
 	        Debug.Log("Game Over");
@@ -145,11 +151,23 @@ public class GameLogic : MonoBehaviour
 
 	public string MouseLocation
 	{
-		get{ return mouseLocation; }
+		get{UpdateMouseLocation(); 
+			return mouseLocation; }
 		set{ mouseLocation = value; }
 	}
 
-	void FindGridPanels()
+	private void UpdateMouseLocation()
+	{
+		bool foundMouse = false;
+		int i = 0;
+		while (!foundMouse && i < 30)
+		{
+			gridPanels[i].GetComponent<Panel>().MouseOverPanel();
+			i++;
+		}
+	}
+
+	private void FindGridPanels()
 	{
         gridPanelsScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<GridPanels> ();
 		gridPanels = new GameObject[30];
