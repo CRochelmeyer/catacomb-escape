@@ -32,7 +32,7 @@ public class ArrayHandler : MonoBehaviour
         int _xMin = 0;
         int _xMax = 600;
         int _padd = 0;
-        int _bpadd = 0;
+        //int _bpadd = 0;
         int _cellsizex = (_xMax - _xMin) / _col + _padd;
         int _cellsizey = (_yMax - _yMin) / _row +_padd;
         //return var
@@ -61,6 +61,7 @@ public class ArrayHandler : MonoBehaviour
                 break;
             }
         }
+
         Debug.Log("testing ArrayH cell size x :" + _cellsizex + " y: " + _cellsizey + "going into cell :"+_cell);
         return _cell;
     }

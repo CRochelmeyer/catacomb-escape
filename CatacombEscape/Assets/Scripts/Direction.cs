@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Direction : MonoBehaviour
 {
-    Dictionary<string, string> oppositedir = new Dictionary<string, string>();
+    //Dictionary<string, string> oppositedir = new Dictionary<string, string>();
 
     //current row/col
     int currow = 0;

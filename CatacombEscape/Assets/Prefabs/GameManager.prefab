@@ -69,7 +69,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileSprite:
   - {fileID: 21300000, guid: ace2033c313885b44a70da746418ed8e, type: 3}
-  - {fileID: 21300000, guid: 91a209fbb7e2e58499c42cd3b7c95f17, type: 3}
+  - {fileID: 21300000, guid: 928c2150b33758b42a81a9323d951500, type: 3}
   - {fileID: 21300000, guid: 5394e2bd83f2bb1458f702c36e64af52, type: 3}
   - {fileID: 21300000, guid: 8c2e56342af17f949b3ab0b72f662163, type: 3}
   - {fileID: 21300000, guid: 014cf85086369844eb49ecf1300b3b12, type: 3}
@@ -129,7 +129,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: tileSprite.Array.data[1]
       value: 
-      objectReference: {fileID: 21300000, guid: 91a209fbb7e2e58499c42cd3b7c95f17,
+      objectReference: {fileID: 21300000, guid: 928c2150b33758b42a81a9323d951500,
         type: 3}
     - target: {fileID: 0}
       propertyPath: tileSprite.Array.data[2]

@@ -42,8 +42,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 		{
 			Debug.Log ("OnEndDrag");
 			//use these x,y to pass thru to logic to identify array cell block
-			float x = Input.mousePosition.x;
-			float y = Input.mousePosition.y;
+			//float x = Input.mousePosition.x;
+			//float y = Input.mousePosition.y;
 
 			//this section is for using endDrag to communicate mouse position for 
 			//logic to determine cell area
