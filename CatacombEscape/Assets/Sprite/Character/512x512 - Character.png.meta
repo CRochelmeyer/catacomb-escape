@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: e76abb79390471e479035178cf8d92cf
-timeCreated: 1462933326
-licenseType: Free
+timeCreated: 1463445010
+licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
     21300000: 512x512 - Character_0
@@ -173,9 +173,9 @@ TextureImporter:
     - name: 512x512 - Character_10
       rect:
         serializedVersion: 2
-        x: 8
+        x: 2
         y: 188
-        width: 45
+        width: 56
         height: 83
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -183,9 +183,9 @@ TextureImporter:
     - name: 512x512 - Character_11
       rect:
         serializedVersion: 2
-        x: 66
+        x: 60
         y: 188
-        width: 45
+        width: 56
         height: 83
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -193,9 +193,9 @@ TextureImporter:
     - name: 512x512 - Character_12
       rect:
         serializedVersion: 2
-        x: 132
+        x: 126
         y: 188
-        width: 45
+        width: 56
         height: 83
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -203,9 +203,9 @@ TextureImporter:
     - name: 512x512 - Character_13
       rect:
         serializedVersion: 2
-        x: 202
+        x: 196
         y: 188
-        width: 45
+        width: 56
         height: 83
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -213,9 +213,9 @@ TextureImporter:
     - name: 512x512 - Character_14
       rect:
         serializedVersion: 2
-        x: 273
+        x: 267
         y: 188
-        width: 45
+        width: 56
         height: 83
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -223,9 +223,9 @@ TextureImporter:
     - name: 512x512 - Character_15
       rect:
         serializedVersion: 2
-        x: 6
+        x: 0
         y: 91
-        width: 45
+        width: 56
         height: 83
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -233,9 +233,9 @@ TextureImporter:
     - name: 512x512 - Character_16
       rect:
         serializedVersion: 2
-        x: 65
+        x: 59
         y: 91
-        width: 45
+        width: 56
         height: 83
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -243,9 +243,9 @@ TextureImporter:
     - name: 512x512 - Character_17
       rect:
         serializedVersion: 2
-        x: 132
+        x: 126
         y: 91
-        width: 45
+        width: 56
         height: 83
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -253,9 +253,9 @@ TextureImporter:
     - name: 512x512 - Character_18
       rect:
         serializedVersion: 2
-        x: 203
+        x: 196
         y: 91
-        width: 45
+        width: 56
         height: 83
       alignment: 0
       pivot: {x: .5, y: .5}
@@ -263,9 +263,9 @@ TextureImporter:
     - name: 512x512 - Character_19
       rect:
         serializedVersion: 2
-        x: 274
+        x: 268
         y: 91
-        width: 45
+        width: 56
         height: 83
       alignment: 0
       pivot: {x: .5, y: .5}

@@ -22,6 +22,7 @@ public class Panel : MonoBehaviour//, IPointerEnterHandler
 			return true;
 		} else
 		{
+			gameLogic.MouseLocation = "";
 			return false;
 		}
 	}

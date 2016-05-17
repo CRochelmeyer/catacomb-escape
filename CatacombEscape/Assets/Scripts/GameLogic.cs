@@ -162,7 +162,7 @@ public class GameLogic : MonoBehaviour
 		int i = 0;
 		while (!foundMouse && i < 30)
 		{
-			gridPanels[i].GetComponent<Panel>().MouseOverPanel();
+			foundMouse = gridPanels[i].GetComponent<Panel>().MouseOverPanel();
 			i++;
 		}
 	}
