@@ -81,7 +81,7 @@ public class Direction : MonoBehaviour
         string dir = "invalid move";
         int tempmove = 0;
         //current row/col
-        //Debug.Log("moveDirection " + pCurrent + ":: " + pNext);
+        Debug.Log("moveDirection " + pCurrent + ":: " + pNext);
         currow = System.Int32.Parse(pCurrent.Substring(0,1));
         curcol = System.Int32.Parse(pCurrent.Substring(1, 1));
         //next row/col
@@ -138,7 +138,7 @@ public class Direction : MonoBehaviour
                     }
             }
         }
-        //Debug.Log("Movedirections:::directions " + dir);
+        Debug.Log("Movedirections:::directions " + dir);
         return dir;
     }
 
@@ -178,10 +178,10 @@ public class Direction : MonoBehaviour
     public bool ValidMovement(string pdir,Tile pCurrent, Tile pNext)
     {
         //Debug.Log("pCurrent VM ::start");
-        pCurrent.test();
+        //pCurrent.test();
         //Debug.Log("pCurrent VM ::end");
         //Debug.Log("pNext VM ::start");
-        pNext.test();
+        //pNext.test();
         //Debug.Log("pNext VM ::end");
         //Debug.Log("ValidMovement :" + pCurrent.ValidMove(pdir) +" ::: "+pNext.ValidEntry(pdir));
 
