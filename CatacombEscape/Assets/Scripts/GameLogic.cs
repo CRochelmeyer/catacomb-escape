@@ -293,7 +293,7 @@ public class GameLogic : MonoBehaviour
             //no longer using ArrayHandler switching to use panel instead
             //clickLoc = this.GetComponent<ArrayHandler>().FindLocation(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
             clickLoc = this.GetClickLocation(Input.mousePosition);
-            Debug.Log(clickLoc);
+            //Debug.Log(clickLoc);
             int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
             int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
             //Debug.Log(tempcol);

@@ -38,7 +38,7 @@ public class Panel : MonoBehaviour//, IPointerEnterHandler
            && pClickloc.y >= worldCorners[0].y && pClickloc.y < worldCorners[2].y)
         {
             location = panel.name;
-            Debug.Log(panel.name);
+            //Debug.Log(panel.name);
             //Debug.Log("location" + location);
         }
         else
