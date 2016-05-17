@@ -88,6 +88,7 @@ MonoBehaviour:
   btmPanel: {fileID: 0}
   handTiles: []
   tempObj: {fileID: 0}
+  exit: 
 --- !u!114 &11499000
 MonoBehaviour:
   m_ObjectHideFlags: 1

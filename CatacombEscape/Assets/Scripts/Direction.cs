@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Direction : MonoBehaviour
 {
-    Dictionary<string, string> oppositedir = new Dictionary<string, string>();
+    //Dictionary<string, string> oppositedir = new Dictionary<string, string>();
 
     //current row/col
     int currow = 0;
@@ -22,19 +22,19 @@ public class Direction : MonoBehaviour
             //check is within movement range
             if (InRange(pCurrent._boardLocation, pNext._boardLocation))
             {
-                Debug.Log("inRange");
+                //Debug.Log("inRange");
                 string dir = MoveDirection(pCurrent._boardLocation, pNext._boardLocation);
                 //check if move is valid
                 if (dir != "invalid move")
                 {
-                    Debug.Log("Dir in move check :" + dir);
+                    //Debug.Log("Dir in move check :" + dir);
                     //check if direction movement is valid
                     if ( ValidMovement(dir,pCurrent,pNext) )
                     {
-                        Debug.Log("valid move/entry");  
+                        //Debug.Log("valid move/entry");  
                         //change isOccupied
                         pboard[crow, ccol]._isOccupied = false;
-                        Debug.Log(" new occupied " + pNext._boardLocation);
+                        //Debug.Log(" new occupied " + pNext._boardLocation);
                         pboard[nrow, ncol]._isOccupied = true;
                         Debug.Log("Valid move updated");
                         valid = true;
@@ -49,8 +49,8 @@ public class Direction : MonoBehaviour
     //overloading above method with string string tile[,]
     public bool Move(string pCurrent , string pNext ,ref Tile[,] pboard)
     {
-        Debug.Log("move string params");
-        Debug.Log("pCur " + pCurrent + "pNext " + pNext);
+        //Debug.Log("move string params");
+        //Debug.Log("pCur " + pCurrent + "pNext " + pNext);
         //current row/col
         currow = System.Int32.Parse(pCurrent.Substring(0, 1));
         curcol = System.Int32.Parse(pCurrent.Substring(1, 1));
@@ -65,7 +65,7 @@ public class Direction : MonoBehaviour
         bool placement = false;
         string dir = "";
         dir = MoveDirection(pCurrent, pNext._boardLocation);
-        Debug.Log("direction :" +dir);
+        //Debug.Log("direction :" +dir);
         if (dir != "")
         {
            if( pNext.ValidEntry(dir) )
@@ -81,7 +81,7 @@ public class Direction : MonoBehaviour
         string dir = "invalid move";
         int tempmove = 0;
         //current row/col
-        Debug.Log("moveDirection " + pCurrent + ":: " + pNext);
+        //Debug.Log("moveDirection " + pCurrent + ":: " + pNext);
         currow = System.Int32.Parse(pCurrent.Substring(0,1));
         curcol = System.Int32.Parse(pCurrent.Substring(1, 1));
         //next row/col
@@ -138,7 +138,7 @@ public class Direction : MonoBehaviour
                     }
             }
         }
-        Debug.Log("Movedirections:::directions " + dir);
+        //Debug.Log("Movedirections:::directions " + dir);
         return dir;
     }
 
@@ -177,13 +177,13 @@ public class Direction : MonoBehaviour
 
     public bool ValidMovement(string pdir,Tile pCurrent, Tile pNext)
     {
-        Debug.Log("pCurrent VM ::start");
+        //Debug.Log("pCurrent VM ::start");
         pCurrent.test();
-        Debug.Log("pCurrent VM ::end");
-        Debug.Log("pNext VM ::start");
+        //Debug.Log("pCurrent VM ::end");
+        //Debug.Log("pNext VM ::start");
         pNext.test();
-        Debug.Log("pNext VM ::end");
-        Debug.Log("ValidMovement :" + pCurrent.ValidMove(pdir) +" ::: "+pNext.ValidEntry(pdir));
+        //Debug.Log("pNext VM ::end");
+        //Debug.Log("ValidMovement :" + pCurrent.ValidMove(pdir) +" ::: "+pNext.ValidEntry(pdir));
 
         bool valid = false;
         if ( (pCurrent.ValidMove(pdir)) && (pNext.ValidEntry(pdir)) )

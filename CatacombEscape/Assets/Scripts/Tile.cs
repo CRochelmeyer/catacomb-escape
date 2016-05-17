@@ -16,7 +16,7 @@ public class Tile  {
 
     public Tile(List<string> pEntry, string pID , string pboardloc)
     {
-        Debug.Log("tile 3param");
+        //Debug.Log("tile 3param");
         _entry = pEntry;
         _tileID = pID.ToLower();
         _isOccupied = false;
@@ -26,6 +26,7 @@ public class Tile  {
         _isDummy = false;
         _boardLocation = pboardloc;
     }
+
     //constructor to automatically generate _entry based on id
     public Tile(string pID , string pboardloc)
     {
@@ -51,12 +52,14 @@ public class Tile  {
         }
 
     }
+
     public Tile(int pint)
     {
         //dummy constructor
         _isActive = false;
         _isDummy = true;
     }
+
     //move validator
     public bool ValidMove(string pMove)
     {
@@ -67,39 +70,40 @@ public class Tile  {
                 {
                     _entry.Contains("up");
                     move = true;
-                    Debug.Log("Possible up");
+                    //Debug.Log("Possible up");
                     break;
                 }
             case "RIGHT":
                 {
                     _entry.Contains("right");
                     move = true;
-                    Debug.Log("Possible right");
+                    //Debug.Log("Possible right");
                     break;
                 }
             case "DOWN":
                 {
                     _entry.Contains("down");
                     move = true;
-                    Debug.Log("Possible down");
+                    //Debug.Log("Possible down");
                     break;
                 }
             case "LEFT":
                 {
                     _entry.Contains("left");
                     move = true;
-                    Debug.Log("Possible left");
+                    //Debug.Log("Possible left");
                     break;
                 }
         }
         return move;
     }
+
     public bool ValidEntry(string pEntry)
     {
         bool entry = false;
         if (_isEntrySet)
         {
-            Debug.Log("Entry is set");
+            //Debug.Log("Entry is set");
             //Debug.Log("ValidEntry if "+pEntry);
             switch (pEntry.ToLower())
             {
@@ -108,7 +112,7 @@ public class Tile  {
                         if (_entry.Contains("down"))
                         {
                             entry = true;
-                            Debug.Log("can enter up");
+                            //Debug.Log("can enter up");
                         }
                         break;
                     }
@@ -117,7 +121,7 @@ public class Tile  {
                         if(_entry.Contains("right"))
                         {
                             entry = true;
-                            Debug.Log("can enter left");
+                            //Debug.Log("can enter left");
                         }
                         break;
                     }
@@ -126,7 +130,7 @@ public class Tile  {
                         if (_entry.Contains("up"))
                         {
                             entry = true;
-                            Debug.Log("can enter down");
+                            //Debug.Log("can enter down");
                         }
                         break;
                     }
@@ -135,13 +139,13 @@ public class Tile  {
                         if (_entry.Contains("left"))
                         {
                             entry = true;
-                            Debug.Log("can enter right");
+                            //Debug.Log("can enter right");
                         }
                         break;
                     }
             }
         }
-        Debug.Log("return valid entry "+entry);
+        //Debug.Log("return valid entry "+entry);
         return entry;
     }
 
@@ -214,6 +218,7 @@ public class Tile  {
         }
        
     }
+
     public void GenerateEvent()
     {
         //Debug.Log("Generate Event");
@@ -239,10 +244,11 @@ public class Tile  {
             combat = Random.Range(-8, -1);
         }
     }
+
     //primary used for generating event tiles updating event tiles...
     public void UpdateTile(Tile pTile)
     {
-        Debug.Log("UpdateTile");
+        //Debug.Log("UpdateTile");
         _tileID = pTile._tileID;
         _isActive = pTile._isActive;
         _entry = new List<string>();
@@ -251,8 +257,9 @@ public class Tile  {
         _boardLocation = pTile._boardLocation;
         generateEntry();
     }
+
     public void test()
-    {
+    {/*
         if (_isDummy == false)
         {
             Debug.Log("_tileID : " + _tileID);
@@ -269,6 +276,6 @@ public class Tile  {
                 }
                 Debug.Log("is in loc :" + _boardLocation);
             }
-        }
+        }*/
     }
 }
