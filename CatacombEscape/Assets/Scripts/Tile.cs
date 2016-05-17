@@ -64,34 +64,38 @@ public class Tile  {
     public bool ValidMove(string pMove)
     {
         bool move = false;
-        switch (pMove.ToUpper())
+        switch (pMove)
         {
-            case "UP":
+            case "up":
                 {
-                    _entry.Contains("up");
-                    move = true;
-                    //Debug.Log("Possible up");
+                    if (_entry.Contains("up"))
+                    {
+                        move = true;
+                    }
                     break;
                 }
-            case "RIGHT":
+            case "right":
                 {
-                    _entry.Contains("right");
-                    move = true;
-                    //Debug.Log("Possible right");
+                    if (_entry.Contains("right"))
+                    {
+                        move = true;
+                    }
                     break;
                 }
-            case "DOWN":
+            case "down":
                 {
-                    _entry.Contains("down");
-                    move = true;
-                    //Debug.Log("Possible down");
+                    if (_entry.Contains("down"))
+                    {
+                        move = true;
+                    }
                     break;
                 }
-            case "LEFT":
+            case "left":
                 {
-                    _entry.Contains("left");
-                    move = true;
-                    //Debug.Log("Possible left");
+                    if (_entry.Contains("left"))
+                    {
+                        move = true;
+                    }
                     break;
                 }
         }
@@ -112,7 +116,7 @@ public class Tile  {
                         if (_entry.Contains("down"))
                         {
                             entry = true;
-                            //Debug.Log("can enter up");
+                            Debug.Log("can enter up");
                         }
                         break;
                     }
@@ -121,7 +125,7 @@ public class Tile  {
                         if(_entry.Contains("right"))
                         {
                             entry = true;
-                            //Debug.Log("can enter left");
+                            Debug.Log("can enter left");
                         }
                         break;
                     }
@@ -130,7 +134,7 @@ public class Tile  {
                         if (_entry.Contains("up"))
                         {
                             entry = true;
-                            //Debug.Log("can enter down");
+                            Debug.Log("can enter down");
                         }
                         break;
                     }
@@ -139,7 +143,7 @@ public class Tile  {
                         if (_entry.Contains("left"))
                         {
                             entry = true;
-                            //Debug.Log("can enter right");
+                            Debug.Log("can enter right");
                         }
                         break;
                     }
@@ -259,7 +263,7 @@ public class Tile  {
     }
 
     public void test()
-    {/*
+    {
         if (_isDummy == false)
         {
             Debug.Log("_tileID : " + _tileID);
@@ -276,6 +280,6 @@ public class Tile  {
                 }
                 Debug.Log("is in loc :" + _boardLocation);
             }
-        }*/
+        }
     }
 }

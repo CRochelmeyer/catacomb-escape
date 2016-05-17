@@ -178,10 +178,10 @@ public class Direction : MonoBehaviour
     public bool ValidMovement(string pdir,Tile pCurrent, Tile pNext)
     {
         //Debug.Log("pCurrent VM ::start");
-        pCurrent.test();
+        //pCurrent.test();
         //Debug.Log("pCurrent VM ::end");
         //Debug.Log("pNext VM ::start");
-        pNext.test();
+        //pNext.test();
         //Debug.Log("pNext VM ::end");
         //Debug.Log("ValidMovement :" + pCurrent.ValidMove(pdir) +" ::: "+pNext.ValidEntry(pdir));
 
