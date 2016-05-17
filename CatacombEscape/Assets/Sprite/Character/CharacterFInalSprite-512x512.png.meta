@@ -1,29 +1,29 @@
 fileFormatVersion: 2
-guid: e76abb79390471e479035178cf8d92cf
-timeCreated: 1462933326
+guid: b7f64e73862a97649a327867cb754304
+timeCreated: 1463449554
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: 512x512 - Character_0
-    21300002: 512x512 - Character_1
-    21300004: 512x512 - Character_2
-    21300006: 512x512 - Character_3
-    21300008: 512x512 - Character_4
-    21300010: 512x512 - Character_5
-    21300012: 512x512 - Character_6
-    21300014: 512x512 - Character_7
-    21300016: 512x512 - Character_8
-    21300018: 512x512 - Character_9
-    21300020: 512x512 - Character_10
-    21300022: 512x512 - Character_11
-    21300024: 512x512 - Character_12
-    21300026: 512x512 - Character_13
-    21300028: 512x512 - Character_14
-    21300030: 512x512 - Character_15
-    21300032: 512x512 - Character_16
-    21300034: 512x512 - Character_17
-    21300036: 512x512 - Character_18
-    21300038: 512x512 - Character_19
+    21300000: CharacterFInalSprite-512x512_0
+    21300002: CharacterFInalSprite-512x512_1
+    21300004: CharacterFInalSprite-512x512_2
+    21300006: CharacterFInalSprite-512x512_3
+    21300008: CharacterFInalSprite-512x512_4
+    21300010: CharacterFInalSprite-512x512_5
+    21300012: CharacterFInalSprite-512x512_6
+    21300014: CharacterFInalSprite-512x512_7
+    21300016: CharacterFInalSprite-512x512_8
+    21300018: CharacterFInalSprite-512x512_9
+    21300020: CharacterFInalSprite-512x512_10
+    21300022: CharacterFInalSprite-512x512_11
+    21300024: CharacterFInalSprite-512x512_12
+    21300026: CharacterFInalSprite-512x512_13
+    21300028: CharacterFInalSprite-512x512_14
+    21300030: CharacterFInalSprite-512x512_15
+    21300032: CharacterFInalSprite-512x512_16
+    21300034: CharacterFInalSprite-512x512_17
+    21300036: CharacterFInalSprite-512x512_18
+    21300038: CharacterFInalSprite-512x512_19
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -70,203 +70,203 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: 512x512 - Character_0
+    - name: CharacterFInalSprite-512x512_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 424
+        x: 16
+        y: 405
         width: 56
-        height: 83
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_1
+    - name: CharacterFInalSprite-512x512_1
       rect:
         serializedVersion: 2
-        x: 73
-        y: 424
+        x: 93
+        y: 405
         width: 56
-        height: 83
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_2
+    - name: CharacterFInalSprite-512x512_2
       rect:
         serializedVersion: 2
-        x: 149
-        y: 424
+        x: 176
+        y: 405
         width: 56
-        height: 83
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_3
+    - name: CharacterFInalSprite-512x512_3
       rect:
         serializedVersion: 2
-        x: 229
-        y: 424
+        x: 257
+        y: 405
         width: 56
-        height: 83
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_4
+    - name: CharacterFInalSprite-512x512_4
       rect:
         serializedVersion: 2
-        x: 309
-        y: 424
+        x: 341
+        y: 405
         width: 56
-        height: 83
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_5
+    - name: CharacterFInalSprite-512x512_5
       rect:
         serializedVersion: 2
-        x: 5
-        y: 317
+        x: 16
+        y: 285
         width: 56
-        height: 83
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_6
+    - name: CharacterFInalSprite-512x512_6
       rect:
         serializedVersion: 2
-        x: 73
-        y: 317
+        x: 93
+        y: 285
         width: 56
-        height: 83
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_7
+    - name: CharacterFInalSprite-512x512_7
       rect:
         serializedVersion: 2
-        x: 149
-        y: 317
+        x: 176
+        y: 285
         width: 56
-        height: 83
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_8
+    - name: CharacterFInalSprite-512x512_8
       rect:
         serializedVersion: 2
-        x: 229
-        y: 317
+        x: 257
+        y: 285
         width: 56
-        height: 83
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_9
+    - name: CharacterFInalSprite-512x512_9
       rect:
         serializedVersion: 2
-        x: 309
-        y: 317
+        x: 341
+        y: 285
         width: 56
-        height: 83
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_10
+    - name: CharacterFInalSprite-512x512_10
       rect:
         serializedVersion: 2
-        x: 8
-        y: 188
-        width: 45
-        height: 83
+        x: 17
+        y: 147
+        width: 56
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_11
+    - name: CharacterFInalSprite-512x512_11
       rect:
         serializedVersion: 2
-        x: 66
-        y: 188
-        width: 45
-        height: 83
+        x: 95
+        y: 147
+        width: 56
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_12
+    - name: CharacterFInalSprite-512x512_12
       rect:
         serializedVersion: 2
-        x: 132
-        y: 188
-        width: 45
-        height: 83
+        x: 177
+        y: 147
+        width: 56
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_13
+    - name: CharacterFInalSprite-512x512_13
       rect:
         serializedVersion: 2
-        x: 202
-        y: 188
-        width: 45
-        height: 83
+        x: 261
+        y: 147
+        width: 56
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_14
+    - name: CharacterFInalSprite-512x512_14
       rect:
         serializedVersion: 2
-        x: 273
-        y: 188
-        width: 45
-        height: 83
+        x: 344
+        y: 147
+        width: 56
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_15
+    - name: CharacterFInalSprite-512x512_15
       rect:
         serializedVersion: 2
-        x: 6
-        y: 91
-        width: 45
-        height: 83
+        x: 17
+        y: 27
+        width: 56
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_16
+    - name: CharacterFInalSprite-512x512_16
       rect:
         serializedVersion: 2
-        x: 65
-        y: 91
-        width: 45
-        height: 83
+        x: 92
+        y: 27
+        width: 56
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_17
+    - name: CharacterFInalSprite-512x512_17
       rect:
         serializedVersion: 2
-        x: 132
-        y: 91
-        width: 45
-        height: 83
+        x: 177
+        y: 27
+        width: 56
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_18
+    - name: CharacterFInalSprite-512x512_18
       rect:
         serializedVersion: 2
-        x: 203
-        y: 91
-        width: 45
-        height: 83
+        x: 261
+        y: 27
+        width: 56
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 512x512 - Character_19
+    - name: CharacterFInalSprite-512x512_19
       rect:
         serializedVersion: 2
-        x: 274
-        y: 91
-        width: 45
-        height: 83
+        x: 344
+        y: 27
+        width: 56
+        height: 84
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
