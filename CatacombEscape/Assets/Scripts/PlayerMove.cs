@@ -24,9 +24,9 @@ public class PlayerMove : MonoBehaviour
         //Vector3 current = player.transform.localPosition;
         Vector3 moveto = pGrid[pLoc].transform.localPosition;
         //int speed = 100;
-        Debug.Log("Current x:" + player.transform.localPosition.x+ " next x :"+moveto.x);
-        Debug.Log("Current y:" + player.transform.localPosition.y + " next y :" + moveto.y);
-        Debug.Log("pdir"+pdir);
+        //Debug.Log("Current x:" + player.transform.localPosition.x+ " next x :"+moveto.x);
+        //Debug.Log("Current y:" + player.transform.localPosition.y + " next y :" + moveto.y);
+        //Debug.Log("pdir"+pdir);
         //if the movement is
         if (pdir != "" && pdir != "invalid move")
         {
@@ -34,23 +34,23 @@ public class PlayerMove : MonoBehaviour
             {
                 case "up":
                     {
-                        Debug.Log("move up");
-                        Debug.Log("position diff :" + (moveto.y - player.transform.localPosition.y));
+                        //Debug.Log("move up");
+                        //Debug.Log("position diff :" + (moveto.y - player.transform.localPosition.y));
                         player.transform.Translate(0, (120), 0);
                         break;
                     }
                 case "right":
                     {
-                        Debug.Log("move right");
-                        Debug.Log("position diff :" + (moveto.x - player.transform.localPosition.x));
+                        //Debug.Log("move right");
+                        //Debug.Log("position diff :" + (moveto.x - player.transform.localPosition.x));
                         player.transform.Translate(120,0, 0);
                         break;
                     }
                 case "down":
                     {
-                        Debug.Log("move down");
-                        Debug.Log("position diff :" + (moveto.y - player.transform.localPosition.y));
-                        Debug.Log(Mathf.Abs(moveto.y - player.transform.localPosition.y) >= 0);
+                        //Debug.Log("move down");
+                        //Debug.Log("position diff :" + (moveto.y - player.transform.localPosition.y));
+                        //Debug.Log(Mathf.Abs(moveto.y - player.transform.localPosition.y) >= 0);
                         //float distance = Mathf.Abs(moveto.y - player.transform.localPosition.y);
                         /*while(distance >= 0)
                         {
@@ -63,13 +63,13 @@ public class PlayerMove : MonoBehaviour
                     }
                 case "left":
                     {
-                        Debug.Log("move left");
-                        Debug.Log("position diff :" + (moveto.x - player.transform.localPosition.x));
+                        //Debug.Log("move left");
+                        //Debug.Log("position diff :" + (moveto.x - player.transform.localPosition.x));
                         player.transform.Translate(-(120),0, 0);
                         break;
                     }
             }
         }   
-        Debug.Log("move end");  
+        //Debug.Log("move end");  
     }
 }

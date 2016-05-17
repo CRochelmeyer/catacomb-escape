@@ -5,16 +5,6 @@ using System.Collections;
 
 public class Panel : MonoBehaviour//, IPointerEnterHandler
 { 
-	/*
-	public void OnPointerEnter (PointerEventData eventData)
-	{	
-		if (eventData.eligibleForClick) {
-			Debug.Log ("MouseLocation: " + this.transform.name);
-			GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic> ();
-			gameLogic.MouseLocation = this.transform.name;
-		}
-	}*/
-	
 	public bool MouseOverPanel()
 	{
 		GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic> ();
@@ -28,7 +18,7 @@ public class Panel : MonoBehaviour//, IPointerEnterHandler
 			&& mousePosition.y >= worldCorners [0].y && mousePosition.y < worldCorners [2].y)
 		{
 			gameLogic.MouseLocation = panel.name;
-			Debug.Log (panel.name);
+			//Debug.Log (panel.name);
 			return true;
 		} else
 		{

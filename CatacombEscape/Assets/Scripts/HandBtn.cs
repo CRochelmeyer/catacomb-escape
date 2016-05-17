@@ -9,7 +9,7 @@ public class HandBtn : MonoBehaviour {
     public void getHand()
     {
 
-        Debug.Log("onClick");
+        //Debug.Log("onClick");
         //grab gameLogic (gameManager?) into gamelogic
         gameLogic = FindObjectOfType<GameLogic>();
         //execute gamelogic function generate hand

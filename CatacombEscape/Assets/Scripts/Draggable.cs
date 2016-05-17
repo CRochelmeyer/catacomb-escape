@@ -64,13 +64,13 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			//check cell isnt empty "" and that the cell isnt already an exit etc...
 
 			cell = gameLogic.MouseLocation;
-			Debug.Log ("Draggable cell :" + cell);
+			//Debug.Log ("Draggable cell :" + cell);
 			GameObject temp = GameObject.Find (cell);
 
 			if (cell != "" && temp.GetComponent<Image> ().sprite == null)
 			{
 				tile = new Tile (imageID, cell);
-				Debug.Log ("Destroy handtile");
+				//Debug.Log ("Destroy handtile");
 				gameLogic.UpdateDrag (tile, cell);
 				Destroy (this.gameObject);
 			}
@@ -84,7 +84,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 	        */
 	        else {
 	            
-				Debug.Log ("Return handtile " + cell);
+				//Debug.Log ("Return handtile " + cell);
 				this.gameObject.GetComponent<Transform> ().localPosition = locationToReturn;
 			}
 		}

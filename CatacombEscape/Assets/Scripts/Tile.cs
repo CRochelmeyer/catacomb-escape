@@ -16,7 +16,7 @@ public class Tile  {
 
     public Tile(List<string> pEntry, string pID , string pboardloc)
     {
-        Debug.Log("tile 3param");
+        //Debug.Log("tile 3param");
         _entry = pEntry;
         _tileID = pID.ToLower();
         _isOccupied = false;
@@ -70,28 +70,28 @@ public class Tile  {
                 {
                     _entry.Contains("up");
                     move = true;
-                    Debug.Log("Possible up");
+                    //Debug.Log("Possible up");
                     break;
                 }
             case "RIGHT":
                 {
                     _entry.Contains("right");
                     move = true;
-                    Debug.Log("Possible right");
+                    //Debug.Log("Possible right");
                     break;
                 }
             case "DOWN":
                 {
                     _entry.Contains("down");
                     move = true;
-                    Debug.Log("Possible down");
+                    //Debug.Log("Possible down");
                     break;
                 }
             case "LEFT":
                 {
                     _entry.Contains("left");
                     move = true;
-                    Debug.Log("Possible left");
+                    //Debug.Log("Possible left");
                     break;
                 }
         }
@@ -103,7 +103,7 @@ public class Tile  {
         bool entry = false;
         if (_isEntrySet)
         {
-            Debug.Log("Entry is set");
+            //Debug.Log("Entry is set");
             //Debug.Log("ValidEntry if "+pEntry);
             switch (pEntry.ToLower())
             {
@@ -112,7 +112,7 @@ public class Tile  {
                         if (_entry.Contains("down"))
                         {
                             entry = true;
-                            Debug.Log("can enter up");
+                            //Debug.Log("can enter up");
                         }
                         break;
                     }
@@ -121,7 +121,7 @@ public class Tile  {
                         if(_entry.Contains("right"))
                         {
                             entry = true;
-                            Debug.Log("can enter left");
+                            //Debug.Log("can enter left");
                         }
                         break;
                     }
@@ -130,7 +130,7 @@ public class Tile  {
                         if (_entry.Contains("up"))
                         {
                             entry = true;
-                            Debug.Log("can enter down");
+                            //Debug.Log("can enter down");
                         }
                         break;
                     }
@@ -139,13 +139,13 @@ public class Tile  {
                         if (_entry.Contains("left"))
                         {
                             entry = true;
-                            Debug.Log("can enter right");
+                            //Debug.Log("can enter right");
                         }
                         break;
                     }
             }
         }
-        Debug.Log("return valid entry "+entry);
+        //Debug.Log("return valid entry "+entry);
         return entry;
     }
 
@@ -248,7 +248,7 @@ public class Tile  {
     //primary used for generating event tiles updating event tiles...
     public void UpdateTile(Tile pTile)
     {
-        Debug.Log("UpdateTile");
+        //Debug.Log("UpdateTile");
         _tileID = pTile._tileID;
         _isActive = pTile._isActive;
         _entry = new List<string>();
@@ -259,7 +259,7 @@ public class Tile  {
     }
 
     public void test()
-    {
+    {/*
         if (_isDummy == false)
         {
             Debug.Log("_tileID : " + _tileID);
@@ -276,6 +276,6 @@ public class Tile  {
                 }
                 Debug.Log("is in loc :" + _boardLocation);
             }
-        }
+        }*/
     }
 }

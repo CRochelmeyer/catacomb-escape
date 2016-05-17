@@ -61,7 +61,7 @@ public class ArrayHandler : MonoBehaviour
         }*/
 
 		GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic> ();
-		Debug.Log (gameLogic.MouseLocation);
+		//Debug.Log (gameLogic.MouseLocation);
 		string _cell = gameLogic.MouseLocation;
 
         //Debug.Log("testing ArrayH cell size x :" + _cellsizex + " y: " + _cellsizey + "going into cell :"+_cell);
