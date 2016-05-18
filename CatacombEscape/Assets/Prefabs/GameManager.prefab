@@ -11,7 +11,6 @@ GameObject:
   - 114: {fileID: 11457522}
   - 114: {fileID: 11499000}
   - 114: {fileID: 11404004}
-  - 114: {fileID: 11400444}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameController
@@ -31,20 +30,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11400444
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 158638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f16945701ee4b04aa638f183042da26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 161780, guid: cd091e002fcb4a545a01255e0f1dee3f, type: 2}
-  tempobj: {fileID: 0}
-  rb2d: {fileID: 0}
 --- !u!114 &11404004
 MonoBehaviour:
   m_ObjectHideFlags: 1
