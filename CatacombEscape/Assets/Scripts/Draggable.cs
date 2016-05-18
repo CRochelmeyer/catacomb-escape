@@ -40,7 +40,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
 		if (PlayerPrefs.GetString ("Paused") != "true")
 		{
-			Debug.Log ("OnEndDrag");
+			//Debug.Log ("OnEndDrag");
 			//use these x,y to pass thru to logic to identify array cell block
 			//float x = Input.mousePosition.x;
 			//float y = Input.mousePosition.y;
