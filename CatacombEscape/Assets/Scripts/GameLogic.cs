@@ -19,6 +19,7 @@ public class GameLogic : MonoBehaviour
     //dictionary to store event tile clone name and original grid panel location int
     Dictionary<string, string> eventindex = new Dictionary<string, string>();
     //sprite holders drag sprites via inspector
+
     public Sprite[] tileSprite;
     public Sprite[] gridSprite;
     public GameObject btmPanel;
@@ -36,10 +37,22 @@ public class GameLogic : MonoBehaviour
 	private GameObject[] gridPanels;
     private Tile[,] tileBoard;
 
+	private AudioSource source;
+	public AudioClip[] placementClips;
+	public AudioClip[] dealingClips;
+	public AudioClip[] movementClips;
+	public AudioClip[] lvlCompClips;
+
     //awake called behind start
     void Awake()
     {
-        Debug.Log("GameLogic awake");
+		Debug.Log("GameLogic awake");
+
+		source = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource> ();
+		
+		GameObject mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
+		if (mainCamera != null)
+			mainCamera.GetComponent<BackGroundMusic> ().ResetScript ();
 		
 		validMove = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<Direction> ();
 		movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
@@ -136,6 +149,8 @@ public class GameLogic : MonoBehaviour
     {
         //initialise player data
 		UpdateUI();
+		GameObject tempObj = GameObject.FindGameObjectWithTag("GameLevel");
+		tempObj.GetComponent<Text>().text = "Lvl " + pLevel;
         //setup board with rng sprites
 		GenerateBoard();
 		//PlayerPrefs.SetString ("GeneratedBoard", "true");
@@ -150,9 +165,11 @@ public class GameLogic : MonoBehaviour
 		set{ mouseLocation = value; }
 	}
 
+	// Called by PlayerMove once the character animation is complete, to stop events from occuring before player has stopped on the destination tile
 	public void SetPlayerLoc()
 	{
 		playerLoc = destLoc;
+
 		//play event for event tiles    
 		if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
 		{
@@ -279,8 +296,11 @@ public class GameLogic : MonoBehaviour
                     tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))] = ptile;
                 }
                 //tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].test();
-                //decreaste stamina
-                playerStamina--;
+				//decreaste stamina
+
+				int rand = Random.Range (0,placementClips.Length);
+				source.PlayOneShot (placementClips[rand], 0.5f);
+				playerStamina--;
                 break;
             }
         }
@@ -329,8 +349,11 @@ public class GameLogic : MonoBehaviour
                     //valid move
                     //Debug.Log("clickloc 2: " + clickLoc);
                     if (validMove.Move(playerLoc, clickLoc,ref tileBoard) )
-                    {
-                        //Debug.Log("clickloc 3: " + clickLoc);
+					{
+						int rand = Random.Range (0,movementClips.Length);
+						source.PlayOneShot (movementClips[rand], 1.0f);
+
+						//Debug.Log("clickloc 3: " + clickLoc);
                         int tempIndex = 0;
 						cellindex.TryGetValue(clickLoc, out tempIndex);
 						movePlayer.UpdatePlayer(gridPanels[tempIndex], validMove.MoveDirection(playerLoc,clickLoc));
@@ -355,10 +378,15 @@ public class GameLogic : MonoBehaviour
         {
             //play event = remove stamina and destroy the event clone...
             playerStamina += tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].combat;
-            GameObject tempObj = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
-            Destroy(tempObj);
-            tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive = false;
-        }
+			GameObject tempObj = GameObject.Find (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
+
+			if (tempObj != null)
+			{
+				Debug.Log (tempObj.transform.name);
+				Destroy(tempObj);
+				tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive = false;
+			}
+		}
     }
 
 	// DO not have a function named the same as a type (PlayerMove script!). Also validmove.Move returns a bool... Don't leave something that doesn't work/do anyting still implemented
@@ -371,9 +399,9 @@ public class GameLogic : MonoBehaviour
     public void UpdateUI()
     {
 		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
-        tempObj.GetComponent<Text>().text = playerStamina + "/100";
+		tempObj.GetComponent<Text>().text = playerStamina + "/100";
         tempObj = GameObject.FindGameObjectWithTag("StamBar");
-        tempObj.GetComponent<Slider>().value = playerStamina;
+		tempObj.GetComponent<Slider>().value = playerStamina;
         if (playerStamina <= 0)
         {
             Debug.Log("GameOver " + gameover);
@@ -441,18 +469,18 @@ public class GameLogic : MonoBehaviour
                 {
                     if (tileBoard[row, col]._tileID == "tile_entrance")
                     {
-                        Debug.Log("Found entrance and set player");
                         tileBoard[row, col]._isOccupied = true;
                         playerLoc = row.ToString() + col.ToString();
                         //draw player
                         int pindex = 0;
                         cellindex.TryGetValue(playerLoc, out pindex);
-                        movePlayer.DrawPlayer(pindex, gridPanels);
-                    }
-                }
-            }
-        }
-    }
+						movePlayer.DrawPlayer(pindex, gridPanels);
+						Debug.Log("Found entrance and set player");
+					}
+				}
+			}
+		}
+	}
 	
 	public void GenerateHand()
     {       
@@ -464,6 +492,9 @@ public class GameLogic : MonoBehaviour
 		//check for null
 		if (handTiles != null)
 		{
+			int rand = Random.Range (0,dealingClips.Length);
+			source.PlayOneShot (dealingClips[rand], 1.0f);
+
 			for (int i = 0; i < handTiles.Length; i++)
 			{
 				// Debug.Log(handTiles[i]);
@@ -499,6 +530,10 @@ public class GameLogic : MonoBehaviour
 	
 	public void NextLevel()
 	{
+		int rand = Random.Range (0,lvlCompClips.Length);
+		source.PlayOneShot (lvlCompClips[rand], 0.5f);
+		System.Threading.Thread.Sleep (2000);
+
         emptyhand = true;
 		//Debug.Log("Previous Level " + level);
 		level++;

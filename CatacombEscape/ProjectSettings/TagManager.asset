@@ -17,6 +17,7 @@ TagManager:
   - StamBar
   - Grid
   - GridPanelsScript
+  - GameLevel
   layers:
   - Default
   - TransparentFX
