@@ -9,7 +9,7 @@ public class MenuBehavior : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		Screen.SetResolution (569, 910, false);
+		Screen.SetResolution (700, 1120, false);
 
 		source = GetComponent<AudioSource> ();
 	}

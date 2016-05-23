@@ -239,13 +239,13 @@ public class Tile  {
         if (dir == "green")
         {
             _event = "green";
-            combat = Random.Range(0, 5);
+            combat = Random.Range(10, 15);
         }
 
         else if (dir == "red")
         {
             _event = "red";
-            combat = Random.Range(-8, -1);
+            combat = Random.Range(-8, -4);
         }
     }
 

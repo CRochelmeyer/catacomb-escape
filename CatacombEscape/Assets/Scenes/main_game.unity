@@ -925,27 +925,27 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 117516, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 106570, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11480802, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_Color.a
-      value: .477999985
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11406336, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_Color.a
-      value: .477999985
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11418476, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_Color.a
-      value: .477999985
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11467438, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_Color.a
-      value: .477999985
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 171386, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_IsActive
