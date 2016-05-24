@@ -9,8 +9,9 @@ public class GameLogic : MonoBehaviour
     private bool gameover = false;
     private bool emptyhand = true;
     private bool nextlevel = false;
-    private int PlayerStamina = 100;
-	private string PlayerLoc="";
+    private int playerStamina = 100;
+	private string playerLoc="";
+	private string destLoc = "";
 	private string mouseLocation = "";
 
     //dictionary to match cell strings of 00-04 10-14 to an index from 0-29
@@ -18,11 +19,11 @@ public class GameLogic : MonoBehaviour
     //dictionary to store event tile clone name and original grid panel location int
     Dictionary<string, string> eventindex = new Dictionary<string, string>();
     //sprite holders drag sprites via inspector
+
     public Sprite[] tileSprite;
     public Sprite[] gridSprite;
     public GameObject btmPanel;
     public GameObject[] handTiles;
-    public GameObject tempObj;
 	public string exit;
     //create tile gameboard 2d array
     public Tile[,] gameBoard = new Tile[5, 6];
@@ -36,10 +37,22 @@ public class GameLogic : MonoBehaviour
 	private GameObject[] gridPanels;
     private Tile[,] tileBoard;
 
+	private AudioSource source;
+	public AudioClip[] placementClips;
+	public AudioClip[] dealingClips;
+	public AudioClip[] movementClips;
+	public AudioClip[] lvlCompClips;
+
     //awake called behind start
     void Awake()
     {
-        Debug.Log("GameLogic awake");
+		Debug.Log("GameLogic awake");
+
+		source = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource> ();
+		
+		GameObject mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
+		if (mainCamera != null)
+			mainCamera.GetComponent<BackGroundMusic> ().ResetScript ();
 		
 		validMove = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<Direction> ();
 		movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
@@ -83,7 +96,7 @@ public class GameLogic : MonoBehaviour
             }
         }
         GenerateBoardLogic();
-        Debug.Log("End Awake");
+        //Debug.Log("End Awake");
 	}
 
 	// Use this for initialization
@@ -116,12 +129,6 @@ public class GameLogic : MonoBehaviour
         UpdateUI();
         PlayerClick();
 
-        //check if next level...
-        if (PlayerLoc == exit)
-        {
-            nextlevel = true;
-        }
-
         if (nextlevel)
         {
             nextlevel = false;
@@ -142,6 +149,8 @@ public class GameLogic : MonoBehaviour
     {
         //initialise player data
 		UpdateUI();
+		GameObject tempObj = GameObject.FindGameObjectWithTag("GameLevel");
+		tempObj.GetComponent<Text>().text = "Lvl " + pLevel;
         //setup board with rng sprites
 		GenerateBoard();
 		//PlayerPrefs.SetString ("GeneratedBoard", "true");
@@ -156,16 +165,35 @@ public class GameLogic : MonoBehaviour
 		set{ mouseLocation = value; }
 	}
 
+	// Called by PlayerMove once the character animation is complete, to stop events from occuring before player has stopped on the destination tile
+	public void SetPlayerLoc()
+	{
+		playerLoc = destLoc;
+
+		//play event for event tiles    
+		if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
+		{
+			PlayEvent(playerLoc);
+		}
+
+		//check if next level...
+		if (playerLoc == exit)
+		{
+			nextlevel = true;
+		}
+	}
+
     private void UpdateMouseLocation()
     {
         bool foundMouse = false;
         int i = 0;
         while (!foundMouse && i < 30)
         {
-            gridPanels[i].GetComponent<Panel>().MouseOverPanel();
+            foundMouse = gridPanels[i].GetComponent<Panel>().MouseOverPanel();
             i++;
         }
     }
+
     private string GetClickLocation(Vector3 pv3)
     {
         string location = "invalid location";
@@ -202,9 +230,9 @@ public class GameLogic : MonoBehaviour
         int colmove = 0;
         bool ValidDrag = false;
         Debug.Log("Valid Drag");
-        //Debug.Log("Player Loc: " + PlayerLoc);
-        rowmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(0, 1))) - (System.Int32.Parse(PlayerLoc.Substring(0, 1))));
-        colmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(1, 1))) - (System.Int32.Parse(PlayerLoc.Substring(1, 1))));
+        //Debug.Log("Player Loc: " + playerLoc);
+        rowmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(0, 1))) - (System.Int32.Parse(playerLoc.Substring(0, 1))));
+        colmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(1, 1))) - (System.Int32.Parse(playerLoc.Substring(1, 1))));
         //Debug.Log("rowmove :" + rowmove);
         //Debug.Log("colmove :" + colmove);
         //check that the drag to is within range of player location 1 unit vertically or horizontally if so ValidPlacement to see if a clear path is available
@@ -215,7 +243,7 @@ public class GameLogic : MonoBehaviour
             if (colmove == 0 )
             {
                 //check if path is available
-                if (validMove.ValidPlacement(PlayerLoc, ptile) )
+                if (validMove.ValidPlacement(playerLoc, ptile) )
                 {
                     //Debug.Log("valid vert movement");
                     ValidDrag = true;
@@ -228,7 +256,7 @@ public class GameLogic : MonoBehaviour
             if (colmove == 1)
             {
                 //check if path is available
-                if (validMove.ValidPlacement(PlayerLoc,ptile) )
+                if (validMove.ValidPlacement(playerLoc,ptile) )
                 {
                     //Debug.Log("Valid hori movement");
                     ValidDrag = true;
@@ -268,8 +296,11 @@ public class GameLogic : MonoBehaviour
                     tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))] = ptile;
                 }
                 //tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].test();
-                //decreaste stamina
-                PlayerStamina--;
+				//decreaste stamina
+
+				int rand = Random.Range (0,placementClips.Length);
+				source.PlayOneShot (placementClips[rand], 0.5f);
+				playerStamina--;
                 break;
             }
         }
@@ -290,9 +321,10 @@ public class GameLogic : MonoBehaviour
         if(Input.GetMouseButtonDown(1))
         {
             string clickLoc = "";
+
             //no longer using ArrayHandler switching to use panel instead
-            //clickLoc = this.GetComponent<ArrayHandler>().FindLocation(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
-            clickLoc = this.GetClickLocation(Input.mousePosition);
+            clickLoc = this.GetComponent<ArrayHandler>().FindLocation(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+            //clickLoc = this.GetClickLocation(Input.mousePosition);
             //Debug.Log(clickLoc);
             int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
             int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
@@ -304,32 +336,31 @@ public class GameLogic : MonoBehaviour
             //Debug.Log(tileBoard[temprow,tempcol]._isEntrySet);
             //Debug.Log(tileBoard[temprow,tempcol]._tileID);
             //Debug.Log("test tileboard");
-            int plocr = System.Int32.Parse(PlayerLoc.Substring(0,1));
-            int plocc = System.Int32.Parse(PlayerLoc.Substring(1, 1));
-            if ((clickLoc != "") && (tileBoard[temprow, tempcol]._isEntrySet) && (PlayerLoc != "") )
+
+            //int plocr = System.Int32.Parse(playerLoc.Substring(0,1));
+            //int plocc = System.Int32.Parse(playerLoc.Substring(1, 1));
+            if ((clickLoc != "") && (tileBoard[temprow, tempcol]._isEntrySet) && (playerLoc != "") )
             {
                 //Debug.Log("clickloc 1: " + clickLoc);
                 //Debug.Log("clickLoc if");
-                if (validMove.MoveDirection(PlayerLoc, clickLoc) != "invalid move" && validMove.InRange(PlayerLoc, clickLoc) )
+                if (validMove.MoveDirection(playerLoc, clickLoc) != "invalid move" && validMove.InRange(playerLoc, clickLoc) )
                 {
                     //Debug.Log("not invalid move");
                     //valid move
                     //Debug.Log("clickloc 2: " + clickLoc);
-                    if (validMove.Move(PlayerLoc, clickLoc,ref tileBoard) )
-                    {
-                        //Debug.Log("clickloc 3: " + clickLoc);
-                        int tempindex = 0;
-                        cellindex.TryGetValue(clickLoc, out tempindex);
-                        movePlayer.UpdatePlayer(tempindex, gridPanels, validMove.MoveDirection(PlayerLoc,clickLoc));
+                    if (validMove.Move(playerLoc, clickLoc,ref tileBoard) )
+					{
+						int rand = Random.Range (0,movementClips.Length);
+						source.PlayOneShot (movementClips[rand], 1.0f);
+
+						//Debug.Log("clickloc 3: " + clickLoc);
+                        int tempIndex = 0;
+						cellindex.TryGetValue(clickLoc, out tempIndex);
+						movePlayer.UpdatePlayer(gridPanels[tempIndex], validMove.MoveDirection(playerLoc,clickLoc));
                         //update Playerloc
-                        PlayerLoc = clickLoc;
-                        //play event for event tiles    
-                        if (tileBoard[System.Int32.Parse(PlayerLoc.Substring(0, 1)), System.Int32.Parse(PlayerLoc.Substring(1, 1))]._event != "")
-                        {
-                            PlayEvent(PlayerLoc);
-                        }
-                        //Debug.Log("new player loc" + PlayerLoc + " :: " + clickLoc);
-                        PlayerStamina -= 2;
+                        destLoc = clickLoc;
+                        //Debug.Log("new player loc" + playerLoc + " :: " + clickLoc);
+                        playerStamina -= 2;
                         UpdateUI();
                     }
                 }
@@ -337,32 +368,41 @@ public class GameLogic : MonoBehaviour
             else
             {
                 Debug.Log("Invalid player move");
-            }
+			}
         }
     }
+
     public void PlayEvent(string pcell)
     {
         if(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive)
         {
             //play event = remove stamina and destroy the event clone...
-            PlayerStamina += tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].combat;
-            tempObj = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
-            Destroy(tempObj);
-            tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive = false;
-        }
+            playerStamina += tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].combat;
+			GameObject tempObj = GameObject.Find (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
+
+			if (tempObj != null)
+			{
+				Debug.Log (tempObj.transform.name);
+				Destroy(tempObj);
+				tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive = false;
+			}
+		}
     }
+
+	// DO not have a function named the same as a type (PlayerMove script!). Also validmove.Move returns a bool... Don't leave something that doesn't work/do anyting still implemented
+	/*
     public void PlayerMove(string pNext)
     {
-        validMove.Move(PlayerLoc, pNext ,ref tileBoard);
-    }
+        validMove.Move(playerLoc, pNext ,ref tileBoard);
+    }*/
 
     public void UpdateUI()
     {
-        tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
-        tempObj.GetComponent<Text>().text = PlayerStamina + "/100";
+		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
+		tempObj.GetComponent<Text>().text = playerStamina + "/100";
         tempObj = GameObject.FindGameObjectWithTag("StamBar");
-        tempObj.GetComponent<Slider>().value = PlayerStamina;
-        if (PlayerStamina == 0)
+		tempObj.GetComponent<Slider>().value = playerStamina;
+        if (playerStamina <= 0)
         {
             Debug.Log("GameOver " + gameover);
             gameover = true;
@@ -429,19 +469,18 @@ public class GameLogic : MonoBehaviour
                 {
                     if (tileBoard[row, col]._tileID == "tile_entrance")
                     {
-                        Debug.Log("Found entrance and set player");
                         tileBoard[row, col]._isOccupied = true;
-                        PlayerLoc = row.ToString() + col.ToString();
+                        playerLoc = row.ToString() + col.ToString();
                         //draw player
                         int pindex = 0;
-                        cellindex.TryGetValue(PlayerLoc, out pindex);
-                        movePlayer.DrawPlayer(pindex,gridPanels);
-                        //Debug.Log(PlayerLoc);
-                    }
-                }
-            }
-        }
-    }
+                        cellindex.TryGetValue(playerLoc, out pindex);
+						movePlayer.DrawPlayer(pindex, gridPanels);
+						Debug.Log("Found entrance and set player");
+					}
+				}
+			}
+		}
+	}
 	
 	public void GenerateHand()
     {       
@@ -453,6 +492,9 @@ public class GameLogic : MonoBehaviour
 		//check for null
 		if (handTiles != null)
 		{
+			int rand = Random.Range (0,dealingClips.Length);
+			source.PlayOneShot (dealingClips[rand], 1.0f);
+
 			for (int i = 0; i < handTiles.Length; i++)
 			{
 				// Debug.Log(handTiles[i]);
@@ -488,6 +530,10 @@ public class GameLogic : MonoBehaviour
 	
 	public void NextLevel()
 	{
+		int rand = Random.Range (0,lvlCompClips.Length);
+		source.PlayOneShot (lvlCompClips[rand], 0.5f);
+		System.Threading.Thread.Sleep (2000);
+
         emptyhand = true;
 		//Debug.Log("Previous Level " + level);
 		level++;

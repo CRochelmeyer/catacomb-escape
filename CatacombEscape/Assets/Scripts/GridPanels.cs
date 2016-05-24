@@ -36,8 +36,13 @@ public class GridPanels : MonoBehaviour
 
 	GameObject[] gridPanels;
 
-	// Use this for initialization
-	void Awake ()
+	public GameObject GetGridPanel (int i)
+	{
+		SetGridPanels ();
+		return gridPanels[i];
+	}
+
+	private void SetGridPanels ()
 	{
 		gridPanels = new GameObject[30];
 		gridPanels[0] = panel00;
@@ -70,16 +75,5 @@ public class GridPanels : MonoBehaviour
 		gridPanels[27] = panel52;
 		gridPanels[28] = panel53;
 		gridPanels[29] = panel54;
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
-
-	public GameObject GetGridPanel (int i)
-	{
-		return gridPanels[i];
 	}
 }

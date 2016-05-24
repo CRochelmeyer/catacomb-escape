@@ -6,7 +6,7 @@ public class MovingPlayer : MonoBehaviour {
 
 	public void MovePlayerTo(Vector3 pDestination)
     {
-        temp = this.gameObject;
+        //temp = this.gameObject;
 
 
     }

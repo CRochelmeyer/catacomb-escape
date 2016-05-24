@@ -11,7 +11,6 @@ GameObject:
   - 114: {fileID: 11457522}
   - 114: {fileID: 11499000}
   - 114: {fileID: 11404004}
-  - 114: {fileID: 11400444}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameController
@@ -31,20 +30,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11400444
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 158638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f16945701ee4b04aa638f183042da26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 161780, guid: cd091e002fcb4a545a01255e0f1dee3f, type: 2}
-  tempobj: {fileID: 0}
-  rb2d: {fileID: 0}
 --- !u!114 &11404004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -83,12 +68,24 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 63c11c7b287b78c499b5189cf9f3e73b, type: 3}
   - {fileID: 21300000, guid: a4e52dc4700e70e4882a63b457eec826, type: 3}
   - {fileID: 21300000, guid: 8790bd9a00ef71f41b441ab5789c8296, type: 3}
-  - {fileID: 21300000, guid: 5a5cd70b43c3a1d44bc67a2a3372c281, type: 3}
-  - {fileID: 21300000, guid: 1684284ec47b0594888edb02c845220f, type: 3}
+  - {fileID: 21300000, guid: af79ccdbc42cb1b40a9d2e0e15748e01, type: 3}
+  - {fileID: 21300000, guid: 8b433a604f9c07344bc51d1ab7010c50, type: 3}
   btmPanel: {fileID: 0}
   handTiles: []
-  tempObj: {fileID: 0}
   exit: 
+  placementClips:
+  - {fileID: 8300000, guid: 873a189bef2ec964996ea78716b12028, type: 3}
+  - {fileID: 8300000, guid: 5789de64f1dcfed41baf1cc07832b891, type: 3}
+  - {fileID: 8300000, guid: 0e59910e69c0ba1419861df3bcc87abc, type: 3}
+  - {fileID: 8300000, guid: 94a4f644b7ac81e49be17fa5cde70de8, type: 3}
+  - {fileID: 8300000, guid: ca9fba4575a70c34db7d060794b39a16, type: 3}
+  dealingClips:
+  - {fileID: 8300000, guid: 521088514a9121f40a9797cf18921cb1, type: 3}
+  movementClips:
+  - {fileID: 8300000, guid: 024bddb0ce19ff145be97ed0f57c3de8, type: 3}
+  - {fileID: 8300000, guid: 1cd26d870ece33940b895ea992cd1cd0, type: 3}
+  lvlCompClips:
+  - {fileID: 8300000, guid: 9466af4a8c0feee45b3cff7d54c450b1, type: 3}
 --- !u!114 &11499000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -110,6 +107,26 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: gridPanels.Array.size
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: lvlCompClip.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: dealingClips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: lvlCompClips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: movementClips.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: placementClips.Array.size
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: gridSprite.Array.data[1]
@@ -184,6 +201,72 @@ Prefab:
       propertyPath: m_TagString
       value: GameController
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 119238, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+    - target: {fileID: 0}
+      propertyPath: gridSprite.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: af79ccdbc42cb1b40a9d2e0e15748e01,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: gridSprite.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 8b433a604f9c07344bc51d1ab7010c50,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: placementClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 873a189bef2ec964996ea78716b12028, type: 3}
+    - target: {fileID: 0}
+      propertyPath: placementClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 5789de64f1dcfed41baf1cc07832b891, type: 3}
+    - target: {fileID: 0}
+      propertyPath: placementClips.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 0e59910e69c0ba1419861df3bcc87abc, type: 3}
+    - target: {fileID: 0}
+      propertyPath: placementClips.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: 94a4f644b7ac81e49be17fa5cde70de8, type: 3}
+    - target: {fileID: 0}
+      propertyPath: placementClips.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: ca9fba4575a70c34db7d060794b39a16, type: 3}
+    - target: {fileID: 0}
+      propertyPath: source
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: dealingClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 521088514a9121f40a9797cf18921cb1, type: 3}
+    - target: {fileID: 0}
+      propertyPath: dealingClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 521088514a9121f40a9797cf18921cb1, type: 3}
+    - target: {fileID: 0}
+      propertyPath: dealingClips.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 38fa4d07f2fce6b4d92263e94c1abd8d, type: 3}
+    - target: {fileID: 0}
+      propertyPath: movementClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 024bddb0ce19ff145be97ed0f57c3de8, type: 3}
+    - target: {fileID: 0}
+      propertyPath: movementClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 1cd26d870ece33940b895ea992cd1cd0, type: 3}
+    - target: {fileID: 0}
+      propertyPath: lvlCompClip.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 9466af4a8c0feee45b3cff7d54c450b1, type: 3}
+    - target: {fileID: 0}
+      propertyPath: lvlCompClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 9466af4a8c0feee45b3cff7d54c450b1, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 158638}

@@ -10,10 +10,13 @@ public class Panel : MonoBehaviour//, IPointerEnterHandler
 		GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic> ();
 		Vector2 mousePosition = Input.mousePosition;
 		Vector3[] worldCorners = new Vector3[4];
+
         //grabs the grid panels rectransform component
 		RectTransform panel = this.gameObject.GetComponent<RectTransform>();
+
         //grabs the world corner of the individual grid panel into world corners
 		panel.GetWorldCorners(worldCorners);
+
 		//check mouse coord within the 4 corner of the gridpanel
 		if (mousePosition.x >= worldCorners [0].x && mousePosition.x < worldCorners [2].x 
 			&& mousePosition.y >= worldCorners [0].y && mousePosition.y < worldCorners [2].y)

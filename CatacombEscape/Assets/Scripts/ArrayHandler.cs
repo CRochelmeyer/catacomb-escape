@@ -1,25 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
-/*public class ArrayHandler : MonoBehaviour
-/*{
-    //Maths for determining the quadrants of the grid
-    //Grid x,y coordinates
-    /*
-    top left x : 0                  top right x : 568
-    top left y : 816                top right y : 816
-
-    bot left x : 0                  bot right x : 568
-    bot left y : 138                bot right y : 138
-
-    border padding = 5x 5y
-    grid padding = 10x 10y
-
-	y = 678
-	x = 568
-    */
-
-    /*public string FindLocation(Vector2 pCoord)
+public class ArrayHandler : MonoBehaviour
+{
+    public string FindLocation(Vector2 pCoord)
     {
+		/*
         //static grid dimensions for now
         int _col = 5;
         int _row = 6;
@@ -57,13 +42,12 @@ using System.Collections;
             {
                 break;
             }
-        }
+        }*/
 
 		GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic> ();
 		//Debug.Log (gameLogic.MouseLocation);
 		string _cell = gameLogic.MouseLocation;
 
-        //Debug.Log("testing ArrayH cell size x :" + _cellsizex + " y: " + _cellsizey + "going into cell :"+_cell);
         return _cell;
     }
-}*/
+}

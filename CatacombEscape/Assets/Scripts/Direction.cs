@@ -12,6 +12,7 @@ public class Direction : MonoBehaviour
     //next row/col
     int nextrow = 0;
     int nextcol = 0;
+
     //pass by ref to Move() for tile updates
     public bool Move(Tile pCurrent, Tile pNext, ref Tile[,] pboard ,int crow,int ccol, int nrow, int ncol)
     {
@@ -46,6 +47,7 @@ public class Direction : MonoBehaviour
         }
         return valid;
     }
+
     //overloading above method with string string tile[,]
     public bool Move(string pCurrent , string pNext ,ref Tile[,] pboard)
     {
@@ -59,6 +61,7 @@ public class Direction : MonoBehaviour
         nextcol = System.Int32.Parse(pNext.Substring(1, 1));
         return this.Move( pboard[currow, curcol] , pboard[nextrow, nextcol] , ref pboard,currow,curcol,nextrow,nextcol);
     }
+
     //Placement for checking valid tile placements of tiles
     public bool ValidPlacement(string pCurrent, Tile pNext )
     {
@@ -75,6 +78,7 @@ public class Direction : MonoBehaviour
         }
         return placement;
     }
+
     //public string return directional string based on current index and next index
     public string MoveDirection (string pCurrent, string pNext )
     {
