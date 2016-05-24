@@ -1,0 +1,232 @@
+fileFormatVersion: 2
+guid: 1a4b09a4f1cb69c488a3f09845f9fba3
+timeCreated: 1464052392
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: CharacterFinalSprite_512x512_0
+    21300002: CharacterFinalSprite_512x512_1
+    21300004: CharacterFinalSprite_512x512_2
+    21300006: CharacterFinalSprite_512x512_3
+    21300008: CharacterFinalSprite_512x512_4
+    21300010: CharacterFinalSprite_512x512_5
+    21300012: CharacterFinalSprite_512x512_6
+    21300014: CharacterFinalSprite_512x512_7
+    21300016: CharacterFinalSprite_512x512_8
+    21300018: CharacterFinalSprite_512x512_9
+    21300020: CharacterFinalSprite_512x512_10
+    21300022: CharacterFinalSprite_512x512_11
+    21300024: CharacterFinalSprite_512x512_12
+    21300026: CharacterFinalSprite_512x512_13
+    21300028: CharacterFinalSprite_512x512_14
+    21300030: CharacterFinalSprite_512x512_15
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 512
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: CharacterFinalSprite_512x512_0
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 405
+        width: 56
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_1
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 405
+        width: 56
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_2
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 405
+        width: 56
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_3
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 405
+        width: 56
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_4
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 285
+        width: 56
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_5
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 285
+        width: 56
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_6
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 285
+        width: 56
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_7
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 285
+        width: 56
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_8
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 147
+        width: 45
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_9
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 147
+        width: 45
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_10
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 147
+        width: 45
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_11
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 147
+        width: 45
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_12
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 27
+        width: 45
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_13
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 25
+        width: 45
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_14
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 27
+        width: 45
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: CharacterFinalSprite_512x512_15
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 33
+        width: 45
+        height: 84
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
