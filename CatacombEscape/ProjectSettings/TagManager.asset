@@ -55,15 +55,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Tile
-    uniqueID: 189074497
-    locked: 0
   - name: UI
     uniqueID: 555678183
+    locked: 0
+  - name: PauseUI
+    uniqueID: 4111933691
     locked: 0
   - name: grid
     uniqueID: 843690733
     locked: 0
   - name: Player
     uniqueID: 185884357
+    locked: 0
+  - name: Tile
+    uniqueID: 189074497
     locked: 0

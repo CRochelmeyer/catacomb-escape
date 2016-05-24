@@ -23,7 +23,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 		{
 			//Debug.Log("OnbeginDrag");
 			//save the parent incase of returns from invalid drags
-			locationToReturn = this.transform.localPosition;
+			locationToReturn = this.transform.position;
 		}
     }
 
@@ -85,7 +85,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 	        else {
 	            
 				//Debug.Log ("Return handtile " + cell);
-				this.gameObject.GetComponent<Transform> ().localPosition = locationToReturn;
+				this.gameObject.GetComponent<Transform> ().position = locationToReturn;
 			}
 		}
 	}

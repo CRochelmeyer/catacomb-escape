@@ -82,8 +82,8 @@ MonoBehaviour:
   dealingClips:
   - {fileID: 8300000, guid: 521088514a9121f40a9797cf18921cb1, type: 3}
   movementClips:
-  - {fileID: 8300000, guid: 024bddb0ce19ff145be97ed0f57c3de8, type: 3}
-  - {fileID: 8300000, guid: 1cd26d870ece33940b895ea992cd1cd0, type: 3}
+  - {fileID: 8300000, guid: 89b6bea371f4e1140b27846808cbd9c5, type: 3}
+  - {fileID: 8300000, guid: 7afd77310659af746b83392094683810, type: 3}
   lvlCompClips:
   - {fileID: 8300000, guid: 9466af4a8c0feee45b3cff7d54c450b1, type: 3}
 --- !u!114 &11499000
@@ -254,11 +254,11 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: movementClips.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: 024bddb0ce19ff145be97ed0f57c3de8, type: 3}
+      objectReference: {fileID: 8300000, guid: 89b6bea371f4e1140b27846808cbd9c5, type: 3}
     - target: {fileID: 0}
       propertyPath: movementClips.Array.data[1]
       value: 
-      objectReference: {fileID: 8300000, guid: 1cd26d870ece33940b895ea992cd1cd0, type: 3}
+      objectReference: {fileID: 8300000, guid: 7afd77310659af746b83392094683810, type: 3}
     - target: {fileID: 0}
       propertyPath: lvlCompClip.Array.data[0]
       value: 
