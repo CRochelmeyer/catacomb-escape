@@ -3,15 +3,10 @@ using System.Collections;
 
 public class MenuBehavior : MonoBehaviour
 {	
-	public AudioSource source;
-	public AudioClip startGameClip;
-
 	// Use this for initialization
 	void Start ()
 	{
-		Screen.SetResolution (700, 1120, false);
-
-		source = GetComponent<AudioSource> ();
+		//Screen.SetResolution (650, 1040, false);
 	}
 	
 	// Update is called once per frame
@@ -21,11 +16,6 @@ public class MenuBehavior : MonoBehaviour
 
 	public void LoadScene(string sceneName)
 	{
-		if (sceneName == "main_game")
-		{
-			source.PlayOneShot (startGameClip, 0.5f);
-			System.Threading.Thread.Sleep (2000);
-		}
 		Application.LoadLevel(sceneName);
 	}
 	
