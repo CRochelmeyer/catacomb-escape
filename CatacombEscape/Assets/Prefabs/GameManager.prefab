@@ -73,6 +73,7 @@ MonoBehaviour:
   btmPanel: {fileID: 0}
   handTiles: []
   exit: 
+  startGameClip: {fileID: 8300000, guid: 0ab30f4d2c5ebbe409e4bcad31e6c4ff, type: 3}
   placementClips:
   - {fileID: 8300000, guid: 873a189bef2ec964996ea78716b12028, type: 3}
   - {fileID: 8300000, guid: 5789de64f1dcfed41baf1cc07832b891, type: 3}
@@ -268,6 +269,10 @@ Prefab:
       propertyPath: lvlCompClips.Array.data[0]
       value: 
       objectReference: {fileID: 8300000, guid: 23ec5ef9f656ad5469e70bfcade7758f, type: 3}
+    - target: {fileID: 0}
+      propertyPath: startGameClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 0ab30f4d2c5ebbe409e4bcad31e6c4ff, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 158638}

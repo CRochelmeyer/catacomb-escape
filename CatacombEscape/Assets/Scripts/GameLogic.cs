@@ -38,10 +38,27 @@ public class GameLogic : MonoBehaviour
     private Tile[,] tileBoard;
 
 	private AudioSource audioSource;
+	public AudioClip startGameClip;
 	public AudioClip[] placementClips;
 	public AudioClip[] dealingClips;
 	public AudioClip[] movementClips;
 	public AudioClip[] lvlCompClips;
+
+	public Text playerStamUp;
+	public Text playerStamDown;
+	public Text snakeStamDown;
+	public Text scorpStamDown;
+	public Text breadStamUp;
+	public Text lvlNoCleared;
+	public Text lvlPointTot;
+	public Text greenCollected;
+	public Text greenPointTot;
+	public Text redAvoided;
+	public Text redPointTot;
+	public Text tileNoPlaced;
+	public Text tileNoTot; //remember this value should be negative
+	public Text pointTot;
+	// These can be accessed and set with 'string tot = pointTot.text;' and 'pointTot.text = "100"'
 
     //awake called behind start
     void Awake()
@@ -49,6 +66,7 @@ public class GameLogic : MonoBehaviour
 		Debug.Log("GameLogic awake");
 
 		audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource> ();
+		audioSource.PlayOneShot (startGameClip, 0.5f);
 		
 		GameObject mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
 		if (mainCamera != null)
@@ -323,7 +341,7 @@ public class GameLogic : MonoBehaviour
             string clickLoc = "";
 
             //no longer using ArrayHandler switching to use panel instead
-            clickLoc = this.GetComponent<ArrayHandler>().FindLocation(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+			clickLoc = GameObject.FindGameObjectWithTag("Scripts").GetComponent<ArrayHandler>().FindLocation(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
             //clickLoc = this.GetClickLocation(Input.mousePosition);
             //Debug.Log(clickLoc);
 			if (clickLoc != "")

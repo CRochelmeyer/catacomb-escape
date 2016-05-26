@@ -42,4 +42,9 @@ public class PauseBehaviour : MonoBehaviour
 		PlayerPrefs.SetString ("Paused", "false");
 		pauseUI.SetActive(false);
 	}
+
+	public void RestartGame(string sceneName)
+	{
+		Application.LoadLevel (sceneName);
+	}
 }
