@@ -241,7 +241,7 @@ GameObject:
   - 114: {fileID: 716992173}
   - 114: {fileID: 716992172}
   m_Layer: 0
-  m_Name: LEADERBOARD
+  m_Name: Leaderboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -363,7 +363,7 @@ GameObject:
   - 114: {fileID: 719454604}
   - 114: {fileID: 719454603}
   m_Layer: 0
-  m_Name: QUIT
+  m_Name: Quit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -721,7 +721,7 @@ GameObject:
   - 114: {fileID: 1218870080}
   - 114: {fileID: 1218870079}
   m_Layer: 0
-  m_Name: PLAY
+  m_Name: Play
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -938,7 +938,7 @@ GameObject:
   - 114: {fileID: 1453015764}
   - 114: {fileID: 1453015763}
   m_Layer: 0
-  m_Name: RESET
+  m_Name: Reset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

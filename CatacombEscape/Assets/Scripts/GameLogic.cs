@@ -43,8 +43,10 @@ public class GameLogic : MonoBehaviour
 	public AudioClip[] dealingClips;
 	public AudioClip[] movementClips;
 	public AudioClip[] lvlCompClips;
-
+	
+	public GameObject stamUpContainer;
 	public Text playerStamUp;
+	public GameObject stamDownContainer;
 	public Text playerStamDown;
 	public GameObject equipPanel;
 	public GameObject snakePanel;
@@ -203,6 +205,7 @@ public class GameLogic : MonoBehaviour
 		{
 			nextlevel = true;
 		}
+		CheckStamina ();
 	}
 
     private void UpdateMouseLocation()
@@ -214,7 +217,24 @@ public class GameLogic : MonoBehaviour
             foundMouse = gridPanels[i].GetComponent<Panel>().MouseOverPanel();
             i++;
         }
-    }
+	}
+	
+	public void UpdateUI()
+	{
+		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
+		tempObj.GetComponent<Text>().text = playerStamina + "/100";
+		tempObj = GameObject.FindGameObjectWithTag("StamBar");
+		tempObj.GetComponent<Slider>().value = playerStamina;
+	}
+
+	private void CheckStamina()
+	{
+		if (playerStamina <= 0)
+		{
+			Debug.Log("GameOver " + gameover);
+			gameover = true;
+		}
+	}
 
     private string GetClickLocation(Vector3 pv3)
     {
@@ -323,6 +343,7 @@ public class GameLogic : MonoBehaviour
 				int rand = Random.Range (0,placementClips.Length);
 				audioSource.PlayOneShot (placementClips[rand], 0.5f);
 				playerStamina -= 2;
+				CheckStamina();
                 break;
             }
         }
@@ -420,19 +441,6 @@ public class GameLogic : MonoBehaviour
     {
         validMove.Move(playerLoc, pNext ,ref tileBoard);
     }*/
-
-    public void UpdateUI()
-    {
-		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
-		tempObj.GetComponent<Text>().text = playerStamina + "/100";
-        tempObj = GameObject.FindGameObjectWithTag("StamBar");
-		tempObj.GetComponent<Slider>().value = playerStamina;
-        if (playerStamina <= 0)
-        {
-            Debug.Log("GameOver " + gameover);
-            gameover = true;
-        }
-    }
 
 	public void GenerateBoardLogic()
 	{

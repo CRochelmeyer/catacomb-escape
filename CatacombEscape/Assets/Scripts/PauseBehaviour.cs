@@ -32,13 +32,15 @@ public class PauseBehaviour : MonoBehaviour
 			pauseUI.SetActive (true);
 		} else
 		{
+			source.PlayOneShot (unpauseClip);
 			PlayerPrefs.SetString ("Paused", "false");
+			pauseUI.SetActive (true);
 		}
 	}
 
 	public void Resume()
 	{
-		source.PlayOneShot (unpauseClip, 0.5f);
+		source.PlayOneShot (unpauseClip);
 		PlayerPrefs.SetString ("Paused", "false");
 		pauseUI.SetActive(false);
 	}
