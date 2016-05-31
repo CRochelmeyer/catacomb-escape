@@ -245,6 +245,10 @@ GameObject:
 GameObject:
   m_PrefabParentObject: {fileID: 187294, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
   m_PrefabInternal: {fileID: 1702839769}
+--- !u!1 &627131822 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 189086, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+  m_PrefabInternal: {fileID: 1702839769}
 --- !u!1 &634059574 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 190094, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
@@ -342,9 +346,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9466af4a8c0feee45b3cff7d54c450b1, type: 3}
   playerStamUp: {fileID: 773553647}
   playerStamDown: {fileID: 1259790019}
+  equipPanel: {fileID: 1460134583}
+  snakePanel: {fileID: 627131822}
   snakeStamDown: {fileID: 1850199937}
+  scorpionPanel: {fileID: 1667422792}
   scorpStamDown: {fileID: 1918570882}
-  breadStamUp: {fileID: 1470544449}
+  statPanel: {fileID: 956577113}
   lvlNoCleared: {fileID: 318548136}
   lvlPointTot: {fileID: 865822390}
   greenCollected: {fileID: 527560965}
@@ -358,6 +365,10 @@ MonoBehaviour:
 Animator:
   m_PrefabParentObject: {fileID: 9517322, guid: 1ea5eae691919d34c861fb052ff038c7,
     type: 2}
+  m_PrefabInternal: {fileID: 1702839769}
+--- !u!1 &956577113 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 151630, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
   m_PrefabInternal: {fileID: 1702839769}
 --- !u!20 &991364556 stripped
 Camera:
@@ -476,12 +487,10 @@ GameObject:
 GameObject:
   m_PrefabParentObject: {fileID: 111118, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
   m_PrefabInternal: {fileID: 1702839769}
---- !u!114 &1470544449 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 11447296, guid: 1ea5eae691919d34c861fb052ff038c7,
-    type: 2}
+--- !u!1 &1460134583 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 185972, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
   m_PrefabInternal: {fileID: 1702839769}
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &1500726997
 GameObject:
   m_ObjectHideFlags: 0
@@ -814,6 +823,10 @@ Prefab:
     - {fileID: 11463002, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1667422792 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 178614, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+  m_PrefabInternal: {fileID: 1702839769}
 --- !u!1 &1672101412 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 178012, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
@@ -950,6 +963,14 @@ Prefab:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 163448, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 189086, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 141952, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}

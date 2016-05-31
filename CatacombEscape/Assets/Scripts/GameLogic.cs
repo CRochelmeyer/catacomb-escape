@@ -46,9 +46,13 @@ public class GameLogic : MonoBehaviour
 
 	public Text playerStamUp;
 	public Text playerStamDown;
+	public GameObject equipPanel;
+	public GameObject snakePanel;
 	public Text snakeStamDown;
+	public GameObject scorpionPanel;
 	public Text scorpStamDown;
-	public Text breadStamUp;
+	//public Text breadStamUp;
+	public GameObject statPanel; //this is what pops up at gameover
 	public Text lvlNoCleared;
 	public Text lvlPointTot;
 	public Text greenCollected;

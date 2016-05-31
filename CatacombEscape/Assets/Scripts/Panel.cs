@@ -20,21 +20,6 @@ public class Panel : MonoBehaviour//, IPointerEnterHandler
         //grabs the world corner of the individual grid panel into world corners
 		panel.GetWorldCorners(worldCorners);
 
-		//Dont use this, it puts way too much pressure on the system and delays response time for about 5 seconds!!
-		/*
-        Debug.Log(panel.name);
-        Debug.Log("wc0 :: " + worldCorners[0]);
-        Debug.Log("wc1 :: " + worldCorners[1]);
-        Debug.Log("wc2 :: " + worldCorners[2]);
-        Debug.Log("wc3 :: " + worldCorners[3]);
-        this.gameObject.GetComponent<Panel>().GetComponent<RectTransform>().GetWorldCorners(worldCorners);
-        Debug.Log(panel.name + " :::::::");
-        Debug.Log("wc0 :: " + worldCorners[0]);
-        Debug.Log("wc1 :: " + worldCorners[1]);
-        Debug.Log("wc2 :: " + worldCorners[2]);
-        Debug.Log("wc3 :: " + worldCorners[3]);
-		*/
-
         //check mouse coord within the 4 corner of the gridpanel
         if (mousePosition.x >= worldCorners [0].x && mousePosition.x < worldCorners [2].x 
 			&& mousePosition.y >= worldCorners [0].y && mousePosition.y < worldCorners [2].y)
