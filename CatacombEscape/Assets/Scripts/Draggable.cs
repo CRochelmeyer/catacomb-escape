@@ -24,6 +24,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			//Debug.Log("OnbeginDrag");
 			//save the parent incase of returns from invalid drags
 			locationToReturn = this.transform.position;
+			//locationToReturn = this.transform.TransformPoint (Vector3.zero);
 		}
     }
 
@@ -31,8 +32,13 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 	{
 		if (PlayerPrefs.GetString ("Paused") != "true")
 		{
-			//Debug.Log("onDrag");
-			this.transform.position = eventData.position;
+			//Debug.Log("MousePosition = " + Input.mousePosition);
+			Vector3 inputPosition = Input.mousePosition;
+			Vector3 ray = Camera.main.ScreenToWorldPoint (inputPosition);
+			ray = new Vector3 (ray.x, ray.y, 0);
+			//this.transform.position = temp;
+			this.GetComponent<RectTransform>().position = ray;
+			//this.transform.TransformPoint (eventData.position);
 		}
 	}
 
