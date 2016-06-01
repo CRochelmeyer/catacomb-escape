@@ -736,6 +736,26 @@ Prefab:
       propertyPath: m_FontData.m_BestFit
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 106570, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 22419120, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 228.300003
+      objectReference: {fileID: 0}
+    - target: {fileID: 22419120, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 40.2999992
+      objectReference: {fileID: 0}
+    - target: {fileID: 22419120, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 41.7000008
+      objectReference: {fileID: 0}
+    - target: {fileID: 11411576, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Text
+      value: New Hand
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
   m_IsPrefabParent: 0

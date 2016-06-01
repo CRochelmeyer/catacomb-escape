@@ -476,6 +476,22 @@ public class GameLogic : MonoBehaviour
 			}
         }
     }
+    
+    public void NewHand()
+    {
+        handTiles = GameObject.FindGameObjectsWithTag("handDrag");
+        if (handTiles != null)
+        {
+            for (int i =0; i<handTiles.Length;i++)
+            {
+                Destroy(handTiles[i]);
+            }
+        }
+        playerStamUp.text = "-10";
+        StartCoroutine(StamPopup(stamUpContainer));
+        playerStamina += -10;
+        GenerateHand();
+    }
 
     public void PlayEvent(string pcell)
     {
@@ -533,7 +549,6 @@ public class GameLogic : MonoBehaviour
                 }
                 playerStamUp.text = tileBoard[temprow, tempcol].combat.ToString();
                 StartCoroutine(StamPopup(stamUpContainer));
-                Debug.Log("green tile str" +tileBoard[temprow, tempcol].combat);
                 playerStamina += tileBoard[temprow, tempcol].combat;
                 CheckStamina();
             }
