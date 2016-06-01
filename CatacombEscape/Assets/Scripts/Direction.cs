@@ -37,7 +37,6 @@ public class Direction : MonoBehaviour
                         pboard[crow, ccol]._isOccupied = false;
                         //Debug.Log(" new occupied " + pNext._boardLocation);
                         pboard[nrow, ncol]._isOccupied = true;
-                        Debug.Log("Valid move updated");
                         valid = true;
                         //call movement function
                     }

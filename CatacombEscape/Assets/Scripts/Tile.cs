@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Tile  {
 
     public List<string> _entry { get; set; }
+    public string _eventItem { get; set; }
     public string _tileID {get; set;}
     public bool _isOccupied { get; set; }
     public bool _isActive { get; set; }
@@ -13,7 +14,7 @@ public class Tile  {
     public int combat { get; set; }
     public string _boardLocation { get; set; }
 
-
+    protected Tile() { }
     public Tile(List<string> pEntry, string pID , string pboardloc)
     {
         //Debug.Log("tile 3param");
@@ -116,7 +117,6 @@ public class Tile  {
                         if (_entry.Contains("down"))
                         {
                             entry = true;
-                            Debug.Log("can enter up");
                         }
                         break;
                     }
@@ -125,7 +125,6 @@ public class Tile  {
                         if(_entry.Contains("right"))
                         {
                             entry = true;
-                            Debug.Log("can enter left");
                         }
                         break;
                     }
@@ -134,7 +133,6 @@ public class Tile  {
                         if (_entry.Contains("up"))
                         {
                             entry = true;
-                            Debug.Log("can enter down");
                         }
                         break;
                     }
@@ -143,7 +141,6 @@ public class Tile  {
                         if (_entry.Contains("left"))
                         {
                             entry = true;
-                            Debug.Log("can enter right");
                         }
                         break;
                     }
@@ -266,7 +263,7 @@ public class Tile  {
     {
         if (_isDummy == false)
         {
-            Debug.Log("_tileID : " + _tileID);
+            Debug.Log(" start of test_tileID : " + _tileID);
             Debug.Log("isOccupied : " + _isOccupied);
             Debug.Log("isActive : " + _isActive);
             Debug.Log("is set :" + _isEntrySet);
@@ -278,7 +275,7 @@ public class Tile  {
                 {
                     Debug.Log(_entry[i]);
                 }
-                Debug.Log("is in loc :" + _boardLocation);
+                Debug.Log("end of test is in loc :" + _boardLocation);
             }
         }
     }

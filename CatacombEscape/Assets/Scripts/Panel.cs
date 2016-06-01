@@ -25,7 +25,6 @@ public class Panel : MonoBehaviour//, IPointerEnterHandler
 			&& mousePosition.y >= worldCorners [0].y && mousePosition.y < worldCorners [2].y)
 		{
 			gameLogic.MouseLocation = panel.name;
-			Debug.Log ("Mouse in panel " + panel.name);
 			return true;
 		} else
 		{

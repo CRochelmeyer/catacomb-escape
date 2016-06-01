@@ -344,6 +344,8 @@ MonoBehaviour:
   lvlCompClips:
   - {fileID: 8300000, guid: 23ec5ef9f656ad5469e70bfcade7758f, type: 3}
   - {fileID: 8300000, guid: 9466af4a8c0feee45b3cff7d54c450b1, type: 3}
+  Equipment: {fileID: 1089661794}
+  equipDesc: {fileID: 1485296726}
   stamUpContainer: {fileID: 1109852338}
   playerStamUp: {fileID: 773553647}
   stamDownContainer: {fileID: 1109852339}
@@ -385,6 +387,12 @@ GameObject:
 GameObject:
   m_PrefabParentObject: {fileID: 181310, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
   m_PrefabInternal: {fileID: 1109852337}
+--- !u!114 &1089661794 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11485990, guid: 1ea5eae691919d34c861fb052ff038c7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1109852337}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1001 &1109852337
 Prefab:
   m_ObjectHideFlags: 0
@@ -720,6 +728,14 @@ Prefab:
       propertyPath: m_Text
       value: -5
       objectReference: {fileID: 0}
+    - target: {fileID: 11485990, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_FontData.m_BestFit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11470268, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_FontData.m_BestFit
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
   m_IsPrefabParent: 0
@@ -839,6 +855,12 @@ GameObject:
 GameObject:
   m_PrefabParentObject: {fileID: 185972, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
   m_PrefabInternal: {fileID: 1109852337}
+--- !u!114 &1485296726 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11470268, guid: 1ea5eae691919d34c861fb052ff038c7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1109852337}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &1500726997
 GameObject:
   m_ObjectHideFlags: 0
