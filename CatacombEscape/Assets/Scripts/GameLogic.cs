@@ -497,7 +497,8 @@ public class GameLogic : MonoBehaviour
                         {
                             snakeStamDown.text = tileBoard[temprow, tempcol].combat.ToString();
                             StartCoroutine(eventWait(snakePanel));
-                            //snakePanel.SetActive(false);
+                            playerStamDown.text = tileBoard[temprow, tempcol].combat.ToString();
+                            StartCoroutine(StamPopup(stamDownContainer));
                             playerStamina += tileBoard[temprow, tempcol].combat + playerEquip;
                             break;
                         }
@@ -505,6 +506,8 @@ public class GameLogic : MonoBehaviour
                         {
                             scorpStamDown.text = tileBoard[temprow, tempcol].combat.ToString();
                             StartCoroutine(eventWait(scorpionPanel));
+                            playerStamDown.text = tileBoard[temprow, tempcol].combat.ToString();
+                            StartCoroutine(StamPopup(stamDownContainer));
                             playerStamina += tileBoard[temprow, tempcol].combat + playerEquip;
                             break;
                         }
@@ -524,10 +527,12 @@ public class GameLogic : MonoBehaviour
                     playerEquip++;
                     equipmentindex.TryGetValue(playerEquip, out itemb);
                     equipDesc.text = ("You've found a new item " + itemb + " it seems to be more durable than the " + item).ToString();
-                    StartCoroutine(eventWait(equipPanel));
+                    StartCoroutine(eventWait(equipPanel,4));
                     //update player equip text
                     Equipment.text = itemb;
                 }
+                playerStamUp.text = tileBoard[temprow, tempcol].combat.ToString();
+                StartCoroutine(StamPopup(stamUpContainer));
                 Debug.Log("green tile str" +tileBoard[temprow, tempcol].combat);
                 playerStamina += tileBoard[temprow, tempcol].combat;
                 CheckStamina();
@@ -544,7 +549,19 @@ public class GameLogic : MonoBehaviour
     IEnumerator eventWait(GameObject pType)
     {
         pType.SetActive(true);
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(2f);
+        pType.SetActive(false);
+    }
+    IEnumerator eventWait(GameObject pType, int pt)
+    {
+        pType.SetActive(true);
+        yield return new WaitForSeconds(pt);
+        pType.SetActive(false);
+    }
+    IEnumerator StamPopup(GameObject pType)
+    {
+        pType.SetActive(true);
+        yield return new WaitForSeconds(7f);
         pType.SetActive(false);
     }
     // DO not have a function named the same as a type (PlayerMove script!). Also validmove.Move returns a bool... Don't leave something that doesn't work/do anyting still implemented
