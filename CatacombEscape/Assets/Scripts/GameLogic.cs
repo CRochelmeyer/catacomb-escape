@@ -53,6 +53,8 @@ public class GameLogic : MonoBehaviour
 	public AudioClip[] placementClips;
 	public AudioClip[] dealingClips;
 	public AudioClip[] movementClips;
+	public AudioClip[] greenTileClips;
+	public AudioClip[] redTileClips;
 	public AudioClip[] lvlCompClips;
 
     public Text Equipment;
@@ -576,6 +578,9 @@ public class GameLogic : MonoBehaviour
                             break;
                         }
                 }
+				int rand = Random.Range (0,redTileClips.Length);
+				audioSource.PlayOneShot (redTileClips[rand]);
+
                 redstep++;
             }
             else if (tileBoard[temprow, tempcol]._event == "green")
@@ -594,12 +599,16 @@ public class GameLogic : MonoBehaviour
                     equipDesc.text = ("You've found a " + itemb + ". It feels more durable than your " + item + ".").ToString();
                     StartCoroutine(eventWait(equipPanel,4));
                     //update player equip text
-                    Equipment.text = itemb;                 
+                    Equipment.text = itemb;
                 }
                 playerStamUp.text = tileBoard[temprow, tempcol].combat.ToString();
                 StartCoroutine(StamPopup(stamUpContainer));
                 playerStamina += tileBoard[temprow, tempcol].combat;
                 CheckStamina();
+				
+				int rand = Random.Range (0,greenTileClips.Length);
+				audioSource.PlayOneShot (greenTileClips[rand]);
+
                 //increment the greens taken
                 greencol++;
             }
