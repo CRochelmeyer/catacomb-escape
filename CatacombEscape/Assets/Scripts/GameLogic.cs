@@ -348,7 +348,6 @@ public class GameLogic : MonoBehaviour
 	}
     public void MoveEvents()
     {
-        int move = Random.Range(0, 2);
         Debug.Log("move event");
         string etloc = "";
         string newloc = "";
@@ -369,8 +368,8 @@ public class GameLogic : MonoBehaviour
                 etloc = eventTiles[i].name.Substring(0, 2);
                 System.Int32.TryParse(etloc.Substring(0, 1), out currow);
                 System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
-                newrow = currow + (Random.Range(-1, 1));
-                newcol = curcol + (Random.Range(-1, 1));
+                newrow = Mathf.Abs(currow + (Random.Range(-1, 1)) );
+                newcol = Mathf.Abs(curcol + (Random.Range(-1, 1)) );
                 if (newrow <=5 && newrow >=0 && newrow != currow)
                 {
                     vertmove = true;
@@ -381,7 +380,7 @@ public class GameLogic : MonoBehaviour
                 }
                 Debug.Log(newrow + " : " +currow + " @@@@ " + newcol + " : " + curcol);
                 //if new row is within bounds and not the same as current move tile 
-                if (vertmove && (move == 0) )
+                if (vertmove )
                 {
                     //check the new location is not already an event or the player/exits
                     Tile dummy = new Tile(0);
@@ -410,7 +409,7 @@ public class GameLogic : MonoBehaviour
                     }
                 }
                 //else if horizontal check
-                else if (horimove && (move ==1))
+                else if (horimove)
                 {
                     Tile dummy = new Tile(0);
                     Debug.Log("Move horizontal");
