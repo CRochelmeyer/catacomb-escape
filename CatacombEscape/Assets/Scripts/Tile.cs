@@ -60,7 +60,28 @@ public class Tile  {
         _isActive = false;
         _isDummy = true;
     }
+    //flush entry to move array around
+    public void FlushEntry()
+    {
+        if (_entry != null)
+        {
+            _entry.Clear();
+        }
+    }
+    //change tile positions for events
+    public void UpdatePosition(Tile pTile)
+    {
+        _eventItem = pTile._eventItem;
+        combat = pTile.combat;
+        _event = pTile._event;
+        _isActive = pTile._isActive;
 
+    }
+    public void ClearEvent()
+    {
+        _event = "";
+        _eventItem = "";
+    }
     //move validator
     public bool ValidMove(string pMove)
     {
@@ -236,13 +257,13 @@ public class Tile  {
         if (dir == "green")
         {
             _event = "green";
-            combat = Random.Range(10, 15);
+            combat = Random.Range(10, 16);
         }
 
         else if (dir == "red")
         {
             _event = "red";
-            combat = Random.Range(-8, -4);
+            combat = Random.Range(-8, -3);
         }
     }
 
@@ -258,11 +279,19 @@ public class Tile  {
         _boardLocation = pTile._boardLocation;
         generateEntry();
     }
-
+    public void CloneTile(Tile pTileb)
+    {
+        this.combat = pTileb.combat;
+        this._boardLocation = pTileb._boardLocation;
+        this._event = pTileb._event;
+        this._eventItem = pTileb._eventItem;
+        this._isDummy = pTileb._isDummy;
+        this._isActive = pTileb._isActive;
+    }
     public void test()
     {
-        if (_isDummy == false)
-        {
+        //if (_isDummy == false)
+        //{
             Debug.Log(" start of test_tileID : " + _tileID);
             Debug.Log("isOccupied : " + _isOccupied);
             Debug.Log("isActive : " + _isActive);
@@ -277,6 +306,6 @@ public class Tile  {
                 }
                 Debug.Log("end of test is in loc :" + _boardLocation);
             }
-        }
+        //}
     }
 }
