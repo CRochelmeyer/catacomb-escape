@@ -55,7 +55,7 @@ public class PlayerMove : MonoBehaviour
 				if (player.transform.localPosition == targetPosition) {
 					animator.SetInteger ("Direction", 0);
 					gameLogic.SetPlayerLoc ();
-					moving = false;
+                    moving = false;
 				}
 			}
 		}

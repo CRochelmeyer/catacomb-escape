@@ -14,5 +14,4 @@ public class EventTile : Tile
         _isDummy = false;
         GenerateEvent();
     }
-
 }

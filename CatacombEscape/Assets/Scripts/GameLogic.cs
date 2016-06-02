@@ -255,9 +255,8 @@ public class GameLogic : MonoBehaviour
 	public void SetPlayerLoc()
 	{
 		playerLoc = destLoc;
-
-		//play event for event tiles    
-		if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
+        //play event for event tiles    
+        if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
 		{
 			PlayEvent(playerLoc);
 		}
@@ -267,7 +266,9 @@ public class GameLogic : MonoBehaviour
 		{
 			nextlevel = true;
 		}
-		CheckStamina ();
+        //move events
+        MoveEvents();
+        CheckStamina ();
 	}
 
     private void UpdateMouseLocation()
@@ -292,7 +293,7 @@ public class GameLogic : MonoBehaviour
         tileNoPlaced.text = (tileplaced).ToString();
         tileNoTot.text = (tileplaced * -0.56).ToString();
         highscore = (level * 100) + (greencol * 10) + (redavoid * 20) + (tileplaced * -.56);
-        pointTot.text = highscore.ToString();
+        pointTot.text = highscore.ToString("0");
     }
     //try again button for the statpanel disable statpanel and destory gameObject and load the new scene.
     public void TryAgain()
@@ -323,7 +324,101 @@ public class GameLogic : MonoBehaviour
             playerStamina = 100;
         }
 	}
+    public void MoveEvents()
+    {
+        int move = Random.Range(0, 2);
+        Debug.Log("move event");
+        string etloc = "";
+        string newloc = "";
+        int panelkey = 0;
+        int currow = 0;
+        int curcol = 0;
+        int newrow = 0;
+        int newcol = 0;
+        bool vertmove = false;
+        bool horimove = false;
 
+        GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
+        for(int i =0; i<eventTiles.Length;i++)
+        {
+            //for red tiles only
+            if (eventTiles[i].GetComponent<Image>().sprite.name == "event_red")
+            {
+                etloc = eventTiles[i].name.Substring(0, 2);
+                System.Int32.TryParse(etloc.Substring(0, 1), out currow);
+                System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
+                newrow = currow + (Random.Range(-1, 1));
+                newcol = curcol + (Random.Range(-1, 1));
+                if (newrow <=5 && newrow >=0 && newrow != currow)
+                {
+                    vertmove = true;
+                }
+                if (newcol <= 4 && newcol >=0 && newcol != curcol)
+                {
+                    horimove = true;
+                }
+                Debug.Log(newrow + " : " +currow + " @@@@ " + newcol + " : " + curcol);
+                //if new row is within bounds and not the same as current move tile 
+                if (vertmove && (move == 0) )
+                {
+                    //check the new location is not already an event or the player/exits
+                    Tile dummy = new Tile(0);
+                    Debug.Log("Move Vertical");
+                    newloc = newrow.ToString() + curcol.ToString();
+                    cellindex.TryGetValue(newloc, out panelkey);
+                    Debug.Log(newcol + "newcol " + curcol + " curcol " + newrow + " newrow " + currow + " currow");
+                    if ((tileBoard[newrow, curcol]._tileID != "tile_exit") && (tileBoard[newrow, curcol]._tileID != "tile_entrance")  && (newloc != playerLoc) && (tileBoard[newrow, curcol]._event != "green") && (tileBoard[newrow, curcol]._event != "red"))
+                    {
+                        //move the tile
+                        eventTiles[i].transform.localPosition = gridPanels[panelkey].transform.localPosition;
+                        //update tileboard
+                        //clone the current tile to dummy
+                        dummy.CloneTile(tileBoard[currow, curcol]);
+                        //set current tile event htats moving to no event
+                        tileBoard[currow, curcol].ClearEvent();
+                        //flush dummy entry if it is set from the previous tile cloned
+                        if (dummy._isEntrySet)
+                        {
+                            dummy.FlushEntry();
+                        }
+                        //update the new board position with the dummy clone
+                        tileBoard[newrow, curcol].UpdatePosition(dummy);
+                        //update objclone name to be used for destroying the game obj
+                        eventTiles[i].name = newloc + "(Clone)";
+                    }
+                }
+                //else if horizontal check
+                else if (horimove && (move ==1))
+                {
+                    Tile dummy = new Tile(0);
+                    Debug.Log("Move horizontal");
+                    newloc = currow.ToString() + newcol.ToString();
+                    cellindex.TryGetValue(newloc, out panelkey);
+                    Debug.Log(newcol + "newcol " + curcol + " curcol " + newrow + " newrow " + currow + " currow");
+                    if ((tileBoard[currow, newcol]._tileID != "tile_exit") && (tileBoard[currow, newcol]._tileID != "tile_entrance") && (newloc != playerLoc) && (tileBoard[currow, newcol]._event != "green") && (tileBoard[currow, newcol]._event != "red"))
+                    {
+                        //move thetile
+                        eventTiles[i].transform.localPosition = gridPanels[panelkey].transform.localPosition;
+                        //update tileboard
+                        //clone the current tile to dummy
+                        dummy.CloneTile(tileBoard[currow, curcol]);
+                        //set current tile event htats moving to no event
+                        tileBoard[currow, curcol].ClearEvent();
+                        //flush dummy entry if it is set from the previous tile cloned
+                        if (dummy._isEntrySet)
+                        {
+                            dummy.FlushEntry();
+                        }
+                        //update the new board position with the dummy clone
+                        tileBoard[currow, newcol].UpdatePosition(dummy);
+                        //update objclone name to be used for destroying the game obj
+                        eventTiles[i].name = newloc + "(Clone)";
+                    }
+                }
+                //else do nothing
+            }
+        }
+    }
     private string GetClickLocation(Vector3 pv3)
     {
         string location = "invalid location";
@@ -530,8 +625,6 @@ public class GameLogic : MonoBehaviour
         {
             int temprow = System.Int32.Parse(pcell.Substring(0, 1));
             int tempcol = System.Int32.Parse(pcell.Substring(1, 1));
-            Debug.Log("start tile test");
-            tileBoard[temprow, tempcol].test();
             //Debug.Log(tileBoard[temprow, tempcol]._tileID);
             //play event = remove stamina and destroy the event clone...
             if (tileBoard[temprow, tempcol]._event == "red")
@@ -563,7 +656,6 @@ public class GameLogic : MonoBehaviour
             }
             else if (tileBoard[temprow, tempcol]._event == "green")
             {
-                Debug.Log("Green Event");
 				int equipRand = Random.Range(0, 10);
 				if (equipRand <= 3)
                 {
@@ -575,7 +667,7 @@ public class GameLogic : MonoBehaviour
                     playerEquip++;
                     equipmentindex.TryGetValue(playerEquip, out itemb);
                     equipDesc.text = ("You've found a " + itemb + ". It feels more durable than your " + item + ".").ToString();
-                    StartCoroutine(eventWait(equipPanel,4));
+                    StartCoroutine(eventWait(equipPanel,3));
                     //update player equip text
                     Equipment.text = itemb;                 
                 }
@@ -590,6 +682,7 @@ public class GameLogic : MonoBehaviour
 
             if (tempObj != null)
             {
+                Debug.Log("destroy clone");
                 Destroy(tempObj);
                 tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive = false;
             }
@@ -610,7 +703,7 @@ public class GameLogic : MonoBehaviour
     IEnumerator StamPopup(GameObject pType)
     {
         pType.SetActive(true);
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(4f);
         pType.SetActive(false);
     }
 
@@ -664,6 +757,8 @@ public class GameLogic : MonoBehaviour
                 }
                 temptile = new EventTile(pair.Value, pair.Key, _eventitem);
                 tileBoard[temprow, tempcol] = temptile;
+                //using list of tiles for events due to movements 
+                //tileEvents.Add(temptile);
                 //temptile.test();
             }
             //clear eventindex
