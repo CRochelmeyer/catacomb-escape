@@ -34,5 +34,13 @@ public class HandBtn : MonoBehaviour {
         }   
         else { Debug.Log("_hand is empty"); }*/
     }
+    public void TryAgain()
+    {
 
+    }
+
+    public void Menu()
+    {
+
+    }
 }

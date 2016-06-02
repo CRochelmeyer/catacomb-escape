@@ -41,6 +41,12 @@ public class GameLogic : MonoBehaviour
 	private PlayerMove movePlayer;
 	private GameObject[] gridPanels;
     private Tile[,] tileBoard;
+    private double tileplaced = 0;
+    private double greencol =0;
+    private double redavoid=0;
+    private int redtiles;
+    private int redstep;
+    private double highscore;
 
 	private AudioSource audioSource;
 	public AudioClip startGameClip;
@@ -77,7 +83,8 @@ public class GameLogic : MonoBehaviour
     void Awake()
     {
 		Debug.Log("GameLogic awake");
-
+        //refresh and initialse redstep per awake call
+        redstep = 0;
 		audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource> ();
 		audioSource.PlayOneShot (startGameClip, 0.5f);
 		
@@ -214,12 +221,12 @@ public class GameLogic : MonoBehaviour
             //PlayerPrefs.SetString("GeneratedBoard", "false");
             NextLevel();
         }
-
+        CheckStamina();
         if (gameover)
         {
-	        Debug.Log("Game Over");
-	        Destroy(gameObject);
-	        Application.LoadLevel("Menu");
+            Debug.Log("Gameover");
+            GameOverHS();
+            statPanel.SetActive(true);
         }
     }
 
@@ -274,6 +281,28 @@ public class GameLogic : MonoBehaviour
         }
 	}
 	
+    private void GameOverHS()
+    {
+        lvlNoCleared.text = level.ToString();
+        lvlPointTot.text = (level * 100).ToString();
+        greenCollected.text = (greencol).ToString();
+        greenPointTot.text = (greencol * 10).ToString();
+        redAvoided.text = redavoid.ToString();
+        redPointTot.text = (redavoid * 20).ToString();
+        tileNoPlaced.text = (tileplaced).ToString();
+        tileNoTot.text = (tileplaced * -0.56).ToString();
+        highscore = (level * 100) + (greencol * 10) + (redavoid * 20) + (tileplaced * -.56);
+        pointTot.text = highscore.ToString();
+    }
+    //try again button for the statpanel disable statpanel and destory gameObject and load the new scene.
+    public void TryAgain()
+    {
+        Debug.Log("Try again");
+        statPanel.SetActive(false);
+        Destroy(gameObject);
+        PauseBehaviour pb = new PauseBehaviour();
+        pb.LoadScene("main_game");
+    }
 	public void UpdateUI()
 	{
 		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
@@ -402,6 +431,8 @@ public class GameLogic : MonoBehaviour
 				int rand = Random.Range (0,placementClips.Length);
 				audioSource.PlayOneShot (placementClips[rand], 0.5f);
 				playerStamina -= 2;
+                //increment tileplaced
+                tileplaced++;
 				CheckStamina();
                 break;
             }
@@ -528,7 +559,7 @@ public class GameLogic : MonoBehaviour
                             break;
                         }
                 }
-                //Debug.Log("player stamup " + playerStamUp.text);
+                redstep++;
             }
             else if (tileBoard[temprow, tempcol]._event == "green")
             {
@@ -545,12 +576,14 @@ public class GameLogic : MonoBehaviour
                     equipDesc.text = ("You've found a new item " + itemb + " it seems to be more durable than the " + item).ToString();
                     StartCoroutine(eventWait(equipPanel,4));
                     //update player equip text
-                    Equipment.text = itemb;
+                    Equipment.text = itemb;                 
                 }
                 playerStamUp.text = tileBoard[temprow, tempcol].combat.ToString();
                 StartCoroutine(StamPopup(stamUpContainer));
                 playerStamina += tileBoard[temprow, tempcol].combat;
                 CheckStamina();
+                //increment the greens taken
+                greencol++;
             }
             GameObject tempObj = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
 
@@ -741,10 +774,11 @@ public class GameLogic : MonoBehaviour
 			Destroy(handTiles[i]);
 		}
 
-		//degenerate eventTiles
+		//degenerate eventTiles and calculate red tiles avoided
 		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
 		for (int i = 0; i < eventTiles.Length; i++)
 		{
+            redavoid += redtiles - redstep;
 			Destroy(eventTiles[i]);
 		}
 
@@ -755,9 +789,8 @@ public class GameLogic : MonoBehaviour
 			gridPanels[i].GetComponent<Image>().sprite = null;
 			gridPanels[i].GetComponent<Image>().color = new Color(255f,255f,255f,0f);
 		}
-		
-		//PlayerPrefs.SetString ("GeneratedBoard", "false");
 
+        //PlayerPrefs.SetString ("GeneratedBoard", "false");
 		//initialise 
 		Debug.Log("New Level " + level);
 		this.Awake();
@@ -780,6 +813,9 @@ public class GameLogic : MonoBehaviour
         //generate number of red tiles
         //random of 1 to 3 tiles inclusive
         int red = Random.Range(1, 4);
+        //store the rng red into redtiles to use for scoring
+        redtiles = red;
+
         //Debug.Log("red " + red);
 
         if (gridPanels != null)
