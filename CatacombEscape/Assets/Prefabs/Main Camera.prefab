@@ -12,9 +12,9 @@ GameObject:
   - 92: {fileID: 9294198}
   - 124: {fileID: 12404896}
   - 81: {fileID: 8144704}
-  - 114: {fileID: 11463002}
   - 82: {fileID: 8261376}
   - 114: {fileID: 11430276}
+  - 114: {fileID: 11476574}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -29,7 +29,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 119238}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,7 +43,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: .192156866, g: .301960796, b: .474509805, a: .0196078438}
+  m_BackGroundColor: {r: .149019614, g: .011764707, b: .011764707, a: 1}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -84,11 +84,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
+  m_audioClip: {fileID: 8300000, guid: 1ade506bfd0ea2a4cae801078db10944, type: 3}
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   Priority: 128
@@ -165,8 +165,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   source: {fileID: 8261376}
   bgSound1: {fileID: 8300000, guid: 1ade506bfd0ea2a4cae801078db10944, type: 3}
-  bgSound2: {fileID: 8300000, guid: d3b2accaf496ed141ad5e3c33d5c39cf, type: 3}
---- !u!114 &11463002
+  bgSound2: {fileID: 8300000, guid: 8b8e8bedf3ce91d4f866035520a6f013, type: 3}
+--- !u!114 &11476574
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -174,10 +174,72 @@ MonoBehaviour:
   m_GameObject: {fileID: 119238}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ba8fbe4797329840832a6a19d607ea4, type: 3}
+  m_Script: {fileID: 11500000, guid: cb6d1697ec79d6646922ca0052fb3b72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameManager: {fileID: 158638, guid: 37b2ffb950f6f3849a616425a5133f41, type: 2}
+  tileSprite:
+  - {fileID: 21300000, guid: ace2033c313885b44a70da746418ed8e, type: 3}
+  - {fileID: 21300000, guid: 928c2150b33758b42a81a9323d951500, type: 3}
+  - {fileID: 21300000, guid: 5394e2bd83f2bb1458f702c36e64af52, type: 3}
+  - {fileID: 21300000, guid: 8c2e56342af17f949b3ab0b72f662163, type: 3}
+  - {fileID: 21300000, guid: 014cf85086369844eb49ecf1300b3b12, type: 3}
+  - {fileID: 21300000, guid: fb9e25306ed58f64fa008f1981a1a7d1, type: 3}
+  - {fileID: 21300000, guid: 51ba3be499e220d419d0521407130a33, type: 3}
+  - {fileID: 21300000, guid: 6fe0e1c7ba4147f40b68c968ef1f6899, type: 3}
+  - {fileID: 21300000, guid: 91a209fbb7e2e58499c42cd3b7c95f17, type: 3}
+  - {fileID: 21300000, guid: 41448ee07a922aa42a7f0f8dfc376010, type: 3}
+  - {fileID: 21300000, guid: 953e5ca60b8ef5e46a3031318afda439, type: 3}
+  gridSprite:
+  - {fileID: 0}
+  - {fileID: 21300000, guid: a4e52dc4700e70e4882a63b457eec826, type: 3}
+  - {fileID: 21300000, guid: 8790bd9a00ef71f41b441ab5789c8296, type: 3}
+  - {fileID: 21300000, guid: af79ccdbc42cb1b40a9d2e0e15748e01, type: 3}
+  - {fileID: 21300000, guid: 8b433a604f9c07344bc51d1ab7010c50, type: 3}
+  btmPanel: {fileID: 0}
+  handTiles: []
+  exit: 
+  startGameClip: {fileID: 8300000, guid: 0ab30f4d2c5ebbe409e4bcad31e6c4ff, type: 3}
+  placementClips:
+  - {fileID: 8300000, guid: 873a189bef2ec964996ea78716b12028, type: 3}
+  - {fileID: 8300000, guid: 5789de64f1dcfed41baf1cc07832b891, type: 3}
+  - {fileID: 8300000, guid: 0e59910e69c0ba1419861df3bcc87abc, type: 3}
+  - {fileID: 8300000, guid: 94a4f644b7ac81e49be17fa5cde70de8, type: 3}
+  - {fileID: 8300000, guid: ca9fba4575a70c34db7d060794b39a16, type: 3}
+  dealingClips:
+  - {fileID: 8300000, guid: 521088514a9121f40a9797cf18921cb1, type: 3}
+  movementClips:
+  - {fileID: 8300000, guid: 89b6bea371f4e1140b27846808cbd9c5, type: 3}
+  - {fileID: 8300000, guid: 7afd77310659af746b83392094683810, type: 3}
+  greenTileClips:
+  - {fileID: 8300000, guid: c8cab5e681350cc45b9b5ebb5aab2234, type: 3}
+  - {fileID: 8300000, guid: 4cc2e932e9692e84c83febe5fe284e1c, type: 3}
+  redTileClips:
+  - {fileID: 8300000, guid: 22ac66faaf9aef745a9580fbd6d6c9b8, type: 3}
+  - {fileID: 8300000, guid: 68ec013717c1b6140bf4c5f289e36619, type: 3}
+  lvlCompClips:
+  - {fileID: 8300000, guid: 23ec5ef9f656ad5469e70bfcade7758f, type: 3}
+  - {fileID: 8300000, guid: 9466af4a8c0feee45b3cff7d54c450b1, type: 3}
+  Equipment: {fileID: 0}
+  equipDesc: {fileID: 0}
+  stamUpContainer: {fileID: 0}
+  playerStamUp: {fileID: 0}
+  stamDownContainer: {fileID: 0}
+  playerStamDown: {fileID: 0}
+  equipPanel: {fileID: 0}
+  snakePanel: {fileID: 0}
+  snakeStamDown: {fileID: 0}
+  scorpionPanel: {fileID: 0}
+  scorpStamDown: {fileID: 0}
+  statPanel: {fileID: 0}
+  lvlNoCleared: {fileID: 0}
+  lvlPointTot: {fileID: 0}
+  greenCollected: {fileID: 0}
+  greenPointTot: {fileID: 0}
+  redAvoided: {fileID: 0}
+  redPointTot: {fileID: 0}
+  tileNoPlaced: {fileID: 0}
+  tileNoTot: {fileID: 0}
+  pointTot: {fileID: 0}
 --- !u!124 &12404896
 Behaviour:
   m_ObjectHideFlags: 1

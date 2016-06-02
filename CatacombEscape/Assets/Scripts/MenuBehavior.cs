@@ -13,7 +13,7 @@ public class MenuBehavior : MonoBehaviour
 	{
 		string hs = PlayerPrefs.GetString ("HighScore");
 
-		if (hs != null || hs != "") //if player has a highscore
+		if (hs != null && hs != "") //if player has a highscore
 		{
 			noHighScorePanel.SetActive (false);
 			highScorePanel.SetActive (true);
