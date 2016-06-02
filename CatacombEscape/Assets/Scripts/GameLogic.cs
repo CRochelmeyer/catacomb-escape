@@ -223,7 +223,6 @@ public class GameLogic : MonoBehaviour
             //PlayerPrefs.SetString("GeneratedBoard", "false");
             NextLevel();
         }
-        CheckStamina();
         if (gameover)
         {
             Debug.Log("Gameover");
@@ -561,6 +560,7 @@ public class GameLogic : MonoBehaviour
             //assign emptyhand bool
             emptyhand = true;
         }
+        CheckStamina();
         //Debug.Log("empty hand?" + emptyhand);
     }
     
@@ -638,6 +638,7 @@ public class GameLogic : MonoBehaviour
         StartCoroutine(StamPopup(stamDownContainer));
         playerStamina += -4;
         GenerateHand();
+        CheckStamina();
     }
 
     public void PlayEvent(string pcell)
@@ -698,7 +699,6 @@ public class GameLogic : MonoBehaviour
                 playerStamUp.text = tileBoard[temprow, tempcol].combat.ToString();
                 StartCoroutine(StamPopup(stamUpContainer));
                 playerStamina += tileBoard[temprow, tempcol].combat;
-                CheckStamina();
 				
 				int rand = Random.Range (0,greenTileClips.Length);
 				audioSource.PlayOneShot (greenTileClips[rand]);
@@ -714,6 +714,7 @@ public class GameLogic : MonoBehaviour
                 Destroy(tempObj);
                 tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive = false;
             }
+            CheckStamina();
         }
     }
     IEnumerator eventWait(GameObject pType)
