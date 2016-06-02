@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Collections;
 
 
 public class GameLogic : MonoBehaviour
@@ -13,12 +14,16 @@ public class GameLogic : MonoBehaviour
 	private string playerLoc="";
 	private string destLoc = "";
 	private string mouseLocation = "";
+    private int playerEquip = 0;
 
     //dictionary to match cell strings of 00-04 10-14 to an index from 0-29
     Dictionary<string, int> cellindex = new Dictionary<string, int>();
     //dictionary to store event tile clone name and original grid panel location int
     Dictionary<string, string> eventindex = new Dictionary<string, string>();
+    //dictionary for item desciptions
+    Dictionary<int, string> equipmentindex = new Dictionary<int, string>();
     //sprite holders drag sprites via inspector
+
 
     public Sprite[] tileSprite;
     public Sprite[] gridSprite;
@@ -43,7 +48,9 @@ public class GameLogic : MonoBehaviour
 	public AudioClip[] dealingClips;
 	public AudioClip[] movementClips;
 	public AudioClip[] lvlCompClips;
-	
+
+    public Text Equipment;
+    public Text equipDesc;
 	public GameObject stamUpContainer;
 	public Text playerStamUp;
 	public GameObject stamDownContainer;
@@ -80,11 +87,60 @@ public class GameLogic : MonoBehaviour
 		
 		validMove = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<Direction> ();
 		movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
-
+        //creating equipment index
+        equipmentindex.Clear();
+        int temp = 0;
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                string mod = "";
+                if (i == 0)
+                { mod = "Bronze"; }
+                else if (i == 1)
+                { mod = "Iron"; }
+                else if (i == 3)
+                { mod = "Steel"; }
+                switch (j)
+                {
+                    case 0:
+                        {
+                            equipmentindex.Add(temp, mod + " Trowel");
+                            break;
+                        }
+                    case 1:
+                        {
+                            equipmentindex.Add(temp, mod + " Trenching Hoe");
+                            break;
+                        }
+                    case 2:
+                        {
+                            equipmentindex.Add(temp, mod + " Shovel");
+                            break;
+                        }
+                    case 3:
+                        {
+                            equipmentindex.Add(temp, mod + " Pickaxe");
+                            break;
+                        }
+                    case 4:
+                        {
+                            equipmentindex.Add(temp, mod + " Hand Drill");
+                            break;
+                        }
+                    case 5:
+                        {
+                            equipmentindex.Add(temp, mod + " Automatic Drill");
+                            break;
+                        }
+                }
+                temp++;
+            }
+        }
         //fill cellindex dictionary
         //temp index int to fill dictonary
         cellindex.Clear();
-        int temp = 0;
+        temp = 0;
         for (int i = 0; i < 6; i++)
         {
             for (int j = 0; j < 5; j++)
@@ -146,7 +202,6 @@ public class GameLogic : MonoBehaviour
             //generate hand
             GenerateHand();
             emptyhand = false;
-            Debug.Log("emptyhand get hand");
         }
 
 		//UpdateMouseLocation ();
@@ -234,6 +289,10 @@ public class GameLogic : MonoBehaviour
 			Debug.Log("GameOver " + gameover);
 			gameover = true;
 		}
+        else if (playerStamina > 100 )
+        {
+            playerStamina = 100;
+        }
 	}
 
     private string GetClickLocation(Vector3 pv3)
@@ -417,33 +476,118 @@ public class GameLogic : MonoBehaviour
 			}
         }
     }
+    
+    public void NewHand()
+    {
+        handTiles = GameObject.FindGameObjectsWithTag("handDrag");
+        if (handTiles != null)
+        {
+            for (int i =0; i<handTiles.Length;i++)
+            {
+                Destroy(handTiles[i]);
+            }
+        }
+        playerStamUp.text = "-10";
+        StartCoroutine(StamPopup(stamUpContainer));
+        playerStamina += -10;
+        GenerateHand();
+    }
 
     public void PlayEvent(string pcell)
     {
-        if(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive)
+        if (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive)
         {
+            int temprow = System.Int32.Parse(pcell.Substring(0, 1));
+            int tempcol = System.Int32.Parse(pcell.Substring(1, 1));
+            Debug.Log("start tile test");
+            tileBoard[temprow, tempcol].test();
+            //Debug.Log(tileBoard[temprow, tempcol]._tileID);
             //play event = remove stamina and destroy the event clone...
-            playerStamina += tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].combat;
-			GameObject tempObj = GameObject.Find (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
+            if (tileBoard[temprow, tempcol]._event == "red")
+            {
+                playerStamUp.text = tileBoard[temprow, tempcol].combat.ToString() + playerEquip;
+                playerStamUp.enabled = true;
+                switch (tileBoard[temprow, tempcol]._eventItem.ToLower())
+                {
+                    case "snake":
+                        {
+                            snakeStamDown.text = tileBoard[temprow, tempcol].combat.ToString();
+                            StartCoroutine(eventWait(snakePanel));
+                            playerStamDown.text = tileBoard[temprow, tempcol].combat.ToString();
+                            StartCoroutine(StamPopup(stamDownContainer));
+                            playerStamina += tileBoard[temprow, tempcol].combat + playerEquip;
+                            break;
+                        }
+                    case "scorpion":
+                        {
+                            scorpStamDown.text = tileBoard[temprow, tempcol].combat.ToString();
+                            StartCoroutine(eventWait(scorpionPanel));
+                            playerStamDown.text = tileBoard[temprow, tempcol].combat.ToString();
+                            StartCoroutine(StamPopup(stamDownContainer));
+                            playerStamina += tileBoard[temprow, tempcol].combat + playerEquip;
+                            break;
+                        }
+                }
+                //Debug.Log("player stamup " + playerStamUp.text);
+            }
+            else if (tileBoard[temprow, tempcol]._event == "green")
+            {
+                Debug.Log("Green Event");
+                if (Random.Range(0, 10) <= 3)
+                {
+                    //check equipment index and identify new item
+                    string item = "";
+                    string itemb = "";
+                    equipmentindex.TryGetValue(playerEquip, out item);
+                    //iterate playerequip int and power
+                    playerEquip++;
+                    equipmentindex.TryGetValue(playerEquip, out itemb);
+                    equipDesc.text = ("You've found a new item " + itemb + " it seems to be more durable than the " + item).ToString();
+                    StartCoroutine(eventWait(equipPanel,4));
+                    //update player equip text
+                    Equipment.text = itemb;
+                }
+                playerStamUp.text = tileBoard[temprow, tempcol].combat.ToString();
+                StartCoroutine(StamPopup(stamUpContainer));
+                playerStamina += tileBoard[temprow, tempcol].combat;
+                CheckStamina();
+            }
+            GameObject tempObj = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
 
-			if (tempObj != null)
-			{
-				Debug.Log (tempObj.transform.name);
-				Destroy(tempObj);
-				tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive = false;
-			}
-		}
+            if (tempObj != null)
+            {
+                Destroy(tempObj);
+                tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive = false;
+            }
+        }
     }
-
-	// DO not have a function named the same as a type (PlayerMove script!). Also validmove.Move returns a bool... Don't leave something that doesn't work/do anyting still implemented
-	/*
+    IEnumerator eventWait(GameObject pType)
+    {
+        pType.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        pType.SetActive(false);
+    }
+    IEnumerator eventWait(GameObject pType, int pt)
+    {
+        pType.SetActive(true);
+        yield return new WaitForSeconds(pt);
+        pType.SetActive(false);
+    }
+    IEnumerator StamPopup(GameObject pType)
+    {
+        pType.SetActive(true);
+        yield return new WaitForSeconds(7f);
+        pType.SetActive(false);
+    }
+    // DO not have a function named the same as a type (PlayerMove script!). Also validmove.Move returns a bool... Don't leave something that doesn't work/do anyting still implemented
+    /*
     public void PlayerMove(string pNext)
     {
         validMove.Move(playerLoc, pNext ,ref tileBoard);
     }*/
 
-	public void GenerateBoardLogic()
-	{
+    public void GenerateBoardLogic()
+    {
         Debug.Log("Tileboard generated for level " + level);
         Tile temptile;
         int temp = 0;
@@ -465,13 +609,32 @@ public class GameLogic : MonoBehaviour
                     }
                 }
             }
-            //add eventgreen eventred
+            //add adding eventitems into event tiles...
             foreach (KeyValuePair<string, string> pair in eventindex)
             {
                 string tempstring = pair.Key.ToString();
+                string _eventitem = "";
                 int temprow = System.Int32.Parse(tempstring.Substring(0, 1));
                 int tempcol = System.Int32.Parse(tempstring.Substring(1, 1));
-                temptile = new Tile(pair.Value, pair.Key);
+                //temptile = new Tile(pair.Value, pair.Key);
+                if (pair.Value == "event_green")
+                {
+                    //initialy had _eventitems and playerequpment++ in the eventitle creation however
+                    //that would mix up the linear advancement order thus do it within playevents.
+                    _eventitem = "empty";
+                }
+                else if (pair.Value == "event_red")
+                {
+                    if (Random.Range(0, 2) == 0)
+                    {
+                        _eventitem = "scorpion";
+                    }
+                    else
+                    {
+                        _eventitem = "snake";
+                    }
+                }
+                temptile = new EventTile(pair.Value, pair.Key, _eventitem);
                 tileBoard[temprow, tempcol] = temptile;
                 //temptile.test();
             }
@@ -507,15 +670,14 @@ public class GameLogic : MonoBehaviour
                         //draw player
                         int pindex = 0;
                         cellindex.TryGetValue(playerLoc, out pindex);
-						movePlayer.DrawPlayer(pindex, gridPanels);
-						Debug.Log("Found entrance and set player");
-					}
-				}
-			}
-		}
-	}
-	
-	public void GenerateHand()
+                        movePlayer.DrawPlayer(pindex, gridPanels);
+                    }
+                }
+            }
+        }
+    }
+
+    public void GenerateHand()
     {       
         //approaching hand generation via grabbing each individual UI element and updating the sprite image and render...didnt work out 13/04
         //actaullyworking just rendered tiny and behind default image too...13/04
@@ -670,7 +832,8 @@ public class GameLogic : MonoBehaviour
                 }
                 //Debug.Log("Random" + i + "= " + randomPanels[i]);
             }
-
+            //store event green tile into eventgreen list
+            eventindex.Clear();
             //Draw all green tiles
             for (int i = 0; i < green; i++)
             {
@@ -682,8 +845,6 @@ public class GameLogic : MonoBehaviour
                 panelClone.transform.localScale = new Vector3(1, 1, 1);
                 panelClone.GetComponent<Image>().sprite = gridSprite[3] as Sprite;
                 panelClone.GetComponent<Image>().color = new Color(255f, 255f, 255f, 150f);
-                //store event green tile into eventgreen list
-                eventindex.Clear();
                 //Debug.Log("event greens :" + panelClone.GetComponent<Image>().sprite.name.ToString() + " ::: " + tempPanel.name);
                 eventindex.Add(tempPanel.name, panelClone.GetComponent<Image>().sprite.name.ToString());
 

@@ -63,7 +63,6 @@ public class PlayerMove : MonoBehaviour
 	
 	public void DrawPlayer(int pLoc, GameObject[] pGrid)
 	{
-		Debug.Log("DrawPlayer");
 		Vector3 tempPos = pGrid [pLoc].transform.localPosition;
 		tempPos = new Vector3 (tempPos.x, tempPos.y - playerDisp, tempPos.z);
 		player.transform.localPosition = tempPos;
@@ -71,7 +70,6 @@ public class PlayerMove : MonoBehaviour
 
     public void UpdatePlayer(GameObject panel, string pdir)
     {
-        Debug.Log("Moving player");
 		pDirection = pdir;
 		Vector3 tempPos = panel.transform.localPosition;
 		tempPos = new Vector3 (tempPos.x, tempPos.y - playerDisp, tempPos.z);

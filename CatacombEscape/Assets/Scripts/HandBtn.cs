@@ -13,7 +13,7 @@ public class HandBtn : MonoBehaviour {
         //grab gameLogic (gameManager?) into gamelogic
         gameLogic = FindObjectOfType<GameLogic>();
         //execute gamelogic function generate hand
-        gameLogic.GenerateHand();
+        gameLogic.NewHand();
       /*  _hand = GameObject.FindGameObjectsWithTag("handTile");
         Debug.Log("found with tag");
         RectTransform panel = GameObject.Find("BottomPanel");
