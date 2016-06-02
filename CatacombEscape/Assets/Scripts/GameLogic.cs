@@ -41,12 +41,12 @@ public class GameLogic : MonoBehaviour
 	private PlayerMove movePlayer;
 	private GameObject[] gridPanels;
     private Tile[,] tileBoard;
-    private double tileplaced = 0;
-    private double greencol =0;
-    private double redavoid=0;
+	private float tileplaced = 0;
+	private float greencol =0;
+	private float redavoid=0;
     private int redtiles;
     private int redstep;
-    private double highscore;
+    private float score;
 
 	private AudioSource audioSource;
 	public AudioClip startGameClip;
@@ -283,16 +283,33 @@ public class GameLogic : MonoBehaviour
 	
     private void GameOverHS()
     {
-        lvlNoCleared.text = level.ToString();
-        lvlPointTot.text = (level * 100).ToString();
+        lvlNoCleared.text = (level-1).ToString();
+        lvlPointTot.text = ((level-1) * 100).ToString();
         greenCollected.text = (greencol).ToString();
         greenPointTot.text = (greencol * 10).ToString();
         redAvoided.text = redavoid.ToString();
         redPointTot.text = (redavoid * 20).ToString();
         tileNoPlaced.text = (tileplaced).ToString();
-        tileNoTot.text = (tileplaced * -0.56).ToString();
-        highscore = (level * 100) + (greencol * 10) + (redavoid * 20) + (tileplaced * -.56);
-        pointTot.text = highscore.ToString();
+		float temp = tileplaced * -0.56f;
+        tileNoTot.text = (Mathf.Round(temp)).ToString();
+		score = ((level-1) * 100) + (greencol * 10) + (redavoid * 20) + Mathf.Round(temp);
+		if (score < 0)
+			score = 0;
+		pointTot.text = score.ToString();
+
+		string hs = PlayerPrefs.GetString("HighScore");
+		if (hs != null && hs != "")
+		{
+			int highscore = int.Parse (hs);
+			if (score > highscore)
+			{
+				PlayerPrefs.SetString("HighScore", score.ToString());
+				// Claire -> make text object to notify player of new highscore
+			}
+		}else if (score > 0) //A score of 0 doesn't count as a high score the first time played
+		{
+			PlayerPrefs.SetString("HighScore", score.ToString());
+		}
     }
     //try again button for the statpanel disable statpanel and destory gameObject and load the new scene.
     public void TryAgain()
@@ -564,8 +581,8 @@ public class GameLogic : MonoBehaviour
             else if (tileBoard[temprow, tempcol]._event == "green")
             {
                 Debug.Log("Green Event");
-				int equipRand = Random.Range(0, 10);
-				if (equipRand <= 3)
+				int equipRand = Random.Range(0, 10); //Chance of 0 to 9 (max (10) is exclusive)
+				if (equipRand <= 1) //Chance of 0 or 1 which == 20% (decreased as testing flew through them)
                 {
                     //check equipment index and identify new item
                     string item = "";
