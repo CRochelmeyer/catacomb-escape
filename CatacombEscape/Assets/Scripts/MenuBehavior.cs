@@ -1,11 +1,24 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class MenuBehavior : MonoBehaviour
 {	
+	public GameObject highScorePanel;
+	public GameObject noHighScorePanel;
+	public Text highScoreValue;
+
 	// Use this for initialization
 	void Start ()
 	{
+		string hs = PlayerPrefs.GetString ("HighScore");
+
+		if (hs != null || hs != "") //if player has a highscore
+		{
+			noHighScorePanel.SetActive (false);
+			highScorePanel.SetActive (true);
+			highScoreValue.text = hs;
+		}
 		//Screen.SetResolution (650, 1040, false);
 	}
 	
@@ -27,5 +40,7 @@ public class MenuBehavior : MonoBehaviour
 	public void ResetPlayerPrefs()
 	{
 		PlayerPrefs.SetString ("FirstPlay", "true");
+		PlayerPrefs.SetString ("HighScore", "");
+		Application.LoadLevel("menu");
 	}
 }
