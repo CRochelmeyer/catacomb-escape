@@ -746,9 +746,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f1d74c9822717a4cbfcc45b1b52929f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highScorePanel: {fileID: 0}
-  noHighScorePanel: {fileID: 0}
-  highScoreValue: {fileID: 0}
+  highScorePanel: {fileID: 1743349107}
+  noHighScorePanel: {fileID: 208299708}
+  highScoreValue: {fileID: 1604985711}
 --- !u!82 &1206124605
 AudioSource:
   m_ObjectHideFlags: 0

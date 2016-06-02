@@ -487,9 +487,9 @@ public class GameLogic : MonoBehaviour
                 Destroy(handTiles[i]);
             }
         }
-        playerStamUp.text = "-10";
-        StartCoroutine(StamPopup(stamUpContainer));
-        playerStamina += -10;
+        playerStamDown.text = "-4";
+        StartCoroutine(StamPopup(stamDownContainer));
+        playerStamina += -4;
         GenerateHand();
     }
 
@@ -533,7 +533,8 @@ public class GameLogic : MonoBehaviour
             else if (tileBoard[temprow, tempcol]._event == "green")
             {
                 Debug.Log("Green Event");
-                if (Random.Range(0, 10) <= 3)
+				int equipRand = Random.Range(0, 10);
+				if (equipRand <= 3)
                 {
                     //check equipment index and identify new item
                     string item = "";
@@ -542,7 +543,7 @@ public class GameLogic : MonoBehaviour
                     //iterate playerequip int and power
                     playerEquip++;
                     equipmentindex.TryGetValue(playerEquip, out itemb);
-                    equipDesc.text = ("You've found a new item " + itemb + " it seems to be more durable than the " + item).ToString();
+                    equipDesc.text = ("You've found a " + itemb + ". It feels more durable than your " + item + ".").ToString();
                     StartCoroutine(eventWait(equipPanel,4));
                     //update player equip text
                     Equipment.text = itemb;
@@ -579,12 +580,6 @@ public class GameLogic : MonoBehaviour
         yield return new WaitForSeconds(7f);
         pType.SetActive(false);
     }
-    // DO not have a function named the same as a type (PlayerMove script!). Also validmove.Move returns a bool... Don't leave something that doesn't work/do anyting still implemented
-    /*
-    public void PlayerMove(string pNext)
-    {
-        validMove.Move(playerLoc, pNext ,ref tileBoard);
-    }*/
 
     public void GenerateBoardLogic()
     {
