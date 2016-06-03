@@ -262,8 +262,9 @@ public class Tile  {
 
         else if (dir == "red")
         {
+			GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic> ();
             _event = "red";
-            combat = Random.Range(-8, -3);
+            combat = Random.Range(-8, -3) - gameLogic.GetLevel; //enemy strength increments by 1 each level
         }
     }
 

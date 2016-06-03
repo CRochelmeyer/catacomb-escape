@@ -99,7 +99,7 @@ public class GameLogic : MonoBehaviour
         //creating equipment index
         equipmentindex.Clear();
         int temp = 0;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 6; j++)
             {
@@ -109,7 +109,9 @@ public class GameLogic : MonoBehaviour
                 else if (i == 1)
                 { mod = "Iron"; }
                 else if (i == 3)
-                { mod = "Steel"; }
+				{ mod = "Steel"; }
+				else if (i == 4)
+				{ mod = "Platinum"; }
                 switch (j)
                 {
                     case 0:
@@ -250,6 +252,11 @@ public class GameLogic : MonoBehaviour
 		get{UpdateMouseLocation(); 
 			return mouseLocation; }
 		set{ mouseLocation = value; }
+	}
+	
+	public int GetLevel
+	{
+		get {return level;}
 	}
 
 	// Called by PlayerMove once the character animation is complete, to stop events from occuring before player has stopped on the destination tile
@@ -653,27 +660,31 @@ public class GameLogic : MonoBehaviour
             {
                 playerStamUp.text = tileBoard[temprow, tempcol].combat.ToString() + playerEquip;
                 playerStamUp.enabled = true;
+
+				int combat = tileBoard[temprow, tempcol].combat;
+				int damage = combat + playerEquip;
+				
+				if (damage > 0) //If player would gain stamina from enemy. Don't want no eating of strange creatures...
+				{
+					damage = 0;
+				}
+
                 switch (tileBoard[temprow, tempcol]._eventItem.ToLower())
                 {
-                    case "snake":
-                        {
-                            snakeStamDown.text = tileBoard[temprow, tempcol].combat.ToString();
-                            StartCoroutine(eventWait(snakePanel));
-                            playerStamDown.text = tileBoard[temprow, tempcol].combat.ToString();
-                            StartCoroutine(StamPopup(stamDownContainer));
-                            playerStamina += tileBoard[temprow, tempcol].combat + playerEquip;
-                            break;
-                        }
-                    case "scorpion":
-                        {
-                            scorpStamDown.text = tileBoard[temprow, tempcol].combat.ToString();
-                            StartCoroutine(eventWait(scorpionPanel));
-                            playerStamDown.text = tileBoard[temprow, tempcol].combat.ToString();
-                            StartCoroutine(StamPopup(stamDownContainer));
-                            playerStamina += tileBoard[temprow, tempcol].combat + playerEquip;
-                            break;
-                        }
-                }
+                case "snake":
+                    snakeStamDown.text = damage.ToString();
+                    StartCoroutine(eventWait(snakePanel));
+                    break;
+                case "scorpion":
+                    scorpStamDown.text = damage.ToString();
+                    StartCoroutine(eventWait(scorpionPanel));
+                    break;
+				}
+
+				playerStamDown.text = damage.ToString();
+				StartCoroutine(StamPopup(stamDownContainer));
+				playerStamina += damage;
+
 				int rand = Random.Range (0,redTileClips.Length);
 				audioSource.PlayOneShot (redTileClips[rand]);
 
