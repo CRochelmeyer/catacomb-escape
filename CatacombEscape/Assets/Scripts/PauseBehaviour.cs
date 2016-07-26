@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class PauseBehaviour : MonoBehaviour
@@ -20,21 +21,21 @@ public class PauseBehaviour : MonoBehaviour
 		Destroy (gameManager);
 		PlayerPrefs.SetString ("Paused", "false");
 		//PlayerPrefs.SetString ("GeneratedBoard", "false");
-		Application.LoadLevel(sceneName);
+		SceneManager.LoadScene (sceneName);
 	}
 
 	public void Pause()
 	{
 		if (PlayerPrefs.GetString ("Paused") == "false")
 		{
-			source.PlayOneShot (pauseClip, 0.5f);
+			source.PlayOneShot (pauseClip);
 			PlayerPrefs.SetString ("Paused", "true");
 			pauseUI.SetActive (true);
 		} else
 		{
 			source.PlayOneShot (unpauseClip);
 			PlayerPrefs.SetString ("Paused", "false");
-			pauseUI.SetActive (true);
+			pauseUI.SetActive (false);
 		}
 	}
 
@@ -47,6 +48,6 @@ public class PauseBehaviour : MonoBehaviour
 
 	public void RestartGame(string sceneName)
 	{
-		Application.LoadLevel (sceneName);
+		SceneManager.LoadScene (sceneName);
 	}
 }

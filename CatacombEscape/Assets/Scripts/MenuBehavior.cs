@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class MenuBehavior : MonoBehaviour
@@ -29,7 +30,7 @@ public class MenuBehavior : MonoBehaviour
 
 	public void LoadScene(string sceneName)
 	{
-		Application.LoadLevel(sceneName);
+		SceneManager.LoadScene (sceneName);
 	}
 	
 	public void Quit()
@@ -41,6 +42,6 @@ public class MenuBehavior : MonoBehaviour
 	{
 		PlayerPrefs.SetString ("FirstPlay", "true");
 		PlayerPrefs.SetString ("HighScore", "");
-		Application.LoadLevel("menu");
+		SceneManager.LoadScene ("menu");
 	}
 }

@@ -199,38 +199,41 @@ public class GameLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
-        //Debug.Log("Update");
-        /*
-		if (PlayerPrefs.GetString("GeneratedBoard") == "false")
-        {
-            InitGame(level);
-            PlayerPrefs.SetString("GeneratedBoard", "true");
-        }*/
+		if (PlayerPrefs.GetString ("Paused") != "true")
+		{
+	        //Debug.Log("Update");
+	        /*
+			if (PlayerPrefs.GetString("GeneratedBoard") == "false")
+	        {
+	            InitGame(level);
+	            PlayerPrefs.SetString("GeneratedBoard", "true");
+	        }*/
 
-        //check if handTiles has been filled
-        if (emptyhand == true)
-        {
-            //generate hand
-            GenerateHand();
-            emptyhand = false;
-        }
+	        //check if handTiles has been filled
+	        if (emptyhand == true)
+	        {
+	            //generate hand
+	            GenerateHand();
+	            emptyhand = false;
+	        }
 
-		//UpdateMouseLocation ();
-        UpdateUI();
-        PlayerClick();
+			//UpdateMouseLocation ();
+	        UpdateUI();
+	        PlayerClick();
 
-        if (nextlevel)
-        {
-            nextlevel = false;
-            //PlayerPrefs.SetString("GeneratedBoard", "false");
-            NextLevel();
-        }
-        if (gameover)
-        {
-            Debug.Log("Gameover");
-            GameOverHS();
-            statPanel.SetActive(true);
-        }
+	        if (nextlevel)
+	        {
+	            nextlevel = false;
+	            //PlayerPrefs.SetString("GeneratedBoard", "false");
+	            NextLevel();
+	        }
+	        if (gameover)
+	        {
+	            Debug.Log("Gameover");
+	            GameOverHS();
+	            statPanel.SetActive(true);
+	        }
+		}
     }
 
     //init game method
@@ -446,6 +449,7 @@ public class GameLogic : MonoBehaviour
             }
         }
     }
+
     private string GetClickLocation(Vector3 pv3)
     {
         string location = "invalid location";
@@ -659,7 +663,7 @@ public class GameLogic : MonoBehaviour
             if (tileBoard[temprow, tempcol]._event == "red")
             {
                 playerStamUp.text = tileBoard[temprow, tempcol].combat.ToString() + playerEquip;
-                playerStamUp.enabled = true;
+				playerStamUp.enabled = true;
 
 				int combat = tileBoard[temprow, tempcol].combat;
 				int damage = combat + playerEquip;
@@ -673,11 +677,11 @@ public class GameLogic : MonoBehaviour
                 {
                 case "snake":
                     snakeStamDown.text = damage.ToString();
-                    StartCoroutine(eventWait(snakePanel));
+					DisplayClickPanel (snakePanel);
                     break;
                 case "scorpion":
                     scorpStamDown.text = damage.ToString();
-                    StartCoroutine(eventWait(scorpionPanel));
+					DisplayClickPanel (scorpionPanel);
                     break;
 				}
 
@@ -703,7 +707,7 @@ public class GameLogic : MonoBehaviour
                     playerEquip++;
                     equipmentindex.TryGetValue(playerEquip, out itemb);
                     equipDesc.text = ("You've found a " + itemb + ". It feels more durable than your " + item + ".").ToString();
-                    StartCoroutine(eventWait(equipPanel,3));
+					DisplayClickPanel (equipPanel);
                     //update player equip text
                     Equipment.text = itemb;
                 }
@@ -728,18 +732,24 @@ public class GameLogic : MonoBehaviour
             CheckStamina();
         }
     }
-    IEnumerator eventWait(GameObject pType)
-    {
-        pType.SetActive(true);
-        yield return new WaitForSeconds(2f);
-        pType.SetActive(false);
-    }
-    IEnumerator eventWait(GameObject pType, int pt)
-    {
-        pType.SetActive(true);
-        yield return new WaitForSeconds(pt);
-        pType.SetActive(false);
-    }
+
+	private void DisplayClickPanel (GameObject panel)
+	{
+		panel.SetActive (true);
+		PlayerPrefs.SetString ("Paused", "true");
+		StartCoroutine (ClickToClose (panel));
+	}
+
+	IEnumerator ClickToClose (GameObject panel)
+	{
+		while (!Input.GetMouseButtonUp (0))
+		{
+			yield return null;
+		}
+		panel.SetActive (false);
+		PlayerPrefs.SetString ("Paused", "false");
+	}
+
     IEnumerator StamPopup(GameObject pType)
     {
         pType.SetActive(true);
