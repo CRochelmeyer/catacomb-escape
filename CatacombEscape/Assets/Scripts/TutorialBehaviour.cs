@@ -16,30 +16,36 @@ public class TutorialBehaviour : MonoBehaviour
 
 	public void RunTutorial ()
 	{
-		PlayerPrefs.SetString ("Paused", "true");
+		bool gameWasPaused = false;
+		if (PlayerPrefs.GetString ("Paused") == "true")
+			gameWasPaused = true;
+		else
+			PlayerPrefs.SetString ("Paused", "true");
 
-		for (int i=0; i < tutorialPanels.Length; i++)
+		DisplayClickPanel (0);
+
+		if (!gameWasPaused)
+			PlayerPrefs.SetString ("Paused", "false");
+	}
+
+	private void DisplayClickPanel (int index)
+	{
+		if (index < tutorialPanels.Length)
 		{
-			DisplayClickPanel (tutorialPanels [i]);
-			Debug.Log ("dipslay click panel");
+			tutorialPanels [index].SetActive (true);
+			StartCoroutine (ClickToClose (index));
 		}
-
-		PlayerPrefs.SetString ("Paused", "false");
 	}
 
-	private void DisplayClickPanel (GameObject panel)
+	IEnumerator ClickToClose (int index)
 	{
-		panel.SetActive (true);
-		StartCoroutine (ClickToClose (panel));
-	}
-
-	IEnumerator ClickToClose (GameObject panel)
-	{
-		while (!Input.GetMouseButtonUp (0))
+		do
 		{
 			yield return null;
-		}
-		panel.SetActive (false);
+		}while (!Input.GetMouseButtonUp (0));
+
+		tutorialPanels [index].SetActive (false);
 		source.PlayOneShot (resumeClip);
+		DisplayClickPanel (index + 1);
 	}
 }

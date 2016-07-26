@@ -31,6 +31,7 @@ public class MenuBehavior : MonoBehaviour
 	public void LoadScene(string sceneName)
 	{
 		SceneManager.LoadScene (sceneName);
+		PlayerPrefs.SetString ("PlayFromMenu", "true");
 	}
 	
 	public void Quit()

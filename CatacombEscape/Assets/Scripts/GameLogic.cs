@@ -96,6 +96,8 @@ public class GameLogic : MonoBehaviour
 		
 		validMove = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<Direction> ();
 		movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
+		TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
+
         //creating equipment index
         equipmentindex.Clear();
         int temp = 0;
@@ -188,6 +190,13 @@ public class GameLogic : MonoBehaviour
         }
         GenerateBoardLogic();
         //Debug.Log("End Awake");
+
+		//Run tutorial each time game is launched from main menu
+		if (PlayerPrefs.GetString ("PlayFromMenu") == "true")
+		{
+			tutorialScript.RunTutorial ();
+			PlayerPrefs.SetString ("PlayFromMenu", "false");
+		}
 	}
 
 	// Use this for initialization
