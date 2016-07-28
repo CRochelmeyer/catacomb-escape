@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Tile  {
-
+public class Tile 
+{
     public List<string> _entry { get; set; }
     public string _eventItem { get; set; }
     public string _tileID {get; set;}

@@ -26,6 +26,7 @@ public class PauseBehaviour : MonoBehaviour
 
 	public void Pause()
 	{
+		Debug.Log ("Paused");
 		if (PlayerPrefs.GetString ("Paused") == "false")
 		{
 			source.PlayOneShot (pauseClip);

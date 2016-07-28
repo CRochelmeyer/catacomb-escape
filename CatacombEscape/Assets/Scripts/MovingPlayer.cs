@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MovingPlayer : MonoBehaviour {
+public class MovingPlayer : MonoBehaviour
+{
     GameObject temp;
 
 	public void MovePlayerTo(Vector3 pDestination)

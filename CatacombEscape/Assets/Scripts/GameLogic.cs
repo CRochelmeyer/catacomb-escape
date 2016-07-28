@@ -57,17 +57,20 @@ public class GameLogic : MonoBehaviour
 	public AudioClip[] redTileClips;
 	public AudioClip[] lvlCompClips;
 
-    public Text Equipment;
+    public Text equipment;
     public Text equipDesc;
-	public GameObject stamUpContainer;
-	public Text playerStamUp;
-	public GameObject stamDownContainer;
-	public Text playerStamDown;
+	public Text stamUp;
+	public Text stamDown;
+	public float fadeTime;
 	public GameObject equipPanel;
 	public GameObject snakePanel;
 	public Text snakeStamDown;
+	public GameObject snakeDefeatPanel;
+	public Text snakeDefeatEquip;
 	public GameObject scorpionPanel;
 	public Text scorpStamDown;
+	public GameObject scorpionDefeatPanel;
+	public Text scorpDefeatEquip;
 	//public Text breadStamUp;
 	public GameObject statPanel; //this is what pops up at gameover
 	public Text lvlNoCleared;
@@ -238,7 +241,6 @@ public class GameLogic : MonoBehaviour
 	        }
 	        if (gameover)
 	        {
-	            Debug.Log("Gameover");
 	            GameOverHS();
 	            statPanel.SetActive(true);
 	        }
@@ -566,6 +568,11 @@ public class GameLogic : MonoBehaviour
 				int rand = Random.Range (0,placementClips.Length);
 				audioSource.PlayOneShot (placementClips[rand], 0.5f);
 				playerStamina -= 2;
+				stamDown.text = "-2";
+				Color newColor = stamDown.color;
+				newColor.a = 1;
+				stamDown.color = newColor;
+				StartCoroutine(FadeStamPopup(stamDown, fadeTime));
                 //increment tileplaced
                 tileplaced++;
 				CheckStamina();
@@ -631,7 +638,13 @@ public class GameLogic : MonoBehaviour
 	                        //update Playerloc
 	                        destLoc = clickLoc;
 	                        //Debug.Log("new player loc" + playerLoc + " :: " + clickLoc);
-	                        playerStamina--;
+							playerStamina--;
+							stamDown.text = "-1";
+							Color newColor = stamDown.color;
+							newColor.a = 1;
+							stamDown.color = newColor;
+							Debug.Log (stamDown.color);
+							StartCoroutine(FadeStamPopup(stamDown, fadeTime));
 	                        UpdateUI();
 	                    }
 	                }
@@ -654,8 +667,11 @@ public class GameLogic : MonoBehaviour
                 Destroy(handTiles[i]);
             }
         }
-        playerStamDown.text = "-4";
-        StartCoroutine(StamPopup(stamDownContainer));
+		stamDown.text = "-4";
+		Color newColor = stamDown.color;
+		newColor.a = 1;
+		stamDown.color = newColor;
+		StartCoroutine(FadeStamPopup(stamDown, fadeTime));
         playerStamina += -4;
         GenerateHand();
         CheckStamina();
@@ -671,8 +687,8 @@ public class GameLogic : MonoBehaviour
             //play event = remove stamina and destroy the event clone...
             if (tileBoard[temprow, tempcol]._event == "red")
             {
-                playerStamUp.text = tileBoard[temprow, tempcol].combat.ToString() + playerEquip;
-				playerStamUp.enabled = true;
+                stamUp.text = tileBoard[temprow, tempcol].combat.ToString() + playerEquip;
+				stamUp.enabled = true;
 
 				int combat = tileBoard[temprow, tempcol].combat;
 				int damage = combat + playerEquip;
@@ -685,18 +701,38 @@ public class GameLogic : MonoBehaviour
                 switch (tileBoard[temprow, tempcol]._eventItem.ToLower())
                 {
                 case "snake":
-                    snakeStamDown.text = damage.ToString();
-					DisplayClickPanel (snakePanel);
+					if (damage == 0)
+					{
+						snakeDefeatEquip.text = equipment.text;
+						DisplayClickPanel (snakeDefeatPanel);
+					}else
+					{
+	                    snakeStamDown.text = damage.ToString();
+						DisplayClickPanel (snakePanel);
+					}
                     break;
                 case "scorpion":
-                    scorpStamDown.text = damage.ToString();
-					DisplayClickPanel (scorpionPanel);
+					if (damage == 0)
+					{
+						scorpDefeatEquip.text = equipment.text;
+						DisplayClickPanel (scorpionDefeatPanel);
+					}else
+					{
+	                    scorpStamDown.text = damage.ToString();
+						DisplayClickPanel (scorpionPanel);
+					}
                     break;
 				}
 
-				playerStamDown.text = damage.ToString();
-				StartCoroutine(StamPopup(stamDownContainer));
-				playerStamina += damage;
+				if (damage != 0) //don't show stam popup if stamina is not reduced
+				{
+					stamDown.text = damage.ToString();
+					Color newColor = stamDown.color;
+					newColor.a = 1;
+					stamDown.color = newColor;
+					StartCoroutine(FadeStamPopup(stamDown, fadeTime));
+					playerStamina += damage;
+				}
 
 				int rand = Random.Range (0,redTileClips.Length);
 				audioSource.PlayOneShot (redTileClips[rand]);
@@ -709,8 +745,8 @@ public class GameLogic : MonoBehaviour
 				if (equipRand <= 1) //Chance of 0 or 1 which == 20% (decreased as testing flew through them)
                 {
                     //check equipment index and identify new item
-                    string item = "";
-                    string itemb = "";
+                    string item = ""; //old item
+                    string itemb = ""; //new item
                     equipmentindex.TryGetValue(playerEquip, out item);
                     //iterate playerequip int and power
                     playerEquip++;
@@ -718,10 +754,14 @@ public class GameLogic : MonoBehaviour
                     equipDesc.text = ("You've found a " + itemb + ". It feels more durable than your " + item + ".").ToString();
 					DisplayClickPanel (equipPanel);
                     //update player equip text
-                    Equipment.text = itemb;
+					equipment.text = itemb;
                 }
-                playerStamUp.text = tileBoard[temprow, tempcol].combat.ToString();
-                StartCoroutine(StamPopup(stamUpContainer));
+				stamUp.text = "+" + tileBoard[temprow, tempcol].combat.ToString();
+				Color newColor = stamUp.color;
+				newColor.a = 1;
+				Debug.Log (newColor);
+				stamUp.color = newColor;
+				StartCoroutine(FadeStamPopup(stamUp, fadeTime));
                 playerStamina += tileBoard[temprow, tempcol].combat;
 				
 				int rand = Random.Range (0,greenTileClips.Length);
@@ -759,11 +799,16 @@ public class GameLogic : MonoBehaviour
 		PlayerPrefs.SetString ("Paused", "false");
 	}
 
-    IEnumerator StamPopup(GameObject pType)
+	IEnumerator FadeStamPopup(Text stamText, float time)
     {
-        pType.SetActive(true);
-        yield return new WaitForSeconds(4f);
-        pType.SetActive(false);
+		float alpha = stamText.color.a;
+		for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / time)
+		{
+			Color newColor = stamText.color;
+			newColor.a = Mathf.Lerp (alpha,0,t);
+			stamText.color = newColor;
+			yield return null;
+		}
     }
 
     public void GenerateBoardLogic()
