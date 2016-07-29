@@ -415,23 +415,15 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 11445432, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+    - target: {fileID: 11405294, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 898376829}
-    - target: {fileID: 11447088, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2067854429}
-    - target: {fileID: 11492362, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      objectReference: {fileID: 1913443730}
+    - target: {fileID: 11440346, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2067854429}
-    - target: {fileID: 11481542, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2067854429}
-    - target: {fileID: 11421690, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+    - target: {fileID: 11495916, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2067854429}
@@ -439,18 +431,26 @@ Prefab:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 991364556}
-    - target: {fileID: 11495916, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+    - target: {fileID: 11421690, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2067854429}
-    - target: {fileID: 11440346, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+    - target: {fileID: 11481542, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2067854429}
-    - target: {fileID: 11405294, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+    - target: {fileID: 11492362, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1913443730}
+      objectReference: {fileID: 2067854429}
+    - target: {fileID: 11447088, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2067854429}
+    - target: {fileID: 11445432, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 898376829}
     - target: {fileID: 22458766, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -470,6 +470,14 @@ Prefab:
     - target: {fileID: 22418642, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11409710, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11409710, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Text
+      value: Lvl 1
       objectReference: {fileID: 0}
     - target: {fileID: 22407764, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_SizeDelta.x
@@ -497,6 +505,10 @@ Camera:
   m_PrefabParentObject: {fileID: 2012328, guid: 6281424b91878e445b894668e7ce0ef9,
     type: 2}
   m_PrefabInternal: {fileID: 1635412629}
+--- !u!1 &1006590692 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 160254, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+  m_PrefabInternal: {fileID: 945207521}
 --- !u!1 &1061882090 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 146714, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
@@ -1050,7 +1062,7 @@ Prefab:
       objectReference: {fileID: 1259790019}
     - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
       propertyPath: fadeTime
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
       propertyPath: snakeDefeatPanel
@@ -1072,6 +1084,10 @@ Prefab:
       propertyPath: equipment
       value: 
       objectReference: {fileID: 203276058}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: newHighscore
+      value: 
+      objectReference: {fileID: 1006590692}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
   m_IsPrefabParent: 0

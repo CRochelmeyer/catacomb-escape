@@ -62,6 +62,7 @@ public class GameLogic : MonoBehaviour
 	public Text stamUp;
 	public Text stamDown;
 	public float fadeTime;
+	private bool faderRunning = false;
 	public GameObject equipPanel;
 	public GameObject snakePanel;
 	public Text snakeStamDown;
@@ -82,12 +83,13 @@ public class GameLogic : MonoBehaviour
 	public Text tileNoPlaced;
 	public Text tileNoTot; //remember this value should be negative
 	public Text pointTot;
+	public GameObject newHighscore;
 	// These can be accessed and set with 'string tot = pointTot.text;' and 'pointTot.text = "100"'
 
     //awake called behind start
     void Awake()
     {
-		Debug.Log("GameLogic awake");
+		//Debug.Log("GameLogic awake");
         //refresh and initialse redstep per awake call
         redstep = 0;
 		audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource> ();
@@ -205,7 +207,7 @@ public class GameLogic : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		Debug.Log("GameLogic start");
+		//Debug.Log("GameLogic start");
     }
 
     // Update is called once per frame
@@ -238,11 +240,10 @@ public class GameLogic : MonoBehaviour
 	            nextlevel = false;
 	            //PlayerPrefs.SetString("GeneratedBoard", "false");
 	            NextLevel();
-	        }
-	        if (gameover)
+			}else if (gameover)
 	        {
 	            GameOverHS();
-	            statPanel.SetActive(true);
+	            statPanel.SetActive (true);
 	        }
 		}
     }
@@ -330,22 +331,25 @@ public class GameLogic : MonoBehaviour
 			if (score > highscore)
 			{
 				PlayerPrefs.SetString("HighScore", score.ToString());
-				// Claire -> make text object to notify player of new highscore
+				newHighscore.SetActive (true);
 			}
 		}else if (score > 0) //A score of 0 doesn't count as a high score the first time played
 		{
 			PlayerPrefs.SetString("HighScore", score.ToString());
+			newHighscore.SetActive (true);
 		}
     }
+
     //try again button for the statpanel disable statpanel and destory gameObject and load the new scene.
     public void TryAgain()
     {
-        Debug.Log("Try again");
+        //Debug.Log("Try again");
         statPanel.SetActive(false);
         Destroy(gameObject);
         PauseBehaviour pb = new PauseBehaviour();
         pb.LoadScene("main_game");
     }
+
 	public void UpdateUI()
 	{
 		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
@@ -358,7 +362,7 @@ public class GameLogic : MonoBehaviour
 	{
 		if (playerStamina <= 0)
 		{
-			Debug.Log("GameOver " + gameover);
+			//Debug.Log("GameOver " + gameover);
 			gameover = true;
 		}
         else if (playerStamina > 100 )
@@ -366,9 +370,10 @@ public class GameLogic : MonoBehaviour
             playerStamina = 100;
         }
 	}
+
     public void MoveEvents()
     {
-        Debug.Log("move event");
+        //Debug.Log("move event");
         string etloc = "";
         string newloc = "";
         int panelkey = 0;
@@ -398,16 +403,16 @@ public class GameLogic : MonoBehaviour
                 {
                     horimove = true;
                 }
-                Debug.Log(newrow + " : " +currow + " @@@@ " + newcol + " : " + curcol);
+                //Debug.Log(newrow + " : " +currow + " @@@@ " + newcol + " : " + curcol);
                 //if new row is within bounds and not the same as current move tile 
                 if (vertmove )
                 {
                     //check the new location is not already an event or the player/exits
                     Tile dummy = new Tile(0);
-                    Debug.Log("Move Vertical");
+                    //Debug.Log("Move Vertical");
                     newloc = newrow.ToString() + curcol.ToString();
                     cellindex.TryGetValue(newloc, out panelkey);
-                    Debug.Log(newcol + "newcol " + curcol + " curcol " + newrow + " newrow " + currow + " currow");
+                    //Debug.Log(newcol + "newcol " + curcol + " curcol " + newrow + " newrow " + currow + " currow");
                     if ((tileBoard[newrow, curcol]._tileID != "tile_exit") && (tileBoard[newrow, curcol]._tileID != "tile_entrance")  && (newloc != playerLoc) && (tileBoard[newrow, curcol]._event != "green") && (tileBoard[newrow, curcol]._event != "red"))
                     {
                         //move the tile
@@ -432,10 +437,10 @@ public class GameLogic : MonoBehaviour
                 else if (horimove)
                 {
                     Tile dummy = new Tile(0);
-                    Debug.Log("Move horizontal");
+                    //Debug.Log("Move horizontal");
                     newloc = currow.ToString() + newcol.ToString();
                     cellindex.TryGetValue(newloc, out panelkey);
-                    Debug.Log(newcol + "newcol " + curcol + " curcol " + newrow + " newrow " + currow + " currow");
+                    //Debug.Log(newcol + "newcol " + curcol + " curcol " + newrow + " newrow " + currow + " currow");
                     if ((tileBoard[currow, newcol]._tileID != "tile_exit") && (tileBoard[currow, newcol]._tileID != "tile_entrance") && (newloc != playerLoc) && (tileBoard[currow, newcol]._event != "green") && (tileBoard[currow, newcol]._event != "red"))
                     {
                         //move thetile
@@ -496,7 +501,7 @@ public class GameLogic : MonoBehaviour
         int rowmove = 0;
         int colmove = 0;
         bool ValidDrag = false;
-        Debug.Log("Valid Drag");
+        //Debug.Log("Valid Drag");
         //Debug.Log("Player Loc: " + playerLoc);
         rowmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(0, 1))) - (System.Int32.Parse(playerLoc.Substring(0, 1))));
         colmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(1, 1))) - (System.Int32.Parse(playerLoc.Substring(1, 1))));
@@ -568,11 +573,7 @@ public class GameLogic : MonoBehaviour
 				int rand = Random.Range (0,placementClips.Length);
 				audioSource.PlayOneShot (placementClips[rand], 0.5f);
 				playerStamina -= 2;
-				stamDown.text = "-2";
-				Color newColor = stamDown.color;
-				newColor.a = 1;
-				stamDown.color = newColor;
-				StartCoroutine(FadeStamPopup(stamDown, fadeTime));
+				StartFade (stamDown, "-2", fadeTime);
                 //increment tileplaced
                 tileplaced++;
 				CheckStamina();
@@ -639,12 +640,7 @@ public class GameLogic : MonoBehaviour
 	                        destLoc = clickLoc;
 	                        //Debug.Log("new player loc" + playerLoc + " :: " + clickLoc);
 							playerStamina--;
-							stamDown.text = "-1";
-							Color newColor = stamDown.color;
-							newColor.a = 1;
-							stamDown.color = newColor;
-							Debug.Log (stamDown.color);
-							StartCoroutine(FadeStamPopup(stamDown, fadeTime));
+							StartFade (stamDown, "-1", fadeTime);
 	                        UpdateUI();
 	                    }
 	                }
@@ -667,11 +663,7 @@ public class GameLogic : MonoBehaviour
                 Destroy(handTiles[i]);
             }
         }
-		stamDown.text = "-4";
-		Color newColor = stamDown.color;
-		newColor.a = 1;
-		stamDown.color = newColor;
-		StartCoroutine(FadeStamPopup(stamDown, fadeTime));
+		StartFade (stamDown, "-4", fadeTime);
         playerStamina += -4;
         GenerateHand();
         CheckStamina();
@@ -726,11 +718,8 @@ public class GameLogic : MonoBehaviour
 
 				if (damage != 0) //don't show stam popup if stamina is not reduced
 				{
-					stamDown.text = damage.ToString();
-					Color newColor = stamDown.color;
-					newColor.a = 1;
-					stamDown.color = newColor;
-					StartCoroutine(FadeStamPopup(stamDown, fadeTime));
+					string newText = damage.ToString();
+					StartFade (stamDown, newText, fadeTime);
 					playerStamina += damage;
 				}
 
@@ -756,12 +745,8 @@ public class GameLogic : MonoBehaviour
                     //update player equip text
 					equipment.text = itemb;
                 }
-				stamUp.text = "+" + tileBoard[temprow, tempcol].combat.ToString();
-				Color newColor = stamUp.color;
-				newColor.a = 1;
-				Debug.Log (newColor);
-				stamUp.color = newColor;
-				StartCoroutine(FadeStamPopup(stamUp, fadeTime));
+				string newText = "+" + tileBoard[temprow, tempcol].combat.ToString();
+				StartFade (stamUp, newText, fadeTime);
                 playerStamina += tileBoard[temprow, tempcol].combat;
 				
 				int rand = Random.Range (0,greenTileClips.Length);
@@ -799,8 +784,23 @@ public class GameLogic : MonoBehaviour
 		PlayerPrefs.SetString ("Paused", "false");
 	}
 
-	IEnumerator FadeStamPopup(Text stamText, float time)
+	private void StartFade (Text stamText, string newText, float time)
+	{
+		if (faderRunning)
+		{
+			StopCoroutine ("FadeStamPopup");
+		}
+		Color newColor = stamText.color;
+		newColor.a = 1;
+		stamText.color = newColor;
+		stamText.text = newText;
+
+		StartCoroutine (FadeStamPopup (stamText, time));
+	}
+
+	IEnumerator FadeStamPopup (Text stamText, float time)
     {
+		faderRunning = true;
 		float alpha = stamText.color.a;
 		for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / time)
 		{
@@ -809,11 +809,13 @@ public class GameLogic : MonoBehaviour
 			stamText.color = newColor;
 			yield return null;
 		}
+		faderRunning = false;
     }
+	// not working: parse this!
 
     public void GenerateBoardLogic()
     {
-        Debug.Log("Tileboard generated for level " + level);
+        //Debug.Log("Tileboard generated for level " + level);
         Tile temptile;
         int temp = 0;
         //check if tileboard is empty
@@ -986,7 +988,7 @@ public class GameLogic : MonoBehaviour
 
         //PlayerPrefs.SetString ("GeneratedBoard", "false");
 		//initialise 
-		Debug.Log("New Level " + level);
+		//Debug.Log("New Level " + level);
 		this.Awake();
         for (int row = 0; row <6; row++)
         {
