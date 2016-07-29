@@ -1088,6 +1088,14 @@ Prefab:
       propertyPath: newHighscore
       value: 
       objectReference: {fileID: 1006590692}
+    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2012328, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: orthographic size
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
   m_IsPrefabParent: 0
