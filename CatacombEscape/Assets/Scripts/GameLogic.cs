@@ -310,11 +310,10 @@ public class GameLogic : MonoBehaviour
         lvlNoCleared.text = (level-1).ToString();
         lvlPointTot.text = ((level-1) * 100).ToString();
         greenCollected.text = (greencol).ToString();
-        greenPointTot.text = (greencol * 10).ToString();
+        greenPointTot.text = (greencol * 50).ToString();
         redAvoided.text = redavoid.ToString();
-        redPointTot.text = (redavoid * 20).ToString();
+        redPointTot.text = (redavoid * 5).ToString();
         tileNoPlaced.text = (tileplaced).ToString();
-        tileNoTot.text = (tileplaced * -0.56).ToString();
         //highscore = (level * 100) + (greencol * 10) + (redavoid * 20) + (tileplaced * -.56);
         //pointTot.text = highscore.ToString("0");
 		float temp = tileplaced * -0.56f;
@@ -324,18 +323,31 @@ public class GameLogic : MonoBehaviour
 			score = 0;
 		pointTot.text = score.ToString();
 
-		string hs = PlayerPrefs.GetString("HighScore");
+		string hs = PlayerPrefs.GetString ("HighScore");
+		bool newHS = false;
 		if (hs != null && hs != "")
 		{
 			int highscore = int.Parse (hs);
 			if (score > highscore)
 			{
-				PlayerPrefs.SetString("HighScore", score.ToString());
-				newHighscore.SetActive (true);
+				newHS = true;
 			}
 		}else if (score > 0) //A score of 0 doesn't count as a high score the first time played
 		{
-			PlayerPrefs.SetString("HighScore", score.ToString());
+			newHS = true;
+		}
+
+		if (newHS)
+		{
+			PlayerPrefs.SetString ("HighScore", score.ToString());
+			PlayerPrefs.SetString ("LvlNoCleared", lvlNoCleared.text);
+			PlayerPrefs.SetString ("LvlPointTot", lvlPointTot.text);
+			PlayerPrefs.SetString ("GreenCollected", greenCollected.text);
+			PlayerPrefs.SetString ("GreenPointTot", greenPointTot.text);
+			PlayerPrefs.SetString ("RedAvoided", redAvoided.text);
+			PlayerPrefs.SetString ("RedPointTot", redPointTot.text);
+			PlayerPrefs.SetString ("TileNoPlaced", tileNoPlaced.text);
+			PlayerPrefs.SetString ("TileNoTot", tileNoTot.text);
 			newHighscore.SetActive (true);
 		}
     }
