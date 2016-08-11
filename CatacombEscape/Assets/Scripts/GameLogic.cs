@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿///
+/// GameLogic.cs
+/// This seems to be a bit of a 'god class' atm, it does far too many things. 
+/// I'd like to split it up into it's components i.e. player.cs, mouseMovement.cs etc. ~ Nick
+///
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
@@ -248,6 +254,7 @@ public class GameLogic : MonoBehaviour
 		}
     }
 
+    // ~Init method
     //init game method
     void InitGame(int pLevel)
     {
@@ -262,6 +269,7 @@ public class GameLogic : MonoBehaviour
     	//GenerateHand();
 	}
 
+    // ~Mouse related method
 	public string MouseLocation
 	{
 		get{UpdateMouseLocation(); 
@@ -269,6 +277,7 @@ public class GameLogic : MonoBehaviour
 		set{ mouseLocation = value; }
 	}
 	
+    // ~Level related method
 	public int GetLevel
 	{
 		get {return level;}
@@ -294,6 +303,7 @@ public class GameLogic : MonoBehaviour
         CheckStamina ();
 	}
 
+    // ~Mouse related method
     private void UpdateMouseLocation()
     {
         bool foundMouse = false;
@@ -305,6 +315,7 @@ public class GameLogic : MonoBehaviour
         }
 	}
 	
+    // ~Highscore related method
     private void GameOverHS()
     {
         lvlNoCleared.text = (level-1).ToString();
@@ -352,6 +363,7 @@ public class GameLogic : MonoBehaviour
 		}
     }
 
+    // ~UI related
     //try again button for the statpanel disable statpanel and destory gameObject and load the new scene.
     public void TryAgain()
     {
@@ -362,6 +374,7 @@ public class GameLogic : MonoBehaviour
         pb.LoadScene("main_game");
     }
 
+    // ~UI related
 	public void UpdateUI()
 	{
 		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
@@ -612,7 +625,9 @@ public class GameLogic : MonoBehaviour
             string clickLoc = "";
 
             //no longer using ArrayHandler switching to use panel instead
-			clickLoc = GameObject.FindGameObjectWithTag("Scripts").GetComponent<ArrayHandler>().FindLocation(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+			//clickLoc = GameObject.FindGameObjectWithTag("Scripts").GetComponent<ArrayHandler>().FindLocation(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+
+            clickLoc = this.MouseLocation;
             //clickLoc = this.GetClickLocation(Input.mousePosition);
             //Debug.Log(clickLoc);
 			if (clickLoc != "")
@@ -873,6 +888,8 @@ public class GameLogic : MonoBehaviour
                         _eventitem = "snake";
                     }
                 }
+
+                // Populate the board with event tiles ??
                 temptile = new EventTile(pair.Value, pair.Key, _eventitem);
                 tileBoard[temprow, tempcol] = temptile;
                 //using list of tiles for events due to movements 

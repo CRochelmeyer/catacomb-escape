@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿///
+/// Is this class for the chest and enemy tiles?
+///
+using UnityEngine;
 using System.Collections;
 
 public class EventTile : Tile

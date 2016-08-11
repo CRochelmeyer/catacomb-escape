@@ -6,6 +6,9 @@ public class tempBtn : MonoBehaviour
 
     public GameLogic gameLogic;
 
+    /// <summary>
+    /// Unused (11/03/16)
+    /// </summary>
     public void TryAgain()
     {
 

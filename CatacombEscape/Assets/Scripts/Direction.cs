@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿///
+/// Direction.cs
+/// Handles player movement?
+///
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -145,6 +150,7 @@ public class Direction : MonoBehaviour
         return dir;
     }
 
+    // ?Check player move is valid
     public bool InRange(string pCurrent, string pNext)
     {
         bool validmove = false;

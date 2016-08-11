@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿///
+/// Class not currently in use (11/08/16)
+///
+
+using UnityEngine;
 using System.Collections;
 
 public class MovingPlayer : MonoBehaviour
