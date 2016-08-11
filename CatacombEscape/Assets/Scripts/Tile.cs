@@ -124,6 +124,12 @@ public class Tile
         return move;
     }
 
+    /// <summary>
+    /// Ensure entry tile is valid
+    /// Is an entryTile always guaranteed to have at least one valid entry?
+    /// </summary>
+    /// <param name="pEntry"></param>
+    /// <returns></returns>
     public bool ValidEntry(string pEntry)
     {
         bool entry = false;
