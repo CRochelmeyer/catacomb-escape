@@ -3,6 +3,10 @@
 /// This seems to be a bit of a 'god class' atm, it does far too many things. 
 /// I'd like to split it up into it's components i.e. player.cs, mouseMovement.cs etc. ~ Nick
 ///
+///	Comments beginning with '~' indicate a method which could possibly be moved to another script
+/// At the moment, some areas worth having their own script have been identified: 
+/// 	* Player Movement, Initialisation, Levels, Highscores, UI
+///
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -254,7 +258,7 @@ public class GameLogic : MonoBehaviour
 		}
     }
 
-    // ~Init method
+    // ~Init related method
     //init game method
     void InitGame(int pLevel)
     {
@@ -283,6 +287,7 @@ public class GameLogic : MonoBehaviour
 		get {return level;}
 	}
 
+	// ~Player movement related
 	// Called by PlayerMove once the character animation is complete, to stop events from occuring before player has stopped on the destination tile
 	public void SetPlayerLoc()
 	{
@@ -383,6 +388,10 @@ public class GameLogic : MonoBehaviour
 		tempObj.GetComponent<Slider>().value = playerStamina;
 	}
 
+	/// <summary>
+	/// Check if stamina is depleted (Game over), prevents stamina from increasing over 100.
+	/// ~ Game Logic related
+	/// </summary>
 	private void CheckStamina()
 	{
 		if (playerStamina <= 0)
@@ -396,6 +405,10 @@ public class GameLogic : MonoBehaviour
         }
 	}
 
+	/// <summary>
+	/// Moves the red events.
+	/// Only moves to a location that does not contain the player, an entrance or exit, a green event, or another red event.
+	/// </summary>
     public void MoveEvents()
     {
         //Debug.Log("move event");
@@ -429,6 +442,7 @@ public class GameLogic : MonoBehaviour
                     horimove = true;
                 }
                 //Debug.Log(newrow + " : " +currow + " @@@@ " + newcol + " : " + curcol);
+
                 //if new row is within bounds and not the same as current move tile 
                 if (vertmove )
                 {
@@ -438,6 +452,8 @@ public class GameLogic : MonoBehaviour
                     newloc = newrow.ToString() + curcol.ToString();
                     cellindex.TryGetValue(newloc, out panelkey);
                     //Debug.Log(newcol + "newcol " + curcol + " curcol " + newrow + " newrow " + currow + " currow");
+
+					// Check if tile in the same column and next row is empty.
                     if ((tileBoard[newrow, curcol]._tileID != "tile_exit") && (tileBoard[newrow, curcol]._tileID != "tile_entrance")  && (newloc != playerLoc) && (tileBoard[newrow, curcol]._event != "green") && (tileBoard[newrow, curcol]._event != "red"))
                     {
                         //move the tile
@@ -490,12 +506,19 @@ public class GameLogic : MonoBehaviour
             }
         }
     }
-
+		
+	/// <summary>
+	/// Gets the click location.
+	/// </summary>
+	/// <returns>The click location as a string.</returns>
+	/// <param name="pv3">Pv3.</param>
     private string GetClickLocation(Vector3 pv3)
     {
         string location = "invalid location";
         bool foundMouse = false;
         int i = 0;
+
+		// Check all of the tiles
         while (!foundMouse && i < 30)
         {
             location = gridPanels[i].GetComponent<Panel>().MouseClickPanel(pv3);
@@ -521,6 +544,12 @@ public class GameLogic : MonoBehaviour
         
     }
 
+	/// <summary>
+	/// Determine if tile placement is valid.
+	/// </summary>
+	/// <returns><c>true</c>, if drag was valided, <c>false</c> otherwise.</returns>
+	/// <param name="ptile">Ptile.</param>
+	/// <param name="pcell">Pcell.</param>
     public bool ValidDrag( Tile ptile, string pcell)
     {
         int rowmove = 0;
@@ -619,7 +648,7 @@ public class GameLogic : MonoBehaviour
     
     public void PlayerClick()
     {
-        //check for right click
+        //check for left click
         if(Input.GetMouseButtonDown(0))
         {
             string clickLoc = "";
@@ -634,14 +663,6 @@ public class GameLogic : MonoBehaviour
 			{
 	            int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
 	            int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
-	            //Debug.Log(tempcol);
-	            //Debug.Log("mouseClick");
-	            //Debug.Log("clickloc !+ " + clickLoc);
-	            //Debug.Log(temprow + " " + tempcol);
-	            //Debug.Log("test tileboard");
-	            //Debug.Log(tileBoard[temprow,tempcol]._isEntrySet);
-	            //Debug.Log(tileBoard[temprow,tempcol]._tileID);
-	            //Debug.Log("test tileboard");
 
 	            //int plocr = System.Int32.Parse(playerLoc.Substring(0,1));
 	            //int plocc = System.Int32.Parse(playerLoc.Substring(1, 1));

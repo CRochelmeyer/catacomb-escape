@@ -33,6 +33,11 @@ public class Panel : MonoBehaviour//, IPointerEnterHandler
 		}
 	}
 
+	/// <summary>
+	/// Returns name(string) of the panel when clicked.
+	/// </summary>
+	/// <returns>The name (string) of the panel when clicked.</returns>
+	/// <param name="pClickloc">P clickloc.</param>
     public string MouseClickPanel(Vector3 pClickloc)
     {
         string location = "invalid location";
