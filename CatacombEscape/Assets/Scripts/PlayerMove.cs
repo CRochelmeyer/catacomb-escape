@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Handles moving the player character.
+/// </summary>
 public class PlayerMove : MonoBehaviour
 {
 	public GameObject player;
@@ -17,12 +20,6 @@ public class PlayerMove : MonoBehaviour
 	private float startTime;
 	private float journeyLength;
 	private bool moving = false;
-
-
-	public void Start()
-	{
-
-	}
 
 	public void FixedUpdate()
 	{
@@ -61,6 +58,11 @@ public class PlayerMove : MonoBehaviour
 		}
 	}
 	
+    /// <summary>
+    /// Moves the player
+    /// </summary>
+    /// <param name="pLoc"></param>
+    /// <param name="pGrid"></param>
 	public void DrawPlayer(int pLoc, GameObject[] pGrid)
 	{
 		Vector3 tempPos = pGrid [pLoc].transform.localPosition;
@@ -68,6 +70,11 @@ public class PlayerMove : MonoBehaviour
 		player.transform.localPosition = tempPos;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="panel"></param>
+    /// <param name="pdir"></param>
     public void UpdatePlayer(GameObject panel, string pdir)
     {
 		pDirection = pdir;
