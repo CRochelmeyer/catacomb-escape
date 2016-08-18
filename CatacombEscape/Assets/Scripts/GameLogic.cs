@@ -277,6 +277,7 @@ public class GameLogic : MonoBehaviour
 	// Called by PlayerMove once the character animation is complete, to stop events from occuring before player has stopped on the destination tile
 	public void SetPlayerLoc()
 	{
+        Debug.Log("set player loc start");
 		playerLoc = destLoc;
         //play event for event tiles    
         if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
@@ -374,98 +375,173 @@ public class GameLogic : MonoBehaviour
     public void MoveEvents()
     {
         //Debug.Log("move event");
+        //event tile location
         string etloc = "";
+        //new location
         string newloc = "";
         int panelkey = 0;
         int currow = 0;
         int curcol = 0;
         int newrow = 0;
         int newcol = 0;
-        bool vertmove = false;
-        bool horimove = false;
 
         GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
         for(int i =0; i<eventTiles.Length;i++)
         {
+            List<string> pmoves = new List<string>();
+            //Debug.Log("Crash for loop" + i);
             //for red tiles only
             if (eventTiles[i].GetComponent<Image>().sprite.name == "event_red")
             {
+                Debug.Log("moving et : " + i);
+                //loop to generate the first appropriate new location
                 etloc = eventTiles[i].name.Substring(0, 2);
                 System.Int32.TryParse(etloc.Substring(0, 1), out currow);
                 System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
-                newrow = Mathf.Abs(currow + (Random.Range(-1, 1)) );
-                newcol = Mathf.Abs(curcol + (Random.Range(-1, 1)) );
-                if (newrow <=5 && newrow >=0 && newrow != currow)
+                //identify possible moves
+                pmoves = PossibleEventTileMoves(currow, curcol);
+                //Debug.Log(pmoves.Count);
+                for (int j = 0; j < pmoves.Count; j++)
                 {
-                    vertmove = true;
+                    Debug.Log(pmoves[j]);
                 }
-                if (newcol <= 4 && newcol >=0 && newcol != curcol)
+                //check if a returned list has "NoMoves"
+                if (!pmoves.Contains("nomoves"))
                 {
-                    horimove = true;
-                }
-                //Debug.Log(newrow + " : " +currow + " @@@@ " + newcol + " : " + curcol);
-                //if new row is within bounds and not the same as current move tile 
-                if (vertmove )
-                {
-                    //check the new location is not already an event or the player/exits
-                    Tile dummy = new Tile(0);
-                    //Debug.Log("Move Vertical");
-                    newloc = newrow.ToString() + curcol.ToString();
-                    cellindex.TryGetValue(newloc, out panelkey);
-                    //Debug.Log(newcol + "newcol " + curcol + " curcol " + newrow + " newrow " + currow + " currow");
-                    if ((tileBoard[newrow, curcol]._tileID != "tile_exit") && (tileBoard[newrow, curcol]._tileID != "tile_entrance")  && (newloc != playerLoc) && (tileBoard[newrow, curcol]._event != "green") && (tileBoard[newrow, curcol]._event != "red"))
+                    int rngmove = Random.Range(0, (pmoves.Count));
+                    Debug.Log("move rng " + rngmove);
+                    //vertical movement
+                    if (pmoves[rngmove] == "up" || pmoves[rngmove] == "down")
                     {
-                        //move the tile
-                        eventTiles[i].transform.localPosition = gridPanels[panelkey].transform.localPosition;
-                        //update tileboard
-                        //clone the current tile to dummy
-                        dummy.CloneTile(tileBoard[currow, curcol]);
-                        //set current tile event htats moving to no event
-                        tileBoard[currow, curcol].ClearEvent();
-                        //flush dummy entry if it is set from the previous tile cloned
-                        if (dummy._isEntrySet)
+                        switch (pmoves[rngmove])
                         {
-                            dummy.FlushEntry();
+                            case "up":
+                                {
+                                    newrow = (currow - 1);
+                                    break;
+                                }
+                            case "down":
+                                {
+                                    newrow = (currow + 1);
+                                    break;
+                                }
                         }
-                        //update the new board position with the dummy clone
-                        tileBoard[newrow, curcol].UpdatePosition(dummy);
+                        newloc = newrow.ToString() + curcol.ToString();
+                        //Debug.Log("Move Vertical");
+                        cellindex.TryGetValue(newloc, out panelkey);
+                        //set new tileboard location with the event details of the moving event.
+                        tileBoard[newrow, curcol].UpdatePosition(tileBoard[currow, curcol]);
+                        //update tile's location to newloc
+                        tileBoard[newrow, curcol]._boardLocation = newloc;
+                        //flush/clear event data from the previous tile...to leave tile details such as entries if its a placed tile intact.
+                        tileBoard[currow, curcol].ClearEvent();
+                        //move the tile on board and update obj in the UI/game....
+                        eventTiles[i].transform.localPosition = gridPanels[panelkey].transform.localPosition;
                         //update objclone name to be used for destroying the game obj
                         eventTiles[i].name = newloc + "(Clone)";
                     }
-                }
-                //else if horizontal check
-                else if (horimove)
-                {
-                    Tile dummy = new Tile(0);
-                    //Debug.Log("Move horizontal");
-                    newloc = currow.ToString() + newcol.ToString();
-                    cellindex.TryGetValue(newloc, out panelkey);
-                    //Debug.Log(newcol + "newcol " + curcol + " curcol " + newrow + " newrow " + currow + " currow");
-                    if ((tileBoard[currow, newcol]._tileID != "tile_exit") && (tileBoard[currow, newcol]._tileID != "tile_entrance") && (newloc != playerLoc) && (tileBoard[currow, newcol]._event != "green") && (tileBoard[currow, newcol]._event != "red"))
+                    //move horizontal
+                    else if (pmoves[rngmove] == "left" || pmoves[rngmove] == "right")
                     {
+                        switch (pmoves[rngmove])
+                        {
+                            case "left":
+                                {
+                                    newcol = (curcol - 1);
+                                    break;
+                                }
+                            case "right":
+                                {
+                                    newcol = (curcol + 1);
+                                    break;
+                                }
+                        }
+                        newloc = currow.ToString() + newcol.ToString();
+                        //Debug.Log("Move horizontal");
+                        cellindex.TryGetValue(newloc, out panelkey);
+                        //Debug.Log(newcol + "newcol " + curcol + " curcol " + newrow + " newrow " + currow + " currow");
+                        //update tileboard
+                        //set new tileboard location with the event details of the moving event.
+                        tileBoard[currow, newcol].UpdatePosition(tileBoard[currow, curcol]);
+                        //update tile's boardlocation with new loc
+                        tileBoard[currow, newcol]._boardLocation = newloc;
+                        //flush/clear event data from the previous tile...to leave tile details such as entries if its a placed tile intact.
+                        tileBoard[currow, curcol].ClearEvent();
                         //move thetile
                         eventTiles[i].transform.localPosition = gridPanels[panelkey].transform.localPosition;
-                        //update tileboard
-                        //clone the current tile to dummy
-                        dummy.CloneTile(tileBoard[currow, curcol]);
-                        //set current tile event htats moving to no event
-                        tileBoard[currow, curcol].ClearEvent();
-                        //flush dummy entry if it is set from the previous tile cloned
-                        if (dummy._isEntrySet)
-                        {
-                            dummy.FlushEntry();
-                        }
-                        //update the new board position with the dummy clone
-                        tileBoard[currow, newcol].UpdatePosition(dummy);
                         //update objclone name to be used for destroying the game obj
                         eventTiles[i].name = newloc + "(Clone)";
                     }
                 }
-                //else do nothing
             }
         }
+           
     }
-
+    //new approach to moving tiles... find event_red tiles and check its possible moves and RNG based on possible moves to avoid conflicts for a tile unable to move....
+    private List<string> PossibleEventTileMoves(int prow, int pcol)
+    {
+        string newloc = "";
+        List<string> possiblemoves = new List<string>();
+        //Debug.Log(pmoves.Count);
+        for (int j = 0; j < possiblemoves.Count; j++)
+        {
+            Debug.Log(possiblemoves[j]);
+        }
+        Debug.Log("possibleeventtilemoves");
+        //check that down
+        if (prow + 1 <= 5 && prow + 1 >= 0)
+        {
+            //Debug.Log("pmoves inside down");
+            newloc = (prow + 1).ToString() + pcol.ToString();
+            if (tileBoard[prow + 1, pcol]._event == "" && newloc != playerLoc)
+            {
+                //Debug.Log("add down");
+                possiblemoves.Add("down");
+            }
+        }
+        //check up
+        if (prow - 1 <= 5 && prow - 1 >= 0)
+        {
+            newloc = (prow - 1).ToString() + pcol.ToString();
+            //Debug.Log("pmoves inside up");
+            if (tileBoard[prow - 1, pcol]._event == "" && newloc != playerLoc)
+            {
+                //Debug.Log("add up");
+                possiblemoves.Add("up");
+            }
+        }
+        //check left
+        if (pcol - 1 <= 4 && pcol - 1 >= 0)
+        {
+            newloc = prow.ToString() + (pcol-1).ToString();
+            //Debug.Log("pmoves inside left");
+            if (tileBoard[prow, pcol - 1]._event == "" && newloc != playerLoc)
+            {
+                //Debug.Log("add left");
+                possiblemoves.Add("left");
+            }
+        }
+        //check right
+        if (pcol + 1 <= 4 && pcol + 1 >= 0)
+        {
+            newloc = prow.ToString() + (pcol + 1).ToString();
+            //Debug.Log("pmoves inside right");
+            if (tileBoard[prow, pcol + 1]._event == "" && newloc != playerLoc)
+            {
+                //Debug.Log("add right");
+                possiblemoves.Add("right");
+            }
+        }
+        //else set NoMoves currently this is causing an issue sometimes checking ot see if bug occurs further with count<0 condition....
+        else
+        {
+            if (possiblemoves.Count<0)
+            {
+                possiblemoves.Add("nomoves");
+            }
+        }
+        return possiblemoves;
+    }
     private string GetClickLocation(Vector3 pv3)
     {
         string location = "invalid location";
@@ -496,47 +572,6 @@ public class GameLogic : MonoBehaviour
         
     }
 
-    public bool ValidDrag( Tile ptile, string pcell)
-    {
-        int rowmove = 0;
-        int colmove = 0;
-        bool ValidDrag = false;
-        //Debug.Log("Valid Drag");
-        //Debug.Log("Player Loc: " + playerLoc);
-        rowmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(0, 1))) - (System.Int32.Parse(playerLoc.Substring(0, 1))));
-        colmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(1, 1))) - (System.Int32.Parse(playerLoc.Substring(1, 1))));
-        //Debug.Log("rowmove :" + rowmove);
-        //Debug.Log("colmove :" + colmove);
-        //check that the drag to is within range of player location 1 unit vertically or horizontally if so ValidPlacement to see if a clear path is available
-        //if the difference between both cell's row is abs 1 moving vertically
-        if (rowmove == 1)
-        {
-            //if the diff between both cells col is abs 0 to move vertically
-            if (colmove == 0 )
-            {
-                //check if path is available
-                if (validMove.ValidPlacement(playerLoc, ptile) )
-                {
-                    //Debug.Log("valid vert movement");
-                    ValidDrag = true;
-                }
-            }
-        }
-        //moving horizontally
-        else if (rowmove == 0)
-        {
-            if (colmove == 1)
-            {
-                //check if path is available
-                if (validMove.ValidPlacement(playerLoc,ptile) )
-                {
-                    //Debug.Log("Valid hori movement");
-                    ValidDrag = true;
-                }
-            }
-        }
-        return ValidDrag;
-    }
 
     public void UpdateDrag( Tile ptile , string pcell)
     {
@@ -882,6 +917,7 @@ public class GameLogic : MonoBehaviour
                     //if tile within bottom row matches exit name
                     if (tileBoard[row, col]._tileID == "tile_exit")
                     {
+                        tileBoard[row, col]._event = "exit";
                         //Debug.Log("found tile exit");
                         exit = row.ToString() + col.ToString();
                     }
@@ -895,6 +931,7 @@ public class GameLogic : MonoBehaviour
                     if (tileBoard[row, col]._tileID == "tile_entrance")
                     {
                         tileBoard[row, col]._isOccupied = true;
+                        tileBoard[row, col]._event = "entry";
                         playerLoc = row.ToString() + col.ToString();
                         //draw player
                         int pindex = 0;

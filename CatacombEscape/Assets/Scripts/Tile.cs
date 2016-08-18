@@ -15,6 +15,7 @@ public class Tile
     public string _boardLocation { get; set; }
 
     protected Tile() { }
+
     public Tile(List<string> pEntry, string pID , string pboardloc)
     {
         //Debug.Log("tile 3param");
@@ -59,6 +60,7 @@ public class Tile
         //dummy constructor
         _isActive = false;
         _isDummy = true;
+        _event = "";
     }
     //flush entry to move array around
     public void FlushEntry()
@@ -81,6 +83,8 @@ public class Tile
     {
         _event = "";
         _eventItem = "";
+        combat = 0;
+
     }
     //move validator
     public bool ValidMove(string pMove)
@@ -288,6 +292,7 @@ public class Tile
         this._eventItem = pTileb._eventItem;
         this._isDummy = pTileb._isDummy;
         this._isActive = pTileb._isActive;
+        this._tileID = pTileb._tileID;
     }
     public void test()
     {
@@ -298,7 +303,9 @@ public class Tile
             Debug.Log("isActive : " + _isActive);
             Debug.Log("is set :" + _isEntrySet);
             Debug.Log("is event: " + _event);
+            Debug.Log("is eventitem: " + _eventItem);
             Debug.Log("is combat: " + combat);
+            Debug.Log("is location " + _boardLocation);
             if (_entry != null)
             {
                 for (int i = 0; i < _entry.Count; i++)
