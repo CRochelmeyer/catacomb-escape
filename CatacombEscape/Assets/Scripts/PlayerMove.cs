@@ -85,7 +85,5 @@ public class PlayerMove : MonoBehaviour
 		journeyLength = Vector3.Distance(initialPosition, targetPosition);
 		startTime = Time.time;
 		moving = true;
-
-		//Debug.Log("move end");  
 	}
 }
