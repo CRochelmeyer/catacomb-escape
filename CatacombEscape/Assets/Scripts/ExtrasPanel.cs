@@ -30,12 +30,14 @@ public class ExtrasPanel : MonoBehaviour
 				PlayerPrefs.SetString ("ExtrasPanelOpen", "true");
 				source.PlayOneShot (resumeClip);
 				extrasPanel.SetBool ("isHidden", false);
+				moreArrows.rotation = Quaternion.identity;
 			}else
 			{
 				PlayerPrefs.SetString ("Paused", "false");
 				PlayerPrefs.SetString ("ExtrasPanelOpen", "false");
 				source.PlayOneShot (resumeClip);
 				extrasPanel.SetBool ("isHidden", true);
+				moreArrows.rotation = Quaternion.Euler (0, 0, 180);
 			}
 		}
 	}
