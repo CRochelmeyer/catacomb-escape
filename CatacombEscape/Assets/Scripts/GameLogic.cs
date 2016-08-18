@@ -94,19 +94,24 @@ public class GameLogic : MonoBehaviour
 	public GameObject newHighscore;
 	// These can be accessed and set with 'string tot = pointTot.text;' and 'pointTot.text = "100"'
 
-    //awake called behind start
+    // Awake called behind start
+    /// <summary>
+    /// Initialises the game.
+    /// </summary>
     void Awake()
     {
-		//Debug.Log("GameLogic awake");
         //refresh and initialse redstep per awake call
         redstep = 0;
 		audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource> ();
 		audioSource.PlayOneShot (startGameClip, 0.5f);
 		
 		GameObject mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
+
 		if (mainCamera != null)
-			mainCamera.GetComponent<BackGroundMusic> ().ResetScript ();
-		
+        {
+            mainCamera.GetComponent<BackGroundMusic>().ResetScript();
+        }
+
 		validMove = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<Direction> ();
 		movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
 		TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
@@ -329,8 +334,6 @@ public class GameLogic : MonoBehaviour
         redAvoided.text = redavoid.ToString();
         redPointTot.text = (redavoid * 5).ToString();
         tileNoPlaced.text = (tileplaced).ToString();
-        //highscore = (level * 100) + (greencol * 10) + (redavoid * 20) + (tileplaced * -.56);
-        //pointTot.text = highscore.ToString("0");
 		float temp = tileplaced * -0.56f;
         tileNoTot.text = (Mathf.Round(temp)).ToString();
 		score = ((level-1) * 100) + (greencol * 10) + (redavoid * 20) + Mathf.Round(temp);
