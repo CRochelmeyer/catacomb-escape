@@ -405,7 +405,7 @@ public class GameLogic : MonoBehaviour
             //for red tiles only
             if (eventTiles[i].GetComponent<Image>().sprite.name == "event_red")
             {
-                Debug.Log("moving et : " + i);
+                //Debug.Log("moving et : " + i);
                 //loop to generate the first appropriate new location
                 etloc = eventTiles[i].name.Substring(0, 2);
                 System.Int32.TryParse(etloc.Substring(0, 1), out currow);
@@ -421,7 +421,7 @@ public class GameLogic : MonoBehaviour
                 if (!pmoves.Contains("nomoves"))
                 {
                     int rngmove = Random.Range(0, (pmoves.Count));
-                    Debug.Log("move rng " + rngmove);
+                    //Debug.Log("move rng " + rngmove);
                     //vertical movement
                     if (pmoves[rngmove] == "up" || pmoves[rngmove] == "down")
                     {
@@ -494,12 +494,7 @@ public class GameLogic : MonoBehaviour
     {
         string newloc = "";
         List<string> possiblemoves = new List<string>();
-        //Debug.Log(pmoves.Count);
-        for (int j = 0; j < possiblemoves.Count; j++)
-        {
-            Debug.Log(possiblemoves[j]);
-        }
-        Debug.Log("possibleeventtilemoves");
+        //Debug.Log("possibleeventtilemoves");
         //check that down
         if (prow + 1 <= 5 && prow + 1 >= 0)
         {
