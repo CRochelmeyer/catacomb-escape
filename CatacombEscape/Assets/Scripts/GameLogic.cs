@@ -2,6 +2,8 @@
 /// GameLogic.cs
 /// This seems to be a bit of a 'god class' atm, it does far too many things. 
 /// I'd like to split it up into it's components i.e. player.cs, mouseMovement.cs etc. ~ Nick
+/// 
+/// This script is attached to the main camera in unity.
 ///
 
 using UnityEngine;
@@ -262,8 +264,10 @@ public class GameLogic : MonoBehaviour
 		UpdateUI();
 		GameObject tempObj = GameObject.FindGameObjectWithTag("GameLevel");
 		tempObj.GetComponent<Text>().text = "Lvl " + pLevel;
+        
         //setup board with rng sprites
 		GenerateBoard();
+
 		//PlayerPrefs.SetString ("GeneratedBoard", "true");
 		//generate hand 
     	//GenerateHand();
@@ -364,7 +368,7 @@ public class GameLogic : MonoBehaviour
     }
 
     // ~UI related
-    //try again button for the statpanel disable statpanel and destory gameObject and load the new scene.
+    // Try again button for the statpanel disable statpanel and destory gameObject and load the new scene.
     public void TryAgain()
     {
         //Debug.Log("Try again");
@@ -375,6 +379,9 @@ public class GameLogic : MonoBehaviour
     }
 
     // ~UI related
+    /// <summary>
+    /// Updates Player Stamina text and Stamina bar.
+    /// </summary>
 	public void UpdateUI()
 	{
 		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
@@ -383,6 +390,9 @@ public class GameLogic : MonoBehaviour
 		tempObj.GetComponent<Slider>().value = playerStamina;
 	}
 
+    /// <summary>
+    /// Updates the gamestate (game over) when stamina reaches 0. 
+    /// </summary>
 	private void CheckStamina()
 	{
 		if (playerStamina <= 0)
@@ -396,9 +406,11 @@ public class GameLogic : MonoBehaviour
         }
 	}
 
+    /// <summary>
+    /// Handles movement of the red event tiles
+    /// </summary>
     public void MoveEvents()
     {
-        //Debug.Log("move event");
         string etloc = "";
         string newloc = "";
         int panelkey = 0;
@@ -412,7 +424,7 @@ public class GameLogic : MonoBehaviour
         GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
         for(int i =0; i<eventTiles.Length;i++)
         {
-            //for red tiles only
+            // For red tiles only. Green tiles don't move.
             if (eventTiles[i].GetComponent<Image>().sprite.name == "event_red")
             {
                 etloc = eventTiles[i].name.Substring(0, 2);
@@ -420,6 +432,8 @@ public class GameLogic : MonoBehaviour
                 System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
                 newrow = Mathf.Abs(currow + (Random.Range(-1, 1)) );
                 newcol = Mathf.Abs(curcol + (Random.Range(-1, 1)) );
+
+                // Determine if the move is vertical or horizontal.
                 if (newrow <=5 && newrow >=0 && newrow != currow)
                 {
                     vertmove = true;
@@ -428,24 +442,24 @@ public class GameLogic : MonoBehaviour
                 {
                     horimove = true;
                 }
-                //Debug.Log(newrow + " : " +currow + " @@@@ " + newcol + " : " + curcol);
-                //if new row is within bounds and not the same as current move tile 
+
+                // If new row is within bounds and not the same as current move tile 
                 if (vertmove )
                 {
-                    //check the new location is not already an event or the player/exits
+                    // Check the new location is not already an event or the player/exits
                     Tile dummy = new Tile(0);
                     //Debug.Log("Move Vertical");
                     newloc = newrow.ToString() + curcol.ToString();
                     cellindex.TryGetValue(newloc, out panelkey);
-                    //Debug.Log(newcol + "newcol " + curcol + " curcol " + newrow + " newrow " + currow + " currow");
+
                     if ((tileBoard[newrow, curcol]._tileID != "tile_exit") && (tileBoard[newrow, curcol]._tileID != "tile_entrance")  && (newloc != playerLoc) && (tileBoard[newrow, curcol]._event != "green") && (tileBoard[newrow, curcol]._event != "red"))
                     {
-                        //move the tile
+                        // Move the tile
                         eventTiles[i].transform.localPosition = gridPanels[panelkey].transform.localPosition;
                         //update tileboard
                         //clone the current tile to dummy
                         dummy.CloneTile(tileBoard[currow, curcol]);
-                        //set current tile event htats moving to no event
+                        //set current tile event that's moving to no event
                         tileBoard[currow, curcol].ClearEvent();
                         //flush dummy entry if it is set from the previous tile cloned
                         if (dummy._isEntrySet)
@@ -465,7 +479,7 @@ public class GameLogic : MonoBehaviour
                     //Debug.Log("Move horizontal");
                     newloc = currow.ToString() + newcol.ToString();
                     cellindex.TryGetValue(newloc, out panelkey);
-                    //Debug.Log(newcol + "newcol " + curcol + " curcol " + newrow + " newrow " + currow + " currow");
+
                     if ((tileBoard[currow, newcol]._tileID != "tile_exit") && (tileBoard[currow, newcol]._tileID != "tile_entrance") && (newloc != playerLoc) && (tileBoard[currow, newcol]._event != "green") && (tileBoard[currow, newcol]._event != "red"))
                     {
                         //move thetile
@@ -491,6 +505,11 @@ public class GameLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets location of mouse click.
+    /// </summary>
+    /// <param name="pv3"></param>
+    /// <returns>Click Location</returns>
     private string GetClickLocation(Vector3 pv3)
     {
         string location = "invalid location";
@@ -516,51 +535,7 @@ public class GameLogic : MonoBehaviour
 		for (int i = 0; i < gridPanels.Length; i++)
 		{
 			gridPanels[i] = gridPanelsScript.GetGridPanel(i);
-		}
-        //Debug.Log("gridpanelsFound");
-        
-    }
-
-    public bool ValidDrag( Tile ptile, string pcell)
-    {
-        int rowmove = 0;
-        int colmove = 0;
-        bool ValidDrag = false;
-        //Debug.Log("Valid Drag");
-        //Debug.Log("Player Loc: " + playerLoc);
-        rowmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(0, 1))) - (System.Int32.Parse(playerLoc.Substring(0, 1))));
-        colmove = Mathf.Abs((System.Int32.Parse(pcell.Substring(1, 1))) - (System.Int32.Parse(playerLoc.Substring(1, 1))));
-        //Debug.Log("rowmove :" + rowmove);
-        //Debug.Log("colmove :" + colmove);
-        //check that the drag to is within range of player location 1 unit vertically or horizontally if so ValidPlacement to see if a clear path is available
-        //if the difference between both cell's row is abs 1 moving vertically
-        if (rowmove == 1)
-        {
-            //if the diff between both cells col is abs 0 to move vertically
-            if (colmove == 0 )
-            {
-                //check if path is available
-                if (validMove.ValidPlacement(playerLoc, ptile) )
-                {
-                    //Debug.Log("valid vert movement");
-                    ValidDrag = true;
-                }
-            }
-        }
-        //moving horizontally
-        else if (rowmove == 0)
-        {
-            if (colmove == 1)
-            {
-                //check if path is available
-                if (validMove.ValidPlacement(playerLoc,ptile) )
-                {
-                    //Debug.Log("Valid hori movement");
-                    ValidDrag = true;
-                }
-            }
-        }
-        return ValidDrag;
+		}        
     }
 
     public void UpdateDrag( Tile ptile , string pcell)
@@ -617,55 +592,40 @@ public class GameLogic : MonoBehaviour
         //Debug.Log("empty hand?" + emptyhand);
     }
     
+
+    /// <summary>
+    /// Handles player movement
+    /// </summary>
     public void PlayerClick()
     {
         //check for right click
         if(Input.GetMouseButtonDown(0))
         {
-            string clickLoc = "";
+            string clickLoc = "";			
 
-            //no longer using ArrayHandler switching to use panel instead
-			//clickLoc = GameObject.FindGameObjectWithTag("Scripts").GetComponent<ArrayHandler>().FindLocation(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+            clickLoc = MouseLocation;
 
-            clickLoc = this.MouseLocation;
-            //clickLoc = this.GetClickLocation(Input.mousePosition);
-            //Debug.Log(clickLoc);
 			if (clickLoc != "")
 			{
 	            int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
 	            int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
-	            //Debug.Log(tempcol);
-	            //Debug.Log("mouseClick");
-	            //Debug.Log("clickloc !+ " + clickLoc);
-	            //Debug.Log(temprow + " " + tempcol);
-	            //Debug.Log("test tileboard");
-	            //Debug.Log(tileBoard[temprow,tempcol]._isEntrySet);
-	            //Debug.Log(tileBoard[temprow,tempcol]._tileID);
-	            //Debug.Log("test tileboard");
 
-	            //int plocr = System.Int32.Parse(playerLoc.Substring(0,1));
-	            //int plocc = System.Int32.Parse(playerLoc.Substring(1, 1));
 	            if ((tileBoard[temprow, tempcol]._isEntrySet) && (playerLoc != "") )
 	            {
-	                //Debug.Log("clickloc 1: " + clickLoc);
-	                //Debug.Log("clickLoc if");
 	                if (validMove.MoveDirection(playerLoc, clickLoc) != "invalid move" && validMove.InRange(playerLoc, clickLoc) )
 	                {
-	                    //Debug.Log("not invalid move");
-	                    //valid move
-	                    //Debug.Log("clickloc 2: " + clickLoc);
 	                    if (validMove.Move(playerLoc, clickLoc,ref tileBoard) )
 						{
 							int rand = Random.Range (0,movementClips.Length);
 							audioSource.PlayOneShot (movementClips[rand], 1.0f);
 
-							//Debug.Log("clickloc 3: " + clickLoc);
 	                        int tempIndex = 0;
 							cellindex.TryGetValue(clickLoc, out tempIndex);
 							movePlayer.UpdatePlayer(gridPanels[tempIndex], validMove.MoveDirection(playerLoc,clickLoc));
-	                        //update Playerloc
+	                        
+                            // update the player's location
 	                        destLoc = clickLoc;
-	                        //Debug.Log("new player loc" + playerLoc + " :: " + clickLoc);
+
 							playerStamina--;
 							StartFade (stamDown, "-1", fadeTime);
 	                        UpdateUI();
@@ -680,6 +640,9 @@ public class GameLogic : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Generate a new hand of tiles
+    /// </summary>
     public void NewHand()
     {
         handTiles = GameObject.FindGameObjectsWithTag("handDrag");
@@ -696,6 +659,10 @@ public class GameLogic : MonoBehaviour
         CheckStamina();
     }
 
+    /// <summary>
+    /// Updates events. Deals damage etc.
+    /// </summary>
+    /// <param name="pcell"></param>
     public void PlayEvent(string pcell)
     {
         if (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive)
@@ -711,8 +678,9 @@ public class GameLogic : MonoBehaviour
 
 				int combat = tileBoard[temprow, tempcol].combat;
 				int damage = combat + playerEquip;
-				
-				if (damage > 0) //If player would gain stamina from enemy. Don't want no eating of strange creatures...
+
+                // Prevent player gaining stamina from enemy. Don't want no eating of strange creatures...
+                if (damage > 0)
 				{
 					damage = 0;
 				}
@@ -793,7 +761,11 @@ public class GameLogic : MonoBehaviour
             CheckStamina();
         }
     }
-
+    
+    /// <summary>
+    /// Enables pause panel UI.
+    /// </summary>
+    /// <param name="panel"></param>
 	private void DisplayClickPanel (GameObject panel)
 	{
 		panel.SetActive (true);
@@ -801,6 +773,11 @@ public class GameLogic : MonoBehaviour
 		StartCoroutine (ClickToClose (panel));
 	}
 
+    /// <summary>
+    /// Closes the pause panel UI.
+    /// </summary>
+    /// <param name="panel"></param>
+    /// <returns></returns>
 	IEnumerator ClickToClose (GameObject panel)
 	{
 		while (!Input.GetMouseButtonUp (0))
@@ -840,6 +817,9 @@ public class GameLogic : MonoBehaviour
     }
 	// not working: parse this!
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void GenerateBoardLogic()
     {
         //Debug.Log("Tileboard generated for level " + level);
@@ -968,12 +948,7 @@ public class GameLogic : MonoBehaviour
 				newObject.GetComponent<Image>().color = new Color(255f,255f,255f,255f);
 				newObject.AddComponent<Draggable>();
 				//above method with bool set to false solved instantiating flipped object....   
-				//newObject.transform.parent = handTiles[i].transform.parent;
-				
-				//Debug.Log(handTiles[i].transform.parent + "   ");
-				//test[i] = GameObject.Instantiate(handTiles[i], handTiles[i].transform.position, Quaternion.identity);
-				// Debug.Log("trying to find component" + handTiles[i] + " :: " + i + " :::" + handTiles.Length + "l");
-				//Debug.Log("tilesprite[] " + tileSprite[Random.Range(0, tileSprite.Length)]);
+
 			}
 		}
 		//trying new method of grabbing BottomPanel panel and adding child comp...
@@ -981,67 +956,63 @@ public class GameLogic : MonoBehaviour
 		//Debug.Log("generatingHand");
 	}
 	
+    /// <summary>
+    /// Destroys GameObjects in current level.
+    /// Generation of next level occurs by using Awake(). This also recreates a lot of other objects. Perhaps this can be optimised better?
+    /// </summary>
 	public void NextLevel()
 	{
 		int rand = Random.Range (0,lvlCompClips.Length);
 		audioSource.PlayOneShot (lvlCompClips[rand], 0.5f);
-		//System.Threading.Thread.Sleep (2000);
 
         emptyhand = true;
-		//Debug.Log("Previous Level " + level);
 		level++;
+
         //initilaise tileBoard list a new
         tileBoard = new Tile[6, 5];
-		//degenerate handtiles
+
+		// Destroy handtiles
 		handTiles = GameObject.FindGameObjectsWithTag("handDrag");
 		for (int i = 0; i < handTiles.Length; i++)
 		{
 			Destroy(handTiles[i]);
 		}
 
-		//degenerate eventTiles and calculate red tiles avoided
-		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
+        // Destroy eventTiles and calculate red tiles avoided
+        GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
 		for (int i = 0; i < eventTiles.Length; i++)
 		{
             redavoid += redtiles - redstep;
 			Destroy(eventTiles[i]);
 		}
 
-		//degenerate grid tiles
-		//gridPanels = GameObject.FindGameObjectsWithTag("GridPanel");
-		for (int i=0; i<gridPanels.Length; i++)
+        // Destroy grid tiles
+        for (int i=0; i<gridPanels.Length; i++)
 		{
 			gridPanels[i].GetComponent<Image>().sprite = null;
 			gridPanels[i].GetComponent<Image>().color = new Color(255f,255f,255f,0f);
 		}
 
-        //PlayerPrefs.SetString ("GeneratedBoard", "false");
-		//initialise 
-		//Debug.Log("New Level " + level);
-		this.Awake();
-        for (int row = 0; row <6; row++)
-        {
-            for (int col = 0; col <5; col++)
-            {
-                //this.tileBoard[row, col].test();
-            }
-        }
+        // Generate the next level.
+		Awake();
+
 	}
 
+    /// <summary>
+    /// Generates the game board including the number of green and red event tiles.
+    /// </summary>
     public void GenerateBoard()
     {
-        //generate number of green tiles
-        //random of 1 to 3 tiles inclusive
+        // Generate a number of green tiles.
+        // random of 1 to 3 tiles inclusive
         int green = Random.Range(1, 4);
-        //Debug.Log("green " + green);
 
-        //generate number of red tiles
-        //random of 1 to 3 tiles inclusive
+        // Generate the number of red tiles
+        // random of 1 to 3 tiles inclusive
         int red = Random.Range(1, 4);
+       
         //store the rng red into redtiles to use for scoring
         redtiles = red;
-
-        //Debug.Log("red " + red);
 
         if (gridPanels != null)
         {
@@ -1091,10 +1062,10 @@ public class GameLogic : MonoBehaviour
 
                     }
                 }
-                //Debug.Log("Random" + i + "= " + randomPanels[i]);
             }
             //store event green tile into eventgreen list
             eventindex.Clear();
+
             //Draw all green tiles
             for (int i = 0; i < green; i++)
             {
@@ -1110,6 +1081,7 @@ public class GameLogic : MonoBehaviour
                 eventindex.Add(tempPanel.name, panelClone.GetComponent<Image>().sprite.name.ToString());
 
             }
+
             //Draw all red tiles
             for (int i = 0 + green; i < red + green; i++)
             {

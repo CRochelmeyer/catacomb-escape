@@ -3,6 +3,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections;
 
+/// <summary>
+/// This class is used for UI panels like the pause menu. I think. Need to confirm with Hung.
+/// </summary>
 public class Panel : MonoBehaviour//, IPointerEnterHandler
 { 
 	public bool MouseOverPanel()
@@ -44,8 +47,6 @@ public class Panel : MonoBehaviour//, IPointerEnterHandler
            && pClickloc.y >= worldCorners[0].y && pClickloc.y < worldCorners[2].y)
         {
             location = panel.name;
-            //Debug.Log(panel.name);
-            //Debug.Log("location" + location);
         }
         else
         {
