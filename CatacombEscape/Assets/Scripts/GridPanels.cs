@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Background tiles of the play area
+/// </summary>
 public class GridPanels : MonoBehaviour
 {
 	public GameObject panel00;

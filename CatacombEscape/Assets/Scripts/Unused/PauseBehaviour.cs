@@ -2,6 +2,9 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
+/// <summary>
+/// Does not appear to be in use currently. 18/08/16
+/// </summary>
 public class PauseBehaviour : MonoBehaviour
 {
 	public GameObject pauseUI;
