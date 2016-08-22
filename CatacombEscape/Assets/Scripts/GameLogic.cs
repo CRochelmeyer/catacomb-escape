@@ -247,7 +247,7 @@ public class GameLogic : MonoBehaviour
 
 	        if (nextlevel)
 	        {
-				GameAnalytics.NewProgressionEvent (Start, "Level" + level, level);
+				GameAnalytics.NewProgressionEvent (GAProgressionStatus.Start, "Level" + level, level);
 	            nextlevel = false;
 	            //PlayerPrefs.SetString("GeneratedBoard", "false");
 	            NextLevel();
