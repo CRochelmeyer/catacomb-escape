@@ -13,6 +13,7 @@ public class PauseBehaviour : MonoBehaviour
 	public void Start ()
 	{
 		source = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource> ();
+		PlayerPrefs.SetString ("SettingsPanelOpen", "false");
 	}
 
 	public void LoadScene(string sceneName)
@@ -26,16 +27,23 @@ public class PauseBehaviour : MonoBehaviour
 
 	public void Pause()
 	{
-		Debug.Log ("Paused");
-		if (PlayerPrefs.GetString ("Paused") == "false")
+		if (pauseUI.activeInHierarchy == false)
 		{
 			source.PlayOneShot (pauseClip);
+
 			PlayerPrefs.SetString ("Paused", "true");
+			PlayerPrefs.SetString ("SettingsPanelOpen", "true");
 			pauseUI.SetActive (true);
 		} else
 		{
 			source.PlayOneShot (unpauseClip);
-			PlayerPrefs.SetString ("Paused", "false");
+
+			if (PlayerPrefs.GetString ("ExtrasPanelOpen") == "false")
+			{
+				PlayerPrefs.SetString ("Paused", "false");
+			}
+
+			PlayerPrefs.SetString ("SettingsPanelOpen", "false");
 			pauseUI.SetActive (false);
 		}
 	}
@@ -43,7 +51,13 @@ public class PauseBehaviour : MonoBehaviour
 	public void Resume()
 	{
 		source.PlayOneShot (unpauseClip);
-		PlayerPrefs.SetString ("Paused", "false");
+
+		if (PlayerPrefs.GetString ("ExtrasPanelOpen") == "false")
+		{
+			PlayerPrefs.SetString ("Paused", "false");
+		}
+
+		PlayerPrefs.SetString ("SettingsPanelOpen", "false");
 		pauseUI.SetActive(false);
 	}
 
