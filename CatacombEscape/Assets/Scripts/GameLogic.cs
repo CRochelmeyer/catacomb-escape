@@ -13,6 +13,8 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 
+using GameAnalyticsSDK;
+
 
 public class GameLogic : MonoBehaviour
 {
@@ -247,6 +249,7 @@ public class GameLogic : MonoBehaviour
 
 	        if (nextlevel)
 	        {
+				GameAnalytics.NewProgressionEvent (start, "Level " + level, level);
 	            nextlevel = false;
 	            //PlayerPrefs.SetString("GeneratedBoard", "false");
 	            NextLevel();
