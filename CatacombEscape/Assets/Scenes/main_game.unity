@@ -320,6 +320,10 @@ Prefab:
       propertyPath: m_AnchoredPosition.x
       value: -159
       objectReference: {fileID: 0}
+    - target: {fileID: 192996, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
   m_IsPrefabParent: 0
@@ -1136,6 +1140,22 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 8261376, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
       propertyPath: reverbZoneMixCustomCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2012328, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_NormalizedViewPortRect.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2012328, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2012328, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2012328, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_NormalizedViewPortRect.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
