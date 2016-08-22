@@ -453,23 +453,23 @@ Prefab:
       objectReference: {fileID: 898376829}
     - target: {fileID: 22458766, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22458766, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22418642, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22418642, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22418642, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11409710, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_FontData.m_HorizontalOverflow
@@ -522,6 +522,22 @@ Prefab:
     - target: {fileID: 11476544, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
       propertyPath: m_Text
       value: ' x   5   ='
+      objectReference: {fileID: 0}
+    - target: {fileID: 22480736, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -160
+      objectReference: {fileID: 0}
+    - target: {fileID: 22451652, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -54
+      objectReference: {fileID: 0}
+    - target: {fileID: 22435642, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 54
+      objectReference: {fileID: 0}
+    - target: {fileID: 22423466, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 160
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
