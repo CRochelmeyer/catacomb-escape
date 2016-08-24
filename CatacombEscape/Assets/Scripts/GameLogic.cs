@@ -11,6 +11,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 
+// Game Analytics currently tracks the number of levels the player reaches.
 using GameAnalyticsSDK;
 
 
