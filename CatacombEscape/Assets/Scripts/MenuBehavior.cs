@@ -40,25 +40,29 @@ public class MenuBehavior : MonoBehaviour
 	
 	}
 
+    // Not in use 18/08/16
 	public void LoadScene(string sceneName)
 	{
 		SceneManager.LoadScene (sceneName);
 		PlayerPrefs.SetString ("PlayFromMenu", "true");
 	}
-	
-	public void Quit()
+
+    // Not in use 18/08/16
+    public void Quit()
 	{
 		Application.Quit ();
 	}
-	
-	public void ResetPlayerPrefs()
+
+    // Not in use 18/08/16
+    public void ResetPlayerPrefs()
 	{
 		PlayerPrefs.SetString ("FirstPlay", "true");
 		PlayerPrefs.SetString ("HighScore", "");
 		SceneManager.LoadScene ("menu");
 	}
 
-	public void DisplayHighscoreStats()
+    // Not in use 18/08/16
+    public void DisplayHighscoreStats()
 	{
 		statsPanel.SetActive (true);
 		highscore.text = PlayerPrefs.GetString ("HighScore");

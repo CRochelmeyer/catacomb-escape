@@ -1,3 +1,8 @@
+///
+/// Displays framerate
+/// Not currently in use, I think.
+///
+
 using UnityEngine;
 using System.Collections;
 
