@@ -128,6 +128,12 @@ public class Tile
         return move;
     }
 
+    /// <summary>
+    /// Ensure entry tile is valid
+    /// Is an entryTile always guaranteed to have at least one valid entry?
+    /// </summary>
+    /// <param name="pEntry"></param>
+    /// <returns></returns>
     public bool ValidEntry(string pEntry)
     {
         bool entry = false;
@@ -175,6 +181,9 @@ public class Tile
         return entry;
     }
 
+    /// <summary>
+    /// Creates the tile the player starts the level on.
+    /// </summary>
     private void generateEntry()
     {
         //Debug.Log("start entry for " + _tileID);
@@ -193,7 +202,7 @@ public class Tile
             _isEntrySet = true;
         }
         //loop to grab and and add to _entry of directional pathways based on _tileID
-        //check if con_end isat the last _ location for the condition
+        //check if con_end is at the last _ location for the condition
         //this allows us to grab everything inbetween _ and jump out leaving the 1 out
         else
         {
@@ -245,6 +254,9 @@ public class Tile
        
     }
 
+    /// <summary>
+    /// Create events (Chests, enemies)
+    /// </summary>
     public void GenerateEvent()
     {
         //Debug.Log("Generate Event");
@@ -258,12 +270,12 @@ public class Tile
         //2nd param is a counter thus con_end - con_start and -1 to start before 2nd _
         dir = this._tileID.Substring((con_start + 1));
         //Debug.Log("event dir " + dir);
+
         if (dir == "green")
         {
             _event = "green";
             combat = Random.Range(10, 16);
         }
-
         else if (dir == "red")
         {
 			GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic> ();
@@ -284,6 +296,11 @@ public class Tile
         _boardLocation = pTile._boardLocation;
         generateEntry();
     }
+
+    /// <summary>
+    /// Replicates a target tile
+    /// </summary>
+    /// <param name="pTileb"></param>
     public void CloneTile(Tile pTileb)
     {
         this.combat = pTileb.combat;
@@ -294,6 +311,10 @@ public class Tile
         this._isActive = pTileb._isActive;
         this._tileID = pTileb._tileID;
     }
+
+    /// <summary>
+    /// Is not currently used
+    /// </summary>
     public void test()
     {
         //if (_isDummy == false)
