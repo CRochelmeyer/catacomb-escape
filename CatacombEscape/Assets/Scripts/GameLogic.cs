@@ -235,7 +235,7 @@ public class GameLogic : MonoBehaviour
 	        UpdateUI();
 	        PlayerClick();
 
-	        if (nextlevel)
+			if (nextlevel && movePlayer.GetPlayerMoving == false)
 	        {
 	            nextlevel = false;
 	            //PlayerPrefs.SetString("GeneratedBoard", "false");
@@ -286,13 +286,15 @@ public class GameLogic : MonoBehaviour
 		}
 
 		//check if next level...
-		if (playerLoc == exit)
+		if (playerLoc == exit) 
 		{
 			nextlevel = true;
+			movePlayer.PlayerExits ();
+		} else 
+		{ //move events
+			MoveEvents ();
+			CheckStamina ();
 		}
-        //move events
-        MoveEvents();
-        CheckStamina ();
 	}
 
     private void UpdateMouseLocation()
@@ -1041,6 +1043,7 @@ public class GameLogic : MonoBehaviour
                 //this.tileBoard[row, col].test();
             }
         }
+		CheckStamina ();
 	}
 
     public void GenerateBoard()
