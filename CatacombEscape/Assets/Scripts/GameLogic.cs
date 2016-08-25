@@ -25,14 +25,11 @@ public class GameLogic : MonoBehaviour
 	private string playerLoc="";
 	private string destLoc = "";
 	private string mouseLocation = "";
-    private int playerEquip = 0;
 
     //dictionary to match cell strings of 00-04 10-14 to an index from 0-29
     Dictionary<string, int> cellindex = new Dictionary<string, int>();
     //dictionary to store event tile clone name and original grid panel location int
     Dictionary<string, string> eventindex = new Dictionary<string, string>();
-    //dictionary for item desciptions
-    Dictionary<int, string> equipmentindex = new Dictionary<int, string>();
     //sprite holders drag sprites via inspector
 
 
@@ -68,21 +65,14 @@ public class GameLogic : MonoBehaviour
 	public AudioClip[] redTileClips;
 	public AudioClip[] lvlCompClips;
 
-    public Text equipment;
-    public Text equipDesc;
 	public Text stamUp;
 	public Text stamDown;
 	public float fadeTime;
 	private bool faderRunning = false;
-	public GameObject equipPanel;
 	public GameObject snakePanel;
 	public Text snakeStamDown;
-	public GameObject snakeDefeatPanel;
-	public Text snakeDefeatEquip;
 	public GameObject scorpionPanel;
 	public Text scorpStamDown;
-	public GameObject scorpionDefeatPanel;
-	public Text scorpDefeatEquip;
 	//public Text breadStamUp;
 	public GameObject statPanel; //this is what pops up at gameover
 	public Text lvlNoCleared;
@@ -113,58 +103,8 @@ public class GameLogic : MonoBehaviour
 		movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
 		TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
 
-        //creating equipment index
-        equipmentindex.Clear();
-        int temp = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 6; j++)
-            {
-                string mod = "";
-                if (i == 0)
-                { mod = "Bronze"; }
-                else if (i == 1)
-                { mod = "Iron"; }
-                else if (i == 3)
-				{ mod = "Steel"; }
-				else if (i == 4)
-				{ mod = "Platinum"; }
-                switch (j)
-                {
-                    case 0:
-                        {
-                            equipmentindex.Add(temp, mod + " Trowel");
-                            break;
-                        }
-                    case 1:
-                        {
-                            equipmentindex.Add(temp, mod + " Trenching Hoe");
-                            break;
-                        }
-                    case 2:
-                        {
-                            equipmentindex.Add(temp, mod + " Shovel");
-                            break;
-                        }
-                    case 3:
-                        {
-                            equipmentindex.Add(temp, mod + " Pickaxe");
-                            break;
-                        }
-                    case 4:
-                        {
-                            equipmentindex.Add(temp, mod + " Hand Drill");
-                            break;
-                        }
-                    case 5:
-                        {
-                            equipmentindex.Add(temp, mod + " Automatic Drill");
-                            break;
-                        }
-                }
-                temp++;
-            }
-        }
+		int temp = 0;
+
         //fill cellindex dictionary
         //temp index int to fill dictonary
         cellindex.Clear();
@@ -666,11 +606,10 @@ public class GameLogic : MonoBehaviour
             //play event = remove stamina and destroy the event clone...
             if (tileBoard[temprow, tempcol]._event == "red")
             {
-                stamUp.text = tileBoard[temprow, tempcol].combat.ToString() + playerEquip;
+                stamUp.text = tileBoard[temprow, tempcol].combat.ToString();
 				stamUp.enabled = true;
 
-				int combat = tileBoard[temprow, tempcol].combat;
-				int damage = combat + playerEquip;
+				int damage = tileBoard[temprow, tempcol].combat;
 
                 // Prevent player gaining stamina from enemy. Don't want no eating of strange creatures...
                 if (damage > 0)
@@ -681,26 +620,12 @@ public class GameLogic : MonoBehaviour
                 switch (tileBoard[temprow, tempcol]._eventItem.ToLower())
                 {
                 case "snake":
-					if (damage == 0)
-					{
-						snakeDefeatEquip.text = equipment.text;
-						DisplayClickPanel (snakeDefeatPanel);
-					}else
-					{
-	                    snakeStamDown.text = damage.ToString();
-						DisplayClickPanel (snakePanel);
-					}
+                    snakeStamDown.text = damage.ToString();
+					DisplayClickPanel (snakePanel);
                     break;
                 case "scorpion":
-					if (damage == 0)
-					{
-						scorpDefeatEquip.text = equipment.text;
-						DisplayClickPanel (scorpionDefeatPanel);
-					}else
-					{
-	                    scorpStamDown.text = damage.ToString();
-						DisplayClickPanel (scorpionPanel);
-					}
+                    scorpStamDown.text = damage.ToString();
+					DisplayClickPanel (scorpionPanel);
                     break;
 				}
 
@@ -718,21 +643,6 @@ public class GameLogic : MonoBehaviour
             }
             else if (tileBoard[temprow, tempcol]._event == "green")
             {
-				int equipRand = Random.Range(0, 10); //Chance of 0 to 9 (max (10) is exclusive)
-				if (equipRand <= 1) //Chance of 0 or 1 which == 20% (decreased as testing flew through them)
-                {
-                    //check equipment index and identify new item
-                    string item = ""; //old item
-                    string itemb = ""; //new item
-                    equipmentindex.TryGetValue(playerEquip, out item);
-                    //iterate playerequip int and power
-                    playerEquip++;
-                    equipmentindex.TryGetValue(playerEquip, out itemb);
-                    equipDesc.text = ("You've found a " + itemb + ". It feels more durable than your " + item + ".").ToString();
-					DisplayClickPanel (equipPanel);
-                    //update player equip text
-					equipment.text = itemb;
-                }
 				string newText = "+" + tileBoard[temprow, tempcol].combat.ToString();
 				StartFade (stamUp, newText, fadeTime);
                 playerStamina += tileBoard[temprow, tempcol].combat;
