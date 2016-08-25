@@ -234,7 +234,7 @@ public class GameLogic : MonoBehaviour
 	        UpdateUI();
 	        PlayerClick();
 
-	        if (nextlevel)
+			if (nextlevel)
 	        {
 				GameAnalytics.NewProgressionEvent (GAProgressionStatus.Start, "Level" + level, level);
 	            nextlevel = false;
@@ -246,6 +246,11 @@ public class GameLogic : MonoBehaviour
 	        }
 		}
     }
+
+	public bool SetNextLevel
+	{
+		set {nextlevel = value;}
+	}
 
     // ~Init method
     //init game method
@@ -287,11 +292,17 @@ public class GameLogic : MonoBehaviour
 		//check if next level...
 		if (playerLoc == exit)
 		{
-			nextlevel = true;
+			int rand = Random.Range (0,movementClips.Length);
+			int pindex = 0;
+			audioSource.PlayOneShot (movementClips[rand], 1.0f);
+			cellindex.TryGetValue (playerLoc, out pindex);
+			movePlayer.PlayerExits (gridPanels [pindex]);
+		}else
+		{
+			//move events
+			MoveEvents();
+			CheckStamina ();			
 		}
-        //move events
-        MoveEvents();
-        CheckStamina ();
 	}
 
     // ~Mouse related method
@@ -882,8 +893,10 @@ public class GameLogic : MonoBehaviour
                         playerLoc = row.ToString() + col.ToString();
                         //draw player
                         int pindex = 0;
-                        cellindex.TryGetValue(playerLoc, out pindex);
-                        movePlayer.DrawPlayer(pindex, gridPanels);
+                        cellindex.TryGetValue (playerLoc, out pindex);
+						movePlayer.DrawPlayer (pindex, gridPanels);
+						int rand = Random.Range (0,movementClips.Length);
+						audioSource.PlayOneShot (movementClips[rand], 1.0f);
                     }
                 }
             }
