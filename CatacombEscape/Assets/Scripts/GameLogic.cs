@@ -49,6 +49,7 @@ public class GameLogic : MonoBehaviour
 	private GridPanels gridPanelsScript;
 	private Direction validMove;
 	private PlayerMove movePlayer;
+	private CoinController coinCont;
 	private GameObject[] gridPanels;
     private Tile[,] tileBoard;
 	private float tileplaced = 0;
@@ -92,7 +93,6 @@ public class GameLogic : MonoBehaviour
     //awake called behind start
     void Awake()
     {
-		playerStamina = standardStamina;
         //refresh and initialse redstep per awake call
         redstep = 0;
 		audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource> ();
@@ -104,9 +104,13 @@ public class GameLogic : MonoBehaviour
 		
 		validMove = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<Direction> ();
 		movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
+		coinCont = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<CoinController> ();
 		TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
 
-        InitGame(level);
+		playerStamina = standardStamina;
+		coinCont.UpdateCoins (playerStamina);
+
+		InitGame(level);
         
 		//Run tutorial each time game is launched from main menu
 		if (PlayerPrefs.GetString ("PlayFromMenu") == "true")
@@ -165,12 +169,14 @@ public class GameLogic : MonoBehaviour
 
 		CheckStamina();
 		if (playerStamina < standardStamina)
+		{
 			playerStamina = standardStamina;
+			coinCont.UpdateCoins (playerStamina);
+		}
 
 		//fill cellindex dictionary
 		//temp index int to fill dictonary
 		cellindex.Clear();
-		temp = 0;
 		for (int i = 0; i < 6; i++)
 		{
 			for (int j = 0; j < 5; j++)
@@ -348,6 +354,7 @@ public class GameLogic : MonoBehaviour
 		else if (playerStamina > maxStamina )
         {
 			playerStamina = maxStamina;
+			coinCont.UpdateCoins (playerStamina);
         }
 	}
 
@@ -516,6 +523,7 @@ public class GameLogic : MonoBehaviour
 				int rand = Random.Range (0,placementClips.Length);
 				audioSource.PlayOneShot (placementClips[rand], 0.5f);
 				playerStamina -= 2;
+				coinCont.UpdateCoins (playerStamina);
 				StartFade (stamDown, "-2", fadeTime);
                 //increment tileplaced
                 tileplaced++;
@@ -569,6 +577,7 @@ public class GameLogic : MonoBehaviour
 	                        destLoc = clickLoc;
 
 							playerStamina--;
+							coinCont.UpdateCoins (playerStamina);
 							StartFade (stamDown, "-1", fadeTime);
 	                        UpdateUI();
 	                    }
@@ -596,7 +605,8 @@ public class GameLogic : MonoBehaviour
             }
         }
 		StartFade (stamDown, "-4", fadeTime);
-        playerStamina += -4;
+		playerStamina += -4;
+		coinCont.UpdateCoins (playerStamina);
         GenerateHand();
         CheckStamina();
     }
@@ -643,6 +653,7 @@ public class GameLogic : MonoBehaviour
 					string newText = damage.ToString();
 					StartFade (stamDown, newText, fadeTime);
 					playerStamina += damage;
+					coinCont.UpdateCoins (playerStamina);
 				}
 
 				int rand = Random.Range (0,redTileClips.Length);
@@ -654,7 +665,8 @@ public class GameLogic : MonoBehaviour
             {
 				string newText = "+" + tileBoard[temprow, tempcol].combat.ToString();
 				StartFade (stamUp, newText, fadeTime);
-                playerStamina += tileBoard[temprow, tempcol].combat;
+				playerStamina += tileBoard[temprow, tempcol].combat;
+				coinCont.UpdateCoins (playerStamina);
 				
 				int rand = Random.Range (0,greenTileClips.Length);
 				audioSource.PlayOneShot (greenTileClips[rand]);
