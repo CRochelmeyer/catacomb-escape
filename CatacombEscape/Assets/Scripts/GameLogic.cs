@@ -21,7 +21,9 @@ public class GameLogic : MonoBehaviour
     private bool gameover = false;
     private bool emptyhand = true;
     private bool nextlevel = false;
-    private int playerStamina = 100;
+	public int standardStamina;
+	public int maxStamina;
+    private int playerStamina;
 	private string playerLoc="";
 	private string destLoc = "";
 	private string mouseLocation = "";
@@ -90,6 +92,7 @@ public class GameLogic : MonoBehaviour
     //awake called behind start
     void Awake()
     {
+		playerStamina = standardStamina;
         //refresh and initialse redstep per awake call
         redstep = 0;
 		audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource> ();
@@ -103,46 +106,8 @@ public class GameLogic : MonoBehaviour
 		movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
 		TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
 
-		int temp = 0;
-
-        //fill cellindex dictionary
-        //temp index int to fill dictonary
-        cellindex.Clear();
-        temp = 0;
-        for (int i = 0; i < 6; i++)
-        {
-            for (int j = 0; j < 5; j++)
-            {
-                cellindex.Add(i.ToString() + j.ToString(), temp);
-                temp++;
-            }
-		}
-        //if instance is null create instance of this GameLogic 
-        if (instance == null)
-        {
-            instance = this;
-        }
-        //else instance is not null but not this GameLogic destroy 
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
-
-		FindGridPanels();
-
-		PlayerPrefs.SetString ("Paused", "false");
-
         InitGame(level);
-        tileBoard = new Tile[6, 5];
-        for (int i =0; i<6;i++)
-        {
-            for (int j =0; j<5;j++)
-            {
-                tileBoard[i, j] = new Tile(0);
-            }
-        }
-        GenerateBoardLogic();
-
+        
 		//Run tutorial each time game is launched from main menu
 		if (PlayerPrefs.GetString ("PlayFromMenu") == "true")
 		{
@@ -195,7 +160,40 @@ public class GameLogic : MonoBehaviour
     // ~Init method
     //init game method
     void InitGame(int pLevel)
-    {
+	{
+		int temp = 0;
+
+		CheckStamina();
+		if (playerStamina < standardStamina)
+			playerStamina = standardStamina;
+
+		//fill cellindex dictionary
+		//temp index int to fill dictonary
+		cellindex.Clear();
+		temp = 0;
+		for (int i = 0; i < 6; i++)
+		{
+			for (int j = 0; j < 5; j++)
+			{
+				cellindex.Add(i.ToString() + j.ToString(), temp);
+				temp++;
+			}
+		}
+		//if instance is null create instance of this GameLogic 
+		if (instance == null)
+		{
+			instance = this;
+		}
+		//else instance is not null but not this GameLogic destroy 
+		else if (instance != this)
+		{
+			Destroy(gameObject);
+		}
+
+		FindGridPanels();
+
+		PlayerPrefs.SetString ("Paused", "false");
+
         //initialise player data
 		UpdateUI();
 		GameObject tempObj = GameObject.FindGameObjectWithTag("GameLevel");
@@ -203,6 +201,17 @@ public class GameLogic : MonoBehaviour
         
         //setup board with rng sprites
 		GenerateBoard();
+
+		tileBoard = new Tile[6, 5];
+		for (int i =0; i<6;i++)
+		{
+			for (int j =0; j<5;j++)
+			{
+				tileBoard[i, j] = new Tile(0);
+			}
+		}
+
+		GenerateBoardLogic();
 	}
 
     // ~Mouse related method
@@ -322,7 +331,7 @@ public class GameLogic : MonoBehaviour
 	public void UpdateUI()
 	{
 		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
-		tempObj.GetComponent<Text>().text = playerStamina + "/100";
+		tempObj.GetComponent<Text>().text = playerStamina.ToString();
 		tempObj = GameObject.FindGameObjectWithTag("StamBar");
 		tempObj.GetComponent<Slider>().value = playerStamina;
 	}
@@ -336,9 +345,9 @@ public class GameLogic : MonoBehaviour
 		{
 			gameover = true;
 		}
-        else if (playerStamina > 100 )
+		else if (playerStamina > maxStamina )
         {
-            playerStamina = 100;
+			playerStamina = maxStamina;
         }
 	}
 
@@ -882,7 +891,7 @@ public class GameLogic : MonoBehaviour
 		}
 
         // Generate the next level.
-		Awake();
+		InitGame (level);
 
 	}
 

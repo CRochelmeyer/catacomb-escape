@@ -12,7 +12,7 @@ public class PlayerMove : MonoBehaviour
 	public Animator animator;
 	private GameObject tempobj;
 	private Rigidbody2D rb2d;
-	public string pDirection = "";
+	private string pDirection = "";
 	Vector3 targetPosition;
 	Vector3 initialPosition;
 
