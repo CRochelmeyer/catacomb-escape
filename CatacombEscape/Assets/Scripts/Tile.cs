@@ -259,7 +259,8 @@ public class Tile
     /// </summary>
     public void GenerateEvent()
     {
-        //Debug.Log("Generate Event");
+		//Debug.Log("Generate Event");
+		GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic> ();
         int con_start;
         string dir = "";
         con_start = this._tileID.IndexOf("_");
@@ -274,13 +275,12 @@ public class Tile
         if (dir == "green")
         {
             _event = "green";
-            combat = Random.Range(10, 16);
+			combat = gameLogic.greenAmt;
         }
         else if (dir == "red")
         {
-			GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic> ();
             _event = "red";
-            combat = Random.Range(-8, -3) - gameLogic.GetLevel; //enemy strength increments by 1 each level
+			combat = -(gameLogic.initRedDmg) - gameLogic.GetLevel; //enemy strength increments by 1 each level
         }
     }
 

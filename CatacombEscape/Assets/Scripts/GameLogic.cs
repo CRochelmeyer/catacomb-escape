@@ -17,49 +17,28 @@ using GameAnalyticsSDK;
 
 public class GameLogic : MonoBehaviour
 {
-    //boolean game conditions
-    private bool gameover = false;
-    private bool emptyhand = true;
-    private bool nextlevel = false;
+	#region gameVariables
+	[Header("Game Variables")]
 	public int standardStamina;
 	public int maxStamina;
-    private int playerStamina;
-	private string playerLoc="";
-	private string destLoc = "";
-	private string mouseLocation = "";
+	public int maxRedNo;
+	public int minRedNo;
+	public int redLvlInc; // After X levels, enemy number increases
+	public int initRedDmg;
+	public int maxGreenNo;
+	public int minGreenNo;
+	public int greenAmt;
+	#endregion
 
-    //dictionary to match cell strings of 00-04 10-14 to an index from 0-29
-    Dictionary<string, int> cellindex = new Dictionary<string, int>();
-    //dictionary to store event tile clone name and original grid panel location int
-    Dictionary<string, string> eventindex = new Dictionary<string, string>();
-    //sprite holders drag sprites via inspector
-
-
+	#region sprites
+	[Header("Sprites")]
     public Sprite[] tileSprite;
     public Sprite[] gridSprite;
-    public GameObject btmPanel;
-    public GameObject[] handTiles;
-	public string exit;
-    //create tile gameboard 2d array
-    public Tile[,] gameBoard = new Tile[5, 6];
-    //initiate a static instance of gamelogic to be used globally...
-    public static GameLogic instance = null;
-
-    private int level = 1;
-	private GridPanels gridPanelsScript;
-	private Direction validMove;
-	private PlayerMove movePlayer;
-	private CoinController coinCont;
-	private GameObject[] gridPanels;
-    private Tile[,] tileBoard;
-	private float tileplaced = 0;
-	private float greencol =0;
-	private float redavoid=0;
-    private int redtiles;
-    private int redstep;
-    private float score;
+	#endregion
 
 	private AudioSource audioSource;
+	#region audioClips
+	[Header("Audio Clips")]
 	public AudioClip startGameClip;
 	public AudioClip[] placementClips;
 	public AudioClip[] dealingClips;
@@ -67,7 +46,10 @@ public class GameLogic : MonoBehaviour
 	public AudioClip[] greenTileClips;
 	public AudioClip[] redTileClips;
 	public AudioClip[] lvlCompClips;
+	#endregion
 
+	#region uiPanels
+	[Header("UI Panels")]
 	public Text stamUp;
 	public Text stamDown;
 	public float fadeTime;
@@ -89,6 +71,42 @@ public class GameLogic : MonoBehaviour
 	public Text pointTot;
 	public GameObject newHighscore;
 	// These can be accessed and set with 'string tot = pointTot.text;' and 'pointTot.text = "100"'
+	#endregion
+
+	//boolean game conditions
+	private bool gameover = false;
+	private bool emptyhand = true;
+	private bool nextlevel = false;
+	private int playerStamina;
+	private string playerLoc="";
+	private string destLoc = "";
+	private string mouseLocation = "";
+
+	//dictionary to match cell strings of 00-04 10-14 to an index from 0-29
+	Dictionary<string, int> cellindex = new Dictionary<string, int>();
+	//dictionary to store event tile clone name and original grid panel location int
+	Dictionary<string, string> eventindex = new Dictionary<string, string>();
+	//sprite holders drag sprites via inspector
+
+	private GameObject btmPanel;
+	private GameObject[] handTiles;
+	private string exit;
+	//initiate a static instance of gamelogic to be used globally...
+	private static GameLogic instance = null;
+
+	private int level = 1;
+	private GridPanels gridPanelsScript;
+	private Direction validMove;
+	private PlayerMove movePlayer;
+	private CoinController coinCont;
+	private GameObject[] gridPanels;
+	private Tile[,] tileBoard;
+	private float tileplaced = 0;
+	private float greencol =0;
+	private float redavoid=0;
+	private int redtiles;
+	private int redstep;
+	private float score;
 
     //awake called behind start
     void Awake()
@@ -907,18 +925,28 @@ public class GameLogic : MonoBehaviour
 
 	}
 
+	private int CalculateIncrement ()
+	{
+		int increment = 0;
+		int mod = level % redLvlInc; // find if level is a factor of red lvl increment
+		if (mod == 0)
+		{
+			increment = level / redLvlInc;
+		}
+		return increment;
+	}
+
     /// <summary>
     /// Generates the game board including the number of green and red event tiles.
     /// </summary>
     public void GenerateBoard()
     {
         // Generate a number of green tiles.
-        // random of 1 to 3 tiles inclusive
-        int green = Random.Range(1, 4);
+		int green = Random.Range (minGreenNo, maxGreenNo+1);
 
         // Generate the number of red tiles
-        // random of 1 to 3 tiles inclusive
-        int red = Random.Range(1, 4);
+		int redIncrement = CalculateIncrement();
+		int red = Random.Range (minRedNo, maxRedNo+1) + redIncrement;
        
         //store the rng red into redtiles to use for scoring
         redtiles = red;

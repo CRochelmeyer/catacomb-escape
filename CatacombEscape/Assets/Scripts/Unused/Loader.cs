@@ -5,7 +5,7 @@ public class Loader : MonoBehaviour
 {	
 	//public GameObject GridPanelsPrefab;
     public GameObject GameManager;
-
+	/*
     void Awake()
     {
         if (GameLogic.instance == null)
