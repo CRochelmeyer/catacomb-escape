@@ -76,7 +76,7 @@ public class GameLogic : MonoBehaviour
 	public Text stamUp;
 	public Text stamDown;
 	public float fadeTime;
-	private bool faderRunning = false;
+	//private bool faderRunning = false;
 	public GameObject snakePanel;
 	public Text snakeStamDown;
 	public GameObject scorpionPanel;
