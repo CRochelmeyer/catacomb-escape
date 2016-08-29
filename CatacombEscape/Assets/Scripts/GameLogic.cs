@@ -28,6 +28,7 @@ public class GameLogic : MonoBehaviour
 	public int maxGreenNo;
 	public int minGreenNo;
 	public int greenAmt;
+	public int discardCost;
 	#endregion
 
 	#region sprites
@@ -361,8 +362,6 @@ public class GameLogic : MonoBehaviour
 		}
 		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
 		tempObj.GetComponent<Text>().text = playerStamina.ToString();
-		tempObj = GameObject.FindGameObjectWithTag("StamBar");
-		tempObj.GetComponent<Slider>().value = playerStamina;
 		coinCont.UpdateCoins (playerStamina);
 	}
 
@@ -622,8 +621,8 @@ public class GameLogic : MonoBehaviour
                 Destroy(handTiles[i]);
             }
         }
-		StartFade (stamDown, "-4", fadeTime);
-		playerStamina += -4;
+		StartFade (stamDown, "-" + discardCost, fadeTime);
+		playerStamina += - discardCost;
 		GenerateHand();
 		UpdateUI();
         CheckStamina();
