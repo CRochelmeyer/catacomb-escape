@@ -521,7 +521,7 @@ public class GameLogic : MonoBehaviour
 				int rand = Random.Range (0,placementClips.Length);
 				audioSource.PlayOneShot (placementClips[rand], 0.5f);
 				playerStamina -= 2;
-				StartFade (stamDown, "-2", fadeTime);
+				uiController.StartFade (stamDown, "-2", fadeTime);
                 //increment tileplaced
 				tileplaced++;
 				UpdateUI();
@@ -575,7 +575,7 @@ public class GameLogic : MonoBehaviour
 	                        destLoc = clickLoc;
 
 							playerStamina--;
-							StartFade (stamDown, "-1", fadeTime);
+							uiController.StartFade (stamDown, "-1", fadeTime);
 	                        UpdateUI();
 	                    }
 	                }
@@ -601,7 +601,7 @@ public class GameLogic : MonoBehaviour
                 Destroy(handTiles[i]);
             }
         }
-		StartFade (stamDown, "-4", fadeTime);
+		uiController.StartFade (stamDown, "-4", fadeTime);
 		playerStamina += -4;
 		GenerateHand();
 		UpdateUI();
@@ -661,7 +661,7 @@ public class GameLogic : MonoBehaviour
             else if (tileBoard[temprow, tempcol]._event == "green")
             {
                 string newText = "+" + tileBoard[temprow, tempcol].combat.ToString();
-                StartFade(stamUp, newText, fadeTime);
+                uiController.StartFade(stamUp, newText, fadeTime);
                 playerStamina += tileBoard[temprow, tempcol].combat;
                 UpdateUI();
 
@@ -682,70 +682,6 @@ public class GameLogic : MonoBehaviour
             CheckStamina();
         }
     }
-
-
-    ////////////////////////////////////////////////////////////
-
-        // These methods are now handled through 'UIController.cs'
-    
-    /*
-
-    /// <summary>
-    /// Displays event panel UI. (Snakes and Scorpions)
-    /// </summary>
-    /// <param name="panel"></param>
-    private void DisplayClickPanel (GameObject panel)
-	{
-		panel.SetActive (true);
-		PlayerPrefs.SetString ("Paused", "true");
-		StartCoroutine (ClickToClose (panel));
-	}
-
-    /// <summary>
-    /// Closes the panel.
-    /// </summary>
-    /// <param name="panel"></param>
-    /// <returns></returns>
-	IEnumerator ClickToClose (GameObject panel)
-	{
-		while (!Input.GetMouseButtonUp (0))
-		{
-			yield return null;
-		}
-		panel.SetActive (false);
-		PlayerPrefs.SetString ("Paused", "false");
-	}
-
-    */
-
-	private void StartFade (Text stamText, string newText, float time)
-	{
-		if (faderRunning)
-		{
-			StopCoroutine ("FadeStamPopup");
-		}
-		Color newColor = stamText.color;
-		newColor.a = 1;
-		stamText.color = newColor;
-		stamText.text = newText;
-
-		StartCoroutine (FadeStamPopup (stamText, time));
-	}
-
-	IEnumerator FadeStamPopup (Text stamText, float time)
-    {
-		faderRunning = true;
-		float alpha = stamText.color.a;
-		for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / time)
-		{
-			Color newColor = stamText.color;
-			newColor.a = Mathf.Lerp (alpha,0,t);
-			stamText.color = newColor;
-			yield return null;
-		}
-		faderRunning = false;
-    }
-	// not working: parse this!
 
     /// <summary>
     /// 
