@@ -108,7 +108,7 @@ public class GameLogic : MonoBehaviour
 		TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
 
 		playerStamina = standardStamina;
-		coinCont.UpdateCoins (playerStamina);
+		UpdateUI();
 
 		InitGame(level);
         
@@ -167,13 +167,6 @@ public class GameLogic : MonoBehaviour
 	{
 		int temp = 0;
 
-		CheckStamina();
-		if (playerStamina < standardStamina)
-		{
-			playerStamina = standardStamina;
-			coinCont.UpdateCoins (playerStamina);
-		}
-
 		//fill cellindex dictionary
 		//temp index int to fill dictonary
 		cellindex.Clear();
@@ -200,7 +193,12 @@ public class GameLogic : MonoBehaviour
 
 		PlayerPrefs.SetString ("Paused", "false");
 
-        //initialise player data
+		//initialise player data
+		CheckStamina();
+		if (playerStamina < standardStamina)
+		{
+			playerStamina = standardStamina;
+		}
 		UpdateUI();
 		GameObject tempObj = GameObject.FindGameObjectWithTag("GameLevel");
 		tempObj.GetComponent<Text>().text = "Lvl " + pLevel;
@@ -336,10 +334,18 @@ public class GameLogic : MonoBehaviour
     /// </summary>
 	public void UpdateUI()
 	{
+		if (playerStamina > maxStamina )
+		{
+			playerStamina = maxStamina;
+		}else if (playerStamina < 0)
+		{
+			playerStamina = 0;
+		}
 		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
 		tempObj.GetComponent<Text>().text = playerStamina.ToString();
 		tempObj = GameObject.FindGameObjectWithTag("StamBar");
 		tempObj.GetComponent<Slider>().value = playerStamina;
+		coinCont.UpdateCoins (playerStamina);
 	}
 
     /// <summary>
@@ -351,11 +357,6 @@ public class GameLogic : MonoBehaviour
 		{
 			gameover = true;
 		}
-		else if (playerStamina > maxStamina )
-        {
-			playerStamina = maxStamina;
-			coinCont.UpdateCoins (playerStamina);
-        }
 	}
 
     /// <summary>
@@ -523,10 +524,10 @@ public class GameLogic : MonoBehaviour
 				int rand = Random.Range (0,placementClips.Length);
 				audioSource.PlayOneShot (placementClips[rand], 0.5f);
 				playerStamina -= 2;
-				coinCont.UpdateCoins (playerStamina);
 				StartFade (stamDown, "-2", fadeTime);
                 //increment tileplaced
-                tileplaced++;
+				tileplaced++;
+				UpdateUI();
 				CheckStamina();
                 break;
             }
@@ -577,7 +578,6 @@ public class GameLogic : MonoBehaviour
 	                        destLoc = clickLoc;
 
 							playerStamina--;
-							coinCont.UpdateCoins (playerStamina);
 							StartFade (stamDown, "-1", fadeTime);
 	                        UpdateUI();
 	                    }
@@ -606,8 +606,8 @@ public class GameLogic : MonoBehaviour
         }
 		StartFade (stamDown, "-4", fadeTime);
 		playerStamina += -4;
-		coinCont.UpdateCoins (playerStamina);
-        GenerateHand();
+		GenerateHand();
+		UpdateUI();
         CheckStamina();
     }
 
@@ -653,7 +653,7 @@ public class GameLogic : MonoBehaviour
 					string newText = damage.ToString();
 					StartFade (stamDown, newText, fadeTime);
 					playerStamina += damage;
-					coinCont.UpdateCoins (playerStamina);
+					UpdateUI();
 				}
 
 				int rand = Random.Range (0,redTileClips.Length);
@@ -666,7 +666,7 @@ public class GameLogic : MonoBehaviour
 				string newText = "+" + tileBoard[temprow, tempcol].combat.ToString();
 				StartFade (stamUp, newText, fadeTime);
 				playerStamina += tileBoard[temprow, tempcol].combat;
-				coinCont.UpdateCoins (playerStamina);
+				UpdateUI();
 				
 				int rand = Random.Range (0,greenTileClips.Length);
 				audioSource.PlayOneShot (greenTileClips[rand]);

@@ -25,18 +25,6 @@ public class CoinController : MonoBehaviour
 	private GameLogic gameLogic;
 	private int previousStam = 0;
 
-	// Use this for initialization
-	void Start ()
-	{
-		GameObject[] tensArray;
-		for (int i = 0; i < 6; i++)
-		{
-			tensArray = GetArray (i);
-			foreach (GameObject obj in tensArray)
-				obj.SetActive (false);
-		}
-	}
-
 	private GameObject[] GetArray (int tens)
 	{
 		switch (tens)
@@ -96,10 +84,14 @@ public class CoinController : MonoBehaviour
 					tensArray = GetArray (oldTens);
 					SetCoinActive (tensArray, oldOnes, false);
 
-					tensArray = GetArray (newTens - 1);
-					tensArray [0].SetActive (false);
-					SwitchSilverActive (tensArray, true);
-					// play gold coin to silver animation
+					if (newTens > 0)
+					{
+						tensArray = GetArray (newTens - 1);
+						tensArray [0].SetActive (false);
+						SwitchSilverActive (tensArray, true);
+						// play gold coin to silver animation
+					}
+					else break;
 				}
 				tempStam--;
 			}
