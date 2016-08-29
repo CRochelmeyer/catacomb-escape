@@ -318,17 +318,6 @@ public class GameLogic : MonoBehaviour
     }
 
     // ~UI related
-    // Try again button for the statpanel disable statpanel and destory gameObject and load the new scene.
-    public void TryAgain()
-    {
-        //Debug.Log("Try again");
-        statPanel.SetActive(false);
-        Destroy(gameObject);
-        PauseBehaviour pb = new PauseBehaviour();
-        pb.LoadScene("main_game");
-    }
-
-    // ~UI related
     /// <summary>
     /// Updates Player Stamina text and Stamina bar.
     /// </summary>
