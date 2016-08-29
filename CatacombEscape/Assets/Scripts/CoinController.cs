@@ -3,67 +3,23 @@ using System.Collections;
 
 public class CoinController : MonoBehaviour
 {
+	public GameObject[] gold;
+	public GameObject[] silver;
+
 	// Coins arrays: index0 is gold coin, index 1-10 are silver coins
 	public Animator animatorGold1;
-	public GameObject[] gold1;
-
 	public Animator animatorGold2;
-	public GameObject[] gold2;
-
 	public Animator animatorGold3;
-	public GameObject[] gold3;
-
 	public Animator animatorGold4;
-	public GameObject[] gold4;
-
 	public Animator animatorGold5;
-	public GameObject[] gold5;
-
 	public Animator animatorGold6;
-	public GameObject[] gold6;
-
 	public Animator animatorGold7;
-	public GameObject[] gold7;
-
 	public Animator animatorGold8;
-	public GameObject[] gold8;
-
 	public Animator animatorGold9;
-	public GameObject[] gold9;
-
 	public Animator animatorGold10;
-	public GameObject[] gold10;
 
 	private GameLogic gameLogic;
 	private int previousStam = 0;
-
-	private GameObject[] GetArray (int tens)
-	{
-		switch (tens)
-		{
-		case 0:
-			return gold1;
-		case 1:
-			return gold2;
-		case 2:
-			return gold3;
-		case 3:
-			return gold4;
-		case 4:
-			return gold5;
-		case 5:
-			return gold6;
-		case 6:
-			return gold7;
-		case 7:
-			return gold8;
-		case 8:
-			return gold9;
-		case 9:
-			return gold10;
-		}
-		return gold1;
-	}
 
 	/// <summary>
 	/// Updates the display of coins in the UI
@@ -75,7 +31,6 @@ public class CoinController : MonoBehaviour
 		int oldOnes;
 		int newTens;
 		int newOnes;
-		GameObject[] tensArray;
 		int tempStam = previousStam;
 
 		while (tempStam != newStamina)
@@ -90,25 +45,21 @@ public class CoinController : MonoBehaviour
 
 				if (oldTens == newTens && newOnes != 0) // ie. old stamina was 37 and new stamina is 36
 				{
-					tensArray = GetArray (newTens);
-					SetCoinActive (tensArray, oldOnes, false);
+					SetCoinActive (silver, oldOnes, false);
 				}
-				else if (oldTens - newTens == 1 && oldOnes == 0) // Old stamina was 40 and new stamina is 37
+				else if (oldTens - newTens == 1 && oldOnes == 0) // Old stamina was 40 and new stamina is 39
 				{
-					tensArray = GetArray (newTens);
 					oldOnes += 10;
-					SetCoinActive (tensArray, oldOnes, false);
+					SetCoinActive (silver, oldOnes, false);
 				}
 				else // Old stamina was 31 and new stamina is 30
 				{
-					tensArray = GetArray (oldTens);
-					SetCoinActive (tensArray, oldOnes, false);
+					SetCoinActive (silver, oldOnes, false);
 
-					if (newTens > 0)
+					if (newTens > 0) // ie. if new stamina is not 00
 					{
-						tensArray = GetArray (newTens - 1);
-						tensArray [0].SetActive (false);
-						SwitchSilverActive (tensArray, true);
+						gold [newTens - 1].SetActive (false);
+						SwitchSilverActive (silver, true);
 						// play gold coin to silver animation
 					}
 					else break;
@@ -122,27 +73,23 @@ public class CoinController : MonoBehaviour
 
 				if (oldTens == newTens && oldOnes != 0) // ie. old stamina was 36 and new stamina is 37
 				{
-					tensArray = GetArray (newTens);
-					tensArray [newOnes].SetActive (true);
+					SetCoinActive (silver, newOnes, true);
 				}
 				else if (oldTens - newTens == -1 && newOnes == 0) // Old stamina was 39 and new stamina is 40
 				{
-					tensArray = GetArray (oldTens);
 					newOnes += 10;
-					tensArray [newOnes].SetActive (true);
+					SetCoinActive (silver, newOnes, true);
 				}
 				else // Old stamina was 30 and new stamina is 31
 				{
 					if (oldTens > 0)
 					{
-						tensArray = GetArray (oldTens - 1);
-						tensArray [0].SetActive (true);
-						SwitchSilverActive (tensArray, false);
+						SetCoinActive (gold, oldTens, true);
+						SwitchSilverActive (silver, false);
 						// play silver coin to gold animation
 					}
 
-					tensArray = GetArray (newTens);
-					SetCoinActive (tensArray, newOnes, true);
+					SetCoinActive (silver, newOnes, true);
 				}
 				tempStam++;
 			}
@@ -152,7 +99,7 @@ public class CoinController : MonoBehaviour
 
 	private void SwitchSilverActive (GameObject[] array, bool status)
 	{
-		for (int i = 1; i < 11; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			array[i].SetActive (status);
 		}
@@ -160,7 +107,7 @@ public class CoinController : MonoBehaviour
 
 	private void SetCoinActive (GameObject[] tensArray, int index, bool active)
 	{
-		tensArray [index].SetActive (active);
+		tensArray [index-1].SetActive (active);
 		// play particle effect
 		// play sound
 	}
