@@ -64,6 +64,10 @@ public class PauseBehaviour : MonoBehaviour
 		pauseUI.SetActive(false);
 	}
 
+    /// <summary>
+    /// Loads specified scene. Is attached to the "try again" button in the main game scene.
+    /// </summary>
+    /// <param name="sceneName"></param>
 	public void RestartGame(string sceneName)
 	{
 		SceneManager.LoadScene (sceneName);

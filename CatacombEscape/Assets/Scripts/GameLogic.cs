@@ -17,6 +17,11 @@ using GameAnalyticsSDK;
 
 public class GameLogic : MonoBehaviour
 {
+
+    // -- Controller Scripts -- //
+    UIController uiController;
+
+
     //boolean game conditions
     private bool gameover = false;
     private bool emptyhand = true;
@@ -107,7 +112,10 @@ public class GameLogic : MonoBehaviour
 		coinCont = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<CoinController> ();
 		TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
 
-		playerStamina = standardStamina;
+        // Controller Scripts //
+        uiController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UIController>();
+
+        playerStamina = standardStamina;
 		UpdateUI();
 
 		InitGame(level);
@@ -534,7 +542,7 @@ public class GameLogic : MonoBehaviour
     
 
     /// <summary>
-    /// Handles player movement
+    /// Handles player movement when a tile is clicked.
     /// </summary>
     public void PlayerClick()
     {
@@ -615,50 +623,50 @@ public class GameLogic : MonoBehaviour
             if (tileBoard[temprow, tempcol]._event == "red")
             {
                 stamUp.text = tileBoard[temprow, tempcol].combat.ToString();
-				stamUp.enabled = true;
+                stamUp.enabled = true;
 
-				int damage = tileBoard[temprow, tempcol].combat;
+                int damage = tileBoard[temprow, tempcol].combat;
 
                 // Prevent player gaining stamina from enemy. Don't want no eating of strange creatures...
                 if (damage > 0)
-				{
-					damage = 0;
-				}
+                {
+                    damage = 0;
+                }
 
                 switch (tileBoard[temprow, tempcol]._eventItem.ToLower())
                 {
-                case "snake":
-                    snakeStamDown.text = damage.ToString();
-					DisplayClickPanel (snakePanel);
-                    break;
-                case "scorpion":
-                    scorpStamDown.text = damage.ToString();
-					DisplayClickPanel (scorpionPanel);
-                    break;
-				}
+                    case "snake":
+                        snakeStamDown.text = damage.ToString();
+                        uiController.DisplayClickPanel(snakePanel);
+                        break;
+                    case "scorpion":
+                        scorpStamDown.text = damage.ToString();
+                        uiController.DisplayClickPanel(scorpionPanel);
+                        break;
+                }
 
-				if (damage != 0) //don't show stam popup if stamina is not reduced
-				{
-					string newText = damage.ToString();
-					StartFade (stamDown, newText, fadeTime);
-					playerStamina += damage;
-					UpdateUI();
-				}
+                if (damage != 0) //don't show stam popup if stamina is not reduced
+                {
+                    string newText = damage.ToString();
+                    uiController.StartFade(stamDown, newText, fadeTime);
+                    playerStamina += damage;
+                    UpdateUI();
+                }
 
-				int rand = Random.Range (0,redTileClips.Length);
-				audioSource.PlayOneShot (redTileClips[rand]);
+                int rand = Random.Range(0, redTileClips.Length);
+                audioSource.PlayOneShot(redTileClips[rand]);
 
                 redstep++;
             }
             else if (tileBoard[temprow, tempcol]._event == "green")
             {
-				string newText = "+" + tileBoard[temprow, tempcol].combat.ToString();
-				StartFade (stamUp, newText, fadeTime);
-				playerStamina += tileBoard[temprow, tempcol].combat;
-				UpdateUI();
-				
-				int rand = Random.Range (0,greenTileClips.Length);
-				audioSource.PlayOneShot (greenTileClips[rand]);
+                string newText = "+" + tileBoard[temprow, tempcol].combat.ToString();
+                StartFade(stamUp, newText, fadeTime);
+                playerStamina += tileBoard[temprow, tempcol].combat;
+                UpdateUI();
+
+                int rand = Random.Range(0, greenTileClips.Length);
+                audioSource.PlayOneShot(greenTileClips[rand]);
 
                 //increment the greens taken
                 greencol++;
@@ -674,12 +682,19 @@ public class GameLogic : MonoBehaviour
             CheckStamina();
         }
     }
+
+
+    ////////////////////////////////////////////////////////////
+
+        // These methods are now handled through 'UIController.cs'
     
+    /*
+
     /// <summary>
-    /// Enables pause panel UI.
+    /// Displays event panel UI. (Snakes and Scorpions)
     /// </summary>
     /// <param name="panel"></param>
-	private void DisplayClickPanel (GameObject panel)
+    private void DisplayClickPanel (GameObject panel)
 	{
 		panel.SetActive (true);
 		PlayerPrefs.SetString ("Paused", "true");
@@ -687,7 +702,7 @@ public class GameLogic : MonoBehaviour
 	}
 
     /// <summary>
-    /// Closes the pause panel UI.
+    /// Closes the panel.
     /// </summary>
     /// <param name="panel"></param>
     /// <returns></returns>
@@ -700,6 +715,8 @@ public class GameLogic : MonoBehaviour
 		panel.SetActive (false);
 		PlayerPrefs.SetString ("Paused", "false");
 	}
+
+    */
 
 	private void StartFade (Text stamText, string newText, float time)
 	{

@@ -150,7 +150,12 @@ public class Direction : MonoBehaviour
         return dir;
     }
 
-    // ?Check player move is valid
+    /// <summary>
+    /// Valid move if player is moving one tile horizontally or vertically.
+    /// </summary>
+    /// <param name="pCurrent"></param>
+    /// <param name="pNext"></param>
+    /// <returns></returns>
     public bool InRange(string pCurrent, string pNext)
     {
         bool validmove = false;
