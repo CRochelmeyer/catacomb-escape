@@ -22,6 +22,18 @@ public class CoinController : MonoBehaviour
 	public Animator animatorGold6;
 	public GameObject[] gold6;
 
+	public Animator animatorGold7;
+	public GameObject[] gold7;
+
+	public Animator animatorGold8;
+	public GameObject[] gold8;
+
+	public Animator animatorGold9;
+	public GameObject[] gold9;
+
+	public Animator animatorGold10;
+	public GameObject[] gold10;
+
 	private GameLogic gameLogic;
 	private int previousStam = 0;
 
@@ -41,6 +53,14 @@ public class CoinController : MonoBehaviour
 			return gold5;
 		case 5:
 			return gold6;
+		case 6:
+			return gold7;
+		case 7:
+			return gold8;
+		case 8:
+			return gold9;
+		case 9:
+			return gold10;
 		}
 		return gold1;
 	}
