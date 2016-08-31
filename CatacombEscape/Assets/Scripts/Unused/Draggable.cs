@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     //use to handle when the tile is drag in an invalid spot return to position...
-    //public Transform parentToReturn = null;
     public Image id;
     public string imageID;
 	public GameLogic gameLogic;
@@ -80,8 +79,9 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 				Destroy (this.gameObject);
 			}
 	        else
-            {    
-				this.gameObject.GetComponent<Transform> ().position = locationToReturn;
+            {
+                // If the placement is not valid, return the tile to its starting position.
+                this.gameObject.GetComponent<Transform> ().position = locationToReturn;
 			}
 		}
 	}

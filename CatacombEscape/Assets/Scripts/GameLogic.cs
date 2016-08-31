@@ -113,7 +113,7 @@ public class GameLogic : MonoBehaviour
 		TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
 
         // Controller Scripts //
-        uiController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UIController>();
+        uiController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<UIController>(); // Gets the script attached to the camera.
 
         playerStamina = standardStamina;
 		UpdateUI();
