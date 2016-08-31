@@ -338,6 +338,8 @@ public class GameLogic : MonoBehaviour
 		{
 			playerStamina = 0;
 		}
+
+        // I want to move this to the UI controller class, but with so many variables it may be better to first create a class to hold all of the player stats.
 		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
 		tempObj.GetComponent<Text>().text = playerStamina.ToString();
 		tempObj = GameObject.FindGameObjectWithTag("StamBar");
@@ -477,6 +479,9 @@ public class GameLogic : MonoBehaviour
         return location;
     }
 
+    /// <summary>
+    /// Get all tiles. Called during init.
+    /// </summary>
     private void FindGridPanels()
 	{
         gridPanelsScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<GridPanels> ();
@@ -488,7 +493,13 @@ public class GameLogic : MonoBehaviour
 		}        
     }
 
-    public void UpdateDrag( Tile ptile , string pcell)
+    /// <summary>
+    /// Places tile, if valid move.
+    /// Consider renaming - name is misleading
+    /// </summary>
+    /// <param name="ptile"></param>
+    /// <param name="pcell"></param>
+    public void UpdateDrag( Tile ptile , string pcell )
     {
         //grab index based on pcell in cellindex dictionary
         int _gridIndex = 33;
@@ -500,12 +511,13 @@ public class GameLogic : MonoBehaviour
             string temp1 = tileSprite[i].name.ToString();
             string temp2 = ptile._tileID.ToString();
 
+            // Valid tile placement
             if (string.Compare(temp1, temp2) == 0 && _gridIndex != 33 )
             {
                 _spriteIndex = i;
                 gridPanels[_gridIndex].GetComponent<Image>().sprite = tileSprite[_spriteIndex] as Sprite;
                 gridPanels[_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
-                
+              
                 //update tileBoard
                 //check tileBoard cell doesnt exist a event cell already
                 if (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._event != "")
@@ -517,15 +529,21 @@ public class GameLogic : MonoBehaviour
                     tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))] = ptile;
                 }
 
-				//decreaste stamina
+				// Play random tile placement sound.
 				int rand = Random.Range (0,placementClips.Length);
 				audioSource.PlayOneShot (placementClips[rand], 0.5f);
-				playerStamina -= 2;
+
+                // Decreaste stamina
+                playerStamina -= 2;
 				uiController.StartFade (stamDown, "-2", fadeTime);
-                //increment tileplaced
+
+                // Increment number of tiles placed.
 				tileplaced++;
+
 				UpdateUI();
 				CheckStamina();
+                
+                // No need to keep comparing tiles once a valid placement was found.
                 break;
             }
         }
