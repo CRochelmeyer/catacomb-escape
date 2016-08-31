@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     //use to handle when the tile is drag in an invalid spot return to position...
-    //not used at the moment 12/04  
     //public Transform parentToReturn = null;
     public Image id;
     public string imageID;
