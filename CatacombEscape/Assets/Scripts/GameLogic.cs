@@ -4,6 +4,8 @@
 /// I'd like to split it up into it's components i.e. player.cs, mouseMovement.cs etc. ~ Nick
 /// 
 /// This script is attached to the main camera in unity.
+/// 
+/// 29/08 - Several UI related methods have been relocated to the 'UIController' script.
 ///
 
 using UnityEngine;
@@ -64,7 +66,7 @@ public class GameLogic : MonoBehaviour
     private int redstep;
     private float score;
 
-	private AudioSource audioSource;
+    public AudioSource audioSource;
 	public AudioClip startGameClip;
 	public AudioClip[] placementClips;
 	public AudioClip[] dealingClips;
@@ -164,6 +166,7 @@ public class GameLogic : MonoBehaviour
 		}
     }
 
+    // Level related
 	public bool SetNextLevel
 	{
 		set {nextlevel = value;}
