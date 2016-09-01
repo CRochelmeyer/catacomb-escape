@@ -78,6 +78,7 @@ public class GameLogic : MonoBehaviour
 	private bool gameover = false;
 	private bool emptyhand = true;
 	private bool nextlevel = false;
+	private bool exiting = false;
 	private int playerStamina;
 	private string playerLoc="";
 	private string destLoc = "";
@@ -160,12 +161,14 @@ public class GameLogic : MonoBehaviour
 
 			//UpdateMouseLocation ();
 	        UpdateUI();
-	        PlayerClick();
+			if (!exiting)
+	        	PlayerClick();
 
 			if (nextlevel)
 	        {
 				GameAnalytics.NewProgressionEvent (GAProgressionStatus.Start, "Level" + level, level);
 	            nextlevel = false;
+				exiting = false;
 	            NextLevel();
 			}else if (gameover)
 	        {
@@ -266,6 +269,7 @@ public class GameLogic : MonoBehaviour
 		{
 			int rand = Random.Range (0,movementClips.Length);
 			int pindex = 0;
+			exiting = true;
 			audioSource.PlayOneShot (movementClips[rand], 1.0f);
 			cellindex.TryGetValue (playerLoc, out pindex);
 			movePlayer.PlayerExits (gridPanels [pindex]);
