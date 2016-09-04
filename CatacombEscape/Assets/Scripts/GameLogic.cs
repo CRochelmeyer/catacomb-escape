@@ -35,6 +35,9 @@ public class GameLogic : MonoBehaviour
 	[Header("Sprites")]
     public Sprite[] tileSprite;
     public Sprite[] gridSprite;
+	public Sprite eventGreenLrg;
+	public Sprite eventGreenSml;
+	public Sprite[] eventEnemy;
 	#endregion
 
 	private AudioSource audioSource;
@@ -902,29 +905,38 @@ public class GameLogic : MonoBehaviour
     {       
         //approaching hand generation via grabbing each individual UI element and updating the sprite image and render...didnt work out 13/04
         //actaullyworking just rendered tiny and behind default image too...13/04
-        handTiles = GameObject.FindGameObjectsWithTag("handDefault");
-		btmPanel = GameObject.FindGameObjectWithTag("bottomPanel");
+        handTiles = GameObject.FindGameObjectsWithTag ("handDefault");
+		btmPanel = GameObject.FindGameObjectWithTag ("bottomPanel");
 		//check for null
 		if (handTiles != null)
 		{
 			int rand = Random.Range (0,dealingClips.Length);
 			audioSource.PlayOneShot (dealingClips[rand], 1.0f);
 
+			List<int> spriteIndex = new List<int> (new int[] {0,1,2,3,4,5,6,7,8,9,10});
+
 			for (int i = 0; i < handTiles.Length; i++)
 			{
-				GameObject newObject = Instantiate(handTiles[i]);
-				newObject.transform.localScale = handTiles[i].transform.localScale;
-				newObject.transform.localPosition = handTiles[i].transform.localPosition;
+				GameObject newObject = Instantiate (handTiles[i]);
+				newObject.transform.localScale = handTiles [i].transform.localScale;
+				newObject.transform.localPosition = handTiles [i].transform.localPosition;
 				//set tag so handTiles above doesnt grab clones as well.
 				newObject.tag = "handDrag";
 				//assign new object correct parents
-				newObject.transform.SetParent(btmPanel.transform, false);
+				newObject.transform.SetParent (btmPanel.transform, false);
 				//use handdefaults to instantiate objects with rng sprite below and add script....
-				newObject.GetComponent<Image>().sprite = tileSprite[Random.Range(0, tileSprite.Length)] as Sprite;
-				newObject.GetComponent<Image>().color = new Color(255f,255f,255f,255f);
+				int randIndex = Random.Range (0, spriteIndex.Count);
+				int index = spriteIndex [randIndex];
+				newObject.GetComponent <Image>().sprite = tileSprite [index] as Sprite;
+				newObject.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
 				newObject.AddComponent<Draggable>();
-				//above method with bool set to false solved instantiating flipped object....   
+				//above method with bool set to false solved instantiating flipped object....
 
+				//remove index from list if it does not represent the crossways tile (10th element)
+				if (index != 10)
+				{
+					spriteIndex.RemoveAt (randIndex);
+				}
 			}
 		}
 	}
@@ -1073,8 +1085,9 @@ public class GameLogic : MonoBehaviour
                 panelClone.tag = "eventTile";
                 panelClone.transform.localPosition = tempPanel.transform.localPosition;
                 panelClone.transform.localScale = new Vector3(1, 1, 1);
-                panelClone.GetComponent<Image>().sprite = gridSprite[4] as Sprite;
+				panelClone.GetComponent<Image>().sprite = eventEnemy [Random.Range (0, eventEnemy.Length)] as Sprite;
                 panelClone.GetComponent<Image>().color = new Color(255f, 255f, 255f, 150f);
+
                 //store event red tiles into eventred list
                 eventindex.Add(tempPanel.name, panelClone.GetComponent<Image>().sprite.name.ToString());
 

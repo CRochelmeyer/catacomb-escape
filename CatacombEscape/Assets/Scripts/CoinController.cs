@@ -16,7 +16,6 @@ public class CoinController : MonoBehaviour
 
 	private GameLogic gameLogic;
 	private int previousStam = 0;
-	[SerializeField]
 	private bool isAnimating = false;
 
 	private int oldTens;
@@ -125,7 +124,6 @@ public class CoinController : MonoBehaviour
 		previousStam = newStamina;
 		updateDone = true;
 		coinUpdateStack.RemoveAt (0);
-		Debug.Log ("Coin stack length = " + coinUpdateStack.Count);
 	}
 
 	private void SwitchSilverActive (GameObject[] array, bool status)
