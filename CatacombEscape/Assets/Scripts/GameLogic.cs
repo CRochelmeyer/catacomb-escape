@@ -140,12 +140,13 @@ public class GameLogic : MonoBehaviour
 
 		InitGame(level);
         
+		/*
 		//Run tutorial each time game is launched from main menu
 		if (PlayerPrefs.GetString ("PlayFromMenu") == "true")
 		{
 			tutorialScript.RunTutorial ();
 			PlayerPrefs.SetString ("PlayFromMenu", "false");
-		}
+		}*/
 	}
 
 	// Use this for initialization
@@ -797,7 +798,7 @@ public class GameLogic : MonoBehaviour
     {
 		Transform stamTrans = stamText.transform;
 		Vector3 stamInitPos = stamTrans.position;
-		Vector3 stamFinalPos = new Vector3 (stamInitPos.x, stamInitPos.y + 1, stamInitPos.z);
+		Vector3 stamFinalPos = new Vector3 (stamInitPos.x, stamInitPos.y + 0.5f, stamInitPos.z);
 		faderRunning = true;
 		float alpha = stamText.color.a;
 		for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / time)
