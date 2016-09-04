@@ -10,6 +10,10 @@ public class CoinController : MonoBehaviour
 	public Animator[] animatorsGold;
 	public Animator animatorSilver;
 
+	private AudioSource source;
+	public AudioClip coinShortClip;
+	public AudioClip coinLongClip;
+
 	private GameLogic gameLogic;
 	private int previousStam = 0;
 	[SerializeField]
@@ -24,12 +28,18 @@ public class CoinController : MonoBehaviour
 	private List<int> coinUpdateStack = new List<int>();
 	private bool updateDone = true;
 
+	public void Awake()
+	{
+		source = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<AudioSource> ();
+	}
+
 	public void Update()
 	{
 		if (coinUpdateStack.Count > 0 && updateDone)
 		{
 			updateDone = false;
 			tempStam = previousStam;
+			source.PlayOneShot (coinShortClip);
 			StartCoroutine (ManageCoins (coinUpdateStack[0]));
 		}
 	}
@@ -115,10 +125,13 @@ public class CoinController : MonoBehaviour
 		previousStam = newStamina;
 		updateDone = true;
 		coinUpdateStack.RemoveAt (0);
+		Debug.Log ("Coin stack length = " + coinUpdateStack.Count);
 	}
 
 	private void SwitchSilverActive (GameObject[] array, bool status)
 	{
+		source.PlayOneShot (coinLongClip);
+
 		for (int i = 0; i < 10; i++)
 		{
 			array[i].SetActive (status);
@@ -129,7 +142,6 @@ public class CoinController : MonoBehaviour
 	{
 		tensArray [index-1].SetActive (active);
 		// play particle effect
-		// play sound
 		isAnimating = true;
 		yield return StartCoroutine (SetActiveWait ());
 	}

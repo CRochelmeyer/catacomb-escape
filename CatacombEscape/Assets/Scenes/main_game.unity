@@ -546,6 +546,82 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 11449870, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Color.r
+      value: 0.21960784
+      objectReference: {fileID: 0}
+    - target: {fileID: 11449870, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Color.g
+      value: 0.21960784
+      objectReference: {fileID: 0}
+    - target: {fileID: 11449870, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Color.b
+      value: 0.46666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 11418476, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 06c91347a8c840f45909edf797e14ba4,
+        type: 3}
+    - target: {fileID: 11467438, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 06c91347a8c840f45909edf797e14ba4,
+        type: 3}
+    - target: {fileID: 11406336, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 06c91347a8c840f45909edf797e14ba4,
+        type: 3}
+    - target: {fileID: 11480802, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 06c91347a8c840f45909edf797e14ba4,
+        type: 3}
+    - target: {fileID: 11430316, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Color.r
+      value: 0.9882353
+      objectReference: {fileID: 0}
+    - target: {fileID: 11430316, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Color.g
+      value: 0.9254902
+      objectReference: {fileID: 0}
+    - target: {fileID: 11430316, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Color.b
+      value: 0.6117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 11430316, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11496184, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Color.r
+      value: 0.9882353
+      objectReference: {fileID: 0}
+    - target: {fileID: 11496184, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Color.g
+      value: 0.9254902
+      objectReference: {fileID: 0}
+    - target: {fileID: 11496184, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Color.b
+      value: 0.6117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 11496184, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11409710, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Color.r
+      value: 0.9882353
+      objectReference: {fileID: 0}
+    - target: {fileID: 11409710, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Color.g
+      value: 0.9254902
+      objectReference: {fileID: 0}
+    - target: {fileID: 11409710, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Color.b
+      value: 0.6117647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
   m_IsPrefabParent: 0
@@ -1581,6 +1657,14 @@ Prefab:
       propertyPath: animatorSilver
       value: 
       objectReference: {fileID: 228108560}
+    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: coinShortClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2f5f6a341641bd344af446347f5792ab, type: 3}
+    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: coinLongClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7539fb9bb32ba404e8f9d6d3e6c36ce0, type: 3}
     m_RemovedComponents:
     - {fileID: 11401872, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
     - {fileID: 11423898, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
@@ -1744,7 +1828,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
       propertyPath: fadeTime
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
       propertyPath: snakeDefeatPanel

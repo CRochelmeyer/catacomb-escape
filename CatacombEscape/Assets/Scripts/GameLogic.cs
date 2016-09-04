@@ -165,7 +165,6 @@ public class GameLogic : MonoBehaviour
 	        }
 
 			//UpdateMouseLocation ();
-	        UpdateUI();
 			if (!exiting)
 	        	PlayerClick();
 
@@ -788,16 +787,20 @@ public class GameLogic : MonoBehaviour
 
 	IEnumerator FadeStamPopup (Text stamText, float time)
     {
+		Transform stamTrans = stamText.transform;
+		Vector3 stamInitPos = stamTrans.position;
+		Vector3 stamFinalPos = new Vector3 (stamInitPos.x, stamInitPos.y + 1, stamInitPos.z);
 		faderRunning = true;
 		float alpha = stamText.color.a;
 		for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / time)
 		{
 			Color newColor = stamText.color;
 			newColor.a = Mathf.Lerp (alpha,0,t);
+			stamTrans.position = Vector3.Lerp (stamInitPos, stamFinalPos, t);
 			stamText.color = newColor;
 			yield return null;
 		}
-		Destroy (stamText.transform.parent.gameObject);
+		Destroy (stamTrans.parent.gameObject);
 		faderRunning = false;
     }
 	// not working: parse this!
