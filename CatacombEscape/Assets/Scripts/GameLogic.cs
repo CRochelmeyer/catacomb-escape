@@ -51,8 +51,6 @@ public class GameLogic : MonoBehaviour
 
 	#region uiPanels
 	[Header("UI Panels")]
-	public Text stamUp;
-	public Text stamDown;
 	public float fadeTime;
 	private bool faderRunning = false;
 	public GameObject snakePanel;
@@ -72,6 +70,13 @@ public class GameLogic : MonoBehaviour
 	public Text pointTot;
 	public GameObject newHighscore;
 	// These can be accessed and set with 'string tot = pointTot.text;' and 'pointTot.text = "100"'
+	#endregion
+
+	#region stamPanels
+	[Header("Stamina Panels")]
+	public Transform stamPopupsContainer;
+	public GameObject stamUpPrefab;
+	public GameObject stamDownPrefab;
 	#endregion
 
 	//boolean game conditions
@@ -512,11 +517,16 @@ public class GameLogic : MonoBehaviour
 		}        
     }
 
+	/// <summary>
+	/// After tile has completed its dragging action, place pTile in location pCell
+	/// </summary>
+	/// <param name="ptile">Ptile.</param>
+	/// <param name="pcell">Pcell.</param>
     public void UpdateDrag( Tile ptile , string pcell)
     {
         //grab index based on pcell in cellindex dictionary
         int _gridIndex = 33;
-        int _spriteIndex =0;
+        int _spriteIndex = 0;
         cellindex.TryGetValue(pcell, out _gridIndex);
         //grab corresponding gridsprite[index] based on ptile
         for (int i = 0; i < tileSprite.Length; i++)
@@ -524,28 +534,29 @@ public class GameLogic : MonoBehaviour
             string temp1 = tileSprite[i].name.ToString();
             string temp2 = ptile._tileID.ToString();
 
-            if (string.Compare(temp1, temp2) == 0 && _gridIndex != 33 )
+            if (string.Compare (temp1, temp2) == 0 && _gridIndex != 33 )
             {
                 _spriteIndex = i;
-                gridPanels[_gridIndex].GetComponent<Image>().sprite = tileSprite[_spriteIndex] as Sprite;
-                gridPanels[_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
+                gridPanels [_gridIndex].GetComponent<Image>().sprite = tileSprite [_spriteIndex] as Sprite;
+                gridPanels [_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
                 
                 //update tileBoard
-                //check tileBoard cell doesnt exist a event cell already
-                if (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._event != "")
+				if (tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))]._event != "") // if cell has an event on it
                 {
-                    tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].UpdateTile(ptile);
+					tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))].UpdateTile (ptile);
                 }
                 else
                 {
-                    tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))] = ptile;
-                }
+					tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))] = ptile;
+				}
 
-				//decreaste stamina
+				GameObject tempObj = GameObject.Find (tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))]._boardLocation);
+
+				//decrease stamina
 				int rand = Random.Range (0,placementClips.Length);
 				audioSource.PlayOneShot (placementClips[rand], 0.5f);
 				playerStamina -= 2;
-				StartFade (stamDown, "-2", fadeTime);
+				InstantiateStamDownPanel ("-2", tempObj.transform.position);
                 //increment tileplaced
 				tileplaced++;
 				UpdateUI();
@@ -599,7 +610,7 @@ public class GameLogic : MonoBehaviour
 	                        destLoc = clickLoc;
 
 							playerStamina--;
-							StartFade (stamDown, "-1", fadeTime);
+							InstantiateStamDownPanel ("-1", movePlayer.PlayerLocation);
 	                        UpdateUI();
 	                    }
 	                }
@@ -625,7 +636,7 @@ public class GameLogic : MonoBehaviour
                 Destroy(handTiles[i]);
             }
         }
-		StartFade (stamDown, "-" + discardCost, fadeTime);
+		InstantiateStamDownPanel ("-" + discardCost, movePlayer.PlayerLocation);
 		playerStamina += - discardCost;
 		GenerateHand();
 		UpdateUI();
@@ -641,15 +652,18 @@ public class GameLogic : MonoBehaviour
         if (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive)
         {
             int temprow = System.Int32.Parse(pcell.Substring(0, 1));
-            int tempcol = System.Int32.Parse(pcell.Substring(1, 1));
+			int tempcol = System.Int32.Parse(pcell.Substring(1, 1));
+
+			Tile tempTile = tileBoard[temprow, tempcol];
+			GameObject tempObj = GameObject.Find(tempTile._boardLocation + "(Clone)");
 
             //play event = remove stamina and destroy the event clone...
-            if (tileBoard[temprow, tempcol]._event == "red")
+			if (tempTile._event == "red")
             {
-                stamUp.text = tileBoard[temprow, tempcol].combat.ToString();
-				stamUp.enabled = true;
+				//stamUp.text = tempTile.combat.ToString();
+				//stamUp.enabled = true;
 
-				int damage = tileBoard[temprow, tempcol].combat;
+				int damage = tempTile.combat;
 
                 // Prevent player gaining stamina from enemy. Don't want no eating of strange creatures...
                 if (damage > 0)
@@ -657,7 +671,7 @@ public class GameLogic : MonoBehaviour
 					damage = 0;
 				}
 
-                switch (tileBoard[temprow, tempcol]._eventItem.ToLower())
+				switch (tempTile._eventItem.ToLower())
                 {
                 case "snake":
                     snakeStamDown.text = damage.ToString();
@@ -672,7 +686,7 @@ public class GameLogic : MonoBehaviour
 				if (damage != 0) //don't show stam popup if stamina is not reduced
 				{
 					string newText = damage.ToString();
-					StartFade (stamDown, newText, fadeTime);
+					InstantiateStamDownPanel (newText, tempObj.transform.position);
 					playerStamina += damage;
 					UpdateUI();
 				}
@@ -682,11 +696,11 @@ public class GameLogic : MonoBehaviour
 
                 redstep++;
             }
-            else if (tileBoard[temprow, tempcol]._event == "green")
+			else if (tempTile._event == "green")
             {
-				string newText = "+" + tileBoard[temprow, tempcol].combat.ToString();
-				StartFade (stamUp, newText, fadeTime);
-				playerStamina += tileBoard[temprow, tempcol].combat;
+				string newText = "+" + tempTile.combat.ToString();
+				InstantiateStamUpPanel (newText, tempObj.transform.position);
+				playerStamina += tempTile.combat;
 				UpdateUI();
 				
 				int rand = Random.Range (0,greenTileClips.Length);
@@ -695,13 +709,12 @@ public class GameLogic : MonoBehaviour
                 //increment the greens taken
                 greencol++;
             }
-            GameObject tempObj = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
 
             if (tempObj != null)
             {
                 Debug.Log("destroy clone");
                 Destroy(tempObj);
-                tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive = false;
+				tempTile._isActive = false;
             }
             CheckStamina();
         }
@@ -733,7 +746,33 @@ public class GameLogic : MonoBehaviour
 		PlayerPrefs.SetString ("Paused", "false");
 	}
 
-	private void StartFade (Text stamText, string newText, float time)
+	private void InstantiateStamUpPanel (string newText, Vector3 panelPos)
+	{
+		GameObject stamUpPanel = (GameObject) Instantiate (stamUpPrefab);
+		Transform stamUpTrans = stamUpPanel.GetComponent <Transform> ();
+		stamUpTrans.SetParent (stamPopupsContainer, false);
+		stamUpTrans.position = panelPos;
+		Text stamUpText = stamUpTrans.Find ("StamUp").gameObject.GetComponent <Text> ();
+		if (stamUpText != null)
+			StartFade (stamUpText, newText);
+		else
+			Debug.Log ("Couldn't find StamUp text component");
+	}
+
+	private void InstantiateStamDownPanel (string newText, Vector3 panelPos)
+	{
+		GameObject stamDownPanel = (GameObject) Instantiate (stamDownPrefab);
+		Transform stamDownTrans = stamDownPanel.GetComponent <Transform> ();
+		stamDownTrans.SetParent (stamPopupsContainer, false);
+		stamDownTrans.position = panelPos;
+		Text stamDownText = stamDownTrans.Find ("StamDown").gameObject.GetComponent <Text> ();
+		if (stamDownText != null)
+			StartFade (stamDownText, newText);
+		else
+			Debug.Log ("Couldn't find StamDown text component");
+	}
+
+	private void StartFade (Text stamText, string newText)
 	{
 		if (faderRunning)
 		{
@@ -744,7 +783,7 @@ public class GameLogic : MonoBehaviour
 		stamText.color = newColor;
 		stamText.text = newText;
 
-		StartCoroutine (FadeStamPopup (stamText, time));
+		StartCoroutine (FadeStamPopup (stamText, fadeTime));
 	}
 
 	IEnumerator FadeStamPopup (Text stamText, float time)
@@ -758,6 +797,7 @@ public class GameLogic : MonoBehaviour
 			stamText.color = newColor;
 			yield return null;
 		}
+		Destroy (stamText.transform.parent.gameObject);
 		faderRunning = false;
     }
 	// not working: parse this!

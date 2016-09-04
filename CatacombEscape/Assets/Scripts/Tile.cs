@@ -50,7 +50,7 @@ public class Tile
         else
         {
             //Debug.Log("else gen entry");
-            generateEntry();
+            GenerateEntry();
         }
 
     }
@@ -184,7 +184,7 @@ public class Tile
     /// <summary>
     /// Creates the tile the player starts the level on.
     /// </summary>
-    private void generateEntry()
+    private void GenerateEntry()
     {
         //Debug.Log("start entry for " + _tileID);
         //int to hold start and end of indexof(_) 
@@ -294,7 +294,7 @@ public class Tile
         _isDummy = pTile._isDummy;
         _isOccupied = pTile._isOccupied;
         _boardLocation = pTile._boardLocation;
-        generateEntry();
+        GenerateEntry();
     }
 
     /// <summary>

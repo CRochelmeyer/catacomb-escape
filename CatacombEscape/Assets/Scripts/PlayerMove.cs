@@ -75,6 +75,11 @@ public class PlayerMove : MonoBehaviour
 			}
 		}
 	}
+
+	public Vector3 PlayerLocation
+	{
+		get {return player.transform.position;}
+	}
 	
     /// <summary>
     /// When the level starts, this sets the player above the grid and sets
