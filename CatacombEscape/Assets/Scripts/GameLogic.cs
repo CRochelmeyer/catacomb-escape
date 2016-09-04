@@ -112,9 +112,9 @@ public class GameLogic : MonoBehaviour
 	private GameObject[] gridPanels;
 	private Tile[,] tileBoard;
 	private float tileplaced = 0;
-	private float greencol =0;
-	private float redavoid=0;
-	private int redtiles;
+	private float greencol = 0;
+	private float redavoid = 0;
+	private int redtiles = 0;
 	private int redstep;
 	private float score;
 
@@ -312,9 +312,9 @@ public class GameLogic : MonoBehaviour
         redPointTot.text = (redavoid * 5).ToString();
         tileNoPlaced.text = (tileplaced).ToString();
 
-		float temp = tileplaced * -0.56f;
+		float temp = tileplaced * -5f;
         tileNoTot.text = (Mathf.Round(temp)).ToString();
-		score = ((level-1) * 100) + (greencol * 10) + (redavoid * 20) + Mathf.Round(temp);
+		score = ((level-1) * 100) + (greencol * 50) + (redavoid * 5) + Mathf.Round(temp);
 		if (score < 0)
 			score = 0;
 		pointTot.text = score.ToString();
