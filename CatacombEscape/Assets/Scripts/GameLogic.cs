@@ -534,18 +534,23 @@ public class GameLogic : MonoBehaviour
         for (int i = 0; i < tileSprite.Length; i++)
         {
             string temp1 = tileSprite[i].name.ToString();
-            string temp2 = ptile._tileID.ToString();
+			string temp2 = ptile._tileID.ToString();
 
             if (string.Compare (temp1, temp2) == 0 && _gridIndex != 33 )
             {
                 _spriteIndex = i;
                 gridPanels [_gridIndex].GetComponent<Image>().sprite = tileSprite [_spriteIndex] as Sprite;
-                gridPanels [_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
+				gridPanels [_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
                 
                 //update tileBoard
 				if (tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))]._event != "") // if cell has an event on it
                 {
 					tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))].UpdateTile (ptile);
+					if (tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))]._event == "green")
+					{
+						GameObject temp = GameObject.Find (tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))]._boardLocation + "(Clone)");
+						temp.GetComponent <Image>().sprite = eventGreenSml as Sprite; 
+					}
                 }
                 else
                 {
@@ -1070,9 +1075,9 @@ public class GameLogic : MonoBehaviour
                 panelClone.tag = "eventTile";
                 panelClone.transform.localPosition = tempPanel.transform.localPosition;
                 panelClone.transform.localScale = new Vector3(1, 1, 1);
-                panelClone.GetComponent<Image>().sprite = gridSprite[3] as Sprite;
+				panelClone.GetComponent<Image>().sprite = eventGreenLrg as Sprite;
                 panelClone.GetComponent<Image>().color = new Color(255f, 255f, 255f, 150f);
-                eventindex.Add(tempPanel.name, panelClone.GetComponent<Image>().sprite.name.ToString());
+                eventindex.Add(tempPanel.name, "event_green");
 
             }
 
@@ -1089,7 +1094,7 @@ public class GameLogic : MonoBehaviour
                 panelClone.GetComponent<Image>().color = new Color(255f, 255f, 255f, 150f);
 
                 //store event red tiles into eventred list
-                eventindex.Add(tempPanel.name, panelClone.GetComponent<Image>().sprite.name.ToString());
+				eventindex.Add(tempPanel.name, "event_red");
 
             }
         }

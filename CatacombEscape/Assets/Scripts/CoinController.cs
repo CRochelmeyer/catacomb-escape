@@ -38,6 +38,8 @@ public class CoinController : MonoBehaviour
 		{
 			updateDone = false;
 			tempStam = previousStam;
+			if (source == null)
+				Awake();
 			source.PlayOneShot (coinShortClip);
 			StartCoroutine (ManageCoins (coinUpdateStack[0]));
 		}
