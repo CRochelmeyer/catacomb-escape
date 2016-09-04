@@ -27,6 +27,7 @@ public class GameLogic : MonoBehaviour
 	public int initRedDmg;
 	public int maxGreenNo;
 	public int minGreenNo;
+	public int greenLvlDecr; // After X levels, loot number decreases
 	public int greenAmt;
 	public int discardCost;
 	#endregion
@@ -37,6 +38,7 @@ public class GameLogic : MonoBehaviour
     public Sprite[] gridSprite;
 	public Sprite eventGreenLrg;
 	public Sprite eventGreenSml;
+	public Sprite eventRed;
 	public Sprite[] eventEnemy;
 	#endregion
 
@@ -56,10 +58,8 @@ public class GameLogic : MonoBehaviour
 	[Header("UI Panels")]
 	public float fadeTime;
 	private bool faderRunning = false;
-	public GameObject snakePanel;
-	public Text snakeStamDown;
-	public GameObject scorpionPanel;
-	public Text scorpStamDown;
+	public GameObject enemyPanel;
+	public Text enemyStamDown;
 	//public Text breadStamUp;
 	public GameObject statPanel; //this is what pops up at gameover
 	public Text lvlNoCleared;
@@ -407,7 +407,7 @@ public class GameLogic : MonoBehaviour
         for(int i =0; i<eventTiles.Length;i++)
         {
             // For red tiles only. Green tiles don't move.
-            if (eventTiles[i].GetComponent<Image>().sprite.name == "event_red")
+            if (eventTiles[i].GetComponent<Image>().sprite.name == "enemyCharA")
             {
                 etloc = eventTiles[i].name.Substring(0, 2);
                 System.Int32.TryParse(etloc.Substring(0, 1), out currow);
@@ -552,6 +552,11 @@ public class GameLogic : MonoBehaviour
 						GameObject temp = GameObject.Find (tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))]._boardLocation + "(Clone)");
 						temp.GetComponent <Image>().sprite = eventGreenSml as Sprite; 
 					}
+					else if (tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))]._event == "red")
+					{
+						GameObject temp = GameObject.Find (tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))]._boardLocation + "(Clone)");
+						temp.GetComponent <Image>().sprite = eventEnemy [Random.Range (0, eventEnemy.Length)] as Sprite; 
+					}
                 }
                 else
                 {
@@ -679,17 +684,8 @@ public class GameLogic : MonoBehaviour
 					damage = 0;
 				}
 
-				switch (tempTile._eventItem.ToLower())
-                {
-                case "snake":
-                    snakeStamDown.text = damage.ToString();
-					DisplayClickPanel (snakePanel);
-                    break;
-                case "scorpion":
-                    scorpStamDown.text = damage.ToString();
-					DisplayClickPanel (scorpionPanel);
-                    break;
-				}
+				enemyStamDown.text = damage.ToString();
+				DisplayClickPanel (enemyPanel);
 
 				if (damage != 0) //don't show stam popup if stamina is not reduced
 				{
@@ -989,6 +985,17 @@ public class GameLogic : MonoBehaviour
 
 	}
 
+	private int CalculateDecrement ()
+	{
+		int decrement = 0;
+		int mod = level % greenLvlDecr; // find if level is a factor of green lvl decrement
+		if (mod == 0)
+		{
+			decrement = level / greenLvlDecr;
+		}
+		return decrement;
+	}
+
 	private int CalculateIncrement ()
 	{
 		int increment = 0;
@@ -1006,7 +1013,10 @@ public class GameLogic : MonoBehaviour
     public void GenerateBoard()
     {
         // Generate a number of green tiles.
-		int green = Random.Range (minGreenNo, maxGreenNo+1);
+		int greenDecrement = CalculateDecrement();
+		int green = Random.Range (minGreenNo, maxGreenNo+1) - greenDecrement;
+		if (green < 3)
+			green = 3;
 
         // Generate the number of red tiles
 		int redIncrement = CalculateIncrement();
