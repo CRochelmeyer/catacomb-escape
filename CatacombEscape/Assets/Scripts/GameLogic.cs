@@ -141,7 +141,7 @@ public class GameLogic : MonoBehaviour
 		playerStamina = standardStamina;
 		UpdateUI();
 
-		InitGame(level);
+		InitLevel(level);
         
 		/*
 		//Run tutorial each time game is launched from main menu
@@ -194,9 +194,8 @@ public class GameLogic : MonoBehaviour
 		set {nextlevel = value;}
 	}
 
-    // ~Init method
-    //init game method
-    void InitGame(int pLevel)
+    // Initialize the level with enemies, loot and entrance/exit tiles
+    void InitLevel(int pLevel)
 	{
 		int temp = 0;
 
@@ -816,7 +815,6 @@ public class GameLogic : MonoBehaviour
 		Destroy (stamTrans.parent.gameObject);
 		faderRunning = false;
     }
-	// not working: parse this!
 
     /// <summary>
     /// 
@@ -989,7 +987,7 @@ public class GameLogic : MonoBehaviour
 		}
 
         // Generate the next level.
-		InitGame (level);
+		InitLevel (level);
 
 	}
 
