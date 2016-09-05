@@ -62,14 +62,10 @@ public class GameLogic : MonoBehaviour
 	public Text enemyStamDown;
 	//public Text breadStamUp;
 	public GameObject statPanel; //this is what pops up at gameover
-	public Text lvlNoCleared;
-	public Text lvlPointTot;
-	public Text greenCollected;
-	public Text greenPointTot;
-	public Text redAvoided;
-	public Text redPointTot;
-	public Text tileNoPlaced;
-	public Text tileNoTot; //remember this value should be negative
+	public Text lvlNoClearedText;
+	public Text greenCollectedText;
+	public Text redAvoidedText;
+	public Text tileNoPlacedText;
 	public Text pointTot;
 	public GameObject newHighscore;
 	// These can be accessed and set with 'string tot = pointTot.text;' and 'pointTot.text = "100"'
@@ -111,12 +107,19 @@ public class GameLogic : MonoBehaviour
 	private CoinController coinCont;
 	private GameObject[] gridPanels;
 	private Tile[,] tileBoard;
-	private float tileplaced = 0;
-	private float greencol = 0;
-	private float redavoid = 0;
+
+	private int tileplaced = 0;
+	private int greencol = 0;
+	private int redavoid = 0;
 	private int redtiles = 0;
 	private int redstep;
+
+	// Scoring variables
 	private float score;
+	private int lvlNoCleared;
+	private int greenCollected;
+	private int redAvoided;
+	private int tileNoPlaced;
 
     //awake called behind start
     void Awake()
@@ -133,7 +136,7 @@ public class GameLogic : MonoBehaviour
 		validMove = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<Direction> ();
 		movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
 		coinCont = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<CoinController> ();
-		TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
+		//TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
 
 		playerStamina = standardStamina;
 		UpdateUI();
@@ -304,19 +307,12 @@ public class GameLogic : MonoBehaviour
     // ~Highscore related method
     private void GameOverHS()
     {
-        lvlNoCleared.text = (level-1).ToString();
-        lvlPointTot.text = ((level-1) * 100).ToString();
-        greenCollected.text = (greencol).ToString();
-        greenPointTot.text = (greencol * 50).ToString();
-        redAvoided.text = redavoid.ToString();
-        redPointTot.text = (redavoid * 5).ToString();
-        tileNoPlaced.text = (tileplaced).ToString();
+		CalculateScore();
 
-		float temp = tileplaced * -5f;
-        tileNoTot.text = (Mathf.Round(temp)).ToString();
-		score = ((level-1) * 100) + (greencol * 50) + (redavoid * 5) + Mathf.Round(temp);
-		if (score < 0)
-			score = 0;
+		lvlNoClearedText.text = lvlNoCleared.ToString();
+		greenCollectedText.text = greenCollected.ToString();
+		redAvoidedText.text = redAvoided.ToString();
+		tileNoPlacedText.text = tileNoPlaced.ToString();
 		pointTot.text = score.ToString();
 
 		string hs = PlayerPrefs.GetString ("HighScore");
@@ -336,17 +332,29 @@ public class GameLogic : MonoBehaviour
 		if (newHS)
 		{
 			PlayerPrefs.SetString ("HighScore", score.ToString());
-			PlayerPrefs.SetString ("LvlNoCleared", lvlNoCleared.text);
-			PlayerPrefs.SetString ("LvlPointTot", lvlPointTot.text);
-			PlayerPrefs.SetString ("GreenCollected", greenCollected.text);
-			PlayerPrefs.SetString ("GreenPointTot", greenPointTot.text);
-			PlayerPrefs.SetString ("RedAvoided", redAvoided.text);
-			PlayerPrefs.SetString ("RedPointTot", redPointTot.text);
-			PlayerPrefs.SetString ("TileNoPlaced", tileNoPlaced.text);
-			PlayerPrefs.SetString ("TileNoTot", tileNoTot.text);
+			PlayerPrefs.SetString ("LvlNoCleared", lvlNoClearedText.text);
+			PlayerPrefs.SetString ("GreenCollected", greenCollectedText.text);
+			PlayerPrefs.SetString ("RedAvoided", redAvoidedText.text);
+			PlayerPrefs.SetString ("TileNoPlaced", tileNoPlacedText.text);
 			newHighscore.SetActive (true);
 		}
     }
+
+	public void CalculateScore()
+	{
+		lvlNoCleared = (level-1);
+		int lvlPointTot = (lvlNoCleared * 100);
+		greenCollected = greencol;
+		int greenPointTot = (greenCollected * 50);
+		redAvoided = redavoid;
+		int redPointTot = (redAvoided * 5);
+		tileNoPlaced = tileplaced;
+
+		int tilePlacedTot = tileNoPlaced * -5;
+		score = lvlPointTot + greenPointTot + redPointTot + tilePlacedTot;
+		if (score < 0)
+			score = 0;
+	}
 
     // ~UI related
     // Try again button for the statpanel disable statpanel and destory gameObject and load the new scene.
@@ -949,8 +957,8 @@ public class GameLogic : MonoBehaviour
     /// </summary>
 	public void NextLevel()
 	{
-		int rand = Random.Range (0,lvlCompClips.Length);
-		audioSource.PlayOneShot (lvlCompClips[rand], 0.5f);
+		//int rand = Random.Range (0,lvlCompClips.Length);
+		//audioSource.PlayOneShot (lvlCompClips[rand], 1);
 
         emptyhand = true;
 		level++;
@@ -1024,6 +1032,7 @@ public class GameLogic : MonoBehaviour
        
         //store the rng red into redtiles to use for scoring
         redtiles = red;
+		redstep = 0;
 
         if (gridPanels != null)
         {

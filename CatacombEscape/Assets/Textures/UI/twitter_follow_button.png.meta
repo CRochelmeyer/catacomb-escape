@@ -1,0 +1,153 @@
+fileFormatVersion: 2
+guid: a0057b76e5f136a46990764160dc0ef4
+timeCreated: 1473058295
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: twitter_follow_button_5
+    21300002: twitter_follow_button_6
+    21300004: twitter_follow_button_7
+    21300006: twitter_follow_button_8
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: twitter_follow_button_5
+      rect:
+        serializedVersion: 2
+        x: 211
+        y: 179
+        width: 211
+        height: 211
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -105.5, y: 105.5}
+        - {x: -105.5, y: -105.5}
+        - {x: 105.5, y: -105.5}
+        - {x: 105.5, y: 105.5}
+    - name: twitter_follow_button_6
+      rect:
+        serializedVersion: 2
+        x: 533
+        y: 180
+        width: 210
+        height: 210
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 105, y: 41}
+        - {x: 92, y: 68}
+        - {x: 43, y: 105}
+        - {x: -42, y: 105}
+        - {x: -89, y: 75}
+        - {x: -105, y: 41}
+        - {x: -105, y: -40}
+        - {x: -92, y: -69}
+        - {x: -43, y: -105}
+        - {x: 33, y: -105}
+        - {x: 67, y: -90}
+        - {x: 105, y: -50}
+    - name: twitter_follow_button_7
+      rect:
+        serializedVersion: 2
+        x: 858
+        y: 179
+        width: 206
+        height: 211
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 83, y: 102.5}
+        - {x: 61, y: 105.5}
+        - {x: -50, y: 105.5}
+        - {x: -68, y: 102.5}
+        - {x: -86, y: 100.5}
+        - {x: -100, y: 86.5}
+        - {x: -103, y: 69.5}
+        - {x: -103, y: -69.5}
+        - {x: -99, y: -86.5}
+        - {x: -91, y: -95.5}
+        - {x: -76, y: -101.5}
+        - {x: -51, y: -105.5}
+        - {x: 75, y: -105.5}
+        - {x: 103, y: -85.5}
+        - {x: 103, y: 81.5}
+    - name: twitter_follow_button_8
+      rect:
+        serializedVersion: 2
+        x: 1177
+        y: 179
+        width: 211
+        height: 211
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 105.5, y: -98.5}
+        - {x: 105.5, y: 97.5}
+        - {x: 100.5, y: 103.5}
+        - {x: 99.5, y: 103.5}
+        - {x: 97.5, y: 105.5}
+        - {x: -97.5, y: 105.5}
+        - {x: -100.5, y: 103.5}
+        - {x: -103.5, y: 100.5}
+        - {x: -103.5, y: 99.5}
+        - {x: -105.5, y: 97.5}
+        - {x: -105.5, y: -97.5}
+        - {x: -103.5, y: -100.5}
+        - {x: -100.5, y: -103.5}
+        - {x: -97.5, y: -105.5}
+        - {x: 97.5, y: -105.5}
+        - {x: 99.5, y: -103.5}
+        - {x: 100.5, y: -103.5}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

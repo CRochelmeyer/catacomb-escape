@@ -31,6 +31,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -43,14 +44,14 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: .149019614, g: .011764707, b: .011764707, a: 1}
+  m_BackGroundColor: {r: 0.21960784, g: 0.21960784, b: 0.46666667, a: 1}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
     y: 0
     width: 1
     height: 1
-  near clip plane: .300000012
+  near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -66,7 +67,7 @@ Camera:
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
-  m_StereoSeparation: .0219999999
+  m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
 --- !u!81 &8144704
 AudioListener:
@@ -115,6 +116,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -125,6 +127,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 0
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -135,6 +138,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -145,6 +149,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!92 &9294198
 Behaviour:
   m_ObjectHideFlags: 1
@@ -177,6 +182,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb6d1697ec79d6646922ca0052fb3b72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  standardStamina: 30
+  maxStamina: 100
+  maxRedNo: 3
+  minRedNo: 3
+  redLvlInc: 5
+  initRedDmg: 2
+  maxGreenNo: 6
+  minGreenNo: 4
+  greenLvlDecr: 5
+  greenAmt: 10
+  discardCost: 3
   tileSprite:
   - {fileID: 21300000, guid: ace2033c313885b44a70da746418ed8e, type: 3}
   - {fileID: 21300000, guid: 928c2150b33758b42a81a9323d951500, type: 3}
@@ -187,17 +203,19 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 51ba3be499e220d419d0521407130a33, type: 3}
   - {fileID: 21300000, guid: 6fe0e1c7ba4147f40b68c968ef1f6899, type: 3}
   - {fileID: 21300000, guid: 91a209fbb7e2e58499c42cd3b7c95f17, type: 3}
-  - {fileID: 21300000, guid: 41448ee07a922aa42a7f0f8dfc376010, type: 3}
   - {fileID: 21300000, guid: 953e5ca60b8ef5e46a3031318afda439, type: 3}
+  - {fileID: 21300000, guid: 41448ee07a922aa42a7f0f8dfc376010, type: 3}
   gridSprite:
   - {fileID: 0}
   - {fileID: 21300000, guid: a4e52dc4700e70e4882a63b457eec826, type: 3}
   - {fileID: 21300000, guid: 8790bd9a00ef71f41b441ab5789c8296, type: 3}
   - {fileID: 21300000, guid: af79ccdbc42cb1b40a9d2e0e15748e01, type: 3}
   - {fileID: 21300000, guid: 8b433a604f9c07344bc51d1ab7010c50, type: 3}
-  btmPanel: {fileID: 0}
-  handTiles: []
-  exit: 
+  eventGreenLrg: {fileID: 21300000, guid: 43692003c0df63045a928a7cef168410, type: 3}
+  eventGreenSml: {fileID: 21300000, guid: 17b6085849d44764c9dc9442ed4e5451, type: 3}
+  eventRed: {fileID: 21300000, guid: 8b433a604f9c07344bc51d1ab7010c50, type: 3}
+  eventEnemy:
+  - {fileID: 21300000, guid: 64a81c3da9ed9b74fb1c30fcc0a22e92, type: 3}
   startGameClip: {fileID: 8300000, guid: 0ab30f4d2c5ebbe409e4bcad31e6c4ff, type: 3}
   placementClips:
   - {fileID: 8300000, guid: 873a189bef2ec964996ea78716b12028, type: 3}
@@ -211,35 +229,26 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 89b6bea371f4e1140b27846808cbd9c5, type: 3}
   - {fileID: 8300000, guid: 7afd77310659af746b83392094683810, type: 3}
   greenTileClips:
-  - {fileID: 8300000, guid: c8cab5e681350cc45b9b5ebb5aab2234, type: 3}
-  - {fileID: 8300000, guid: 4cc2e932e9692e84c83febe5fe284e1c, type: 3}
+  - {fileID: 8300000, guid: 1468de06f3954934a94bea0e132b4750, type: 3}
   redTileClips:
   - {fileID: 8300000, guid: 22ac66faaf9aef745a9580fbd6d6c9b8, type: 3}
   - {fileID: 8300000, guid: 68ec013717c1b6140bf4c5f289e36619, type: 3}
   lvlCompClips:
   - {fileID: 8300000, guid: 23ec5ef9f656ad5469e70bfcade7758f, type: 3}
   - {fileID: 8300000, guid: 9466af4a8c0feee45b3cff7d54c450b1, type: 3}
-  Equipment: {fileID: 0}
-  equipDesc: {fileID: 0}
-  stamUpContainer: {fileID: 0}
-  playerStamUp: {fileID: 0}
-  stamDownContainer: {fileID: 0}
-  playerStamDown: {fileID: 0}
-  equipPanel: {fileID: 0}
-  snakePanel: {fileID: 0}
-  snakeStamDown: {fileID: 0}
-  scorpionPanel: {fileID: 0}
-  scorpStamDown: {fileID: 0}
+  fadeTime: 1
+  enemyPanel: {fileID: 0}
+  enemyStamDown: {fileID: 0}
   statPanel: {fileID: 0}
-  lvlNoCleared: {fileID: 0}
-  lvlPointTot: {fileID: 0}
-  greenCollected: {fileID: 0}
-  greenPointTot: {fileID: 0}
-  redAvoided: {fileID: 0}
-  redPointTot: {fileID: 0}
-  tileNoPlaced: {fileID: 0}
-  tileNoTot: {fileID: 0}
+  lvlNoClearedText: {fileID: 0}
+  greenCollectedText: {fileID: 0}
+  redAvoidedText: {fileID: 0}
+  tileNoPlacedText: {fileID: 0}
   pointTot: {fileID: 0}
+  newHighscore: {fileID: 0}
+  stamPopupsContainer: {fileID: 0}
+  stamUpPrefab: {fileID: 155558, guid: 71af497b49f595145a75a7a2fdca389d, type: 2}
+  stamDownPrefab: {fileID: 132916, guid: af05a3e5220d2484886c87a84f88fdd9, type: 2}
 --- !u!124 &12404896
 Behaviour:
   m_ObjectHideFlags: 1

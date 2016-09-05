@@ -12,14 +12,9 @@ public class MenuBehavior : MonoBehaviour
 	public GameObject statsPanel;
 	public Text highscore;
 	public Text lvlNoCleared;
-	public Text lvlPointTot;
 	public Text greenCollected;
-	public Text greenPointTot;
 	public Text redAvoided;
-	public Text redPointTot;
 	public Text tileNoPlaced;
-	public Text tileNoTot;
-	public Text pointTot;
 
 	// Use this for initialization
 	void Start ()
@@ -67,14 +62,9 @@ public class MenuBehavior : MonoBehaviour
 		statsPanel.SetActive (true);
 		highscore.text = PlayerPrefs.GetString ("HighScore");
 		lvlNoCleared.text = PlayerPrefs.GetString ("LvlNoCleared");
-		lvlPointTot.text = PlayerPrefs.GetString ("LvlPointTot");
 		greenCollected.text = PlayerPrefs.GetString ("GreenCollected");
-		greenPointTot.text = PlayerPrefs.GetString ("GreenPointTot");
 		redAvoided.text = PlayerPrefs.GetString ("RedAvoided");
-		redPointTot.text = PlayerPrefs.GetString ("RedPointTot");
 		tileNoPlaced.text = PlayerPrefs.GetString ("TileNoPlaced");
-		tileNoTot.text = PlayerPrefs.GetString ("TileNoTot");
-		pointTot.text = PlayerPrefs.GetString ("HighScore");
 
 		StartCoroutine (ClickToClose (statsPanel));
 	}
