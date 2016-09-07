@@ -87,6 +87,7 @@ public class GameLogic : MonoBehaviour
 	private string playerLoc="";
 	private string destLoc = "";
 	private string mouseLocation = "";
+    private bool deletingTile = false;
 
 	//dictionary to match cell strings of 00-04 10-14 to an index from 0-29
 	Dictionary<string, int> cellindex = new Dictionary<string, int>();
@@ -130,7 +131,6 @@ public class GameLogic : MonoBehaviour
     }
 
     // Init, update, awake etc.
-    // ############################################# //
     #region General Game Functions
 
     //awake called behind start
@@ -239,9 +239,15 @@ public class GameLogic : MonoBehaviour
                 emptyhand = false;
             }
 
-            //UpdateMouseLocation ();
-            if (!exiting)
+            if (deletingTile)
+            {
+                // Needs to run in update to check for the mouse click.
+                DeleteTile();
+            }
+            else if (!exiting)
+            {
                 PlayerClick();
+            }
 
             if (nextlevel)
             {
@@ -355,6 +361,7 @@ public class GameLogic : MonoBehaviour
 
     /// <summary>
     /// Gets location of mouse click.
+    /// Not sure if used or not.
     /// </summary>
     /// <param name="pv3"></param>
     /// <returns>Click Location</returns>
@@ -1177,6 +1184,41 @@ public class GameLogic : MonoBehaviour
 		}
 		Destroy (stamTrans.parent.gameObject);
 		faderRunning = false;
+    }
+
+    public void DeleteTileToggle()
+    {
+        Debug.Log("Button pressed");
+        deletingTile = !deletingTile;
+    }
+
+    private void DeleteTile()
+    {
+        string clickLoc;
+
+        clickLoc = MouseLocation;
+
+        // If mouse has been clicked
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (clickLoc != "")
+            {
+                int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
+                int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
+
+                // If the tile is not an exit or an entry
+                if (!tileBoard[temprow, tempcol]._isEntrySet)
+                {
+                    // Ensure player is not on the target tile.
+                    if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))] != tileBoard[temprow, tempcol])
+                    {
+                        // Just testing for now
+                        gridPanels[1].GetComponent<Image>().sprite = null;
+                        gridPanels[1].GetComponent<Image>().color = new Color(255f, 255f, 255f, 0f);
+                    }
+                }
+            }
+        }
     }
 
     #endregion
