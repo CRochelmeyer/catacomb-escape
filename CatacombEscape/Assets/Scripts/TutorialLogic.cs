@@ -23,6 +23,8 @@ public class TutorialLogic : MonoBehaviour
 	public int maxStamina;
 	public int greenLocIdx;
 	public int redLocIdx;
+	public int initRedDmg;
+	public int greenAmt;
 	public int discardCost;
 	#endregion
 
@@ -96,6 +98,7 @@ public class TutorialLogic : MonoBehaviour
 	//awake called behind start
 	void Awake()
 	{
+		PlayerPrefs.SetString ("TutorialScene", "true");
 		audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource> ();
 		audioSource.PlayOneShot (startGameClip, 0.5f);
 
@@ -143,9 +146,9 @@ public class TutorialLogic : MonoBehaviour
 		//fill cellindex dictionary
 		//temp index int to fill dictonary
 		cellindex.Clear();
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 4; i++)
 		{
-			for (int j = 0; j < 5; j++)
+			for (int j = 0; j < 3; j++)
 			{
 				cellindex.Add(i.ToString() + j.ToString(), temp);
 				temp++;
@@ -246,7 +249,7 @@ public class TutorialLogic : MonoBehaviour
 			playerStamina = maxStamina;
 		}else if (playerStamina < 0)
 		{
-			playerStamina = 0;
+			playerStamina = 30;
 		}
 		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
 		tempObj.GetComponent<Text>().text = playerStamina.ToString();
@@ -403,7 +406,7 @@ public class TutorialLogic : MonoBehaviour
 		for (int i = 0; i < gridPanels.Length; i++)
 		{
 			gridPanels[i] = gridPanelsScript.GetGridPanel(i);
-		}        
+		}
 	}
 
 	/// <summary>
@@ -702,13 +705,13 @@ public class TutorialLogic : MonoBehaviour
 	{
 		Tile temptile;
 		int temp = 0;
-		//check if tileboard is empty
+		//if tileboard is not empty
 		if (tileBoard.Length != 0)
 		{
 			//generate tileboard...
-			for (int row = 0; row < 6; row++)
+			for (int row = 0; row < 4; row++)
 			{
-				for (int col = 0; col < 5; col++)
+				for (int col = 0; col < 3; col++)
 				{
 					cellindex.TryGetValue(row.ToString() + col.ToString(), out temp);
 
@@ -756,9 +759,9 @@ public class TutorialLogic : MonoBehaviour
 		if (tileBoard.Length != 0)
 		{
 			//check if next level is available exit = bottom of the grid 50-54
-			for (int row = 5; row < 6; row++)
+			for (int row = 3; row < 4; row++)
 			{
-				for (int col = 0; col < 5; col++)
+				for (int col = 0; col < 3; col++)
 				{
 					//if tile within bottom row matches exit name
 					if (tileBoard[row, col]._tileID == "tile_exit")
@@ -770,7 +773,7 @@ public class TutorialLogic : MonoBehaviour
 			//find entrance and set player location
 			for (int row = 0; row < 1; row++)
 			{
-				for (int col = 0; col < 5; col++)
+				for (int col = 0; col < 3; col++)
 				{
 					if (tileBoard[row, col]._tileID == "tile_entrance")
 					{
@@ -843,10 +846,10 @@ public class TutorialLogic : MonoBehaviour
 		{
 			GameObject gridPanelsParent = gridPanels[0].transform.parent.gameObject;
 
-			//exit tile location will be somewhere in the bottom row
-			int downPanel = 0;
-			//entrance tile location will be somewhere in the top row
-			int upPanel = 12;
+			//exit tile location will be in the bottom right
+			int downPanel = 11;
+			//entrance tile location will be in the top left
+			int upPanel = 0;
 
 			//set exit tile
 			gridPanels[downPanel].GetComponent<Image>().sprite = gridSprite[1] as Sprite;

@@ -10,7 +10,14 @@ public class Panel : MonoBehaviour//, IPointerEnterHandler
 { 
 	public bool MouseOverPanel()
 	{
-		GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic> ();
+		GameLogic gameLogic = null;
+		TutorialLogic tutorialLogic = null;
+
+		if (PlayerPrefs.GetString ("TutorialScene") == "true")
+			tutorialLogic = GameObject.FindObjectOfType<TutorialLogic> ();
+		else
+			gameLogic = GameObject.FindObjectOfType<GameLogic> ();
+
 		Vector3 inputPosition = Input.mousePosition;
 		Vector3 mousePosition = Camera.main.ScreenToWorldPoint (inputPosition);
 		mousePosition = new Vector3 (mousePosition.x, mousePosition.y, 0);
@@ -27,11 +34,17 @@ public class Panel : MonoBehaviour//, IPointerEnterHandler
         if (mousePosition.x >= worldCorners [0].x && mousePosition.x < worldCorners [2].x 
 			&& mousePosition.y >= worldCorners [0].y && mousePosition.y < worldCorners [2].y)
 		{
-			gameLogic.MouseLocation = panel.name;
+			if (PlayerPrefs.GetString ("TutorialScene") == "true")
+				tutorialLogic.MouseLocation = panel.name;
+			else
+				gameLogic.MouseLocation = panel.name;
 			return true;
 		} else
 		{
-			gameLogic.MouseLocation = "";
+			if (PlayerPrefs.GetString ("TutorialScene") == "true")
+				tutorialLogic.MouseLocation = "";
+			else
+				gameLogic.MouseLocation = "";
 			return false;
 		}
 	}

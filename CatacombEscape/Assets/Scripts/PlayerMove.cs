@@ -25,11 +25,21 @@ public class PlayerMove : MonoBehaviour
 
 	private float panelHeight;
 
+	private GameLogic gameLogic = null;
+	private TutorialLogic tutorialLogic = null;
+
+	void Start ()
+	{
+		if (PlayerPrefs.GetString ("TutorialScene") == "true")
+			tutorialLogic = GameObject.FindObjectOfType<TutorialLogic> ();
+		else
+			gameLogic = GameObject.FindObjectOfType<GameLogic> ();
+	}
+
 	public void FixedUpdate()
 	{
 		if (moving)
 		{
-			GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic> ();
 			float distCovered = (Time.time - startTime) * speed;
 			float fracJourney = distCovered / journeyLength;
 			
@@ -68,9 +78,18 @@ public class PlayerMove : MonoBehaviour
 					{
 						exitingLevel = false;
 						enteringLevel = true;
-						gameLogic.SetNextLevel = true;
+
+						if (PlayerPrefs.GetString ("TutorialScene") == "true")
+							tutorialLogic.SetNextLevel = true;
+						else
+							gameLogic.SetNextLevel = true;
 					}else
-						gameLogic.SetPlayerLoc ();
+					{
+						if (PlayerPrefs.GetString ("TutorialScene") == "true")
+							tutorialLogic.SetPlayerLoc ();
+						else
+							gameLogic.SetPlayerLoc ();
+					}
 				}
 			}
 		}
@@ -92,9 +111,17 @@ public class PlayerMove : MonoBehaviour
 		GameObject startPanel = pGrid [pLoc];
 		panelHeight = startPanel.GetComponent <RectTransform> ().rect.height;
 		Vector3 tempPos = startPanel.transform.localPosition;
-		tempPos = new Vector3 (tempPos.x, tempPos.y - playerDisp + panelHeight, tempPos.z);
-		player.transform.localPosition = tempPos;
-		UpdatePlayer (startPanel, "down");
+
+		if (PlayerPrefs.GetString ("TutorialScene") == "true")
+		{
+			player.transform.localPosition = tempPos;
+			enteringLevel = false;
+		}else
+		{
+			tempPos = new Vector3 (tempPos.x, tempPos.y - playerDisp + panelHeight, tempPos.z);
+			player.transform.localPosition = tempPos;
+			UpdatePlayer (startPanel, "down");
+		}
     }
 
     /// <summary>
