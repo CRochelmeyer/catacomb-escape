@@ -11104,6 +11104,7 @@ MonoBehaviour:
   stamPopupsContainer: {fileID: 1368675360}
   stamUpPrefab: {fileID: 155558, guid: 71af497b49f595145a75a7a2fdca389d, type: 2}
   stamDownPrefab: {fileID: 132916, guid: af05a3e5220d2484886c87a84f88fdd9, type: 2}
+  discardButton: {fileID: 1890728257}
 --- !u!1 &2024162139
 GameObject:
   m_ObjectHideFlags: 0

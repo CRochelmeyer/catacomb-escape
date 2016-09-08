@@ -114,6 +114,7 @@ public class PlayerMove : MonoBehaviour
 
 		if (PlayerPrefs.GetString ("TutorialScene") == "true")
 		{
+			tempPos = new Vector3 (tempPos.x, tempPos.y - playerDisp, tempPos.z);
 			player.transform.localPosition = tempPos;
 			enteringLevel = false;
 		}else

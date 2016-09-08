@@ -84,11 +84,15 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			//Debug.Log ("Draggable cell :" + cell);
 			GameObject temp = GameObject.Find (cell);
 
+			if (PlayerPrefs.GetString ("TutorialScene") == "true" && !tutorialLogic.PlacementValid(cell))
+			{
+				cell = "";
+			}
+
 			// If cell value is valid and cell is not already occupied
 			if (cell != "" && temp.GetComponent<Image> ().sprite == null)
 			{
 				tile = new Tile (imageID, cell);
-				//Debug.Log ("Destroy handtile");
 
 				if (PlayerPrefs.GetString ("TutorialScene") == "true")
 					tutorialLogic.UpdateDrag (tile, cell);
@@ -97,15 +101,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 				
 				Destroy (this.gameObject);
 			}
-	        /*
-	        if (gameLogic.ValidDrag(tile, cell))
-	        {
-	            Debug.Log("Destroy handtile");
-	            gameLogic.UpdateDrag(tile, cell);
-	            Destroy(this.gameObject);
-	        }
-	        */
-	        else {
+	        else
+			{
 	            
 				//Debug.Log ("Return handtile " + cell);
 				this.gameObject.GetComponent<Transform> ().position = locationToReturn;

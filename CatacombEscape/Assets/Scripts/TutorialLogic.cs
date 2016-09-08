@@ -66,14 +66,23 @@ public class TutorialLogic : MonoBehaviour
 	#endregion
 
 	//boolean game conditions
-	private bool gameover = false;
 	private bool emptyhand = true;
 	private bool nextlevel = false;
-	private bool exiting = false;
 	private int playerStamina;
 	private string playerLoc="";
 	private string destLoc = "";
 	private string mouseLocation = "";
+
+	//tutorial conditions
+	private GameObject handTile0 = null;
+	private GameObject handTile1 = null;
+	private GameObject handTile2 = null;
+	private GameObject handTile3 = null;
+	private int feedHand = 0;
+	private string[] placementLocations = new string[] {"10", "11", "21", "20", "22"};
+	private int placementIndex = 0;
+	public Button discardButton;
+	private bool discarded = false;
 
 	//dictionary to match cell strings of 00-04 10-14 to an index from 0-29
 	Dictionary<string, int> cellindex = new Dictionary<string, int>();
@@ -113,6 +122,8 @@ public class TutorialLogic : MonoBehaviour
 		playerStamina = standardStamina;
 		UpdateUI();
 
+		discardButton.enabled = false;
+
 		InitLevel(level);
 	}
 
@@ -124,9 +135,26 @@ public class TutorialLogic : MonoBehaviour
 			//check if handTiles has been filled
 			if (emptyhand == true)
 			{
-				//generate hand
-				GenerateHand();
-				emptyhand = false;
+				if (feedHand == 0)
+				{
+					// Generate hand with "up,right,down", "down,left", "up, right, left" and "right,left"
+					GenerateHand (8, 0, 9, 3);
+					feedHand++;
+					emptyhand = false;
+					handTile0.AddComponent<Draggable>();
+				}
+				else if (feedHand == 1)
+				{
+					// Generate hand with "right,left", "up,right,down", "up,down" and "up, right"
+					GenerateHand (3, 8, 4, 7);
+					feedHand++;
+					emptyhand = false;
+				}
+
+				if (placementIndex == 4 && !discarded && !discardButton.enabled)
+				{
+					discardButton.enabled = true;
+				}
 			}
 
 			PlayerClick();
@@ -136,6 +164,25 @@ public class TutorialLogic : MonoBehaviour
 	public bool SetNextLevel
 	{
 		set {nextlevel = value;}
+	}
+
+	private void SetNextDraggable()
+	{
+		switch (placementIndex)
+		{
+		case 0:
+			handTile0.AddComponent<Draggable>();
+			break;
+		case 3:
+			handTile1.AddComponent<Draggable>();
+			break;
+		case 2:
+			handTile2.AddComponent<Draggable>();
+			break;
+		case 1:
+			handTile3.AddComponent<Draggable>();
+			break;
+		}
 	}
 
 	// Initialize the level with enemies, loot and entrance/exit tiles
@@ -287,10 +334,7 @@ public class TutorialLogic : MonoBehaviour
 		int panelkey = 0;
 		int currow = 0;
 		int curcol = 0;
-		int newrow = 0;
 		int newcol = 0;
-		bool vertmove = false;
-		bool horimove = false;
 
 		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
 		for(int i =0; i<eventTiles.Length;i++)
@@ -301,77 +345,32 @@ public class TutorialLogic : MonoBehaviour
 				etloc = eventTiles[i].name.Substring(0, 2);
 				System.Int32.TryParse(etloc.Substring(0, 1), out currow);
 				System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
-				newrow = Mathf.Abs(currow + (Random.Range(-1, 1)) );
-				newcol = Mathf.Abs(curcol + (Random.Range(-1, 1)) );
+				newcol = Mathf.Abs(curcol - 1);
 
-				// Determine if the move is vertical or horizontal.
-				if (newrow <=5 && newrow >=0 && newrow != currow)
+				Tile dummy = new Tile(0);
+
+				newloc = currow.ToString() + newcol.ToString();
+				cellindex.TryGetValue(newloc, out panelkey);
+
+				if ((tileBoard[currow, newcol]._tileID != "tile_exit") && (tileBoard[currow, newcol]._tileID != "tile_entrance") && (newloc != playerLoc) && (tileBoard[currow, newcol]._event != "green") && (tileBoard[currow, newcol]._event != "red"))
 				{
-					vertmove = true;
-				}
-				if (newcol <= 4 && newcol >=0 && newcol != curcol)
-				{
-					horimove = true;
-				}
-
-				// If new row is within bounds and not the same as current move tile 
-				if (vertmove )
-				{
-					// Check the new location is not already an event or the player/exits
-					Tile dummy = new Tile(0);
-
-					newloc = newrow.ToString() + curcol.ToString();
-					cellindex.TryGetValue(newloc, out panelkey);
-
-					if ((tileBoard[newrow, curcol]._tileID != "tile_exit") && (tileBoard[newrow, curcol]._tileID != "tile_entrance")  && (newloc != playerLoc) && (tileBoard[newrow, curcol]._event != "green") && (tileBoard[newrow, curcol]._event != "red"))
+					//move thetile
+					eventTiles[i].transform.localPosition = gridPanels[panelkey].transform.localPosition;
+					//update tileboard
+					//clone the current tile to dummy
+					dummy.CloneTile(tileBoard[currow, curcol]);
+					//set current tile event htats moving to no event
+					tileBoard[currow, curcol].ClearEvent();
+					//flush dummy entry if it is set from the previous tile cloned
+					if (dummy._isEntrySet)
 					{
-						// Move the tile
-						eventTiles[i].transform.localPosition = gridPanels[panelkey].transform.localPosition;
-						//update tileboard
-						//clone the current tile to dummy
-						dummy.CloneTile(tileBoard[currow, curcol]);
-						//set current tile event that's moving to no event
-						tileBoard[currow, curcol].ClearEvent();
-						//flush dummy entry if it is set from the previous tile cloned
-						if (dummy._isEntrySet)
-						{
-							dummy.FlushEntry();
-						}
-						//update the new board position with the dummy clone
-						tileBoard[newrow, curcol].UpdatePosition(dummy);
-						//update objclone name to be used for destroying the game obj
-						eventTiles[i].name = newloc + "(Clone)";
+						dummy.FlushEntry();
 					}
+					//update the new board position with the dummy clone
+					tileBoard[currow, newcol].UpdatePosition(dummy);
+					//update objclone name to be used for destroying the game obj
+					eventTiles[i].name = newloc + "(Clone)";
 				}
-				//else if horizontal check
-				else if (horimove)
-				{
-					Tile dummy = new Tile(0);
-
-					newloc = currow.ToString() + newcol.ToString();
-					cellindex.TryGetValue(newloc, out panelkey);
-
-					if ((tileBoard[currow, newcol]._tileID != "tile_exit") && (tileBoard[currow, newcol]._tileID != "tile_entrance") && (newloc != playerLoc) && (tileBoard[currow, newcol]._event != "green") && (tileBoard[currow, newcol]._event != "red"))
-					{
-						//move thetile
-						eventTiles[i].transform.localPosition = gridPanels[panelkey].transform.localPosition;
-						//update tileboard
-						//clone the current tile to dummy
-						dummy.CloneTile(tileBoard[currow, curcol]);
-						//set current tile event htats moving to no event
-						tileBoard[currow, curcol].ClearEvent();
-						//flush dummy entry if it is set from the previous tile cloned
-						if (dummy._isEntrySet)
-						{
-							dummy.FlushEntry();
-						}
-						//update the new board position with the dummy clone
-						tileBoard[currow, newcol].UpdatePosition(dummy);
-						//update objclone name to be used for destroying the game obj
-						eventTiles[i].name = newloc + "(Clone)";
-					}
-				}
-				//else do nothing
 			}
 		}
 	}
@@ -407,6 +406,18 @@ public class TutorialLogic : MonoBehaviour
 		{
 			gridPanels[i] = gridPanelsScript.GetGridPanel(i);
 		}
+	}
+
+	public bool PlacementValid (string cell)
+	{
+		if (placementLocations [placementIndex] == cell)
+		{
+			placementIndex++;
+			SetNextDraggable();
+			return true;
+		}
+		else
+			return false;
 	}
 
 	/// <summary>
@@ -521,17 +532,6 @@ public class TutorialLogic : MonoBehaviour
 		}
 	}
 
-	//
-	//
-	//
-	//
-	//
-	// These tiles will pre-generate to get the player to the exit
-	//
-	//
-	//
-	//
-
 	/// <summary>
 	/// Generate a new hand of tiles
 	/// </summary>
@@ -547,8 +547,18 @@ public class TutorialLogic : MonoBehaviour
 		}
 		InstantiateStamDownPanel ("-" + discardCost, movePlayer.PlayerLocation);
 		playerStamina += - discardCost;
-		GenerateHand();
+
+		// Generate hand with "up,down,left", "right,left", "up, right, left" and "up,down"
+		GenerateHand (5, 3, 9, 4);
+		feedHand++;
+		emptyhand = false;
+
 		UpdateUI();
+
+		discardButton.enabled = false;
+		discarded = true;
+
+		handTile0.AddComponent<Draggable>();
 	}
 
 	/// <summary>
@@ -791,7 +801,7 @@ public class TutorialLogic : MonoBehaviour
 		}
 	}
 
-	public void GenerateHand()
+	public void GenerateHand(int idx0, int idx1, int idx2, int idx3)
 	{       
 		//approaching hand generation via grabbing each individual UI element and updating the sprite image and render...didnt work out 13/04
 		//actaullyworking just rendered tiny and behind default image too...13/04
@@ -800,34 +810,52 @@ public class TutorialLogic : MonoBehaviour
 		//check for null
 		if (handTiles != null)
 		{
-			int rand = Random.Range (0,dealingClips.Length);
+			int rand = Random.Range (0, dealingClips.Length);
 			audioSource.PlayOneShot (dealingClips[rand], 1.0f);
 
-			List<int> spriteIndex = new List<int> (new int[] {0,1,2,3,4,5,6,7,8,9,10});
+			// SET TILE #1
+			handTile0 = Instantiate (handTiles[0]);
+			handTile0.transform.localScale = handTiles [0].transform.localScale;
+			handTile0.transform.localPosition = handTiles [0].transform.localPosition;
+			//set tag so handTiles above doesnt grab clones as well.
+			handTile0.tag = "handDrag";
+			//assign new object correct parents
+			handTile0.transform.SetParent (btmPanel.transform, false);
+			handTile0.GetComponent <Image>().sprite = tileSprite [idx0] as Sprite;
+			handTile0.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
 
-			for (int i = 0; i < handTiles.Length; i++)
-			{
-				GameObject newObject = Instantiate (handTiles[i]);
-				newObject.transform.localScale = handTiles [i].transform.localScale;
-				newObject.transform.localPosition = handTiles [i].transform.localPosition;
-				//set tag so handTiles above doesnt grab clones as well.
-				newObject.tag = "handDrag";
-				//assign new object correct parents
-				newObject.transform.SetParent (btmPanel.transform, false);
-				//use handdefaults to instantiate objects with rng sprite below and add script....
-				int randIndex = Random.Range (0, spriteIndex.Count);
-				int index = spriteIndex [randIndex];
-				newObject.GetComponent <Image>().sprite = tileSprite [index] as Sprite;
-				newObject.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
-				newObject.AddComponent<Draggable>();
-				//above method with bool set to false solved instantiating flipped object....
+			// SET TILE #2
+			handTile3 = Instantiate (handTiles[1]);
+			handTile3.transform.localScale = handTiles [1].transform.localScale;
+			handTile3.transform.localPosition = handTiles [1].transform.localPosition;
+			//set tag so handTiles above doesnt grab clones as well.
+			handTile3.tag = "handDrag";
+			//assign new object correct parents
+			handTile3.transform.SetParent (btmPanel.transform, false);
+			handTile3.GetComponent <Image>().sprite = tileSprite [idx1] as Sprite;
+			handTile3.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
 
-				//remove index from list if it does not represent the crossways tile (10th element)
-				if (index != 10)
-				{
-					spriteIndex.RemoveAt (randIndex);
-				}
-			}
+			// SET TILE #3
+			handTile2 = Instantiate (handTiles[2]);
+			handTile2.transform.localScale = handTiles [2].transform.localScale;
+			handTile2.transform.localPosition = handTiles [2].transform.localPosition;
+			//set tag so handTiles above doesnt grab clones as well.
+			handTile2.tag = "handDrag";
+			//assign new object correct parents
+			handTile2.transform.SetParent (btmPanel.transform, false);
+			handTile2.GetComponent <Image>().sprite = tileSprite [idx2] as Sprite;
+			handTile2.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
+
+			// SET TILE #4
+			handTile1 = Instantiate (handTiles[3]);
+			handTile1.transform.localScale = handTiles [3].transform.localScale;
+			handTile1.transform.localPosition = handTiles [3].transform.localPosition;
+			//set tag so handTiles above doesnt grab clones as well.
+			handTile1.tag = "handDrag";
+			//assign new object correct parents
+			handTile1.transform.SetParent (btmPanel.transform, false);
+			handTile1.GetComponent <Image>().sprite = tileSprite [idx3] as Sprite;
+			handTile1.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
 		}
 	}
 
