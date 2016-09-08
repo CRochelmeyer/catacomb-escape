@@ -41,10 +41,7 @@ public class PauseBehaviour : MonoBehaviour
 		{
 			source.PlayOneShot (unpauseClip);
 
-			if (PlayerPrefs.GetString ("ExtrasPanelOpen") == "false")
-			{
-				PlayerPrefs.SetString ("Paused", "false");
-			}
+			PlayerPrefs.SetString ("Paused", "false");
 
 			PlayerPrefs.SetString ("SettingsPanelOpen", "false");
 			pauseUI.SetActive (false);
@@ -55,10 +52,7 @@ public class PauseBehaviour : MonoBehaviour
 	{
 		source.PlayOneShot (unpauseClip);
 
-		if (PlayerPrefs.GetString ("ExtrasPanelOpen") == "false")
-		{
-			PlayerPrefs.SetString ("Paused", "false");
-		}
+		PlayerPrefs.SetString ("Paused", "false");
 
 		PlayerPrefs.SetString ("SettingsPanelOpen", "false");
 		pauseUI.SetActive(false);

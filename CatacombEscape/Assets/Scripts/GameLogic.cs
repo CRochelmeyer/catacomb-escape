@@ -124,6 +124,8 @@ public class GameLogic : MonoBehaviour
     //awake called behind start
     void Awake()
     {
+		PlayerPrefs.SetString ("TutorialScene", "false");
+
         //refresh and initialse redstep per awake call
         redstep = 0;
 		audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource> ();
