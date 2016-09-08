@@ -67,6 +67,8 @@ public class Direction : MonoBehaviour
     }
 
     //Placement for checking valid tile placements of tiles
+    // Seems not to be in use. 8/9/16
+    /*
     public bool ValidPlacement(string pCurrent, Tile pNext )
     {
         bool placement = false;
@@ -82,6 +84,7 @@ public class Direction : MonoBehaviour
         }
         return placement;
     }
+    */
 
     //public string return directional string based on current index and next index
     public string MoveDirection (string pCurrent, string pNext )

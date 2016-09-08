@@ -145,7 +145,7 @@ public class GameLogic : MonoBehaviour
         if (mainCamera != null)
             mainCamera.GetComponent<BackGroundMusic>().ResetScript();
 
-        validMove = GameObject.FindGameObjectWithTag("Scripts").GetComponent<Direction>();
+        validMove = GameObject.FindGameObjectWithTag("Scripts").GetComponent<Direction>();  // Direction.cs
         movePlayer = GameObject.FindGameObjectWithTag("Scripts").GetComponent<PlayerMove>();
         coinCont = GameObject.FindGameObjectWithTag("Scripts").GetComponent<CoinController>();
         //TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
@@ -1186,12 +1186,26 @@ public class GameLogic : MonoBehaviour
 		faderRunning = false;
     }
 
+    /// <summary>
+    /// Toggles the ability to delete tiles.
+    /// </summary>
     public void DeleteTileToggle()
     {
-        Debug.Log("Button pressed");
         deletingTile = !deletingTile;
+
+        if (deletingTile)
+        {
+            Debug.Log("Deleting tiles.");
+        }
+        else
+        {
+            Debug.Log("No longer deleting tiles.");
+        }
     }
 
+    /// <summary>
+    /// Performs the deletion of a tile.
+    /// </summary>
     private void DeleteTile()
     {
         string clickLoc;
@@ -1203,19 +1217,35 @@ public class GameLogic : MonoBehaviour
         {
             if (clickLoc != "")
             {
+                // row and column of tile that was clicked.
                 int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
                 int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
 
                 // If the tile is not an exit or an entry
-                if (!tileBoard[temprow, tempcol]._isEntrySet)
+                // Nevermind this is every tile.
+                if (tileBoard[temprow, tempcol]._tileID.Contains("Exit"))
                 {
                     // Ensure player is not on the target tile.
                     if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))] != tileBoard[temprow, tempcol])
                     {
-                        // Just testing for now
-                        gridPanels[1].GetComponent<Image>().sprite = null;
-                        gridPanels[1].GetComponent<Image>().color = new Color(255f, 255f, 255f, 0f);
+
+                        int pIndex;                        
+                        Debug.Log("Killing tileBoard object at " + "[" + temprow + "," + tempcol + "]");
+
+                        tileBoard[temprow, tempcol]._isActive = false;
+
+
+                        cellindex.TryGetValue(tileBoard[temprow, tempcol]._boardLocation, out pIndex);
+                        gridPanels[pIndex].GetComponent<Image>().sprite = null;
+                        gridPanels[pIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 0f);
+
+
                     }
+                }
+                else
+                {
+                    Debug.Log("_isEntrySet False");
+                    Debug.Log(tileBoard[temprow,tempcol]._entry);
                 }
             }
         }
