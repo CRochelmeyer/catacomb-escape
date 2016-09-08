@@ -1223,7 +1223,7 @@ public class GameLogic : MonoBehaviour
 
                 // If the tile is not an exit or an entry
                 // Nevermind this is every tile.
-                if (!tileBoard[temprow, tempcol]._tileID.Contains("exit") || !tileBoard[temprow, tempcol]._tileID.Contains("entry"))
+                if (!tileBoard[temprow, tempcol]._tileID.Contains("exit") && !tileBoard[temprow, tempcol]._tileID.Contains("entrance"))
                 {
                     // Ensure player is not on the target tile.
                     if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))] != tileBoard[temprow, tempcol])
@@ -1231,6 +1231,7 @@ public class GameLogic : MonoBehaviour
 
                         int pIndex;                        
                         Debug.Log("Killing tileBoard object at " + "[" + temprow + "," + tempcol + "]");
+                        Debug.Log("Tile ID: " + tileBoard[temprow,tempcol]._tileID);
 
                         cellindex.TryGetValue(tileBoard[temprow, tempcol]._boardLocation, out pIndex);
                         gridPanels[pIndex].GetComponent<Image>().sprite = null;
