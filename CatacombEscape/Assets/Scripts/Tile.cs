@@ -41,6 +41,7 @@ public class Tile
         _boardLocation = pboardloc;
         //initiate _entry
         _entry = new List<string>();
+
         if (_tileID.Contains("event") )
         {
             //Debug.Log("If gen event");
@@ -139,8 +140,6 @@ public class Tile
         bool entry = false;
         if (_isEntrySet)
         {
-            //Debug.Log("Entry is set");
-            //Debug.Log("ValidEntry if "+pEntry);
             switch (pEntry.ToLower())
             {
                 case "up":
@@ -208,25 +207,18 @@ public class Tile
         {
             while (con_end != _tileID.LastIndexOf("_"))
             {
-                //Debug.Log("start loop ");
-                //grab index of _ from con_end/con_start indexes initially 0
-                //+1 to make sure the new start isnt looking at the old end_
-                //Debug.Log("before start " + con_start);
-                //Debug.Log("before end " + con_end);
                 con_start = this._tileID.IndexOf("_", con_end);
                 //+1 the search for index so it doesnt look at the same _ that it starts from
                 con_end = this._tileID.IndexOf("_", con_start + 1);
-                //Debug.Log("after start " + con_start);
-                //Debug.Log("after end " + con_end);
-                //Debug.Log("string length " + this._tileID.Length);
+
                 //+1 to start from after the first _ 
                 //2nd param is a counter thus con_end - con_start and -1 to start before 2nd _
                 dir = this._tileID.Substring((con_start + 1), (con_end - con_start) - 1);
+
                 //check if dir is up right down left    
                 if (dir == "up" || dir == "right" || dir == "down" || dir == "left")
                 {
                     this._entry.Add(dir);
-                    //Debug.Log("good " + dir);
                     _isEntrySet = true;
                 }
                 else
@@ -234,8 +226,8 @@ public class Tile
                     //Debug.Log("bad " + dir);
                     _isEntrySet = false;
                 }
-                //Debug.Log("lastindex" + _tileID.LastIndexOf("_"));
             }
+
             //grab the final entry
             //using con_end and string.length
             dir = this._tileID.Substring(con_end + 1, (this._tileID.Length - con_end - 1));
@@ -251,7 +243,6 @@ public class Tile
                 _isEntrySet = false;
             }
         }
-       
     }
 
     /// <summary>
@@ -336,5 +327,10 @@ public class Tile
                 Debug.Log("end of test is in loc :" + _boardLocation);
             }
         //}
+    }
+
+    public void OnMouseOver()
+    {
+        Debug.Log("Over a tile.");
     }
 }

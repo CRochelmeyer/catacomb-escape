@@ -46,52 +46,25 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
 		if (PlayerPrefs.GetString ("Paused") != "true")
 		{
-			//Debug.Log ("OnEndDrag");
-			//use these x,y to pass thru to logic to identify array cell block
-			//float x = Input.mousePosition.x;
-			//float y = Input.mousePosition.y;
-
-			//this section is for using endDrag to communicate mouse position for 
-			//logic to determine cell area
 			//make use of the game object to pass
 			gameLogic = GameObject.FindObjectOfType<GameLogic> ();
 			// id to grab image source file to pass as a parameter for logic
 			id = this.GetComponent<Image> ();
 			//setting imageID
 			imageID = id.sprite.name.ToString ();
-			//this.transform.SetParent(parentToReturn);
-			//send mouse position and string of the sprite name to logic
-			//testing arrayhandler
-			//Debug.Log("return cell: "+gameLogic.GetComponent<ArrayHandler>().FindLocation(new Vector2(x, y)) );
-			//assign cell 
-			//cell = gameLogic.GetComponent<ArrayHandler> ().FindLocation (new Vector2 (x, y));
-			//check if its a valid placement based on player location.
-			//cal update drag from gamelogic with tile and cell index
-			//check cell value isnt "" and that the cell isnt already an exit etc...
 
 			cell = gameLogic.MouseLocation;
-			//Debug.Log ("Draggable cell :" + cell);
 			GameObject temp = GameObject.Find (cell);
 
 			// If cell value is valid and cell is not already occupied
 			if (cell != "" && temp.GetComponent<Image> ().sprite == null)
 			{
 				tile = new Tile (imageID, cell);
-				//Debug.Log ("Destroy handtile");
 				gameLogic.UpdateDrag (tile, cell);
 				Destroy (this.gameObject);
 			}
-	        /*
-	        if (gameLogic.ValidDrag(tile, cell))
-	        {
-	            Debug.Log("Destroy handtile");
-	            gameLogic.UpdateDrag(tile, cell);
-	            Destroy(this.gameObject);
-	        }
-	        */
-	        else {
-	            
-				//Debug.Log ("Return handtile " + cell);
+	        else
+            {
 				this.gameObject.GetComponent<Transform> ().position = locationToReturn;
 			}
 		}
