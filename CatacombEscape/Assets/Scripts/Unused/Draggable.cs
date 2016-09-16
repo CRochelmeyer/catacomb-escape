@@ -11,7 +11,6 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public Image id;
     public string imageID;
 	public GameLogic gameLogic;
-	public TutorialLogic tutorialLogic;
 
 	private string cell;
 	private Tile tile;
@@ -47,64 +46,25 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
 		if (PlayerPrefs.GetString ("Paused") != "true")
 		{
-			//Debug.Log ("OnEndDrag");
-			//use these x,y to pass thru to logic to identify array cell block
-			//float x = Input.mousePosition.x;
-			//float y = Input.mousePosition.y;
-
-			//this section is for using endDrag to communicate mouse position for 
-			//logic to determine cell area
 			//make use of the game object to pass
-			if (PlayerPrefs.GetString ("TutorialScene") == "true")
-				tutorialLogic = GameObject.FindObjectOfType<TutorialLogic> ();
-			else
-				gameLogic = GameObject.FindObjectOfType<GameLogic> ();
-
-
-
+			gameLogic = GameObject.FindObjectOfType<GameLogic> ();
 			// id to grab image source file to pass as a parameter for logic
 			id = this.GetComponent<Image> ();
 			//setting imageID
 			imageID = id.sprite.name.ToString ();
-			//this.transform.SetParent(parentToReturn);
-			//send mouse position and string of the sprite name to logic
-			//testing arrayhandler
-			//Debug.Log("return cell: "+gameLogic.GetComponent<ArrayHandler>().FindLocation(new Vector2(x, y)) );
-			//assign cell 
-			//cell = gameLogic.GetComponent<ArrayHandler> ().FindLocation (new Vector2 (x, y));
-			//check if its a valid placement based on player location.
-			//cal update drag from gamelogic with tile and cell index
-			//check cell value isnt "" and that the cell isnt already an exit etc...
 
-			if (PlayerPrefs.GetString ("TutorialScene") == "true")
-				cell = tutorialLogic.MouseLocation;
-			else
-				cell = gameLogic.MouseLocation;
-			
-			//Debug.Log ("Draggable cell :" + cell);
+			cell = gameLogic.MouseLocation;
 			GameObject temp = GameObject.Find (cell);
-
-			if (PlayerPrefs.GetString ("TutorialScene") == "true" && !tutorialLogic.PlacementValid(cell))
-			{
-				cell = "";
-			}
 
 			// If cell value is valid and cell is not already occupied
 			if (cell != "" && temp.GetComponent<Image> ().sprite == null)
 			{
 				tile = new Tile (imageID, cell);
-
-				if (PlayerPrefs.GetString ("TutorialScene") == "true")
-					tutorialLogic.UpdateDrag (tile, cell);
-				else
-					gameLogic.UpdateDrag (tile, cell);
-				
+				gameLogic.UpdateDrag (tile, cell);
 				Destroy (this.gameObject);
 			}
 	        else
-			{
-	            
-				//Debug.Log ("Return handtile " + cell);
+            {
 				this.gameObject.GetComponent<Transform> ().position = locationToReturn;
 			}
 		}
