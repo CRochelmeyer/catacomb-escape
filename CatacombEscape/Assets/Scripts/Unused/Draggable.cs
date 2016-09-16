@@ -11,6 +11,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public Image id;
     public string imageID;
 	public GameLogic gameLogic;
+	public TutorialLogic tutorialLogic;
 
 	private string cell;
 	private Tile tile;
@@ -47,24 +48,42 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 		if (PlayerPrefs.GetString ("Paused") != "true")
 		{
 			//make use of the game object to pass
-			gameLogic = GameObject.FindObjectOfType<GameLogic> ();
+			if (PlayerPrefs.GetString ("TutorialScene") == "true")
+				tutorialLogic = GameObject.FindObjectOfType<TutorialLogic> ();
+			else
+				gameLogic = GameObject.FindObjectOfType<GameLogic> ();
+			
 			// id to grab image source file to pass as a parameter for logic
 			id = this.GetComponent<Image> ();
 			//setting imageID
 			imageID = id.sprite.name.ToString ();
 
-			cell = gameLogic.MouseLocation;
+			if (PlayerPrefs.GetString ("TutorialScene") == "true")
+				cell = tutorialLogic.MouseLocation;
+			else
+				cell = gameLogic.MouseLocation;
+			
 			GameObject temp = GameObject.Find (cell);
+
+			if (PlayerPrefs.GetString ("TutorialScene") == "true" && !tutorialLogic.PlacementValid(cell))
+			{
+				cell = "";
+			}
 
 			// If cell value is valid and cell is not already occupied
 			if (cell != "" && temp.GetComponent<Image> ().sprite == null)
 			{
 				tile = new Tile (imageID, cell);
-				gameLogic.UpdateDrag (tile, cell);
+
+				if (PlayerPrefs.GetString ("TutorialScene") == "true")
+					tutorialLogic.UpdateDrag (tile, cell);
+				else
+					gameLogic.UpdateDrag (tile, cell);
+
 				Destroy (this.gameObject);
 			}
-	        else
-            {
+			else
+			{
 				this.gameObject.GetComponent<Transform> ().position = locationToReturn;
 			}
 		}

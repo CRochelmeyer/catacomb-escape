@@ -60,7 +60,6 @@ public class GameLogic : MonoBehaviour
 	private bool faderRunning = false;
 	public GameObject enemyPanel;
 	public Text enemyStamDown;
-	//public Text breadStamUp;
 	public GameObject statPanel; //this is what pops up at gameover
 	public Text lvlNoClearedText;
 	public Text greenCollectedText;
@@ -122,32 +121,26 @@ public class GameLogic : MonoBehaviour
 	private int redAvoided;
 	private int tileNoPlaced;
 
-    
-
-	// Use this for initialization
-	void Start()
-	{
-
-    }
-
     // Init, update, awake etc.
     #region General Game Functions
 
     //awake called behind start
     void Awake()
     {
+		PlayerPrefs.SetString ("TutorialScene", "false");
+
         //refresh and initialse redstep per awake call
         redstep = 0;
-        audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource>();
-        audioSource.PlayOneShot(startGameClip, 0.5f);
+        audioSource = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<AudioSource> ();
+        audioSource.PlayOneShot (startGameClip, 0.5f);
 
-        GameObject mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        GameObject mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
         if (mainCamera != null)
             mainCamera.GetComponent<BackGroundMusic>().ResetScript();
 
-        validMove = GameObject.FindGameObjectWithTag("Scripts").GetComponent<Direction>();  // Direction.cs
-        movePlayer = GameObject.FindGameObjectWithTag("Scripts").GetComponent<PlayerMove>();
-        coinCont = GameObject.FindGameObjectWithTag("Scripts").GetComponent<CoinController>();
+        validMove = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<Direction> ();  // Direction.cs
+        movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
+        coinCont = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<CoinController> ();
         //TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
 
         playerStamina = standardStamina;
@@ -168,7 +161,7 @@ public class GameLogic : MonoBehaviour
     /// Initialise the game, and generate the board.
     /// </summary>
     /// <param name="pLevel"></param>
-    void InitGame(int pLevel)
+    void InitGame (int pLevel)
     {
         int temp = 0;
 
@@ -179,10 +172,11 @@ public class GameLogic : MonoBehaviour
         {
             for (int j = 0; j < 5; j++)
             {
-                cellindex.Add(i.ToString() + j.ToString(), temp);
+                cellindex.Add (i.ToString() + j.ToString(), temp);
                 temp++;
             }
         }
+
         //if instance is null create instance of this GameLogic 
         if (instance == null)
         {
@@ -191,12 +185,12 @@ public class GameLogic : MonoBehaviour
         //else instance is not null but not this GameLogic destroy 
         else if (instance != this)
         {
-            Destroy(gameObject);
+            Destroy (gameObject);
         }
 
         FindGridPanels();
 
-        PlayerPrefs.SetString("Paused", "false");
+        PlayerPrefs.SetString ("Paused", "false");
 
         //initialise player data
         CheckStamina();
@@ -204,8 +198,9 @@ public class GameLogic : MonoBehaviour
         {
             playerStamina = standardStamina;
         }
+
         UpdateUI();
-        GameObject tempObj = GameObject.FindGameObjectWithTag("GameLevel");
+        GameObject tempObj = GameObject.FindGameObjectWithTag ("GameLevel");
         tempObj.GetComponent<Text>().text = "Lvl " + pLevel;
 
         //setup board with rng sprites
@@ -394,6 +389,7 @@ public class GameLogic : MonoBehaviour
         int _spriteIndex = 0;
         cellindex.TryGetValue(pcell, out _gridIndex);
         //grab corresponding gridsprite[index] based on ptile
+
         for (int i = 0; i < tileSprite.Length; i++)
         {
             string temp1 = tileSprite[i].name.ToString();
@@ -576,6 +572,7 @@ public class GameLogic : MonoBehaviour
 
         string hs = PlayerPrefs.GetString("HighScore");
         bool newHS = false;
+
         if (hs != null && hs != "")
         {
             int highscore = int.Parse(hs);
