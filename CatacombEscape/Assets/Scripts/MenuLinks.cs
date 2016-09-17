@@ -34,14 +34,19 @@ public class MenuLinks : MonoBehaviour {
 		#if UNITY_ANDROID
 		if(checkPackageAppIsPresent("com.twitter.android"))
 		{
-		Application.OpenURL("twitter:///user?screen_name=EXcavator"); //there is Facebook app installed so let's use it
+		Application.OpenURL("twitter:///user?screen_name=EXcavator"); //there is Twitter app installed so let's use it
 		}
 		else
 		{
-		Application.OpenURL("https://mobile.twitter.com/BuriedArtefact"); // no Facebook app - use built-in web browser
+		Application.OpenURL("https://mobile.twitter.com/BuriedArtefact"); // no Twitter app - use built-in web browser
 		}
 		#else
-		Application.OpenURL("https://twitter.com/BuriedArtefact"); // open Facebook in browser
+		Application.OpenURL("https://twitter.com/BuriedArtefact"); // open Twitter in browser
 		#endif
+	}
+
+	public void Survey ()
+	{
+		Application.OpenURL("https://goo.gl/forms/yR3EA6tfLgcoxhCs1"); // open Google Forms in browser
 	}
 }
