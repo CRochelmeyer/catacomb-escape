@@ -292,6 +292,11 @@ public class GameLogic : MonoBehaviour
         }
     }
 
+	public bool DeletingTile
+	{
+		get {return deletingTile;}
+	}
+
     #endregion
 
     #region Player Functions
@@ -1220,7 +1225,7 @@ public class GameLogic : MonoBehaviour
 
                 // If the tile is not an exit or an entry
                 // Nevermind this is every tile.
-                if (!tileBoard[temprow, tempcol]._tileID.Contains("exit") && !tileBoard[temprow, tempcol]._tileID.Contains("entrance"))
+				if (tileBoard[temprow, tempcol] != null && !tileBoard[temprow, tempcol]._tileID.Contains("exit") && !tileBoard[temprow, tempcol]._tileID.Contains("entrance"))
                 {
                     // Ensure player is not on the target tile.
                     if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))] != tileBoard[temprow, tempcol])

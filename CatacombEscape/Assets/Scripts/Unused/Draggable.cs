@@ -17,10 +17,23 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 	private Tile tile;
 	private Vector3 locationToReturn;
 
+	void Start()
+	{
+		//make use of the game object to pass
+		if (PlayerPrefs.GetString ("TutorialScene") == "true")
+			tutorialLogic = GameObject.FindObjectOfType<TutorialLogic> ();
+		else
+			gameLogic = GameObject.FindObjectOfType<GameLogic> ();
+	}
+
     public void OnBeginDrag(PointerEventData eventData)
     {
+		bool deletingTile = false;
+		if (PlayerPrefs.GetString ("TutorialScene") != "true")
+			deletingTile = gameLogic.DeletingTile;
+
         //Debug.Log("Player settings drag");
-		if (PlayerPrefs.GetString ("Paused") != "true")
+		if (PlayerPrefs.GetString ("Paused") != "true" && !deletingTile)
 		{
 			//Debug.Log("OnbeginDrag");
 			//save the parent incase of returns from invalid drags
@@ -31,7 +44,11 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnDrag(PointerEventData eventData)
 	{
-		if (PlayerPrefs.GetString ("Paused") != "true")
+		bool deletingTile = false;
+		if (PlayerPrefs.GetString ("TutorialScene") != "true")
+			deletingTile = gameLogic.DeletingTile;
+
+		if (PlayerPrefs.GetString ("Paused") != "true" && !deletingTile)
 		{
 			//Debug.Log("MousePosition = " + Input.mousePosition);
 			Vector3 inputPosition = Input.mousePosition;
@@ -45,14 +62,12 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-		if (PlayerPrefs.GetString ("Paused") != "true")
-		{
-			//make use of the game object to pass
-			if (PlayerPrefs.GetString ("TutorialScene") == "true")
-				tutorialLogic = GameObject.FindObjectOfType<TutorialLogic> ();
-			else
-				gameLogic = GameObject.FindObjectOfType<GameLogic> ();
-			
+		bool deletingTile = false;
+		if (PlayerPrefs.GetString ("TutorialScene") != "true")
+			deletingTile = gameLogic.DeletingTile;
+
+		if (PlayerPrefs.GetString ("Paused") != "true" && !deletingTile)
+		{			
 			// id to grab image source file to pass as a parameter for logic
 			id = this.GetComponent<Image> ();
 			//setting imageID
