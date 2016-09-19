@@ -428,6 +428,8 @@ public class GameLogic : MonoBehaviour
 
                 GameObject tempObj = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation);
 
+                Debug.Log("tempObj = " + pcell.Substring(0,1) + " , " + pcell.Substring(1, 1));
+
                 //decrease stamina
                 int rand = Random.Range(0, placementClips.Length);
                 audioSource.PlayOneShot(placementClips[rand], 0.5f);
@@ -1239,14 +1241,14 @@ public class GameLogic : MonoBehaviour
                         gridPanels[pIndex].GetComponent<Image>().sprite = null;
                         gridPanels[pIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 0f);
 
-                        tileBoard[temprow, tempcol]._isEntrySet = false;
+                        tileBoard[temprow, tempcol] = new Tile(0);
 
                         DeleteTileToggle(); // Toggle tile deletion, so player deletes one tile per button press
                     }
                 }
                 else
                 {
-                    Debug.Log("This tile is an exit!");
+                    Debug.Log("Invalid target: this tile is an entrance or exit!");
                     Debug.Log(tileBoard[temprow,tempcol]._entry);
                 }
             }

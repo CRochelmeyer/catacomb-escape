@@ -346,4 +346,9 @@ public class Tile
     {
         Debug.Log("Over a tile.");
     }
+
+    public void toString(string info)
+    {
+        Debug.Log(info +" | >>> Tile ID: " + _tileID + " >>> Location: " + _boardLocation + ">>> Is active? " + _isActive);
+    }
 }
