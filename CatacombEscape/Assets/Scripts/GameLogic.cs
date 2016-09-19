@@ -67,11 +67,16 @@ public class GameLogic : MonoBehaviour
 	public Text tileNoPlacedText;
 	public Text pointTot;
 	public GameObject newHighscore;
-	// These can be accessed and set with 'string tot = pointTot.text;' and 'pointTot.text = "100"'
-	#endregion
+    // These can be accessed and set with 'string tot = pointTot.text;' and 'pointTot.text = "100"'
+    public Text pauseLvlText;
+    public Text pauseGreenText;
+    public Text pauseRedText;
+    public Text pauseTileText;
+    public Text pauseTotText;
+    #endregion
 
-	#region stamPanels
-	[Header("Stamina Panels")]
+    #region stamPanels
+    [Header("Stamina Panels")]
 	public Transform stamPopupsContainer;
 	public GameObject stamUpPrefab;
 	public GameObject stamDownPrefab;
@@ -602,6 +607,20 @@ public class GameLogic : MonoBehaviour
             PlayerPrefs.SetString("TileNoPlaced", tileNoPlacedText.text);
             newHighscore.SetActive(true);
         }
+    }
+
+    /// <summary>
+    /// Displays score to pause menu
+    /// </summary>
+    public void PauseScore()
+    {
+        CalculateScore();
+
+        pauseLvlText.text = lvlNoCleared.ToString();
+        pauseGreenText.text = greenCollected.ToString();
+        pauseRedText.text = redAvoided.ToString();
+        pauseTileText.text = tileNoPlaced.ToString();
+        pauseTotText.text = score.ToString();
     }
 
     /// <summary>
