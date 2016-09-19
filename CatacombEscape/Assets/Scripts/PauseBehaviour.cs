@@ -13,11 +13,16 @@ public class PauseBehaviour : MonoBehaviour
 	public AudioClip pauseClip;
 	public AudioClip unpauseClip;
 
-	public void Start ()
+    private GameLogic gameLogic = null;
+
+    public void Start ()
 	{
 		source = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource> ();
 		PlayerPrefs.SetString ("SettingsPanelOpen", "false");
-	}
+
+        if (PlayerPrefs.GetString("TutorialScene") != "true")
+            gameLogic = GameObject.FindObjectOfType<GameLogic>();
+    }
 
 	public void LoadScene(string sceneName)
 	{
@@ -32,7 +37,10 @@ public class PauseBehaviour : MonoBehaviour
 	{
 		if (pauseUI.activeInHierarchy == false)
 		{
-			source.PlayOneShot (pauseClip);
+            if (PlayerPrefs.GetString("TutorialScene") != "true")
+                gameLogic.PauseScore();
+
+            source.PlayOneShot (pauseClip);
 
 			PlayerPrefs.SetString ("Paused", "true");
 			PlayerPrefs.SetString ("SettingsPanelOpen", "true");
