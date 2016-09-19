@@ -1241,7 +1241,16 @@ public class GameLogic : MonoBehaviour
                         gridPanels[pIndex].GetComponent<Image>().sprite = null;
                         gridPanels[pIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 0f);
 
+                        Tile tileToDelete = tileBoard[temprow, tempcol];
                         tileBoard[temprow, tempcol] = new Tile(0);
+
+                        // Preserve any events on the tile.
+                        if (tileToDelete._event != null)
+                        {
+                            Debug.LogWarning("Tile contains an event.");
+                            tileBoard[temprow, tempcol]._event = tileToDelete._event;
+                            // Need to reset the sprite for the chest events (It stays small once the tile is removed).
+                        }
 
                         DeleteTileToggle(); // Toggle tile deletion, so player deletes one tile per button press
                     }
