@@ -664,30 +664,30 @@ public class GameLogic : MonoBehaviour
 	            //int plocc = System.Int32.Parse(playerLoc.Substring(1, 1));
 	            if ((tileBoard[temprow, tempcol]._isEntrySet) && (playerLoc != "") )
 	            {
-	                //Debug.Log("clickloc 1: " + clickLoc);
-	                //Debug.Log("clickLoc if");
-	                if (validMove.MoveDirection(playerLoc, clickLoc) != "invalid move" && validMove.InRange(playerLoc, clickLoc) )
-	                {
-	                    //Debug.Log("not invalid move");
-	                    //valid move
-	                    //Debug.Log("clickloc 2: " + clickLoc);
-	                    if (validMove.Move(playerLoc, clickLoc,ref tileBoard) )
-						{
-							int rand = Random.Range (0,movementClips.Length);
-							audioSource.PlayOneShot (movementClips[rand], 1.0f);
+                    //Debug.Log("clickloc 1: " + clickLoc);
+                    //Debug.Log("clickLoc if");
+                    if (validMove.MoveDirection(playerLoc, clickLoc) != "invalid move" && validMove.InRange(playerLoc, clickLoc))
+                    {
+                        //Debug.Log("not invalid move");
+                        //valid move
+                        //Debug.Log("clickloc 2: " + clickLoc);
+                        if (validMove.Move(playerLoc, clickLoc, ref tileBoard))
+                        {
+                            int rand = Random.Range(0, movementClips.Length);
+                            audioSource.PlayOneShot(movementClips[rand], 1.0f);
 
-							//Debug.Log("clickloc 3: " + clickLoc);
-	                        int tempIndex = 0;
-							cellindex.TryGetValue(clickLoc, out tempIndex);
-							movePlayer.UpdatePlayer(gridPanels[tempIndex], validMove.MoveDirection(playerLoc,clickLoc));
-	                        //update Playerloc
-	                        destLoc = clickLoc;
-	                        //Debug.Log("new player loc" + playerLoc + " :: " + clickLoc);
-							playerStamina--;
-							StartFade (stamDown, "-1", fadeTime);
-	                        UpdateUI();
-	                    }
-	                }
+                            //Debug.Log("clickloc 3: " + clickLoc);
+                            int tempIndex = 0;
+                            cellindex.TryGetValue(clickLoc, out tempIndex);
+                            movePlayer.UpdatePlayer(gridPanels[tempIndex], validMove.MoveDirection(playerLoc, clickLoc));
+                            //update Playerloc
+                            destLoc = clickLoc;
+                            //Debug.Log("new player loc" + playerLoc + " :: " + clickLoc);
+                            playerStamina--;
+                            StartFade(stamDown, "-1", fadeTime);
+                            UpdateUI();
+                        }
+                    }
                     //pathingfinding
                     else
                     {
@@ -696,13 +696,36 @@ public class GameLogic : MonoBehaviour
                         if (!path.Contains("invalid") || !path.Contains("Invalid"))
                         {
                             Debug.Log("pathing found");
-                            Debug.Log(playerLoc + " playerloc");
                             foreach (string tiles in path)
                             {
                                 Debug.Log(tiles);
                             }
-                            Debug.Log("click loc : " + clickLoc);
                         }
+                        //now computeinto moving/animation.
+                        //movePlayer.UpdatePlayer(gridPanels, path);
+
+                        //can just set player location to end destination location/clickloc as the movement is definite
+                        //using a loop here to invoke the already existing singular movements
+                        for (int i = 0; i < path.Count - 1; i++)
+                        {
+                            if (validMove.Move(path[i], path[i+1], ref tileBoard))
+                            {
+                                int rand = Random.Range(0, movementClips.Length);
+                                audioSource.PlayOneShot(movementClips[rand], 1.0f);
+
+                                //Debug.Log("clickloc 3: " + clickLoc);
+                                int tempIndex = 0;
+                                cellindex.TryGetValue(path[i+1], out tempIndex);
+                                movePlayer.UpdatePlayer(gridPanels[tempIndex], validMove.MoveDirection(playerLoc, path[i+1]));
+                                //update Playerloc
+                                destLoc = clickLoc;
+                                //Debug.Log("new player loc" + playerLoc + " :: " + clickLoc);
+                                playerStamina--;
+                                StartFade(stamDown, "-1", fadeTime);
+                                UpdateUI();
+                        }
+                    }
+                        
                     }
 	            }
 	            else 

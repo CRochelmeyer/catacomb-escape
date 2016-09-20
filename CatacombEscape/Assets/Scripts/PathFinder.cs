@@ -75,6 +75,7 @@ public class PathFinder : MonoBehaviour
 	public void GetPath()
 	{
 		bool flag = false;
+        Path.Add(endTile);
 		this.currentTile = this.endTile;
 		while (!flag)
 		{
@@ -97,6 +98,7 @@ public class PathFinder : MonoBehaviour
                 }
             }
 		}
+        Path.Add(startTile);
 		this.Path.Reverse();
 	}
 
