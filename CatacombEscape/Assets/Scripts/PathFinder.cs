@@ -22,44 +22,53 @@ public class PathFinder : MonoBehaviour
 
 	private List<string> Path = new List<string>();
 
-	public List<string> PathFind(Tile[,] pboard, string pplayerloc, string pclickloc)
-	{
-		this.closedList.Clear();
-		this.openList.Clear();
-		this.Path.Clear();
-		this.ValidMove = GameObject.FindGameObjectWithTag("Scripts").GetComponent<Direction>();
-		this.startTile = pplayerloc;
-		this.endTile = pclickloc;
-		this.grid = pboard;
-		this.openList.Add(this.startTile);
-		while (this.openList.Count != 0)
-		{
-			this.currentTile = this.GetTileWithLowestTotal(this.openList);
-			if (this.currentTile == this.endTile)
-			{
-				Debug.Log("reached the end");
-				break;
-			}
-			this.openList.Remove(this.currentTile);
-			this.closedList.Add(this.currentTile);
-			List<string> adjacentTiles = this.GetAdjacentTiles(this.currentTile);
-				using (List<string>.Enumerator enumerator = adjacentTiles.GetEnumerator())
-				{
-					while (enumerator.MoveNext())
-					{
-						string current = enumerator.Current;
-						if (!this.openList.Contains(current) && !this.closedList.Contains(current))
-						{
-							this.openList.Add(current);
-							Tile tile = this.grid[this.GetRow(current), this.GetCol(current)];
-							tile.cost = this.grid[this.GetRow(this.currentTile), this.GetCol(this.currentTile)].cost + 1;
-							tile.heuristic = this.ManhattanDistance(current);
-							tile.total = tile.cost + tile.heuristic;
-						}
-					}
-				}
+    public List<string> PathFind(Tile[,] pboard, string pplayerloc, string pclickloc)
+    {
+        bool adjFound = false;
+        this.closedList.Clear();
+        this.openList.Clear();
+        this.Path.Clear();
+        this.ValidMove = GameObject.FindGameObjectWithTag("Scripts").GetComponent<Direction>();
+        this.startTile = pplayerloc;
+        this.endTile = pclickloc;
+        this.grid = pboard;
+        this.openList.Add(this.startTile);
+        while (this.openList.Count != 0)
+        {
+            this.currentTile = this.GetTileWithLowestTotal(this.openList);
+            if (this.currentTile == this.endTile)
+            {
+                Debug.Log("reached the end");
+                break;
+            }
+            this.openList.Remove(this.currentTile);
+            this.closedList.Add(this.currentTile);
+            List<string> adjacentTiles = this.GetAdjacentTiles(this.currentTile);
+            //check adjacentTiles exist
+            if ( !adjacentTiles.Contains("Invalid") || !adjacentTiles.Contains("invalid"))
+            {
+                foreach (string current in adjacentTiles)
+                {
+                    if (!this.openList.Contains(current) && !this.closedList.Contains(current))
+                    {
+                        this.openList.Add(current);
+                        Tile tile = this.grid[this.GetRow(current), this.GetCol(current)];
+                        tile.cost = this.grid[this.GetRow(this.currentTile), this.GetCol(this.currentTile)].cost + 1;
+                        tile.heuristic = this.ManhattanDistance(current);
+                        tile.total = tile.cost + tile.heuristic;
+                        adjFound = true;
+                    }
+                }
+            }
 		}
-		this.GetPath();
+        if (adjFound)
+        {
+            this.GetPath();
+        }
+        else if (adjFound == false)
+        {
+            Path.Add("invalid");
+        }
 		return this.Path;
 	}
 
@@ -70,18 +79,21 @@ public class PathFinder : MonoBehaviour
 		while (!flag)
 		{
 			List<string> adjacentTiles = this.GetAdjacentTiles(this.currentTile);
-			foreach(string current in adjacentTiles)
+            if ( !adjacentTiles.Contains("Invalid") || !adjacentTiles.Contains("invalid") )
             {
-                if (current == this.startTile)
+                foreach (string current in adjacentTiles)
                 {
-                    flag = true;
-                }
-                if ((this.closedList.Contains(current) || this.openList.Contains(current)) && this.grid[this.GetRow(current), this.GetCol(current)].cost <= this.grid[this.GetRow(this.currentTile), this.GetCol(this.currentTile)].cost
-        && this.grid[this.GetRow(current), this.GetCol(current)].cost > 0)
-                {
-                    this.currentTile = current;
-                    this.Path.Add(current);
-                    break;
+                    if (current == this.startTile)
+                    {
+                        flag = true;
+                    }
+                    if ((this.closedList.Contains(current) || this.openList.Contains(current)) && this.grid[this.GetRow(current), this.GetCol(current)].cost <= this.grid[this.GetRow(this.currentTile), this.GetCol(this.currentTile)].cost
+            && this.grid[this.GetRow(current), this.GetCol(current)].cost > 0)
+                    {
+                        this.currentTile = current;
+                        this.Path.Add(current);
+                        break;
+                    }
                 }
             }
 		}
@@ -114,6 +126,7 @@ public class PathFinder : MonoBehaviour
 
 	public List<string> GetAdjacentTiles(string pcurrent)
 	{
+        bool adjFound = false;
 		Debug.Log("GetAdjTiles");
 		List<string> list = new List<string>();
 		string text = (this.GetRow(pcurrent) + 1).ToString();
@@ -126,6 +139,7 @@ public class PathFinder : MonoBehaviour
 			{
 				list.Add(text2);
 				Debug.Log("Down success");
+                adjFound = true;
 			}
 		}
 		text = (this.GetCol(pcurrent) - 1).ToString();
@@ -138,6 +152,7 @@ public class PathFinder : MonoBehaviour
 			{
 				list.Add(text2);
 				Debug.Log("left success");
+                adjFound = true;
 			}
 		}
 		text = (this.GetCol(pcurrent) + 1).ToString();
@@ -150,6 +165,7 @@ public class PathFinder : MonoBehaviour
 			{
 				list.Add(text2);
 				Debug.Log("right success");
+                adjFound = true;
 			}
 		}
 		text = (this.GetRow(pcurrent) - 1).ToString();
@@ -163,9 +179,20 @@ public class PathFinder : MonoBehaviour
 			{
 				list.Add(text2);
 				Debug.Log("Up success");
+                adjFound = true;
 			}
 		}
-		return list;
+        if (adjFound)
+        {
+            Debug.Log("valid adj foundfor tile : " + pcurrent);
+            return list;
+        }
+        else
+        {
+            Debug.Log("invalid adj foundfor tile : "+ pcurrent);
+            list.Add("Invalid");
+            return list;
+        }
 	}
 
 	public int GetRow(string pstring)

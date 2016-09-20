@@ -693,10 +693,15 @@ public class GameLogic : MonoBehaviour
                     {
                         Debug.Log("else pathing");
                         List<string> path = Pathing.PathFind(tileBoard, playerLoc, clickLoc);
-                        Debug.Log("pathing found");
-                        foreach(string tiles in path )
+                        if (!path.Contains("invalid") || !path.Contains("Invalid"))
                         {
-                            Debug.Log(tiles);
+                            Debug.Log("pathing found");
+                            Debug.Log(playerLoc + " playerloc");
+                            foreach (string tiles in path)
+                            {
+                                Debug.Log(tiles);
+                            }
+                            Debug.Log("click loc : " + clickLoc);
                         }
                     }
 	            }
