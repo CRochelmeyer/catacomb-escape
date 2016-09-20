@@ -178,7 +178,7 @@ public class Direction : MonoBehaviour
         return validmove;
     }
 
-    public bool ValidMovement(string pdir,Tile pCurrent, Tile pNext)
+    public bool ValidMovement(string pdir, Tile pCurrent, Tile pNext)
     {
         //Debug.Log("pCurrent VM ::start");
         //pCurrent.test();
@@ -189,7 +189,7 @@ public class Direction : MonoBehaviour
         //Debug.Log("ValidMovement :" + pCurrent.ValidMove(pdir) +" ::: "+pNext.ValidEntry(pdir));
 
         bool valid = false;
-        if ( (pCurrent.ValidMove(pdir)) && (pNext.ValidEntry(pdir)) )
+        if ((pCurrent.ValidMove(pdir)) && (pNext.ValidEntry(pdir)))
         {
             valid = true;
         }

@@ -13,6 +13,9 @@ public class Tile
     public string _event { get; set; }
     public int combat { get; set; }
     public string _boardLocation { get; set; }
+    public int cost = 0;
+    public int heuristic = 0;
+    public int total = 0;
 
     protected Tile() { }
 
@@ -27,6 +30,8 @@ public class Tile
         _event = "";
         _isDummy = false;
         _boardLocation = pboardloc;
+        
+
     }
 
     //constructor to automatically generate _entry based on id

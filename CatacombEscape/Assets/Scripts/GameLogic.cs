@@ -40,6 +40,7 @@ public class GameLogic : MonoBehaviour
 	private Direction validMove;
 	private PlayerMove movePlayer;
 	private GameObject[] gridPanels;
+    private PathFinder Pathing;
     private Tile[,] tileBoard;
 	private float tileplaced = 0;
 	private float greencol =0;
@@ -101,6 +102,7 @@ public class GameLogic : MonoBehaviour
 		
 		validMove = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<Direction> ();
 		movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
+        Pathing = GameObject.FindGameObjectWithTag("Scripts").GetComponent<PathFinder>();
 		TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
 
         //creating equipment index
@@ -413,10 +415,10 @@ public class GameLogic : MonoBehaviour
                 //identify possible moves
                 pmoves = PossibleEventTileMoves(currow, curcol);
                 //Debug.Log(pmoves.Count);
-                for (int j = 0; j < pmoves.Count; j++)
+                /*for (int j = 0; j < pmoves.Count; j++)
                 {
                     Debug.Log(pmoves[j]);
-                }
+                }*/
                 //check if a returned list has "NoMoves"
                 if (!pmoves.Contains("nomoves"))
                 {
@@ -686,8 +688,19 @@ public class GameLogic : MonoBehaviour
 	                        UpdateUI();
 	                    }
 	                }
+                    //pathingfinding
+                    else
+                    {
+                        Debug.Log("else pathing");
+                        List<string> path = Pathing.PathFind(tileBoard, playerLoc, clickLoc);
+                        Debug.Log("pathing found");
+                        foreach(string tiles in path )
+                        {
+                            Debug.Log(tiles);
+                        }
+                    }
 	            }
-	            else
+	            else 
 	            {
 	                Debug.Log("Invalid player move");
 				}
