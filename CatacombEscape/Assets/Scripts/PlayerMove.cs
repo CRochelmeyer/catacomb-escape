@@ -89,7 +89,7 @@ public class PlayerMove : MonoBehaviour
 		initialPosition = player.transform.localPosition;
 		journeyLength = Vector3.Distance(initialPosition, targetPosition);
 		startTime = Time.time;
-        StartCoroutine(Moving(initialPosition, targetPosition, 5));
+        moving = true;
 
 		//Debug.Log("move end");  
 	}

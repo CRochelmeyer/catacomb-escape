@@ -698,15 +698,16 @@ public class GameLogic : MonoBehaviour
                             Debug.Log("pathing found");
                             foreach (string tiles in path)
                             {
-                                Debug.Log(tiles);
+                                //Debug.Log(tiles);
                             }
                         }
                         //now computeinto moving/animation.
-                        //movePlayer.UpdatePlayer(gridPanels, path);
+                        movePlayer.UpdatePlayer(gridPanels, path);
+                        destLoc = clickLoc;
 
                         //can just set player location to end destination location/clickloc as the movement is definite
                         //using a loop here to invoke the already existing singular movements
-                        for (int i = 0; i < path.Count - 1; i++)
+                        /*for (int i = 0; i < path.Count - 1; i++)
                         {
                             if (validMove.Move(path[i], path[i+1], ref tileBoard))
                             {
@@ -724,7 +725,7 @@ public class GameLogic : MonoBehaviour
                                 StartFade(stamDown, "-1", fadeTime);
                                 UpdateUI();
                         }
-                    }
+                    }*/
                         
                     }
 	            }
