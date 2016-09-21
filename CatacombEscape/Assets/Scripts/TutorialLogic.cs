@@ -56,6 +56,7 @@ public class TutorialLogic : MonoBehaviour
 	private bool faderRunning = false;
 	public GameObject enemyPanel;
 	public Text enemyStamDown;
+	public GameObject tutCompletePanel;
 	#endregion
 
 	#region stamPanels
@@ -122,7 +123,7 @@ public class TutorialLogic : MonoBehaviour
 		playerStamina = standardStamina;
 		UpdateUI();
 
-		discardButton.enabled = false;
+		discardButton.interactable = false;
 
 		InitLevel(level);
 	}
@@ -151,13 +152,19 @@ public class TutorialLogic : MonoBehaviour
 					emptyhand = false;
 				}
 
-				if (placementIndex == 4 && !discarded && !discardButton.enabled)
+				if (placementIndex == 4 && !discarded && !discardButton.interactable)
 				{
-					discardButton.enabled = true;
+					discardButton.interactable = true;
 				}
 			}
 
 			PlayerClick();
+
+			if (nextlevel)
+			{
+				PlayerPrefs.SetString ("Paused", "true");
+				tutCompletePanel.SetActive (true);
+			}
 		}
 	}
 
@@ -555,7 +562,7 @@ public class TutorialLogic : MonoBehaviour
 
 		UpdateUI();
 
-		discardButton.enabled = false;
+		discardButton.interactable = false;
 		discarded = true;
 
 		handTile0.AddComponent<Draggable>();
