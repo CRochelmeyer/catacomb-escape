@@ -56,6 +56,7 @@ public class TutorialLogic : MonoBehaviour
 	private bool faderRunning = false;
 	public GameObject enemyPanel;
 	public Text enemyStamDown;
+	public GameObject tutCompletePanel;
 	#endregion
 
 	#region stamPanels
@@ -63,6 +64,26 @@ public class TutorialLogic : MonoBehaviour
 	public Transform stamPopupsContainer;
 	public GameObject stamUpPrefab;
 	public GameObject stamDownPrefab;
+	#endregion
+
+	#region tutorialPanels
+	[Header("Tutorial Panels")]
+	public GameObject stage1a;
+	public GameObject stage1b;
+	public GameObject stage2a;
+	public GameObject stage2b;
+	public GameObject stage3a;
+	public GameObject stage3b;
+	public GameObject stage4a;
+	public GameObject stage4b;
+	public GameObject stage5a;
+	public GameObject stage5b;
+	public GameObject stage6a;
+	public GameObject stage6b;
+	public GameObject stage7a;
+	public GameObject stage7b;
+	public GameObject stage8a;
+	public GameObject stage8b;
 	#endregion
 
 	//boolean game conditions
@@ -82,7 +103,7 @@ public class TutorialLogic : MonoBehaviour
 	private string[] placementLocations = new string[] {"10", "11", "21", "20", "22"};
 	private int placementIndex = 0;
 	public Button discardButton;
-	private bool discarded = false;
+	private int stage = 1;
 
 	//dictionary to match cell strings of 00-04 10-14 to an index from 0-29
 	Dictionary<string, int> cellindex = new Dictionary<string, int>();
@@ -122,14 +143,74 @@ public class TutorialLogic : MonoBehaviour
 		playerStamina = standardStamina;
 		UpdateUI();
 
-		discardButton.enabled = false;
+		discardButton.interactable = false;
+
+		// Stage 1: Tile 1
+		// Stage 2: Tile 2
+		// Stage 3: Tile 3
+		// Stage 4: Tile 4
+		// Stage 5: Move to chest
+		// Stage 6: Discard hand
+		// Stage 7: Tile 5
+		// Stage 8: Move to exit
 
 		InitLevel(level);
+
+		stage1a.SetActive (true);
+		stage1b.SetActive (true);
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
+		switch (stage)
+		{
+		case 2:
+			stage1a.SetActive (false);
+			stage1b.SetActive (false);
+			stage2a.SetActive (true);
+			stage2b.SetActive (true);
+			break;
+		case 3:
+			stage2a.SetActive (false);
+			stage2b.SetActive (false);
+			stage3a.SetActive (true);
+			stage3b.SetActive (true);
+			break;
+		case 4:
+			stage3a.SetActive (false);
+			stage3b.SetActive (false);
+			stage4a.SetActive (true);
+			stage4b.SetActive (true);
+			break;
+		case 5:
+			stage4a.SetActive (false);
+			stage4b.SetActive (false);
+			stage5a.SetActive (true);
+			stage5b.SetActive (true);
+			break;
+		case 6:
+			stage5a.SetActive (false);
+			stage5b.SetActive (false);
+			stage6a.SetActive (true);
+			//stage6b.SetActive (true);
+			discardButton.interactable = true;
+			break;
+		case 7:
+			stage6a.SetActive (false);
+			//stage6b.SetActive (false);
+			stage7a.SetActive (true);
+			//stage7b.SetActive (true);
+			break;
+		case 8:
+			stage7a.SetActive (false);
+			//stage7b.SetActive (false);
+			stage8a.SetActive (true);
+			//stage8b.SetActive (true);
+			break;
+		}
+
+
 		if (PlayerPrefs.GetString ("Paused") != "true")
 		{
 			//check if handTiles has been filled
@@ -150,14 +231,15 @@ public class TutorialLogic : MonoBehaviour
 					feedHand++;
 					emptyhand = false;
 				}
-
-				if (placementIndex == 4 && !discarded && !discardButton.enabled)
-				{
-					discardButton.enabled = true;
-				}
 			}
 
 			PlayerClick();
+
+			if (nextlevel)
+			{
+				PlayerPrefs.SetString ("Paused", "true");
+				tutCompletePanel.SetActive (true);
+			}
 		}
 	}
 
@@ -260,6 +342,11 @@ public class TutorialLogic : MonoBehaviour
 		if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
 		{
 			PlayEvent(playerLoc);
+		}
+
+		if (playerLoc == "20")
+		{
+			stage++;
 		}
 
 		//check if next level...
@@ -470,7 +557,8 @@ public class TutorialLogic : MonoBehaviour
 				audioSource.PlayOneShot (placementClips[rand], 0.5f);
 				playerStamina -= 2;
 				InstantiateStamDownPanel ("-2", tempObj.transform.position);
-				//increment tileplaced
+
+				stage ++;
 				UpdateUI();
 				break;
 			}
@@ -553,10 +641,10 @@ public class TutorialLogic : MonoBehaviour
 		feedHand++;
 		emptyhand = false;
 
+		stage++;
 		UpdateUI();
 
-		discardButton.enabled = false;
-		discarded = true;
+		discardButton.interactable = false;
 
 		handTile0.AddComponent<Draggable>();
 	}
