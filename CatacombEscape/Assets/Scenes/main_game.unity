@@ -1082,21 +1082,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 186245272}
   m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
---- !u!1 &789744626 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 114318, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-  m_PrefabInternal: {fileID: 1517946771}
---- !u!114 &789744627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 789744626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a05a452c2002b040bf1523177b4936f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &793457694 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 115860, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
@@ -1423,134 +1408,30 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 11434810, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: player
+    - target: {fileID: 11424952, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: tutorialPanels.Array.data[0]
       value: 
-      objectReference: {fileID: 2133908197}
-    - target: {fileID: 11434810, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: animator
+      objectReference: {fileID: 1662431070}
+    - target: {fileID: 11424952, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: tutorialPanels.Array.data[1]
       value: 
-      objectReference: {fileID: 922040517}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel00
+      objectReference: {fileID: 1841225382}
+    - target: {fileID: 11424952, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: tutorialPanels.Array.data[2]
       value: 
-      objectReference: {fileID: 1064622173}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel01
+      objectReference: {fileID: 836635020}
+    - target: {fileID: 11424952, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: tutorialPanels.Array.data[3]
       value: 
-      objectReference: {fileID: 2140761679}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel02
+      objectReference: {fileID: 556795682}
+    - target: {fileID: 11424952, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: tutorialPanels.Array.data[4]
       value: 
-      objectReference: {fileID: 1713205633}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel03
+      objectReference: {fileID: 1241741700}
+    - target: {fileID: 11424952, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: tutorialPanels.Array.data[5]
       value: 
-      objectReference: {fileID: 1550951634}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel04
-      value: 
-      objectReference: {fileID: 867208529}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel10
-      value: 
-      objectReference: {fileID: 793457694}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel11
-      value: 
-      objectReference: {fileID: 741630684}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel12
-      value: 
-      objectReference: {fileID: 1672101412}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel13
-      value: 
-      objectReference: {fileID: 1301649810}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel14
-      value: 
-      objectReference: {fileID: 418093571}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel20
-      value: 
-      objectReference: {fileID: 1175954855}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel21
-      value: 
-      objectReference: {fileID: 1205549565}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel22
-      value: 
-      objectReference: {fileID: 305040785}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel23
-      value: 
-      objectReference: {fileID: 1807835476}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel24
-      value: 
-      objectReference: {fileID: 834794715}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel30
-      value: 
-      objectReference: {fileID: 1061882090}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel31
-      value: 
-      objectReference: {fileID: 1554817912}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel32
-      value: 
-      objectReference: {fileID: 634059574}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel33
-      value: 
-      objectReference: {fileID: 531785516}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel34
-      value: 
-      objectReference: {fileID: 1690011428}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel40
-      value: 
-      objectReference: {fileID: 1287668117}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel41
-      value: 
-      objectReference: {fileID: 26363124}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel42
-      value: 
-      objectReference: {fileID: 484789452}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel43
-      value: 
-      objectReference: {fileID: 1912571339}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel44
-      value: 
-      objectReference: {fileID: 1406930690}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel50
-      value: 
-      objectReference: {fileID: 1951173737}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel51
-      value: 
-      objectReference: {fileID: 540277489}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel52
-      value: 
-      objectReference: {fileID: 1238773258}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel53
-      value: 
-      objectReference: {fileID: 1358541432}
-    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: panel54
-      value: 
-      objectReference: {fileID: 396602616}
+      objectReference: {fileID: 1066809035}
     - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
       propertyPath: gold.Array.data[0]
       value: 
@@ -1675,30 +1556,134 @@ Prefab:
       propertyPath: animatorSilver
       value: 
       objectReference: {fileID: 228108560}
-    - target: {fileID: 11424952, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: tutorialPanels.Array.data[0]
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel00
       value: 
-      objectReference: {fileID: 1662431070}
-    - target: {fileID: 11424952, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: tutorialPanels.Array.data[1]
+      objectReference: {fileID: 1064622173}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel01
       value: 
-      objectReference: {fileID: 1841225382}
-    - target: {fileID: 11424952, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: tutorialPanels.Array.data[2]
+      objectReference: {fileID: 2140761679}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel02
       value: 
-      objectReference: {fileID: 836635020}
-    - target: {fileID: 11424952, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: tutorialPanels.Array.data[3]
+      objectReference: {fileID: 1713205633}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel03
       value: 
-      objectReference: {fileID: 556795682}
-    - target: {fileID: 11424952, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: tutorialPanels.Array.data[4]
+      objectReference: {fileID: 1550951634}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel04
       value: 
-      objectReference: {fileID: 1241741700}
-    - target: {fileID: 11424952, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: tutorialPanels.Array.data[5]
+      objectReference: {fileID: 867208529}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel10
       value: 
-      objectReference: {fileID: 1066809035}
+      objectReference: {fileID: 793457694}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel11
+      value: 
+      objectReference: {fileID: 741630684}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel12
+      value: 
+      objectReference: {fileID: 1672101412}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel13
+      value: 
+      objectReference: {fileID: 1301649810}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel14
+      value: 
+      objectReference: {fileID: 418093571}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel20
+      value: 
+      objectReference: {fileID: 1175954855}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel21
+      value: 
+      objectReference: {fileID: 1205549565}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel22
+      value: 
+      objectReference: {fileID: 305040785}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel23
+      value: 
+      objectReference: {fileID: 1807835476}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel24
+      value: 
+      objectReference: {fileID: 834794715}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel30
+      value: 
+      objectReference: {fileID: 1061882090}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel31
+      value: 
+      objectReference: {fileID: 1554817912}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel32
+      value: 
+      objectReference: {fileID: 634059574}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel33
+      value: 
+      objectReference: {fileID: 531785516}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel34
+      value: 
+      objectReference: {fileID: 1690011428}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel40
+      value: 
+      objectReference: {fileID: 1287668117}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel41
+      value: 
+      objectReference: {fileID: 26363124}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel42
+      value: 
+      objectReference: {fileID: 484789452}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel43
+      value: 
+      objectReference: {fileID: 1912571339}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel44
+      value: 
+      objectReference: {fileID: 1406930690}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel50
+      value: 
+      objectReference: {fileID: 1951173737}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel51
+      value: 
+      objectReference: {fileID: 540277489}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel52
+      value: 
+      objectReference: {fileID: 1238773258}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel53
+      value: 
+      objectReference: {fileID: 1358541432}
+    - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: panel54
+      value: 
+      objectReference: {fileID: 396602616}
+    - target: {fileID: 11434810, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 2133908197}
+    - target: {fileID: 11434810, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 922040517}
     - target: {fileID: 11499976, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
       propertyPath: pauseUI
       value: 
@@ -1794,10 +1779,6 @@ Prefab:
       value: 
       objectReference: {fileID: 1006590692}
     - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: stamPopupsContainer
-      value: 
-      objectReference: {fileID: 1368675360}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
       propertyPath: pauseLvlText
       value: 
       objectReference: {fileID: 21621800}
@@ -1817,6 +1798,10 @@ Prefab:
       propertyPath: pauseTotText
       value: 
       objectReference: {fileID: 771322598}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: stamPopupsContainer
+      value: 
+      objectReference: {fileID: 1368675360}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
   m_IsPrefabParent: 0

@@ -207,8 +207,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 41448ee07a922aa42a7f0f8dfc376010, type: 3}
   gridSprite:
   - {fileID: 0}
-  - {fileID: 21300000, guid: a4e52dc4700e70e4882a63b457eec826, type: 3}
-  - {fileID: 21300000, guid: 8790bd9a00ef71f41b441ab5789c8296, type: 3}
+  - {fileID: 21300000, guid: 6ede7094a899acf41a972afba45ae5a9, type: 3}
+  - {fileID: 21300000, guid: 33f0e685fdce0b948938e42de28502c6, type: 3}
   - {fileID: 21300000, guid: af79ccdbc42cb1b40a9d2e0e15748e01, type: 3}
   - {fileID: 21300000, guid: 8b433a604f9c07344bc51d1ab7010c50, type: 3}
   eventGreenLrg: {fileID: 21300000, guid: 43692003c0df63045a928a7cef168410, type: 3}
@@ -246,6 +246,11 @@ MonoBehaviour:
   tileNoPlacedText: {fileID: 0}
   pointTot: {fileID: 0}
   newHighscore: {fileID: 0}
+  pauseLvlText: {fileID: 0}
+  pauseGreenText: {fileID: 0}
+  pauseRedText: {fileID: 0}
+  pauseTileText: {fileID: 0}
+  pauseTotText: {fileID: 0}
   stamPopupsContainer: {fileID: 0}
   stamUpPrefab: {fileID: 155558, guid: 71af497b49f595145a75a7a2fdca389d, type: 2}
   stamDownPrefab: {fileID: 132916, guid: af05a3e5220d2484886c87a84f88fdd9, type: 2}
