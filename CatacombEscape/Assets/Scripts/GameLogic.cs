@@ -998,7 +998,7 @@ public class GameLogic : MonoBehaviour
                 panelClone.tag = "eventTile";
                 panelClone.transform.localPosition = tempPanel.transform.localPosition;
                 panelClone.transform.localScale = new Vector3(1, 1, 1);
-                panelClone.GetComponent<Image>().sprite = eventGreenLrg as Sprite;
+				panelClone.GetComponent<Image>().sprite = eventGreenLrg as Sprite;
                 panelClone.GetComponent<Image>().color = new Color(255f, 255f, 255f, 150f);
                 eventindex.Add(tempPanel.name, "event_green");
 
@@ -1235,7 +1235,7 @@ public class GameLogic : MonoBehaviour
 
     /// <summary>
     /// Performs the deletion of a tile.
-	/// This is done by creating a blank tile to replace the one being deleted.
+	/// This is done by creating a blank tile to replace the one being "deleted".
     /// </summary>
     private void DeleteTile()
     {
@@ -1260,7 +1260,7 @@ public class GameLogic : MonoBehaviour
                     {
 
                         int pIndex;                        
-                        Debug.Log("Killing tileBoard object at " + "[" + temprow + "," + tempcol + "]");
+                        Debug.Log("Removing tileBoard object at " + "[" + temprow + "," + tempcol + "]");
                         Debug.Log("Tile ID: " + tileBoard[temprow,tempcol]._tileID);
 
 						// The sprite for the tile is in a separate array for some reason.
@@ -1275,13 +1275,38 @@ public class GameLogic : MonoBehaviour
                         tileBoard[temprow, tempcol] = new Tile(0);
 
                         // Preserve any events on the tile.
-                        if (tileToDelete._event != null)
+                        if (tileToDelete._event != "")
                         {
                             Debug.LogWarning("Tile contains an event.");
                             tileBoard[temprow, tempcol]._event = tileToDelete._event;
                             tileBoard[temprow, tempcol]._eventItem = tileToDelete._eventItem;
                             tileBoard[temprow, tempcol].combat = tileToDelete.combat;
-                            // Need to reset the sprite for the chest events (It stays small once the tile is removed).
+                            
+							// Need to reset the sprite for the chest events (It stays small once the tile is removed).
+							if (tileBoard[temprow,tempcol]._event == "green")
+							{
+								Debug.Log ("Attempting to update chest sprite at [" + temprow + "," + tempcol + "]");
+								//GameObject temp = GameObject.Find(tileBoard[temprow, tempcol]._boardLocation + "(Clone)");
+
+								GameObject[] temp2 = GameObject.FindGameObjectsWithTag ("eventTile");
+
+								foreach (GameObject obj in temp2) 
+								{
+									Debug.Log ("AAAAAAAAAAAAA");
+									Debug.Log (obj.name);
+								}
+
+								/*
+								if (temp2 != null) 
+								{
+									temp2.GetComponent<Image> ().sprite = eventGreenLrg as Sprite;
+								} 
+								else 
+								{
+									Debug.Log ("Error: could not find gameobject.");
+								}
+								*/
+							}
                         }
 
 						// Toggle tile deletion, so player deletes only one tile per button press.
