@@ -316,6 +316,10 @@ public class GameLogic : MonoBehaviour
         if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
         {
             PlayEvent(playerLoc);
+
+			// Testing to see if this fixes some issues relating to tile removal.
+			// Seems to have worked, for now...
+			tileBoard [System.Int32.Parse (playerLoc.Substring (0, 1)), System.Int32.Parse (playerLoc.Substring (1, 1))]._event = "";
         }
 
         //check if next level...
@@ -411,17 +415,19 @@ public class GameLogic : MonoBehaviour
                 gridPanels[_gridIndex].GetComponent<Image>().sprite = tileSprite[_spriteIndex] as Sprite;
                 gridPanels[_gridIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
 
-                //update tileBoard
-                if (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._event != "") // if cell has an event on it
+				// If the target cell contains an event.
+                if (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._event != "") 
                 {
                     tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))].UpdateTile(ptile);
                     if (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._event == "green")
                     {
+						// Chest sprite is replaced with smaller sprite once a tile has been placed over the top of it.
                         GameObject temp = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
                         temp.GetComponent<Image>().sprite = eventGreenSml as Sprite;
                     }
                     else if (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._event == "red")
                     {
+						// Enemy sprite is also updated once a tile has been placed on top of it.
                         GameObject temp = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
                         temp.GetComponent<Image>().sprite = eventEnemy[Random.Range(0, eventEnemy.Length)] as Sprite;
                     }
@@ -475,6 +481,7 @@ public class GameLogic : MonoBehaviour
                 int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
                 int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
 
+				// _isEntrySet doesn't mean entry or exit tile. It seems to be true for all tiles.
                 if ((tileBoard[temprow, tempcol]._isEntrySet) && (playerLoc != ""))
                 {
                     if (validMove.MoveDirection(playerLoc, clickLoc) != "invalid move" && validMove.InRange(playerLoc, clickLoc))
@@ -1218,16 +1225,17 @@ public class GameLogic : MonoBehaviour
 
         if (deletingTile)
         {
-            Debug.Log("Deleting tiles.");
+            Debug.Log("Selecting tile to delete.");
         }
         else
         {
-            Debug.Log("No longer deleting tiles.");
+            Debug.Log("No longer deleting tile.");
         }
     }
 
     /// <summary>
     /// Performs the deletion of a tile.
+	/// This is done by creating a blank tile to replace the one being deleted.
     /// </summary>
     private void DeleteTile()
     {
@@ -1244,8 +1252,7 @@ public class GameLogic : MonoBehaviour
                 int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
                 int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
 
-                // If the tile is not an exit or an entry
-                // Nevermind this is every tile.
+                // Prevent deletion if the tile is an exit or entry.
 				if (tileBoard[temprow, tempcol] != null && !tileBoard[temprow, tempcol]._tileID.Contains("exit") && !tileBoard[temprow, tempcol]._tileID.Contains("entrance"))
                 {
                     // Ensure player is not on the target tile.
@@ -1256,7 +1263,11 @@ public class GameLogic : MonoBehaviour
                         Debug.Log("Killing tileBoard object at " + "[" + temprow + "," + tempcol + "]");
                         Debug.Log("Tile ID: " + tileBoard[temprow,tempcol]._tileID);
 
+						// The sprite for the tile is in a separate array for some reason.
+						// It's also a one dimensional arraym, so we must retrieve the correct index.
                         cellindex.TryGetValue(tileBoard[temprow, tempcol]._boardLocation, out pIndex);
+
+						// Now we can delete the sprite for the tile.
                         gridPanels[pIndex].GetComponent<Image>().sprite = null;
                         gridPanels[pIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 0f);
 
@@ -1268,10 +1279,13 @@ public class GameLogic : MonoBehaviour
                         {
                             Debug.LogWarning("Tile contains an event.");
                             tileBoard[temprow, tempcol]._event = tileToDelete._event;
+                            tileBoard[temprow, tempcol]._eventItem = tileToDelete._eventItem;
+                            tileBoard[temprow, tempcol].combat = tileToDelete.combat;
                             // Need to reset the sprite for the chest events (It stays small once the tile is removed).
                         }
 
-                        DeleteTileToggle(); // Toggle tile deletion, so player deletes one tile per button press
+						// Toggle tile deletion, so player deletes only one tile per button press.
+                        DeleteTileToggle(); 
                     }
                 }
                 else

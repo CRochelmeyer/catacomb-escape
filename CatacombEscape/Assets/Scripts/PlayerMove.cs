@@ -126,7 +126,7 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-	/// When tile is clicked to move the player, this updates the target location
+	/// When tile is clicked to move the player, this updates the target location and performs the movement animation
     /// </summary>
     /// <param name="panel"></param>
     /// <param name="pdir"></param>
