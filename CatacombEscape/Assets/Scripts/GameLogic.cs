@@ -676,10 +676,15 @@ public class GameLogic : MonoBehaviour
             if (eventTiles[i].GetComponent<Image>().sprite.name == "enemyCharA")
             {
                 etloc = eventTiles[i].name.Substring(0, 2);
+                Debug.Log("etloc: " + etloc);
                 System.Int32.TryParse(etloc.Substring(0, 1), out currow);
                 System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
+
+                // Determine move direction
                 newrow = Mathf.Abs(currow + (Random.Range(-1, 1)));
                 newcol = Mathf.Abs(curcol + (Random.Range(-1, 1)));
+
+                Debug.Log("Enemy at [" + currow + "," + curcol + "] moving to [" + newrow + "," + newcol + "]");
 
                 // Determine if the move is vertical or horizontal.
                 if (newrow <= 5 && newrow >= 0 && newrow != currow)
