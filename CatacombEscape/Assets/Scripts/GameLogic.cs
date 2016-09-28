@@ -1286,26 +1286,16 @@ public class GameLogic : MonoBehaviour
 							if (tileBoard[temprow,tempcol]._event == "green")
 							{
 								Debug.Log ("Attempting to update chest sprite at [" + temprow + "," + tempcol + "]");
-								//GameObject temp = GameObject.Find(tileBoard[temprow, tempcol]._boardLocation + "(Clone)");
-
-								GameObject[] temp2 = GameObject.FindGameObjectsWithTag ("eventTile");
-
-								foreach (GameObject obj in temp2) 
+                                GameObject temp = GameObject.Find(temprow.ToString() + tempcol.ToString() + "(Clone)");
+								if (temp != null) 
 								{
-									Debug.Log ("AAAAAAAAAAAAA");
-									Debug.Log (obj.name);
-								}
-
-								/*
-								if (temp2 != null) 
-								{
-									temp2.GetComponent<Image> ().sprite = eventGreenLrg as Sprite;
+									temp.GetComponent<Image> ().sprite = eventGreenLrg as Sprite;
 								} 
 								else 
 								{
+                                    Debug.Log(temprow.ToString() + tempcol.ToString() + "(Clone)");
 									Debug.Log ("Error: could not find gameobject.");
 								}
-								*/
 							}
                         }
 
