@@ -28,7 +28,7 @@ public class ControllingCameraAspectScript : MonoBehaviour {
 				rect.width = 1.0f;
 				rect.height = scaleHeight;
 				rect.x = 0;
-				rect.y = (1.0f - scaleHeight) / 2.0f;
+				rect.y = (1.0f - scaleHeight); //  / 2.0f; Trying to get the display to sit right at the top
 
 				camera.rect = rect;
 			}else // Add pillarbox
