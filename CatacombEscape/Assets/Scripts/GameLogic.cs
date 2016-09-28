@@ -296,6 +296,26 @@ public class GameLogic : MonoBehaviour
         MoveEvents();
         CheckStamina ();
 	}
+    //overload for above with a passed in player location
+    public void SetPlayerLoc(string loc)
+    {
+        Debug.Log("set player loc start" + loc);
+        playerLoc = loc;
+        //play event for event tiles    
+        if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
+        {
+            PlayEvent(playerLoc);
+        }
+
+        //check if next level...
+        if (playerLoc == exit)
+        {
+            nextlevel = true;
+        }
+        //move events
+        MoveEvents();
+        CheckStamina();
+    }
 
     private void UpdateMouseLocation()
     {

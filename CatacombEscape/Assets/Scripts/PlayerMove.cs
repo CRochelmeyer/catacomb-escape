@@ -15,7 +15,8 @@ public class PlayerMove : MonoBehaviour
 	private string pDirection = "";
 	Vector3 targetPosition;
 	Vector3 initialPosition;
-    bool crRunning;
+    bool crRunning = false;
+    bool crUpdatePlayer = false;
 
 	public float speed = 0.01f;
 	private float startTime;
@@ -63,7 +64,10 @@ public class PlayerMove : MonoBehaviour
 				case "right":
 					animator.SetInteger ("Direction", 2); //2=right
 					break;
-				}
+                    default:
+                        animator.SetInteger("Direction", 0);
+                        break;
+                }
                 //Debug.Log("InitPos" + initialPosition + " Destination :" + targetPosition);
 				player.transform.localPosition = Vector3.Lerp (initialPosition, targetPosition, fracJourney);
 
@@ -98,22 +102,33 @@ public class PlayerMove : MonoBehaviour
 	}
     
     //overload to handle pathfinder multiple movements
-    public void UpdatePlayer(GameObject[] panel, List<string> path)
+    public void UpdatePlayer(GameObject[] panel, List<string> path )
     {
         StartCoroutine(MovePath(panel, path));
     }
     IEnumerator MovePath(GameObject[] panel, List<string> path)
     {
-        for(int i=0; i<path.Count;i++)
+        for(int i=0; i<(path.Count-1);i++)
         {
             Debug.Log("While MovePath player");
             int index;
-            cellindex.TryGetValue(path[i], out index);
-            StartCoroutine(UpdatePlayerCoroutine(player.transform.localPosition, panel[index].transform.localPosition, Time.time));
+            cellindex.TryGetValue(path[i+1], out index);
+            float distance = Vector3.Distance(player.transform.localPosition, panel[index].transform.localPosition);
+            Debug.Log("distance :" + distance);
+            float overTime = distance / 50;
+            Debug.Log("overTime :" + overTime);
+            //set animation get pDirection
+            string direction = moveDir.MoveDirection(path[i], path[i+1]);
+            Debug.Log("pdir :" + direction);
+            SetAnimation(direction);
+            StartCoroutine(UpdatePlayerCoroutine(player.transform.localPosition, panel[index].transform.localPosition, overTime));
             if (crRunning == true)
             {
                 Debug.Log("move path CR " + crRunning);
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(overTime);
+                //update logic of the player position per tile grid move allowing enemies to move. having this code here as this coroutine contains playerloc already
+                GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic>();
+                gameLogic.SetPlayerLoc(path[i+1]);
             }
         }
         Debug.Log("MovePath end");
@@ -124,17 +139,52 @@ public class PlayerMove : MonoBehaviour
         Debug.Log("StartCoroutine UPC");
         crRunning = true;
         float startTime = Time.time;
-        while (Time.time < startTime + overTime)
+        while (Time.time < (startTime + overTime))
         {
+            //Debug.Log(Time.time + " :: " + (startTime + overTime) + "overTime : "+ overTime);
             //Debug.Log("While COroutine");
             player.transform.localPosition = Vector3.Lerp(start, target, (Time.time - startTime) / overTime);
+            //Debug.Log("Distance between :: " + Vector3.Distance(player.transform.localPosition, target));
+            if (Vector3.Distance(player.transform.localPosition,target) < 3)
+            {
+                Debug.Log("If distance in range");
+                //set player to target and stop animation
+                //disable animation
+                Debug.Log("Stop animation");
+                SetAnimation("stop");
+                player.transform.localPosition = target;
+            }
             yield return null;
         }
         crRunning = false;
         Debug.Log("crRunning == " + crRunning);
     }
-    public bool isMoving()
+    public void SetAnimation(string pDirection)
     {
-        return moving;
+        Debug.Log("SetAnimation");
+        if (pDirection != "" && pDirection != "invalid move")
+        {
+            switch (pDirection)
+            {
+                case "up":
+                    animator.SetInteger("Direction", 3); //3=climb
+                    break;
+
+                case "down":
+                    animator.SetInteger("Direction", 3); //3=climb
+                    break;
+
+                case "left":
+                    animator.SetInteger("Direction", 1); //1=left
+                    break;
+
+                case "right":
+                    animator.SetInteger("Direction", 2); //2=right
+                    break;
+                case "stop":
+                    animator.SetInteger("Direction", 0);
+                    break;
+            }
+        }
     }
 }

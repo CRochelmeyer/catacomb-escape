@@ -98,6 +98,7 @@ public class PathFinder : MonoBehaviour
                 }
             }
 		}
+        this.Path.Add(startTile);
 		this.Path.Reverse();
 	}
 
