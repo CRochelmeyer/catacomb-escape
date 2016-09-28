@@ -8,6 +8,8 @@ public class Tile
     public string _tileID {get; set;}
     public bool _isOccupied { get; set; }
     public bool _isActive { get; set; }
+
+    // Is used to check if tile is player-placed
     public bool _isEntrySet { get; set; }
     public bool _isDummy { get; set; }
     public string _event { get; set; }

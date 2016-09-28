@@ -680,11 +680,42 @@ public class GameLogic : MonoBehaviour
                 System.Int32.TryParse(etloc.Substring(0, 1), out currow);
                 System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
 
-                // Determine move direction
-                newrow = Mathf.Abs(currow + (Random.Range(-1, 1)));
-                newcol = Mathf.Abs(curcol + (Random.Range(-1, 1)));
+                // Is the move valid? True by default as it assumes that the move is not on/onto a tile.
+                bool isValidMove = true;
+
+                do
+                {
+                    // Determine move direction
+                    newrow = Mathf.Abs(currow + (Random.Range(-1, 1)));
+                    newcol = Mathf.Abs(curcol + (Random.Range(-1, 1)));
+
+                    string currentLocStr = currow.ToString() + curcol.ToString();
+                    string newLocStr = newrow.ToString() + newcol.ToString();
+
+                    // Check whether enemy is moving onto a tile..
+                    if (tileBoard[newrow, newcol]._isEntrySet)
+                    {
+                        Debug.Log(currentLocStr + " -> " + newLocStr + " is an attempt to move onto a tile.");
+
+                        string moveDir = validMove.MoveDirection(currentLocStr, newLocStr);
+                        Debug.Log("Movement Direction: " + moveDir);
+
+                        if (tileBoard[newrow, newcol].ValidMove(moveDir))
+                        {
+                            Debug.Log(currentLocStr + " -> " + newLocStr + " is a valid move onto tile.");
+                        }
+                        else
+                        {
+                            Debug.Log(currentLocStr + " -> " + newLocStr + " is not a valid move onto tile.");
+                            isValidMove = false;
+                        }
+                    }
+
+                } while (!isValidMove);
+
 
                 Debug.Log("Enemy at [" + currow + "," + curcol + "] moving to [" + newrow + "," + newcol + "]");
+
 
                 // Determine if the move is vertical or horizontal.
                 if (newrow <= 5 && newrow >= 0 && newrow != currow)
