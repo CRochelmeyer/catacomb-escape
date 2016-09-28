@@ -15,7 +15,7 @@ public class PlayerMove : MonoBehaviour
 	private string pDirection = "";
 	Vector3 targetPosition;
 	Vector3 initialPosition;
-    bool crRunning = false;
+    bool crRunning;
 
 	public float speed = 0.01f;
 	private float startTime;
@@ -100,28 +100,38 @@ public class PlayerMove : MonoBehaviour
     //overload to handle pathfinder multiple movements
     public void UpdatePlayer(GameObject[] panel, List<string> path)
     {
-        //starting the path string 
-        for (int i = 1; i < path.Count; i++)
+        StartCoroutine(MovePath(panel, path));
+    }
+    IEnumerator MovePath(GameObject[] panel, List<string> path)
+    {
+        for(int i=0; i<path.Count;i++)
         {
-            while (crRunning == false)
+            Debug.Log("While MovePath player");
+            int index;
+            cellindex.TryGetValue(path[i], out index);
+            StartCoroutine(UpdatePlayerCoroutine(player.transform.localPosition, panel[index].transform.localPosition, Time.time));
+            if (crRunning == true)
             {
-                int index;
-                cellindex.TryGetValue(path[i], out index);
-                Debug.Log("i = " + i + " " + path[i] + " :: ");
-                pDirection = moveDir.MoveDirection(path[i - 1], path[i]);
-                StartCoroutine("UpdatePlayerCoroutine", panel[index]);
+                Debug.Log("move path CR " + crRunning);
+                yield return new WaitForSeconds(2f);
             }
         }
+        Debug.Log("MovePath end");
+        yield return null;
     }
-
-    IEnumerator UpdatePlayerCoroutine(GameObject target)
+    IEnumerator UpdatePlayerCoroutine(Vector3 start, Vector3 target , float overTime)
     {
-        Debug.Log("Start Coroutine ");
+        Debug.Log("StartCoroutine UPC");
         crRunning = true;
-        this.UpdatePlayer(target, pDirection);
-        yield return new WaitForSeconds(0f);
-        Debug.Log("after yield set crRunning");
-
+        float startTime = Time.time;
+        while (Time.time < startTime + overTime)
+        {
+            //Debug.Log("While COroutine");
+            player.transform.localPosition = Vector3.Lerp(start, target, (Time.time - startTime) / overTime);
+            yield return null;
+        }
+        crRunning = false;
+        Debug.Log("crRunning == " + crRunning);
     }
     public bool isMoving()
     {
