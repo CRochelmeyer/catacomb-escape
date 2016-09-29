@@ -110,6 +110,7 @@ public class GameLogic : MonoBehaviour
 	private Direction validMove;
 	private PlayerMove movePlayer;
 	private CoinController coinCont;
+    private PathFinder Pathing;
 	private GameObject[] gridPanels;
 	private Tile[,] tileBoard;
 
@@ -142,7 +143,8 @@ public class GameLogic : MonoBehaviour
         GameObject mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
         if (mainCamera != null)
             mainCamera.GetComponent<BackGroundMusic>().ResetScript();
-
+        
+        Pathing = GameObject.FindGameObjectWithTag("Scripts").GetComponent<PathFinder>(); //PathFinder.cs
         validMove = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<Direction> ();  // Direction.cs
         movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
         coinCont = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<CoinController> ();
@@ -221,6 +223,7 @@ public class GameLogic : MonoBehaviour
         }
 
         GenerateBoardLogic();
+        Debug.Log("Init game playerLoc :" + playerLoc);
     }
 
     /// <summary>
@@ -321,7 +324,7 @@ public class GameLogic : MonoBehaviour
 			// Seems to have worked, for now...
 			tileBoard [System.Int32.Parse (playerLoc.Substring (0, 1)), System.Int32.Parse (playerLoc.Substring (1, 1))]._event = "";
         }
-
+        Debug.Log("SetPlayerLoc playerloc: " + playerLoc);
         //check if next level...
         if (playerLoc == exit)
         {
@@ -339,7 +342,41 @@ public class GameLogic : MonoBehaviour
             CheckStamina();
         }
     }
+    //overload for above with a passed in player location
+    public void SetPlayerLoc(string loc)
+    {
+        Debug.Log("checking setpL calls");
+        //udate occupied tile
+        validMove.UpdateOccupiedTile(tileBoard[GetRow(playerLoc),GetCol(playerLoc)], tileBoard[GetRow(loc),GetCol(loc)]);
+        int rand = Random.Range(0, movementClips.Length);
+        audioSource.PlayOneShot(movementClips[rand], 1.0f);
+        // update the player's location
+        Debug.Log("PlayerClick destLoc :" + destLoc);
+        playerStamina--;
+        InstantiateStamDownPanel("-1", movePlayer.PlayerLocation);
+        UpdateUI();
+        Debug.Log("set player loc start" + loc);
+        playerLoc = loc;
+        //play event for event tiles    
+        if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
+        {
+            PlayEvent(playerLoc);
+        }
 
+        //check if next level...
+        if (playerLoc == exit)
+        {
+            int randNum = Random.Range(0, movementClips.Length);
+            int pindex = 0;
+            exiting = true;
+            audioSource.PlayOneShot(movementClips[randNum], 1.0f);
+            cellindex.TryGetValue(playerLoc, out pindex);
+            movePlayer.PlayerExits(gridPanels[pindex]);
+        }
+        //move events
+        MoveEvents();
+        CheckStamina();
+    }
     #endregion
 
     #region Mouse Functions
@@ -439,7 +476,7 @@ public class GameLogic : MonoBehaviour
 
                 GameObject tempObj = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation);
 
-                Debug.Log("tempObj = " + pcell.Substring(0,1) + " , " + pcell.Substring(1, 1));
+                //Debug.Log("tempObj = " + pcell.Substring(0,1) + " , " + pcell.Substring(1, 1));
 
                 //decrease stamina
                 int rand = Random.Range(0, placementClips.Length);
@@ -480,8 +517,11 @@ public class GameLogic : MonoBehaviour
             {
                 int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
                 int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
-
-				// _isEntrySet doesn't mean entry or exit tile. It seems to be true for all tiles.
+                foreach(Tile tile in tileBoard)
+                {
+                    if(tile._isOccupied)
+                    { Debug.Log(tile._boardLocation); }
+                }
                 if ((tileBoard[temprow, tempcol]._isEntrySet) && (playerLoc != ""))
                 {
                     if (validMove.MoveDirection(playerLoc, clickLoc) != "invalid move" && validMove.InRange(playerLoc, clickLoc))
@@ -497,10 +537,19 @@ public class GameLogic : MonoBehaviour
 
                             // update the player's location
                             destLoc = clickLoc;
-
+                            Debug.Log("PlayerClick destLoc :" + destLoc);
                             playerStamina--;
                             InstantiateStamDownPanel("-1", movePlayer.PlayerLocation);
                             UpdateUI();
+                        }
+                    }
+                    else
+                    {
+                        List<string> path = Pathing.PathFind(tileBoard, playerLoc, clickLoc);
+                        if (!path.Contains("invalid") || !path.Contains("Invalid"))
+                        {
+                            destLoc = clickLoc;
+                            movePlayer.UpdatePlayer(gridPanels, path, tileBoard);
                         }
                     }
                 }
@@ -676,7 +725,6 @@ public class GameLogic : MonoBehaviour
             if (eventTiles[i].GetComponent<Image>().sprite.name == "enemyCharA")
             {
                 etloc = eventTiles[i].name.Substring(0, 2);
-                Debug.Log("etloc: " + etloc);
                 System.Int32.TryParse(etloc.Substring(0, 1), out currow);
                 System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
 
@@ -684,7 +732,7 @@ public class GameLogic : MonoBehaviour
                 newrow = Mathf.Abs(currow + (Random.Range(-1, 1)));
                 newcol = Mathf.Abs(curcol + (Random.Range(-1, 1)));
 
-                Debug.Log("Enemy at [" + currow + "," + curcol + "] moving to [" + newrow + "," + newcol + "]");
+                //Debug.Log("Enemy at [" + currow + "," + curcol + "] moving to [" + newrow + "," + newcol + "]");
 
                 // Determine if the move is vertical or horizontal.
                 if (newrow <= 5 && newrow >= 0 && newrow != currow)
@@ -1318,5 +1366,18 @@ public class GameLogic : MonoBehaviour
     }
 
     #endregion
-    
+
+    #region tools
+    public int GetRow(string pstring)
+    {
+        int num = int.Parse(pstring.Substring(0, 1));
+        return num;
+    }
+
+    public int GetCol(string pstring)
+    {
+        int num = int.Parse(pstring.Substring(1, 1));
+        return num;
+    }
+    #endregion
 }
