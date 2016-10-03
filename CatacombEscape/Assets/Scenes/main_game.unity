@@ -292,6 +292,19 @@ Prefab:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 11434748, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d21fb6bece18f0a42bdbe17489867faf,
+        type: 3}
+    - target: {fileID: 22437030, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 22437030, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 45
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
   m_IsPrefabParent: 0
@@ -1691,6 +1704,10 @@ Prefab:
       propertyPath: pauseUI
       value: 
       objectReference: {fileID: 1176781623}
+    - target: {fileID: 11434810, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: playerDisp
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
   m_IsPrefabParent: 0
@@ -1923,9 +1940,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 194190, guid: 08da58da1846b8545b981d21830e09b8, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9543662, guid: 08da58da1846b8545b981d21830e09b8, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 08da58da1846b8545b981d21830e09b8, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1951173737 stripped
