@@ -439,7 +439,7 @@ public class GameLogic : MonoBehaviour
 
                 GameObject tempObj = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation);
 
-                Debug.Log("tempObj = " + pcell.Substring(0,1) + " , " + pcell.Substring(1, 1));
+                //Debug.Log("tempObj = " + pcell.Substring(0,1) + " , " + pcell.Substring(1, 1));
 
                 //decrease stamina
                 int rand = Random.Range(0, placementClips.Length);
@@ -482,6 +482,7 @@ public class GameLogic : MonoBehaviour
                 int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
 
 				// _isEntrySet doesn't mean entry or exit tile. It seems to be true for all tiles.
+				// From what Hung mentioned, _isEntrySet is true for any tiles placed by the player.
                 if ((tileBoard[temprow, tempcol]._isEntrySet) && (playerLoc != ""))
                 {
                     if (validMove.MoveDirection(playerLoc, clickLoc) != "invalid move" && validMove.InRange(playerLoc, clickLoc))
@@ -654,8 +655,235 @@ public class GameLogic : MonoBehaviour
     // Events are the enemies
     #region Event Functions
 
+	/// <summary>
+	/// Checks a given direction, if the move is valid returns true.
+	/// </summary>
+	/// <returns>True if the move is valid.</returns>
+	/// <param name="dir">Dir.</param>
+	public bool CheckEnemyMove(string dir, int curRow, int curCol)
+	{
+
+		bool isValidMove = false;
+
+		Tile currentTile = tileBoard [curRow, curCol];
+		string locStr;
+
+		switch(dir)
+		{
+		case "up":
+			
+			// Ensure target is in range
+			if (curRow -1 > 0) 
+			{
+				Tile tileUp = tileBoard [curRow - 1, curCol];
+				locStr = (curRow - 1).ToString () + curCol.ToString ();
+
+				Debug.Log ("Checking for move [" + curRow + "," + curCol + "] -> [" + (curRow - 1) + "," + curCol + "]");
+
+				// Moving from a tile.
+				if (currentTile._isEntrySet) 
+				{
+					// If the target is a tile as well. Prevent moving to entrance, exit, chest tiles. 
+					if (tileUp._isEntrySet && tileUp._tileID != "tile_exit" && tileUp._tileID != "tile_entrance" && tileUp._event != "green" && locStr != playerLoc) 
+					{
+						if (validMove.ValidMovement ("up", tileBoard [curRow, curCol], tileBoard [curRow - 1, curCol])) 
+						{
+							isValidMove = true;
+						}
+
+					} 
+					else 
+					{
+						// Target tile is empty
+						if (!tileUp._isEntrySet && currentTile.ValidMove("up"))
+						{
+							isValidMove = true;
+						}
+					}
+
+				}
+				// Move is from empty tile
+				else
+				{
+					// Target is not empty
+					if (tileUp._isEntrySet && tileUp._tileID != "tile_exit" && tileUp._tileID != "tile_entrance" && tileUp._event != "green" && locStr != playerLoc) 
+					{
+						if (tileUp.ValidEntry ("up") )
+						{
+							isValidMove = true;
+						}
+					} 
+					else
+					{
+						isValidMove = true;
+					}
+				}
+			}
+			break;
+
+		case "down":
+			
+			// Ensure target is in range
+			if (curRow + 1 < 5) 
+			{
+				Tile tileDown = tileBoard [curRow + 1, curCol];
+				locStr = (curRow + 1).ToString () + curCol.ToString ();
+
+				Debug.Log ("Checking for move [" + curRow + "," + curCol + "] -> [" + (curRow + 1) + "," + curCol + "]");
+
+				// Moving from a tile.
+				if (currentTile._isEntrySet) 
+				{
+					// If the target is a tile as well. Prevent moving to entrance, exit, chest tiles. 
+					if (tileDown._isEntrySet && tileDown._tileID != "tile_exit" && tileDown._tileID != "tile_entrance" && tileDown._event != "green" && locStr != playerLoc) 
+					{
+						if (validMove.ValidMovement ("down", tileBoard [curRow, curCol], tileBoard [curRow + 1, curCol])) 
+						{
+							isValidMove = true;
+						}
+
+					} 
+					else 
+					{
+						// Target tile is empty
+						if (!tileDown._isEntrySet && currentTile.ValidMove("down"))
+						{
+							isValidMove = true;
+						}
+					}
+
+				}
+				// Move is from empty tile
+				else
+				{
+					// Target is not empty
+					if (tileDown._isEntrySet && tileDown._tileID != "tile_exit" && tileDown._tileID != "tile_entrance" && tileDown._event != "green" && locStr != playerLoc) 
+					{
+						if (tileDown.ValidEntry ("down") )
+						{
+							isValidMove = true;
+						}
+					} 
+					else
+					{
+						isValidMove = true;
+					}
+				}
+			}
+			break;
+
+		case "left":
+			
+			// Ensure target is in range
+			if (curCol - 1 > 0) 
+			{
+				Tile leftTile = tileBoard [curRow, curCol - 1];
+				locStr = curRow.ToString () + (curCol - 1).ToString ();
+
+				Debug.Log ("Checking for move [" + curRow + "," + curCol + "] -> [" + curRow + "," + (curCol - 1) + "]");
+
+				// Moving from a tile.
+				if (currentTile._isEntrySet) 
+				{
+					// If the target is a tile as well. Prevent moving to entrance, exit, chest tiles. 
+					if (leftTile._isEntrySet && leftTile._tileID != "tile_exit" && leftTile._tileID != "tile_entrance" && leftTile._event != "green" && locStr != playerLoc) 
+					{
+						if (validMove.ValidMovement ("left", tileBoard [curRow, curCol], tileBoard [curRow, curCol-1])) 
+						{
+							isValidMove = true;
+						}
+
+					} 
+					else 
+					{
+						// Target tile is empty
+						if (!leftTile._isEntrySet && currentTile.ValidMove("left"))
+						{
+							isValidMove = true;
+						}
+					}
+
+				}
+				// Move is from empty tile
+				else
+				{
+					// Target is not empty
+					if (leftTile._isEntrySet && leftTile._tileID != "tile_exit" && leftTile._tileID != "tile_entrance" && leftTile._event != "green" && locStr != playerLoc) 
+					{
+						if (leftTile.ValidEntry ("left") )
+						{
+							isValidMove = true;
+						}
+					} 
+					else
+					{
+						isValidMove = true;
+					}
+				}
+			}
+			break;
+
+			case "right":
+			
+			// Ensure target is not out of range
+			if (curCol + 1 < 5)
+			{
+				Tile rightTile = tileBoard [curRow, curCol + 1];
+				locStr = curRow.ToString () + (curCol + 1).ToString ();
+
+				Debug.Log("Checking for move [" + curRow +","+ curCol + "] -> [" + curRow +","+ (curCol+1) + "]");
+
+				// Moving from a tile.
+				if (currentTile._isEntrySet) 
+				{
+					// If the target is a tile as well. Prevent moving to entrance, exit, chest tiles. 
+					if (rightTile._isEntrySet && rightTile._tileID != "tile_exit" && rightTile._tileID != "tile_entrance" && rightTile._event != "green" && locStr != playerLoc) 
+					{
+						if (validMove.ValidMovement ("right", tileBoard [curRow, curCol], tileBoard [curRow, curCol + 1])) 
+						{
+							isValidMove = true;
+						}
+
+					} 
+					else 
+					{
+						// Target tile is empty
+						if (!rightTile._isEntrySet && currentTile.ValidMove("right"))
+						{
+							isValidMove = true;
+						}
+					}
+
+				}
+				// Move is from empty tile
+				else
+				{
+					// Target is not empty
+					if (rightTile._isEntrySet && rightTile._tileID != "tile_exit" && rightTile._tileID != "tile_entrance" && rightTile._event != "green" && locStr != playerLoc) 
+					{
+						if (rightTile.ValidEntry ("right") )
+						{
+							isValidMove = true;
+						}
+					} 
+					else
+					{
+						isValidMove = true;
+					}
+				}
+			}
+			break;
+
+			default:
+				break;
+		}
+
+		return isValidMove;
+	}
+
     /// <summary>
     /// Handles movement of the red event tiles
+	/// I'm going to re-write this to create a list of available moves, and then choose from one of them. ~ Nick
     /// </summary>
     public void MoveEvents()
     {
@@ -676,15 +904,52 @@ public class GameLogic : MonoBehaviour
             if (eventTiles[i].GetComponent<Image>().sprite.name == "enemyCharA")
             {
                 etloc = eventTiles[i].name.Substring(0, 2);
-                Debug.Log("etloc: " + etloc);
+                //Debug.Log("etloc: " + etloc);
                 System.Int32.TryParse(etloc.Substring(0, 1), out currow);
                 System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
 
                 // Is the move valid? True by default as it assumes that the move is not on/onto a tile.
                 bool isValidMove = true;
 
+				var moves = new List<string>();
+
+				// Check for available moves
+				if (CheckEnemyMove ("up", currow, curcol)) {
+					moves.Add ("up");
+					Debug.Log ("["+ currow +"," + curcol +"] can move up.");
+				}
+
+				if (CheckEnemyMove ("down", currow, curcol)) {
+					moves.Add ("down");
+					Debug.Log ("["+ currow +"," + curcol +"] can move down.");
+				}
+
+				if (CheckEnemyMove ("left", currow, curcol)) {
+					moves.Add ("left");
+					Debug.Log ("["+ currow +"," + curcol +"] can move left.");
+				}
+
+				if (CheckEnemyMove ("right", currow, curcol)) {
+					moves.Add ("right");
+					Debug.Log ("["+ currow +"," + curcol +"] can move right.");
+				}
+
+
+
+				// Using this to prevent the do while looping forever.
+				int count = 0;
+
                 do
                 {
+					count++;
+
+					// Break out of loop if enemy can't move.
+					if (count > 10)
+					{
+						Debug.Log("Enemy at " + etloc + " cannot seem to move.");
+						break;
+					}
+
                     // Determine move direction
                     newrow = Mathf.Abs(currow + (Random.Range(-1, 1)));
                     newcol = Mathf.Abs(curcol + (Random.Range(-1, 1)));
@@ -692,29 +957,60 @@ public class GameLogic : MonoBehaviour
                     string currentLocStr = currow.ToString() + curcol.ToString();
                     string newLocStr = newrow.ToString() + newcol.ToString();
 
+					string moveDir = validMove.MoveDirection(currentLocStr, newLocStr);
+					Debug.Log("Movement Direction: " + moveDir);
+
+					bool inRange = validMove.InRange(currentLocStr, newLocStr);
+
                     // Check whether enemy is moving onto a tile..
-                    if (tileBoard[newrow, newcol]._isEntrySet)
+                    if (tileBoard[newrow, newcol]._isEntrySet && inRange)
                     {
-                        Debug.Log(currentLocStr + " -> " + newLocStr + " is an attempt to move onto a tile.");
+						Debug.Log("Enemy [" + currentLocStr + " -> " + newLocStr + "] is an attempt to move onto a tile.");
 
-                        string moveDir = validMove.MoveDirection(currentLocStr, newLocStr);
-                        Debug.Log("Movement Direction: " + moveDir);
+						// If the enemy is on a tile
+						if (tileBoard[currow,curcol]._isEntrySet)
+						{
+							Debug.Log("Enemy [" + currentLocStr + "] is attempting to move from one tile to another [" + newLocStr + "]");
 
-                        if (tileBoard[newrow, newcol].ValidMove(moveDir))
+							if (validMove.ValidMovement(moveDir, tileBoard[currow,curcol],tileBoard[newrow,newcol]))
+							{
+								Debug.Log("Valid Enemy move (Tile -> Tile): [" + currentLocStr + "] -> [" + newLocStr + "]");
+							}
+							else
+							{
+								isValidMove = false;
+							}
+						}
+
+						// Enemy is not currently on a tile.
+						else if (tileBoard[newrow, newcol].ValidMove(moveDir))
                         {
-                            Debug.Log(currentLocStr + " -> " + newLocStr + " is a valid move onto tile.");
+							Debug.Log("Enemy [" + currentLocStr + " -> " + newLocStr + "] is a valid move onto tile.");
                         }
                         else
                         {
-                            Debug.Log(currentLocStr + " -> " + newLocStr + " is not a valid move onto tile.");
+							Debug.Log("Enemy [" + currentLocStr + " -> " + newLocStr + "] is not a valid move onto tile.");
                             isValidMove = false;
                         }
-                    }
+					} 
+					// Moving from a tile, onto an empty space
+					else if (tileBoard[currow,curcol]._isEntrySet && inRange)
+					{
+						// Check if the tile has the appropriate direction
+						if (tileBoard[currow,curcol].ValidMove(moveDir))
+						{
+							Debug.Log("Enemy [" + currentLocStr + " -> " + newLocStr + "] moving from a tile to empty location." );
+						}
+						else
+						{
+							isValidMove = false;
+						}
+					}
 
                 } while (!isValidMove);
 
 
-                Debug.Log("Enemy at [" + currow + "," + curcol + "] moving to [" + newrow + "," + newcol + "]");
+                //Debug.Log("Enemy at [" + currow + "," + curcol + "] moving to [" + newrow + "," + newcol + "]");
 
 
                 // Determine if the move is vertical or horizontal.
@@ -728,7 +1024,7 @@ public class GameLogic : MonoBehaviour
                 }
 
                 // If new row is within bounds and not the same as current move tile 
-                if (vertmove)
+				if (vertmove && isValidMove)
                 {
                     // Check the new location is not already an event or the player/exits
                     Tile dummy = new Tile(0);
@@ -757,7 +1053,7 @@ public class GameLogic : MonoBehaviour
                     }
                 }
                 //else if horizontal check
-                else if (horimove)
+				else if (horimove && isValidMove)
                 {
                     Tile dummy = new Tile(0);
 
