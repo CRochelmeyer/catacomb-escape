@@ -48,27 +48,19 @@ public class PlayerMove : MonoBehaviour
 				switch (pDirection)
 				{
 					case "up":
-						//animator.Stop();
 						animator.SetInteger ("Direction", 3); //3=climb
-						//animator.Play ("Character_Climb");
 						break;
 
 					case "down":
-						//animator.Stop();
 						animator.SetInteger ("Direction", 3); //3=climb
-						//animator.Play ("Character_Climb");
 						break;
 
 					case "left":
-						//animator.Stop();
 						animator.SetInteger ("Direction", 1); //1=left
-						//animator.Play ("Character_Left_Walk");
 						break;
 
 					case "right":
-						//animator.Stop();
 						animator.SetInteger ("Direction", 2); //2=right
-						//animator.Play ("Character_Right_Walk");
 						break;
 				}
 
@@ -76,9 +68,7 @@ public class PlayerMove : MonoBehaviour
 
 				if (player.transform.localPosition == targetPosition)
 				{
-					//animator.Stop();
 					animator.SetInteger ("Direction", 0); // Set animation to idle
-					//animator.Play ("Character_Idle");
 					moving = false;
 					pDirection = "";
 

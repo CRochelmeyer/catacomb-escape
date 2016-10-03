@@ -305,6 +305,10 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 45
       objectReference: {fileID: 0}
+    - target: {fileID: 11431950, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
+      propertyPath: m_Text
+      value: '[Tap To Continue]'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ea5eae691919d34c861fb052ff038c7, type: 2}
   m_IsPrefabParent: 0

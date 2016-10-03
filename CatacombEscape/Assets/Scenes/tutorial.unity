@@ -799,7 +799,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Click here to move!
+  m_Text: Tap here to move!
 --- !u!222 &82635565
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1564,7 +1564,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '[Click To Continue]'
+  m_Text: '[Tap To Continue]'
 --- !u!222 &243790756
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6563,7 +6563,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Click and drag tile!
+  m_Text: Tap and drag tile!
 --- !u!222 &1129711929
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7744,7 +7744,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Click for new tiles!
+  m_Text: Tap for new tiles!
 --- !u!222 &1303833626
 CanvasRenderer:
   m_ObjectHideFlags: 0
