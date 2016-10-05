@@ -1239,8 +1239,32 @@ public class GameLogic : MonoBehaviour
 	/// <returns>A string of tile names.</returns>
 	private string[] FindInvalidRemoveTiles()
 	{
-		string[] array;
-		
+		List<string> list = new List<string> ();
+
+		for (int i = 0; i < 30; i++)
+		{
+			string name = gridPanels[i].name;
+			int temprow = System.Int32.Parse(name.Substring(0, 1));
+			int tempcol = System.Int32.Parse(name.Substring(1, 1));
+
+			if (tileBoard[temprow, tempcol]._isEntrySet == false)
+			{
+				list.Add (name);
+			}
+			else if (name == entrance || name == playerLoc || name == exit)
+			{
+				list.Add (name);
+			}
+		}
+
+		string[] array = new string[list.Count];
+
+		for (int i = 0; i < list.Count; i++)
+		{
+			array[i] = list[i];
+		}
+
+		/*
 		if (entrance == playerLoc) // only need two elements in the array
 		{
 			array = new string[2] {entrance, exit};
@@ -1248,7 +1272,7 @@ public class GameLogic : MonoBehaviour
 		else
 		{
 			array = new string[3] {entrance, playerLoc, exit};
-		}
+		}*/
 
 		return array;
 	}

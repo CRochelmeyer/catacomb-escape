@@ -14,7 +14,7 @@ public class Tile
     public int combat { get; set; }
     public string _boardLocation { get; set; }
 
-    protected Tile() { }
+	protected Tile() { _isEntrySet = false; }
 
     public Tile(List<string> pEntry, string pID , string pboardloc)
     {
