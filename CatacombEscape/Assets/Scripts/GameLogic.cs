@@ -756,7 +756,7 @@ public class GameLogic : MonoBehaviour
             else
             {
                 // Target tile is empty
-                if (!newTile._isEntrySet && currentTile.ValidMove("up"))
+                if (!newTile._isEntrySet && currentTile.ValidMove("up") && newTile._event != "green" && newTile._event != "red")
                 {
                     debugStr += " [Target tile (" + newLocStr + ") is empty, and current tile has relevant exit] ";
                     isValidMove = true;
@@ -781,7 +781,7 @@ public class GameLogic : MonoBehaviour
                     isValidMove = true;
                 }
             }
-            else
+            else if (newTile._event != "green" && newTile._event != "red")
             {
                 debugStr += " [Target tile (" + newLocStr + ") is empty, and current tile is also empty] ";
                 isValidMove = true;
@@ -910,17 +910,14 @@ public class GameLogic : MonoBehaviour
                     Debug.Log(move.ToString());
                 }
 
-                int newMove = Random.Range(1, moves.Count);
-                Debug.Log("Selecting number from 1 to " + moves.Count);
-                Debug.Log("Selected number: " + newMove);
-
-                Debug.Log("Selected move: " + moves[newMove].ToString());
-
-
                 // Here's hoping this works lol
                 // Moves an enemy, if it is able
                 if (moves.Count != 0)
                 {
+                    int newMove = Random.Range(1, moves.Count);
+                    Debug.Log("Selecting number from 1 to " + moves.Count);
+                    Debug.Log("Enemy at [" + currow.ToString() + curcol.ToString() + "] moving " + moves[newMove].ToString());
+
                     MoveEnemy(moves[newMove], currow, curcol, i);
                 }
                 else
@@ -928,6 +925,7 @@ public class GameLogic : MonoBehaviour
                     // The enemy can't move.
                     // This else is here for giving the player a bonus if they've trapped an enemy.
                     // May not actually be needed.
+                    Debug.Log("Enemy at [" + currow.ToString() + curcol.ToString() + "] can no longer move.");
                 }
             }
         }
