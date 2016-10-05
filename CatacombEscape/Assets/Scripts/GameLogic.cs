@@ -668,7 +668,8 @@ public class GameLogic : MonoBehaviour
 		Tile currentTile = tileBoard [curRow, curCol];
         Tile newTile; // the target tile.
 
-        string locStr;
+        string curLocStr = curRow.ToString() + curCol.ToString();
+        string newLocStr;
 
         switch (dir)
         {
@@ -677,7 +678,7 @@ public class GameLogic : MonoBehaviour
                 if (curRow - 1 >= 0)
                 {
                     newTile = tileBoard[curRow - 1, curCol];
-                    locStr = (curRow - 1).ToString() + curCol.ToString();
+                    newLocStr = (curRow - 1).ToString() + curCol.ToString();
                 }
                 else
                 {
@@ -687,10 +688,10 @@ public class GameLogic : MonoBehaviour
 
             case "down":
 
-                if (curRow + 1 <= 5)
+                if (curRow + 1 < 6)
                 {
                     newTile = tileBoard[curRow + 1, curCol];
-                    locStr = (curRow + 1).ToString() + curCol.ToString();
+                    newLocStr = (curRow + 1).ToString() + curCol.ToString();
                 }
                 else
                 {
@@ -703,7 +704,7 @@ public class GameLogic : MonoBehaviour
                 if (curCol - 1 >= 0)
                 {
                     newTile = tileBoard[curRow, curCol - 1];
-                    locStr = (curRow).ToString() + (curCol - 1).ToString();
+                    newLocStr = (curRow).ToString() + (curCol - 1).ToString();
                 }
                 else
                 {
@@ -712,10 +713,10 @@ public class GameLogic : MonoBehaviour
                 break;
 
             case "right":
-                if (curCol + 1 <= 5)
+                if (curCol + 1 < 5)
                 {
                     newTile = tileBoard[curRow, curCol + 1];
-                    locStr = (curRow).ToString() + (curCol + 1).ToString();
+                    newLocStr = (curRow).ToString() + (curCol + 1).ToString();
                 }
                 else
                 {
@@ -730,24 +731,39 @@ public class GameLogic : MonoBehaviour
 
         //Debug.Log("Checking for move [" + curRow + "," + curCol + "] -> [" + (curRow - 1) + "," + curCol + "]");
 
-        // Moving from a tile.
+        string debugStr = "[Trying move [" + curLocStr + " -> " + newLocStr + "]"; // Rather than having a million debug messages, add messages to this string, and use one debug.log
+
+        // Moving from a tile placed by the player.
         if (currentTile._isEntrySet)
         {
+            debugStr += " [Enemy at [" + curLocStr + "] is moving from a non-empty tile] ";
+
             // If the target is a tile as well. Prevent moving to entrance, exit, chest tiles and other enemies. 
-            if (newTile._isEntrySet && newTile._tileID != "tile_exit" && newTile._tileID != "tile_entrance" && newTile._event != "green" && newTile._event != "red" && locStr != playerLoc)
+            if (newTile._isEntrySet && newTile._tileID != "tile_exit" && newTile._tileID != "tile_entrance" && newTile._event != "green" && newTile._event != "red" && newLocStr != playerLoc)
             {
                 if (validMove.ValidMovement("up", tileBoard[curRow, curCol], tileBoard[curRow - 1, curCol]))
                 {
+                    debugStr += " [Target tile ("+ newLocStr +") was placed by player, and is a valid move] ";
                     isValidMove = true;
                 }
-
+                else
+                {
+                    debugStr += " [Target tile (" + newLocStr + ") was placed by player, but is not a valid move] ";
+                    isValidMove = false;
+                }
+                
             }
             else
             {
                 // Target tile is empty
                 if (!newTile._isEntrySet && currentTile.ValidMove("up"))
                 {
+                    debugStr += " [Target tile (" + newLocStr + ") is empty, and current tile has relevant exit] ";
                     isValidMove = true;
+                }
+                else
+                {
+                    debugStr += " [Target tile (" + newLocStr + ") is empty, but current tile does not have relevent exit] ";
                 }
             }
 
@@ -755,233 +771,26 @@ public class GameLogic : MonoBehaviour
         // Moving from an empty tile
         else
         {
+            debugStr += " [Enemy at [" + curLocStr + "] is moving from an empty tile] ";
             // Target is not empty
-            if (newTile._isEntrySet && newTile._tileID != "tile_exit" && newTile._tileID != "tile_entrance" && newTile._event != "green" && newTile._event != "red" && locStr != playerLoc)
+            if (newTile._isEntrySet && newTile._tileID != "tile_exit" && newTile._tileID != "tile_entrance" && newTile._event != "green" && newTile._event != "red" && newLocStr != playerLoc)
             {
                 if (newTile.ValidEntry("up"))
                 {
+                    debugStr += " [Target tile (" + newLocStr + ") is player-placed, and current tile is empty] ";
                     isValidMove = true;
                 }
             }
             else
             {
+                debugStr += " [Target tile (" + newLocStr + ") is empty, and current tile is also empty] ";
                 isValidMove = true;
             }
         }
 
-        /*
-        switch (dir)
-		{
-		case "up":
-			
-			// Ensure target is in range
-			if (curRow -1 > 0) 
-			{
-				Tile tileUp = tileBoard [curRow - 1, curCol];
-				locStr = (curRow - 1).ToString () + curCol.ToString ();
+        Debug.Log(debugStr);
 
-				Debug.Log ("Checking for move [" + curRow + "," + curCol + "] -> [" + (curRow - 1) + "," + curCol + "]");
-
-				// Moving from a tile.
-				if (currentTile._isEntrySet) 
-				{
-					// If the target is a tile as well. Prevent moving to entrance, exit, chest tiles. 
-					if (tileUp._isEntrySet && tileUp._tileID != "tile_exit" && tileUp._tileID != "tile_entrance" && tileUp._event != "green" && locStr != playerLoc) 
-					{
-						if (validMove.ValidMovement ("up", tileBoard [curRow, curCol], tileBoard [curRow - 1, curCol])) 
-						{
-							isValidMove = true;
-						}
-
-					} 
-					else 
-					{
-						// Target tile is empty
-						if (!tileUp._isEntrySet && currentTile.ValidMove("up"))
-						{
-							isValidMove = true;
-						}
-					}
-
-				}
-				// Move is from empty tile
-				else
-				{
-					// Target is not empty
-					if (tileUp._isEntrySet && tileUp._tileID != "tile_exit" && tileUp._tileID != "tile_entrance" && tileUp._event != "green" && locStr != playerLoc) 
-					{
-						if (tileUp.ValidEntry ("up") )
-						{
-							isValidMove = true;
-						}
-					} 
-					else
-					{
-						isValidMove = true;
-					}
-				}
-			}
-			break;
-
-		case "down":
-			
-			// Ensure target is in range
-			if (curRow + 1 < 5) 
-			{
-				Tile tileDown = tileBoard [curRow + 1, curCol];
-				locStr = (curRow + 1).ToString () + curCol.ToString ();
-
-				Debug.Log ("Checking for move [" + curRow + "," + curCol + "] -> [" + (curRow + 1) + "," + curCol + "]");
-
-				// Moving from a tile.
-				if (currentTile._isEntrySet) 
-				{
-					// If the target is a tile as well. Prevent moving to entrance, exit, chest tiles. 
-					if (tileDown._isEntrySet && tileDown._tileID != "tile_exit" && tileDown._tileID != "tile_entrance" && tileDown._event != "green" && locStr != playerLoc) 
-					{
-						if (validMove.ValidMovement ("down", tileBoard [curRow, curCol], tileBoard [curRow + 1, curCol])) 
-						{
-							isValidMove = true;
-						}
-
-					} 
-					else 
-					{
-						// Target tile is empty
-						if (!tileDown._isEntrySet && currentTile.ValidMove("down"))
-						{
-							isValidMove = true;
-						}
-					}
-
-				}
-				// Move is from empty tile
-				else
-				{
-					// Target is not empty
-					if (tileDown._isEntrySet && tileDown._tileID != "tile_exit" && tileDown._tileID != "tile_entrance" && tileDown._event != "green" && locStr != playerLoc) 
-					{
-						if (tileDown.ValidEntry ("down") )
-						{
-							isValidMove = true;
-						}
-					} 
-					else
-					{
-						isValidMove = true;
-					}
-				}
-			}
-			break;
-
-		case "left":
-			
-			// Ensure target is in range
-			if (curCol - 1 > 0) 
-			{
-				Tile leftTile = tileBoard [curRow, curCol - 1];
-				locStr = curRow.ToString () + (curCol - 1).ToString ();
-
-				Debug.Log ("Checking for move [" + curRow + "," + curCol + "] -> [" + curRow + "," + (curCol - 1) + "]");
-
-				// Moving from a tile.
-				if (currentTile._isEntrySet) 
-				{
-					// If the target is a tile as well. Prevent moving to entrance, exit, chest tiles. 
-					if (leftTile._isEntrySet && leftTile._tileID != "tile_exit" && leftTile._tileID != "tile_entrance" && leftTile._event != "green" && locStr != playerLoc) 
-					{
-						if (validMove.ValidMovement ("left", tileBoard [curRow, curCol], tileBoard [curRow, curCol-1])) 
-						{
-							isValidMove = true;
-						}
-
-					} 
-					else 
-					{
-						// Target tile is empty
-						if (!leftTile._isEntrySet && currentTile.ValidMove("left"))
-						{
-							isValidMove = true;
-						}
-					}
-
-				}
-				// Enemy is on an empty tile
-				else
-				{
-					// Target tile is not empty
-					if (leftTile._isEntrySet && leftTile._tileID != "tile_exit" && leftTile._tileID != "tile_entrance" && leftTile._event != "green" && locStr != playerLoc) 
-					{
-						if (leftTile.ValidEntry ("left") )
-						{
-							isValidMove = true;
-						}
-					} 
-					else
-					{
-                        // Target tile should be empty.
-                        isValidMove = true; 
-					}
-				}
-			}
-			break;
-
-			case "right":
-			
-			// Ensure target is not out of range
-			if (curCol + 1 < 5)
-			{
-				Tile rightTile = tileBoard [curRow, curCol + 1];
-				locStr = curRow.ToString () + (curCol + 1).ToString ();
-
-				Debug.Log("Checking for move [" + curRow +","+ curCol + "] -> [" + curRow +","+ (curCol+1) + "]");
-
-				// Moving from a tile.
-				if (currentTile._isEntrySet) 
-				{
-					// If the target is a tile as well. Prevent moving to entrance, exit, chest tiles. 
-					if (rightTile._isEntrySet && rightTile._tileID != "tile_exit" && rightTile._tileID != "tile_entrance" && rightTile._event != "green" && locStr != playerLoc) 
-					{
-						if (validMove.ValidMovement ("right", tileBoard [curRow, curCol], tileBoard [curRow, curCol + 1])) 
-						{
-							isValidMove = true;
-						}
-
-					} 
-					else 
-					{
-						// Target tile is empty
-						if (!rightTile._isEntrySet && currentTile.ValidMove("right"))
-						{
-							isValidMove = true;
-						}
-					}
-
-				}
-				// Move is from empty tile
-				else
-				{
-					// Target is not empty
-					if (rightTile._isEntrySet && rightTile._tileID != "tile_exit" && rightTile._tileID != "tile_entrance" && rightTile._event != "green" && locStr != playerLoc) 
-					{
-						if (rightTile.ValidEntry ("right") )
-						{
-							isValidMove = true;
-						}
-					} 
-					else
-					{
-						isValidMove = true;
-					}
-				}
-			}
-			break;
-
-			default:
-				break;
-		}
-        */
-		return isValidMove;
+        return isValidMove;
 	}
 
     /// <summary>
@@ -1109,156 +918,17 @@ public class GameLogic : MonoBehaviour
 
 
                 // Here's hoping this works lol
-                MoveEnemy(moves[newMove], currow, curcol, i);
-
-
-            /*
-                // Using this to prevent the do while looping forever.
-                int count = 0;
-
-                do
+                // Moves an enemy, if it is able
+                if (moves.Count != 0)
                 {
-					count++;
-
-					// Break out of loop if enemy can't move.
-					if (count > 10)
-					{
-						Debug.Log("Enemy at " + etloc + " cannot seem to move.");
-						break;
-					}
-
-                    // Determine move direction
-                    newrow = Mathf.Abs(currow + (Random.Range(-1, 1)));
-                    newcol = Mathf.Abs(curcol + (Random.Range(-1, 1)));
-
-                    string currentLocStr = currow.ToString() + curcol.ToString();
-                    string newLocStr = newrow.ToString() + newcol.ToString();
-
-					string moveDir = validMove.MoveDirection(currentLocStr, newLocStr);
-					Debug.Log("Movement Direction: " + moveDir);
-
-					bool inRange = validMove.InRange(currentLocStr, newLocStr);
-
-                    // Check whether enemy is moving onto a tile..
-                    if (tileBoard[newrow, newcol]._isEntrySet && inRange)
-                    {
-						Debug.Log("Enemy [" + currentLocStr + " -> " + newLocStr + "] is an attempt to move onto a tile.");
-
-						// If the enemy is on a tile
-						if (tileBoard[currow,curcol]._isEntrySet)
-						{
-							Debug.Log("Enemy [" + currentLocStr + "] is attempting to move from one tile to another [" + newLocStr + "]");
-
-							if (validMove.ValidMovement(moveDir, tileBoard[currow,curcol],tileBoard[newrow,newcol]))
-							{
-								Debug.Log("Valid Enemy move (Tile -> Tile): [" + currentLocStr + "] -> [" + newLocStr + "]");
-							}
-							else
-							{
-								isValidMove = false;
-							}
-						}
-
-						// Enemy is not currently on a tile.
-						else if (tileBoard[newrow, newcol].ValidMove(moveDir))
-                        {
-							Debug.Log("Enemy [" + currentLocStr + " -> " + newLocStr + "] is a valid move onto tile.");
-                        }
-                        else
-                        {
-							Debug.Log("Enemy [" + currentLocStr + " -> " + newLocStr + "] is not a valid move onto tile.");
-                            isValidMove = false;
-                        }
-					} 
-					// Moving from a tile, onto an empty space
-					else if (tileBoard[currow,curcol]._isEntrySet && inRange)
-					{
-						// Check if the tile has the appropriate direction
-						if (tileBoard[currow,curcol].ValidMove(moveDir))
-						{
-							Debug.Log("Enemy [" + currentLocStr + " -> " + newLocStr + "] moving from a tile to empty location." );
-						}
-						else
-						{
-							isValidMove = false;
-						}
-					}
-
-                } while (!isValidMove);
-            
-
-                //Debug.Log("Enemy at [" + currow + "," + curcol + "] moving to [" + newrow + "," + newcol + "]");
-
-            
-                // Determine if the move is vertical or horizontal.
-                if (newrow <= 5 && newrow >= 0 && newrow != currow)
-                {
-                    vertmove = true;
+                    MoveEnemy(moves[newMove], currow, curcol, i);
                 }
-                if (newcol <= 4 && newcol >= 0 && newcol != curcol)
+                else
                 {
-                    horimove = true;
+                    // The enemy can't move.
+                    // This else is here for giving the player a bonus if they've trapped an enemy.
+                    // May not actually be needed.
                 }
-
-                // If new row is within bounds and not the same as current move tile 
-				if (vertmove && isValidMove)
-                {
-                    // Check the new location is not already an event or the player/exits
-                    Tile dummy = new Tile(0);
-
-                    // When rewriting this, newRow = currow+1.ToString(); for moving up
-                    newloc = newrow.ToString() + curcol.ToString();
-                    cellindex.TryGetValue(newloc, out panelkey);
-
-                    if ((tileBoard[newrow, curcol]._tileID != "tile_exit") && (tileBoard[newrow, curcol]._tileID != "tile_entrance") && (newloc != playerLoc) && (tileBoard[newrow, curcol]._event != "green") && (tileBoard[newrow, curcol]._event != "red"))
-                    {
-                        // Move the tile
-                        eventTiles[i].transform.localPosition = gridPanels[panelkey].transform.localPosition;
-                        //update tileboard
-                        //clone the current tile to dummy
-                        dummy.CloneTile(tileBoard[currow, curcol]);
-                        //set current tile event that's moving to no event
-                        tileBoard[currow, curcol].ClearEvent();
-                        //flush dummy entry if it is set from the previous tile cloned
-                        if (dummy._isEntrySet)
-                        {
-                            dummy.FlushEntry();
-                        }
-                        //update the new board position with the dummy clone
-                        tileBoard[newrow, curcol].UpdatePosition(dummy);
-                        //update objclone name to be used for destroying the game obj
-                        eventTiles[i].name = newloc + "(Clone)";
-                    }
-                }
-                //else if horizontal check
-				else if (horimove && isValidMove)
-                {
-                    Tile dummy = new Tile(0);
-
-                    newloc = currow.ToString() + newcol.ToString();
-                    cellindex.TryGetValue(newloc, out panelkey);
-
-                    if ((tileBoard[currow, newcol]._tileID != "tile_exit") && (tileBoard[currow, newcol]._tileID != "tile_entrance") && (newloc != playerLoc) && (tileBoard[currow, newcol]._event != "green") && (tileBoard[currow, newcol]._event != "red"))
-                    {
-                        //move thetile
-                        eventTiles[i].transform.localPosition = gridPanels[panelkey].transform.localPosition;
-                        //update tileboard
-                        //clone the current tile to dummy
-                        dummy.CloneTile(tileBoard[currow, curcol]);
-                        //set current tile event htats moving to no event
-                        tileBoard[currow, curcol].ClearEvent();
-                        //flush dummy entry if it is set from the previous tile cloned
-                        if (dummy._isEntrySet)
-                        {
-                            dummy.FlushEntry();
-                        }
-                        //update the new board position with the dummy clone
-                        tileBoard[currow, newcol].UpdatePosition(dummy);
-                        //update objclone name to be used for destroying the game obj
-                        eventTiles[i].name = newloc + "(Clone)";
-                    }
-                }
-            */    //else do nothing
             }
         }
     }
