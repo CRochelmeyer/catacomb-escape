@@ -1165,7 +1165,7 @@ public class GameLogic : MonoBehaviour
     /// <returns></returns>
 	IEnumerator ClickToClose (GameObject panel)
 	{
-		yield return new WaitForSeconds (1);
+		yield return new WaitForSeconds (0.3f);
 		while (!Input.GetMouseButtonUp (0))
 		{
 			yield return null;
