@@ -36,9 +36,11 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 		if (PlayerPrefs.GetString ("Paused") != "true" && !deletingTile)
 		{
 			//Debug.Log("OnbeginDrag");
-			//save the parent incase of returns from invalid drags
+			// Save the parent incase of returns from invalid drags
 			locationToReturn = this.transform.position;
-			//locationToReturn = this.transform.TransformPoint (Vector3.zero);
+			// Change tile index in the hierarchy
+			int siblingNumber = this.transform.parent.childCount;
+			this.transform.SetSiblingIndex (siblingNumber - 1);
 		}
     }
 

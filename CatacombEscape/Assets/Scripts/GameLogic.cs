@@ -82,6 +82,14 @@ public class GameLogic : MonoBehaviour
 	public GameObject stamDownPrefab;
 	#endregion
 
+	#region removeTileFunctions
+	[Header("Remove Tile Function")]
+	public Button newHandButton;
+	public GameObject removeTilePopUp;
+	public ManageRemoveTile manageRemoveTileScript;
+	private bool showRemoveTilePop = true;
+	#endregion
+
 	//boolean game conditions
 	private bool gameover = false;
 	private bool emptyhand = true;
@@ -101,6 +109,7 @@ public class GameLogic : MonoBehaviour
 
 	private GameObject btmPanel;
 	private GameObject[] handTiles;
+	private string entrance;
 	private string exit;
 	//initiate a static instance of gamelogic to be used globally...
 	private static GameLogic instance = null;
@@ -961,9 +970,11 @@ public class GameLogic : MonoBehaviour
             //set exit tile
             gridPanels[downPanel].GetComponent<Image>().sprite = gridSprite[1] as Sprite;
             gridPanels[downPanel].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
+			exit = gridPanels[downPanel].name;
             //set entrance tile
             gridPanels[upPanel].GetComponent<Image>().sprite = gridSprite[2] as Sprite;
-            gridPanels[upPanel].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
+			gridPanels[upPanel].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
+			entrance = gridPanels[upPanel].name;
 
             //set random panel numbers for red and green tile placement
             for (int i = 0; i < randomPanels.Length; i++)
@@ -1154,6 +1165,7 @@ public class GameLogic : MonoBehaviour
     /// <returns></returns>
 	IEnumerator ClickToClose (GameObject panel)
 	{
+		yield return new WaitForSeconds (1);
 		while (!Input.GetMouseButtonUp (0))
 		{
 			yield return null;
@@ -1221,6 +1233,26 @@ public class GameLogic : MonoBehaviour
 		faderRunning = false;
     }
 
+	/// <summary>
+	/// Finds the tile names (ie. "00", "03") of the entrance, exit and player locations
+	/// </summary>
+	/// <returns>A string of tile names.</returns>
+	private string[] FindInvalidRemoveTiles()
+	{
+		string[] array;
+		
+		if (entrance == playerLoc) // only need two elements in the array
+		{
+			array = new string[2] {entrance, exit};
+		}
+		else
+		{
+			array = new string[3] {entrance, playerLoc, exit};
+		}
+
+		return array;
+	}
+
     /// <summary>
     /// Toggles the ability to delete tiles.
     /// </summary>
@@ -1231,10 +1263,23 @@ public class GameLogic : MonoBehaviour
         if (deletingTile)
         {
             Debug.Log("Selecting tile to delete.");
+			newHandButton.interactable = false;
+
+			string[] invalidTileNames = FindInvalidRemoveTiles();
+			manageRemoveTileScript.DisplayOverlays (invalidTileNames);
+
+			if (showRemoveTilePop)
+			{
+				Debug.Log ("Display remove tile pop up");
+				DisplayClickPanel (removeTilePopUp);
+				showRemoveTilePop = false;
+			}
         }
         else
         {
-            Debug.Log("No longer deleting tile.");
+			Debug.Log("No longer deleting tile.");
+			newHandButton.interactable = true;
+			manageRemoveTileScript.HidePanelOverlays();
         }
     }
 
@@ -1249,7 +1294,7 @@ public class GameLogic : MonoBehaviour
         clickLoc = MouseLocation;
 
         // If mouse has been clicked
-        if (Input.GetMouseButtonDown(0))
+		if (Input.GetMouseButtonDown(0) && PlayerPrefs.GetString ("Paused") == "false")
         {
             if (clickLoc != "")
             {
