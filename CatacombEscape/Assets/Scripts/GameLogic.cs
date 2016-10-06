@@ -98,6 +98,7 @@ public class GameLogic : MonoBehaviour
 	private bool nextlevel = false;
 	private bool exiting = false;
 	private int playerStamina;
+	[SerializeField]
 	private string playerLoc="";
 	private string destLoc = "";
 	private string mouseLocation = "";
@@ -160,6 +161,8 @@ public class GameLogic : MonoBehaviour
         //TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
 
         playerStamina = standardStamina;
+		// Possibly play add coins animation here
+		// coinCont.UpdateCoins(playerStamina);
         UpdateUI();
 
         InitGame(level);
@@ -211,11 +214,15 @@ public class GameLogic : MonoBehaviour
         //initialise player data
         CheckStamina();
         if (playerStamina < standardStamina)
-        {
+		{
+			int stamUpAmt = standardStamina - playerStamina;
+			string stamUpStr = stamUpAmt.ToString();
+			coinCont.UpdateCoins (stamUpAmt, playerLoc);
+			Vector3 playerPos = GetGridPanelPosition (playerLoc);
+			InstantiateStamUpPanel (stamUpStr, playerPos);
             playerStamina = standardStamina;
         }
 
-        UpdateUI();
         GameObject tempObj = GameObject.FindGameObjectWithTag ("GameLevel");
         tempObj.GetComponent<Text>().text = "Lvl " + pLevel;
 
@@ -459,7 +466,8 @@ public class GameLogic : MonoBehaviour
                 InstantiateStamDownPanel("-2", tempObj.transform.position);
                 //increment tileplaced
                 tileplaced++;
-                UpdateUI();
+				UpdateUI();
+				coinCont.UpdateCoins (-2, tempObj.name);
                 CheckStamina();
                 break;
             }
@@ -511,7 +519,8 @@ public class GameLogic : MonoBehaviour
 
                             playerStamina--;
                             InstantiateStamDownPanel("-1", movePlayer.PlayerLocation);
-                            UpdateUI();
+							UpdateUI();
+							coinCont.UpdateCoins (-1, playerLoc);
                         }
                     }
                 }
@@ -805,7 +814,8 @@ public class GameLogic : MonoBehaviour
                     string newText = damage.ToString();
                     InstantiateStamDownPanel(newText, tempObj.transform.position);
                     playerStamina += damage;
-                    UpdateUI();
+					UpdateUI();
+					coinCont.UpdateCoins (damage, tempTile._boardLocation);
                 }
 
                 int rand = Random.Range(0, redTileClips.Length);
@@ -817,8 +827,8 @@ public class GameLogic : MonoBehaviour
             {
                 string newText = "+" + tempTile.combat.ToString();
                 InstantiateStamUpPanel(newText, tempObj.transform.position);
-                playerStamina += tempTile.combat;
-                UpdateUI();
+				playerStamina += tempTile.combat;
+				coinCont.UpdateCoins (tempTile.combat, tempTile._boardLocation);
 
                 int rand = Random.Range(0, greenTileClips.Length);
                 audioSource.PlayOneShot(greenTileClips[rand]);
@@ -1051,6 +1061,19 @@ public class GameLogic : MonoBehaviour
             gridPanels[i] = gridPanelsScript.GetGridPanel(i);
         }
     }
+
+	public Vector3 GetGridPanelPosition (string panelName)
+	{
+		for (int i = 0; i < gridPanels.Length; i++)
+		{
+			if (gridPanels[i].name == panelName)
+			{
+				return gridPanels[i].transform.position;
+			}
+		}
+
+		return gridPanels[0].transform.position;
+	}
     #endregion
 
     #region Hand Functions
@@ -1071,7 +1094,8 @@ public class GameLogic : MonoBehaviour
         InstantiateStamDownPanel("-" + discardCost, movePlayer.PlayerLocation);
         playerStamina += -discardCost;
         GenerateHand();
-        UpdateUI();
+		UpdateUI();
+		coinCont.UpdateCoins (-discardCost, "newHandButton");
         CheckStamina();
     }
 
@@ -1134,7 +1158,6 @@ public class GameLogic : MonoBehaviour
         }
         GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
         tempObj.GetComponent<Text>().text = playerStamina.ToString();
-        coinCont.UpdateCoins(playerStamina);
     }
 
     /// <summary>

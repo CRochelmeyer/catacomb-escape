@@ -13,8 +13,8 @@ public class PlayerMove : MonoBehaviour
 	private GameObject tempobj;
 	private Rigidbody2D rb2d;
 	private string pDirection = "";
-	Vector3 targetPosition;
-	Vector3 initialPosition;
+	private Vector3 targetPosition;
+	private Vector3 initialPosition;
 
 	public float speed = 0.01f;
 	private float startTime;

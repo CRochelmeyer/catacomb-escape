@@ -301,9 +301,13 @@ public class TutorialLogic : MonoBehaviour
 		//initialise player data
 		if (playerStamina < standardStamina)
 		{
+			int stamUpAmt = standardStamina - playerStamina;
+			string stamUpStr = stamUpAmt.ToString();
+			coinCont.UpdateCoins (stamUpAmt, playerLoc);
+			Vector3 playerPos = GetGridPanelPosition (playerLoc);
+			InstantiateStamUpPanel (stamUpStr, playerPos);
 			playerStamina = standardStamina;
 		}
-		UpdateUI();
 
 		//setup board with rng sprites
 		GenerateBoard();
@@ -387,7 +391,6 @@ public class TutorialLogic : MonoBehaviour
 		}
 		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
 		tempObj.GetComponent<Text>().text = playerStamina.ToString();
-		coinCont.UpdateCoins (playerStamina);
 	}
 
 	/// <summary>
@@ -398,6 +401,7 @@ public class TutorialLogic : MonoBehaviour
 		if (playerStamina <= 0)
 		{
 			playerStamina = 30;
+			coinCont.UpdateCoins (30, playerLoc);
 			UpdateUI();
 			// Display click panel: Haha, very funny. Get moving!
 		}
@@ -495,6 +499,19 @@ public class TutorialLogic : MonoBehaviour
 		}
 	}
 
+	public Vector3 GetGridPanelPosition (string panelName)
+	{
+		for (int i = 0; i < gridPanels.Length; i++)
+		{
+			if (gridPanels[i].name == panelName)
+			{
+				return gridPanels[i].transform.position;
+			}
+		}
+
+		return gridPanels[0].transform.position;
+	}
+
 	public bool PlacementValid (string cell)
 	{
 		if (placementLocations [placementIndex] == cell)
@@ -560,6 +577,7 @@ public class TutorialLogic : MonoBehaviour
 
 				stage ++;
 				UpdateUI();
+				coinCont.UpdateCoins (-2, tempObj.name);
 				break;
 			}
 		}
@@ -609,6 +627,7 @@ public class TutorialLogic : MonoBehaviour
 							playerStamina--;
 							InstantiateStamDownPanel ("-1", movePlayer.PlayerLocation);
 							UpdateUI();
+							coinCont.UpdateCoins (-1, playerLoc);
 						}
 					}
 				}
@@ -643,6 +662,7 @@ public class TutorialLogic : MonoBehaviour
 
 		stage++;
 		UpdateUI();
+		coinCont.UpdateCoins (-discardCost, "newHandButton");
 
 		discardButton.interactable = false;
 
@@ -686,6 +706,7 @@ public class TutorialLogic : MonoBehaviour
 					InstantiateStamDownPanel (newText, tempObj.transform.position);
 					playerStamina += damage;
 					UpdateUI();
+					coinCont.UpdateCoins (damage, tempTile._boardLocation);
 				}
 
 				int rand = Random.Range (0,redTileClips.Length);
@@ -696,7 +717,7 @@ public class TutorialLogic : MonoBehaviour
 				string newText = "+" + tempTile.combat.ToString();
 				InstantiateStamUpPanel (newText, tempObj.transform.position);
 				playerStamina += tempTile.combat;
-				UpdateUI();
+				coinCont.UpdateCoins (tempTile.combat, tempTile._boardLocation);
 
 				int rand = Random.Range (0,greenTileClips.Length);
 				audioSource.PlayOneShot (greenTileClips[rand]);

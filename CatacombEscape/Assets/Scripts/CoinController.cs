@@ -2,42 +2,47 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public struct LocAndAmount
+{
+	public int amount;
+	public string location;
+
+	public LocAndAmount (int amt, string loc)
+	{
+		amount = amt;
+		location = loc;
+	}
+}
+
 public class CoinController : MonoBehaviour
 {
-	public GameObject[] gold;
-	public GameObject[] silver;
+	public GameLogic gameLogic;
+	public GameObject silverPrefab;
+	public Transform silverCoinsSource;
+	public Transform newHandButtonTransform;
+	private Vector3 newHandPosition;
 
-	public Animator[] animatorsGold;
-	public Animator animatorSilver;
+	public float coinWait;
+	public float coinSpeed;
 
 	private AudioSource source;
 	public AudioClip coinShortClip;
-	public AudioClip coinLongClip;
+	//public AudioClip coinLongClip;
 
-	private GameLogic gameLogic;
-	private int previousStam = 0;
-	private bool isAnimating = false;
-
-	private int oldTens;
-	private int oldOnes;
-	private int newTens;
-	private int newOnes;
-	private int tempStam;
-
-	private List<int> coinUpdateStack = new List<int>();
+	private List<LocAndAmount> coinUpdateStack = new List<LocAndAmount>();
 	private bool updateDone = true;
 
-	public void Awake()
+	void Awake()
 	{
 		source = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<AudioSource> ();
+		newHandPosition = newHandButtonTransform.position;
 	}
 
-	public void Update()
+	void Update()
 	{
 		if (coinUpdateStack.Count > 0 && updateDone)
 		{
 			updateDone = false;
-			tempStam = previousStam;
 			if (source == null)
 				Awake();
 			source.PlayOneShot (coinShortClip);
@@ -49,12 +54,86 @@ public class CoinController : MonoBehaviour
 	/// Updates the display of coins in the UI
 	/// </summary>
 	/// <param name="coinAmount">Coin amount</param>
-	public void UpdateCoins (int newStamina)
+	public void UpdateCoins (int amt, string loc)
 	{
-		coinUpdateStack.Add (newStamina);
+		LocAndAmount newValue = new LocAndAmount (amt, loc);
+		coinUpdateStack.Add (newValue);
 		Update();
 	}
 
+	IEnumerator ManageCoins (LocAndAmount locAmt)
+	{
+		Vector3 location;
+		string strLoc = locAmt.location;
+		bool gainCoins = false;
+		if (locAmt.amount > 0)
+			gainCoins = true;
+		
+		for (int i = 0; i < Mathf.Abs (locAmt.amount); i++)
+		{
+			if (gainCoins) // Animate from location to silverCoinsSource
+			{
+				// strLoc will always be a tile when gaining coins
+				location = gameLogic.GetGridPanelPosition (strLoc);
+				AddCoin (location);
+			}
+			else // Animate from silverCoinsSource to location
+			{
+				if (strLoc == "newHandButton")
+				{
+					location = newHandPosition;
+				}
+				else // every other location will be a tile
+				{
+					location = gameLogic.GetGridPanelPosition (strLoc);
+				}
+
+				RemoveCoin (location);
+			}
+			yield return new WaitForSeconds (coinWait);
+		}
+
+		updateDone = true;
+		gameLogic.UpdateUI();
+		coinUpdateStack.RemoveAt (0);
+	}
+
+	private void AddCoin (Vector3 startLoc)
+	{
+		GameObject coin = (GameObject) Instantiate (silverPrefab);
+		coin.transform.SetParent (silverCoinsSource, false);
+		coin.transform.position = startLoc;
+		StartCoroutine (LerpCoin (coin, Time.time, startLoc, silverCoinsSource.position));
+	}
+
+	private void RemoveCoin (Vector3 destLoc)
+	{
+		GameObject coin = (GameObject) Instantiate (silverPrefab);
+		coin.transform.SetParent (silverCoinsSource, false);
+		coin.transform.position = silverCoinsSource.position;
+		StartCoroutine (LerpCoin (coin, Time.time, silverCoinsSource.position, destLoc));
+	}
+
+	IEnumerator LerpCoin (GameObject coin, float startTime, Vector3 initialPosition, Vector3 targetPosition)
+	{
+		bool done = false;
+
+		while (!done)
+		{
+			//coin.transform.position = Vector3.Lerp (initialPosition, targetPosition, fracJourney);
+			coin.transform.position = Vector3.Lerp (coin.transform.position, targetPosition, coinSpeed * 1.5f * Time.deltaTime);
+
+			if (Vector3.Distance (coin.transform.position, targetPosition) < 0.1f)
+			{
+				break;
+			}
+			yield return null;
+		}
+		Destroy (coin);
+	}
+
+
+	/*
 	IEnumerator ManageCoins (int newStamina)
 	{
 		while (tempStam != newStamina)
@@ -201,5 +280,7 @@ public class CoinController : MonoBehaviour
 		animatorSilver.SetBool ("silverAnimRev", false);
 		isAnimating = false;
 	}
+	*/
+
 }
 
