@@ -60,14 +60,16 @@ public class GameLogic : MonoBehaviour
 	private bool faderRunning = false;
 	public GameObject enemyPanel;
 	public Text enemyStamDown;
-	public GameObject statPanel; //this is what pops up at gameover
+	public Text gameScore;
+	// Game Over panels and components
+	public GameObject statPanel;
 	public Text lvlNoClearedText;
 	public Text greenCollectedText;
 	public Text redAvoidedText;
 	public Text tileNoPlacedText;
 	public Text pointTot;
 	public GameObject newHighscore;
-    // These can be accessed and set with 'string tot = pointTot.text;' and 'pointTot.text = "100"'
+	// Pause components
     public Text pauseLvlText;
     public Text pauseGreenText;
     public Text pauseRedText;
@@ -1165,11 +1167,10 @@ public class GameLogic : MonoBehaviour
     /// <returns></returns>
 	IEnumerator ClickToClose (GameObject panel)
 	{
-		yield return new WaitForSeconds (0.3f);
-		while (!Input.GetMouseButtonUp (0))
+		do
 		{
 			yield return null;
-		}
+		}while (!Input.GetMouseButtonUp (0));
 		panel.SetActive (false);
 		PlayerPrefs.SetString ("Paused", "false");
 	}

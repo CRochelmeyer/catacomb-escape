@@ -27,28 +27,19 @@ public class MenuBehavior : MonoBehaviour
 			highScorePanel.SetActive (true);
 			highScoreValue.text = hs;
 		}
-		//Screen.SetResolution (650, 1040, false);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 
-    // Not in use 18/08/16
 	public void LoadScene(string sceneName)
 	{
 		SceneManager.LoadScene (sceneName);
 		PlayerPrefs.SetString ("PlayFromMenu", "true");
 	}
 
-    // Not in use 18/08/16
     public void Quit()
 	{
 		Application.Quit ();
 	}
 
-    // Not in use 18/08/16
     public void ResetPlayerPrefs()
 	{
 		PlayerPrefs.SetString ("FirstPlay", "true");
@@ -56,7 +47,6 @@ public class MenuBehavior : MonoBehaviour
 		SceneManager.LoadScene ("menu");
 	}
 
-    // Not in use 18/08/16
     public void DisplayHighscoreStats()
 	{
 		statsPanel.SetActive (true);
