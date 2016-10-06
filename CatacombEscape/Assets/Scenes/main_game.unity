@@ -4834,12 +4834,24 @@ Prefab:
       objectReference: {fileID: 8300000, guid: 7539fb9bb32ba404e8f9d6d3e6c36ce0, type: 3}
     - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
       propertyPath: coinWait
-      value: 0.2
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 11434810, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
       propertyPath: speed
       value: 150
       objectReference: {fileID: 0}
+    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: coinTotTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: coinSource
+      value: 
+      objectReference: {fileID: 504433934}
+    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: goldPrefab
+      value: 
+      objectReference: {fileID: 150486, guid: 0baf410b591bad741a7b9f2cae2f2be6, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
   m_IsPrefabParent: 0
@@ -4921,6 +4933,10 @@ Prefab:
     - target: {fileID: 22400138, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 165202, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
+      propertyPath: m_Name
+      value: CoinHolder
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}

@@ -18,12 +18,13 @@ public class CoinController : MonoBehaviour
 {
 	public GameLogic gameLogic;
 	public GameObject silverPrefab;
-	public Transform silverCoinsSource;
+	public GameObject goldPrefab;
+	public Transform coinSource;
 	public Transform newHandButtonTransform;
 	private Vector3 newHandPosition;
 
 	public float coinWait;
-	public float coinSpeed;
+	public float coinTotTime;
 
 	private AudioSource source;
 	public AudioClip coinShortClip;
@@ -68,29 +69,37 @@ public class CoinController : MonoBehaviour
 		bool gainCoins = false;
 		if (locAmt.amount > 0)
 			gainCoins = true;
-		
-		for (int i = 0; i < Mathf.Abs (locAmt.amount); i++)
-		{
-			if (gainCoins) // Animate from location to silverCoinsSource
-			{
-				// strLoc will always be a tile when gaining coins
-				location = gameLogic.GetGridPanelPosition (strLoc);
-				AddCoin (location);
-			}
-			else // Animate from silverCoinsSource to location
-			{
-				if (strLoc == "newHandButton")
-				{
-					location = newHandPosition;
-				}
-				else // every other location will be a tile
-				{
-					location = gameLogic.GetGridPanelPosition (strLoc);
-				}
 
-				RemoveCoin (location);
+		if (gainCoins)
+		{
+			location = gameLogic.GetGridPanelPosition (strLoc);
+			AddCoin (location);
+		}
+		else
+		{
+			for (int i = 0; i < Mathf.Abs (locAmt.amount); i++)
+			{
+				if (gainCoins) // Animate from location to silverCoinsSource
+				{
+					// strLoc will always be a tile when gaining coins
+					location = gameLogic.GetGridPanelPosition (strLoc);
+					AddCoin (location);
+				}
+				else // Animate from silverCoinsSource to location
+				{
+					if (strLoc == "newHandButton")
+					{
+						location = newHandPosition;
+					}
+					else // every other location will be a tile
+					{
+						location = gameLogic.GetGridPanelPosition (strLoc);
+					}
+
+					RemoveCoin (location);
+				}
+				yield return new WaitForSeconds (coinWait);
 			}
-			yield return new WaitForSeconds (coinWait);
 		}
 
 		updateDone = true;
@@ -100,33 +109,39 @@ public class CoinController : MonoBehaviour
 
 	private void AddCoin (Vector3 startLoc)
 	{
-		GameObject coin = (GameObject) Instantiate (silverPrefab);
-		coin.transform.SetParent (silverCoinsSource, false);
+		GameObject coin = (GameObject) Instantiate (goldPrefab);
+		coin.transform.SetParent (coinSource, false);
 		coin.transform.position = startLoc;
-		StartCoroutine (LerpCoin (coin, Time.time, startLoc, silverCoinsSource.position));
+		StartCoroutine (LerpCoin (coin, Time.time, startLoc, coinSource.position));
 	}
 
 	private void RemoveCoin (Vector3 destLoc)
 	{
 		GameObject coin = (GameObject) Instantiate (silverPrefab);
-		coin.transform.SetParent (silverCoinsSource, false);
-		coin.transform.position = silverCoinsSource.position;
-		StartCoroutine (LerpCoin (coin, Time.time, silverCoinsSource.position, destLoc));
+		coin.transform.SetParent (coinSource, false);
+		coin.transform.position = coinSource.position;
+		StartCoroutine (LerpCoin (coin, Time.time, coinSource.position, destLoc));
 	}
 
 	IEnumerator LerpCoin (GameObject coin, float startTime, Vector3 initialPosition, Vector3 targetPosition)
 	{
-		bool done = false;
+		//float journeyLength = Vector3.Distance (initialPosition, targetPosition);
+		float elapsedTime = 0;
 
-		while (!done)
+		while (coin.transform.position != targetPosition)
 		{
-			//coin.transform.position = Vector3.Lerp (initialPosition, targetPosition, fracJourney);
-			coin.transform.position = Vector3.Lerp (coin.transform.position, targetPosition, coinSpeed * 1.5f * Time.deltaTime);
+			//float distCovered = (Time.time - startTime) * coinSpeed;
+			//float fracJourney = distCovered / journeyLength;
+
+			elapsedTime += Time.deltaTime;
+
+			coin.transform.position = Vector3.Lerp (initialPosition, targetPosition, elapsedTime / coinTotTime);
+			/*coin.transform.position = Vector3.Lerp (coin.transform.position, targetPosition, coinSpeed * 1.5f * Time.deltaTime);
 
 			if (Vector3.Distance (coin.transform.position, targetPosition) < 0.1f)
 			{
 				break;
-			}
+			}*/
 			yield return null;
 		}
 		Destroy (coin);
