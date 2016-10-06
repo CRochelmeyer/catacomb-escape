@@ -656,6 +656,7 @@ public class GameLogic : MonoBehaviour
     #region Event Functions
 
 	/// <summary>
+    /// Used in determining valid enemy movement directions.
 	/// Checks a given direction, if the move is valid returns true.
 	/// </summary>
 	/// <returns>True if the move is valid.</returns>
@@ -677,6 +678,10 @@ public class GameLogic : MonoBehaviour
 
                 if (curRow - 1 >= 0)
                 {
+                    if (tileBoard[curRow - 1, curCol] == null)
+                    {
+                        Debug.Log("The tile [" + (curRow - 1).ToString() + curCol.ToString() + "] is null.");
+                    }
                     newTile = tileBoard[curRow - 1, curCol];
                     newLocStr = (curRow - 1).ToString() + curCol.ToString();
                 }
@@ -728,20 +733,61 @@ public class GameLogic : MonoBehaviour
                 return false;
         }
 
+        // Just some debugging code.
+        // Used for printing tile info to the debug log.
+        string debug = "# ";
+
+        foreach (Tile tile in tileBoard)
+        {
+            if(tile._isEntrySet)
+            {
+                debug += tile._boardLocation + " ";
+
+                if (tile._event != "")
+                {
+                    debug += "[" + tile._event + "] ";
+                }
+            }
+        }
+
+        //Debug.Log("_isEntrySet Tiles: " + debug);
+
+        debug = "# ";
+
+        foreach (Tile tile in tileBoard)
+        {
+            if (tile._event == " red" || tile._event == " green")
+            {
+                debug += tile._event;
+            }
+        }
+
+        //Debug.Log("Event Tiles: " + debug);
+        
+        //Debug.Log(">>>> Current Tile info: " + "_isEntrySet: " + currentTile._isEntrySet + "| Boardlocation: " + curLocStr + " | Event: " + currentTile._event + " | ID: " + currentTile._tileID);
+        //Debug.Log(">>>> Target Tile info: "+ "_isEntrySet: "+ newTile._isEntrySet + "| Boardlocation: " + newLocStr + " | Event: " + newTile._event + " | ID: " + newTile._tileID);
 
         //Debug.Log("Checking for move [" + curRow + "," + curCol + "] -> [" + (curRow - 1) + "," + curCol + "]");
 
-        string debugStr = "[Trying move [" + curLocStr + " -> " + newLocStr + "]"; // Rather than having a million debug messages, add messages to this string, and use one debug.log
+        string debugStr = "[Trying move [" + currentTile._boardLocation + " -> " + newTile._boardLocation + "] (" + dir + ")"; // Rather than having a million debug messages, add messages to this string, and use one debug.log
 
         // Moving from a tile placed by the player.
         if (currentTile._isEntrySet)
         {
-            debugStr += " [Enemy at [" + curLocStr + "] is moving from a non-empty tile] ";
+            debugStr += " [Enemy at [" + curLocStr + "] is checking move from a non-empty tile] ";
 
             // If the target is a tile as well. Prevent moving to entrance, exit, chest tiles and other enemies. 
-            if (newTile._isEntrySet && newTile._tileID != "tile_exit" && newTile._tileID != "tile_entrance" && newTile._event != "green" && newTile._event != "red" && newLocStr != playerLoc)
+            if (newTile._isEntrySet && (newTile._tileID != "tile_exit" && newTile._tileID != "tile_entrance") && (newTile._event != "green" && newTile._event != "red") && (newLocStr != playerLoc))
             {
-                if (validMove.ValidMovement("up", tileBoard[curRow, curCol], tileBoard[curRow - 1, curCol]))
+
+                string debugStr2 = "";
+                foreach (string entry in newTile._entry)
+                {
+                    debugStr2 += entry + " ";
+                }
+                //Debug.Log("Target tile ("+ newLocStr +") entries: ");
+
+                if (validMove.ValidMovement(dir, currentTile, newTile))
                 {
                     debugStr += " [Target tile ("+ newLocStr +") was placed by player, and is a valid move] ";
                     isValidMove = true;
@@ -756,7 +802,7 @@ public class GameLogic : MonoBehaviour
             else
             {
                 // Target tile is empty
-                if (!newTile._isEntrySet && currentTile.ValidMove("up") && newTile._event != "green" && newTile._event != "red")
+                if (!newTile._isEntrySet && currentTile.ValidMove(dir) && (newTile._event != "green" && newTile._event != "red"))
                 {
                     debugStr += " [Target tile (" + newLocStr + ") is empty, and current tile has relevant exit] ";
                     isValidMove = true;
@@ -764,6 +810,15 @@ public class GameLogic : MonoBehaviour
                 else
                 {
                     debugStr += " [Target tile (" + newLocStr + ") is empty, but current tile does not have relevent exit] ";
+
+                    debugStr += "Fucking why? " + "_isEntrySet? " + newTile._isEntrySet + ", Valid move? " + currentTile.ValidMove("dir") + ", An event? " + newTile._event;
+
+                    debugStr += " [Tile had ";
+                    foreach (string entry in currentTile._entry)
+                    {
+                        debugStr += entry + " ";
+                    }
+                    debugStr += "]";
                 }
             }
 
@@ -771,24 +826,37 @@ public class GameLogic : MonoBehaviour
         // Moving from an empty tile
         else
         {
-            debugStr += " [Enemy at [" + curLocStr + "] is moving from an empty tile] ";
+            debugStr += " [Enemy at [" + curLocStr + "] is checking move from an empty tile] ";
             // Target is not empty
-            if (newTile._isEntrySet && newTile._tileID != "tile_exit" && newTile._tileID != "tile_entrance" && newTile._event != "green" && newTile._event != "red" && newLocStr != playerLoc)
+            if (newTile._isEntrySet && (newTile._tileID != "tile_exit" && newTile._tileID != "tile_entrance") && (newTile._event != "green" && newTile._event != "red") && (newLocStr != playerLoc))
             {
-                if (newTile.ValidEntry("up"))
+                if (newTile.ValidEntry(dir))
                 {
                     debugStr += " [Target tile (" + newLocStr + ") is player-placed, and current tile is empty] ";
                     isValidMove = true;
                 }
+                else
+                {
+                    debugStr += " [The target tile does not have the correct entry]";
+                }
             }
-            else if (newTile._event != "green" && newTile._event != "red")
+            else if ((newTile._event == "green") || (newTile._event == "red"))
+            {
+                // If there is an event, then the move is invalid.
+                debugStr += " [Target tile contains a "+ newTile._event + " event, and is thus an invalid move.]";
+            }
+            else if (newTile._tileID == null)
             {
                 debugStr += " [Target tile (" + newLocStr + ") is empty, and current tile is also empty] ";
                 isValidMove = true;
             }
         }
 
-        Debug.Log(debugStr);
+
+        //debugStr += " Target tile event: " + newTile._event;
+
+
+        //Debug.Log(debugStr);
 
         return isValidMove;
 	}
@@ -881,41 +949,45 @@ public class GameLogic : MonoBehaviour
 
 				var moves = new List<string>();
 
-				// Check for available moves
-				if (CheckEnemyMove ("up", currow, curcol)) {
+                //Debug.Log("###################################################");
+                //Debug.Log("Checking moves for Enemy at [" + etloc + "]");
+                //Debug.Log("###################################################");
+
+                // Check for available moves
+                if (CheckEnemyMove ("up", currow, curcol)) {
 					moves.Add ("up");
-					Debug.Log ("["+ currow +"," + curcol +"] can move up.");
+					//Debug.Log ("["+ currow +"," + curcol +"] can move up.");
 				}
 
 				if (CheckEnemyMove ("down", currow, curcol)) {
 					moves.Add ("down");
-					Debug.Log ("["+ currow +"," + curcol +"] can move down.");
+					//Debug.Log ("["+ currow +"," + curcol +"] can move down.");
 				}
 
 				if (CheckEnemyMove ("left", currow, curcol)) {
 					moves.Add ("left");
-					Debug.Log ("["+ currow +"," + curcol +"] can move left.");
+					//Debug.Log ("["+ currow +"," + curcol +"] can move left.");
 				}
 
 				if (CheckEnemyMove ("right", currow, curcol)) {
 					moves.Add ("right");
-					Debug.Log ("["+ currow +"," + curcol +"] can move right.");
+					//Debug.Log ("["+ currow +"," + curcol +"] can move right.");
 				}
 
 
-                Debug.Log("Available moves for enemy " + etloc + ": ");
+                //Debug.Log("Available moves for enemy " + etloc + ": ");
 
                 foreach (string move in moves)
                 {
-                    Debug.Log(move.ToString());
+                    //Debug.Log(move.ToString());
                 }
 
                 // Here's hoping this works lol
                 // Moves an enemy, if it is able
                 if (moves.Count != 0)
                 {
-                    int newMove = Random.Range(1, moves.Count);
-                    Debug.Log("Selecting number from 1 to " + moves.Count);
+                    int newMove = Random.Range(0,moves.Count);
+                    //Debug.Log("Selecting number from 1 to " + moves.Count);
                     Debug.Log("Enemy at [" + currow.ToString() + curcol.ToString() + "] moving " + moves[newMove].ToString());
 
                     MoveEnemy(moves[newMove], currow, curcol, i);
@@ -995,6 +1067,7 @@ public class GameLogic : MonoBehaviour
                 Destroy(tempObj);
                 tempTile._isActive = false;
             }
+            tempTile._event = ""; // Get rid of the damn event after it's triggered.
             CheckStamina();
         }
     }
