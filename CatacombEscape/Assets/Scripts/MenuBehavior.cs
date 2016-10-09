@@ -40,13 +40,6 @@ public class MenuBehavior : MonoBehaviour
 		Application.Quit ();
 	}
 
-    public void ResetPlayerPrefs()
-	{
-		PlayerPrefs.SetString ("FirstPlay", "true");
-		PlayerPrefs.SetString ("HighScore", "");
-		SceneManager.LoadScene ("menu");
-	}
-
     public void DisplayHighscoreStats()
 	{
 		statsPanel.SetActive (true);
@@ -56,7 +49,7 @@ public class MenuBehavior : MonoBehaviour
 		redAvoided.text = PlayerPrefs.GetString ("RedAvoided");
 		tileNoPlaced.text = PlayerPrefs.GetString ("TileNoPlaced");
 
-		StartCoroutine (ClickToClose (statsPanel));
+		//StartCoroutine (ClickToClose (statsPanel));
 	}
 
 	IEnumerator ClickToClose (GameObject panel)

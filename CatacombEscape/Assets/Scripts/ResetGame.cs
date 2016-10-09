@@ -40,4 +40,12 @@ public class ResetGame : MonoBehaviour
 		yield return new WaitForSeconds (5);
 		index = 0;
 	}
+
+	public void ResetPlayerPrefs()
+	{
+		PlayerPrefs.SetString ("FirstPlay", "true");
+		PlayerPrefs.SetString ("HighScore", "");
+		PlayerPrefs.SetInt ("Diamonds", 0);
+		SceneManager.LoadScene ("menu");
+	}
 }
