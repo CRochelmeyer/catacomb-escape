@@ -62,6 +62,7 @@ public class GameLogic : MonoBehaviour
 	public GameObject enemyPanel;
 	public Text enemyStamDown;
 	public Text gameScore;
+	public Text diamondAmount;
 	// Game Over panels and components
 	public GameObject statPanel;
 	public Text lvlNoClearedText;
@@ -100,6 +101,7 @@ public class GameLogic : MonoBehaviour
 	private bool nextlevel = false;
 	private bool exiting = false;
 	private int playerStamina;
+	private int diamonds;
 	private string playerLoc="";
 	private string destLoc = "";
 	private string mouseLocation = "";
@@ -145,6 +147,15 @@ public class GameLogic : MonoBehaviour
     //awake called behind start
     void Awake()
     {
+		if (PlayerPrefs.HasKey ("Diamonds"))
+		{
+			diamonds = PlayerPrefs.GetInt ("Diamonds");
+		}
+		else
+		{
+			diamonds = 0;
+		}
+
 		PlayerPrefs.SetString ("TutorialScene", "false");
 
         //refresh and initialse redstep per awake call
@@ -348,6 +359,12 @@ public class GameLogic : MonoBehaviour
             int pindex = 0;
             exiting = true;
             audioSource.PlayOneShot(movementClips[rand], 1.0f);
+
+			// Award diamond to player
+			diamonds++;
+			UpdateUI();
+
+			// Move player out of level
             cellindex.TryGetValue(playerLoc, out pindex);
             movePlayer.PlayerExits(gridPanels[pindex]);
         }
@@ -635,6 +652,8 @@ public class GameLogic : MonoBehaviour
             PlayerPrefs.SetString("TileNoPlaced", tileNoPlacedText.text);
             newHighscore.SetActive(true);
         }
+
+		PlayerPrefs.SetInt ("Diamonds", diamonds);
     }
 
     /// <summary>
@@ -835,7 +854,8 @@ public class GameLogic : MonoBehaviour
                 audioSource.PlayOneShot(greenTileClips[rand]);
 
                 //increment the greens taken
-                greencol++;
+				greencol++;
+				UpdateUI();
             }
 
             if (tempObj != null)
@@ -1162,6 +1182,7 @@ public class GameLogic : MonoBehaviour
 
 		CalculateScore ();
 		gameScore.text = score.ToString();
+		diamondAmount.text = diamonds.ToString();
     }
 
     /// <summary>

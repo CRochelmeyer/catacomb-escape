@@ -380,6 +380,12 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 92011322}
+--- !u!114 &93748508 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11411364, guid: 9a0fa0a378dbe5c49beae160c02f7490,
+    type: 2}
+  m_PrefabInternal: {fileID: 986309891}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &115084033
 GameObject:
   m_ObjectHideFlags: 0
@@ -3780,7 +3786,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22474768, guid: 9a0fa0a378dbe5c49beae160c02f7490, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 7.5
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: 22474768, guid: 9a0fa0a378dbe5c49beae160c02f7490, type: 2}
       propertyPath: m_SizeDelta.x
@@ -4990,6 +4996,10 @@ Prefab:
       propertyPath: gameScore
       value: 
       objectReference: {fileID: 173914586}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: diamondAmount
+      value: 
+      objectReference: {fileID: 93748508}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
   m_IsPrefabParent: 0
