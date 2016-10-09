@@ -1159,6 +1159,9 @@ public class GameLogic : MonoBehaviour
         }
         GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
         tempObj.GetComponent<Text>().text = playerStamina.ToString();
+
+		CalculateScore ();
+		gameScore.text = score.ToString();
     }
 
     /// <summary>
@@ -1319,7 +1322,6 @@ public class GameLogic : MonoBehaviour
 
 			if (showRemoveTilePop)
 			{
-				Debug.Log ("Display remove tile pop up");
 				DisplayClickPanel (removeTilePopUp);
 				showRemoveTilePop = false;
 			}
