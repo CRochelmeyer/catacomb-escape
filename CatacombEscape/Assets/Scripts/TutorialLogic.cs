@@ -56,6 +56,7 @@ public class TutorialLogic : MonoBehaviour
 	private bool faderRunning = false;
 	public GameObject enemyPanel;
 	public Text enemyStamDown;
+	public Text diamondAmount;
 	public GameObject tutCompletePanel;
 	#endregion
 
@@ -111,8 +112,9 @@ public class TutorialLogic : MonoBehaviour
 	Dictionary<string, string> eventindex = new Dictionary<string, string>();
 	//sprite holders drag sprites via inspector
 
-	private GameObject btmPanel;
-	private GameObject[] handTiles;
+	public GameObject btmPanel;
+	public GameObject[] handTiles;
+	private GameObject[] handTilesDrag;
 	private string exit;
 	//initiate a static instance of gamelogic to be used globally...
 	private static TutorialLogic instance = null;
@@ -128,6 +130,11 @@ public class TutorialLogic : MonoBehaviour
 	//awake called behind start
 	void Awake()
 	{
+		if (PlayerPrefs.HasKey ("Diamonds"))
+		{
+			diamondAmount.text = PlayerPrefs.GetInt ("Diamonds").ToString();
+		}
+
 		PlayerPrefs.SetString ("TutorialScene", "true");
 		audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource> ();
 		audioSource.PlayOneShot (startGameClip, 0.5f);
@@ -218,16 +225,16 @@ public class TutorialLogic : MonoBehaviour
 			{
 				if (feedHand == 0)
 				{
-					// Generate hand with "up,right,down", "down,left", "up, right, left" and "right,left"
-					GenerateHand (8, 0, 9, 3);
+					// Generate hand with "right,left", "down,left", "up,right,down" and "up, right, left"
+					GenerateHand (3, 0, 8, 9);
 					feedHand++;
 					emptyhand = false;
-					handTile0.AddComponent<Draggable>();
+					handTile2.AddComponent<Draggable>();
 				}
 				else if (feedHand == 1)
 				{
-					// Generate hand with "right,left", "up,right,down", "up,down" and "up, right"
-					GenerateHand (3, 8, 4, 7);
+					// Generate hand with "up, right", "up,right,down", "right,left" and "up,down"
+					GenerateHand (7, 8, 3, 4);
 					feedHand++;
 					emptyhand = false;
 				}
@@ -253,16 +260,16 @@ public class TutorialLogic : MonoBehaviour
 		switch (placementIndex)
 		{
 		case 0:
-			handTile0.AddComponent<Draggable>();
-			break;
-		case 3:
-			handTile1.AddComponent<Draggable>();
-			break;
-		case 2:
 			handTile2.AddComponent<Draggable>();
 			break;
-		case 1:
+		case 3:
+			handTile0.AddComponent<Draggable>();
+			break;
+		case 2:
 			handTile3.AddComponent<Draggable>();
+			break;
+		case 1:
+			handTile1.AddComponent<Draggable>();
 			break;
 		}
 	}
@@ -582,9 +589,9 @@ public class TutorialLogic : MonoBehaviour
 			}
 		}
 		//check if hand is empty (one remaining to be destroyed), draw it using tag handDrag
-		handTiles = GameObject.FindGameObjectsWithTag("handDrag");
+		handTilesDrag = GameObject.FindGameObjectsWithTag("handDrag");
 
-		if (handTiles.Length == 1)
+		if (handTilesDrag.Length == 1)
 		{
 			//assign emptyhand bool
 			emptyhand = true;
@@ -644,19 +651,19 @@ public class TutorialLogic : MonoBehaviour
 	/// </summary>
 	public void NewHand()
 	{
-		handTiles = GameObject.FindGameObjectsWithTag("handDrag");
-		if (handTiles != null)
+		handTilesDrag = GameObject.FindGameObjectsWithTag("handDrag");
+		if (handTilesDrag != null)
 		{
-			for (int i =0; i<handTiles.Length;i++)
+			for (int i =0; i<handTilesDrag.Length;i++)
 			{
-				Destroy(handTiles[i]);
+				Destroy(handTilesDrag[i]);
 			}
 		}
 		InstantiateStamDownPanel ("-" + discardCost, movePlayer.PlayerLocation);
 		playerStamina += - discardCost;
 
-		// Generate hand with "up,down,left", "right,left", "up, right, left" and "up,down"
-		GenerateHand (5, 3, 9, 4);
+		// Generate hand with "up,down", "right,left", "up,down,left" and "up, right, left"
+		GenerateHand (4, 3, 5, 9);
 		feedHand++;
 		emptyhand = false;
 
@@ -666,7 +673,7 @@ public class TutorialLogic : MonoBehaviour
 
 		discardButton.interactable = false;
 
-		handTile0.AddComponent<Draggable>();
+		handTile2.AddComponent<Draggable>();
 	}
 
 	/// <summary>
@@ -914,8 +921,8 @@ public class TutorialLogic : MonoBehaviour
 	{       
 		//approaching hand generation via grabbing each individual UI element and updating the sprite image and render...didnt work out 13/04
 		//actaullyworking just rendered tiny and behind default image too...13/04
-		handTiles = GameObject.FindGameObjectsWithTag ("handDefault");
-		btmPanel = GameObject.FindGameObjectWithTag ("bottomPanel");
+		//handTiles = GameObject.FindGameObjectsWithTag ("handDefault");
+		//btmPanel = GameObject.FindGameObjectWithTag ("bottomPanel");
 		//check for null
 		if (handTiles != null)
 		{
@@ -934,15 +941,15 @@ public class TutorialLogic : MonoBehaviour
 			handTile0.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
 
 			// SET TILE #2
-			handTile3 = Instantiate (handTiles[1]);
-			handTile3.transform.localScale = handTiles [1].transform.localScale;
-			handTile3.transform.localPosition = handTiles [1].transform.localPosition;
+			handTile1 = Instantiate (handTiles[1]);
+			handTile1.transform.localScale = handTiles [1].transform.localScale;
+			handTile1.transform.localPosition = handTiles [1].transform.localPosition;
 			//set tag so handTiles above doesnt grab clones as well.
-			handTile3.tag = "handDrag";
+			handTile1.tag = "handDrag";
 			//assign new object correct parents
-			handTile3.transform.SetParent (btmPanel.transform, false);
-			handTile3.GetComponent <Image>().sprite = tileSprite [idx1] as Sprite;
-			handTile3.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
+			handTile1.transform.SetParent (btmPanel.transform, false);
+			handTile1.GetComponent <Image>().sprite = tileSprite [idx1] as Sprite;
+			handTile1.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
 
 			// SET TILE #3
 			handTile2 = Instantiate (handTiles[2]);
@@ -956,15 +963,17 @@ public class TutorialLogic : MonoBehaviour
 			handTile2.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
 
 			// SET TILE #4
-			handTile1 = Instantiate (handTiles[3]);
-			handTile1.transform.localScale = handTiles [3].transform.localScale;
-			handTile1.transform.localPosition = handTiles [3].transform.localPosition;
+			handTile3 = Instantiate (handTiles[3]);
+			handTile3.transform.localScale = handTiles [3].transform.localScale;
+			handTile3.transform.localPosition = handTiles [3].transform.localPosition;
 			//set tag so handTiles above doesnt grab clones as well.
-			handTile1.tag = "handDrag";
+			handTile3.tag = "handDrag";
 			//assign new object correct parents
-			handTile1.transform.SetParent (btmPanel.transform, false);
-			handTile1.GetComponent <Image>().sprite = tileSprite [idx3] as Sprite;
-			handTile1.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
+			handTile3.transform.SetParent (btmPanel.transform, false);
+			handTile3.GetComponent <Image>().sprite = tileSprite [idx3] as Sprite;
+			handTile3.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
+
+			handTilesDrag = GameObject.FindGameObjectsWithTag("handDrag");
 		}
 	}
 

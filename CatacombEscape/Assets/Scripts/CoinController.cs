@@ -17,6 +17,7 @@ public struct LocAndAmount
 public class CoinController : MonoBehaviour
 {
 	public GameLogic gameLogic;
+	public TutorialLogic tutLogic;
 	public GameObject silverPrefab;
 	public GameObject goldPrefab;
 	public Transform coinSource;
@@ -72,7 +73,10 @@ public class CoinController : MonoBehaviour
 
 		if (gainCoins)
 		{
-			location = gameLogic.GetGridPanelPosition (strLoc);
+			if (PlayerPrefs.GetString ("TutorialScene") == "true")
+				location = tutLogic.GetGridPanelPosition (strLoc);
+			else
+				location = gameLogic.GetGridPanelPosition (strLoc);
 			AddCoin (location);
 		}
 		else
@@ -82,7 +86,10 @@ public class CoinController : MonoBehaviour
 				if (gainCoins) // Animate from location to silverCoinsSource
 				{
 					// strLoc will always be a tile when gaining coins
-					location = gameLogic.GetGridPanelPosition (strLoc);
+					if (PlayerPrefs.GetString ("TutorialScene") == "true")
+						location = tutLogic.GetGridPanelPosition (strLoc);
+					else
+						location = gameLogic.GetGridPanelPosition (strLoc);
 					AddCoin (location);
 				}
 				else // Animate from silverCoinsSource to location
@@ -93,7 +100,10 @@ public class CoinController : MonoBehaviour
 					}
 					else // every other location will be a tile
 					{
-						location = gameLogic.GetGridPanelPosition (strLoc);
+						if (PlayerPrefs.GetString ("TutorialScene") == "true")
+							location = tutLogic.GetGridPanelPosition (strLoc);
+						else
+							location = gameLogic.GetGridPanelPosition (strLoc);
 					}
 
 					RemoveCoin (location);
@@ -103,7 +113,8 @@ public class CoinController : MonoBehaviour
 		}
 
 		updateDone = true;
-		gameLogic.UpdateUI();
+		if (PlayerPrefs.GetString ("TutorialScene") != "true")
+			gameLogic.UpdateUI();
 		coinUpdateStack.RemoveAt (0);
 	}
 
