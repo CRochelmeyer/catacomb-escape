@@ -5000,6 +5000,18 @@ Prefab:
       propertyPath: diamondAmount
       value: 
       objectReference: {fileID: 93748508}
+    - target: {fileID: 2012328, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_BackGroundColor.r
+      value: 0.1137255
+      objectReference: {fileID: 0}
+    - target: {fileID: 2012328, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_BackGroundColor.g
+      value: 0.0627451
+      objectReference: {fileID: 0}
+    - target: {fileID: 2012328, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_BackGroundColor.b
+      value: 0.007843138
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
   m_IsPrefabParent: 0

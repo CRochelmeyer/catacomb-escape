@@ -336,7 +336,9 @@ PlayerSettings:
   psp2UseDebugIl2cppLibs: 0
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: 
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    1: 4
+    4: 4
   metroPackageName: CatacombEscape
   metroPackageVersion: 
   metroCertificatePath: 
