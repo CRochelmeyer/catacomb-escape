@@ -223,18 +223,6 @@ public class GameLogic : MonoBehaviour
 
         PlayerPrefs.SetString ("Paused", "false");
 
-        //initialise player data
-        CheckStamina();
-        if (playerStamina < standardStamina)
-		{
-			int stamUpAmt = standardStamina - playerStamina;
-			string stamUpStr = stamUpAmt.ToString();
-			coinCont.UpdateCoins (stamUpAmt, playerLoc);
-			Vector3 playerPos = GetGridPanelPosition (playerLoc);
-			InstantiateStamUpPanel (stamUpStr, playerPos);
-            playerStamina = standardStamina;
-        }
-
         GameObject tempObj = GameObject.FindGameObjectWithTag ("GameLevel");
         tempObj.GetComponent<Text>().text = "Lvl " + pLevel;
 
@@ -251,6 +239,7 @@ public class GameLogic : MonoBehaviour
         }
 
         GenerateBoardLogic();
+
     }
 
     /// <summary>
@@ -375,6 +364,22 @@ public class GameLogic : MonoBehaviour
             CheckStamina();
         }
     }
+
+	// Initialise player data
+	public void InitPlayer()
+	{
+		CheckStamina();
+		if (playerStamina < standardStamina)
+		{
+			int stamUpAmt = standardStamina - playerStamina;
+			string stamUpStr = stamUpAmt.ToString();
+			coinCont.UpdateCoins (stamUpAmt, playerLoc);
+			Vector3 playerPos = GetGridPanelPosition (playerLoc);
+			InstantiateStamUpPanel (stamUpStr, playerPos);
+			playerStamina = standardStamina;
+			UpdateUI();
+		}
+	}
 
     #endregion
 

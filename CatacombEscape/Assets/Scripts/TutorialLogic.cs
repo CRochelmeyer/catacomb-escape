@@ -305,17 +305,6 @@ public class TutorialLogic : MonoBehaviour
 
 		PlayerPrefs.SetString ("Paused", "false");
 
-		//initialise player data
-		if (playerStamina < standardStamina)
-		{
-			int stamUpAmt = standardStamina - playerStamina;
-			string stamUpStr = stamUpAmt.ToString();
-			coinCont.UpdateCoins (stamUpAmt, playerLoc);
-			Vector3 playerPos = GetGridPanelPosition (playerLoc);
-			InstantiateStamUpPanel (stamUpStr, playerPos);
-			playerStamina = standardStamina;
-		}
-
 		//setup board with rng sprites
 		GenerateBoard();
 
@@ -368,6 +357,22 @@ public class TutorialLogic : MonoBehaviour
 		{
 			//move events
 			MoveEvents();		
+		}
+	}
+
+	// Initialise player data
+	public void InitPlayer()
+	{
+		CheckStamina();
+		if (playerStamina < standardStamina)
+		{
+			int stamUpAmt = standardStamina - playerStamina;
+			string stamUpStr = stamUpAmt.ToString();
+			coinCont.UpdateCoins (stamUpAmt, playerLoc);
+			Vector3 playerPos = GetGridPanelPosition (playerLoc);
+			InstantiateStamUpPanel (stamUpStr, playerPos);
+			playerStamina = standardStamina;
+			UpdateUI();
 		}
 	}
 

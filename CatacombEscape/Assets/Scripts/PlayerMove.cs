@@ -73,7 +73,14 @@ public class PlayerMove : MonoBehaviour
 					pDirection = "";
 
 					if (enteringLevel)
+					{
 						enteringLevel = false;
+
+						if (PlayerPrefs.GetString ("TutorialScene") == "true")
+							tutorialLogic.InitPlayer();
+						else
+							gameLogic.InitPlayer();
+					}
 					else if (exitingLevel)
 					{
 						exitingLevel = false;
@@ -83,7 +90,8 @@ public class PlayerMove : MonoBehaviour
 							tutorialLogic.SetNextLevel = true;
 						else
 							gameLogic.SetNextLevel = true;
-					}else
+					}
+					else
 					{
 						if (PlayerPrefs.GetString ("TutorialScene") == "true")
 							tutorialLogic.SetPlayerLoc ();
