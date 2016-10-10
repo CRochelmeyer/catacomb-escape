@@ -579,7 +579,7 @@ public class GameLogic : MonoBehaviour
 							coinCont.UpdateCoins (-1, playerLoc);
 						}
 					}
-					else
+					else // If the click was out of range. In other words, more than one tile.
 					{
 						List<string> path = Pathing.PathFind(tileBoard, playerLoc, clickLoc);
 						if (!path.Contains("invalid") || !path.Contains("Invalid"))
