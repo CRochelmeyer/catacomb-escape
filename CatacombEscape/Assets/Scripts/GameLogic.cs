@@ -1154,8 +1154,10 @@ public class GameLogic : MonoBehaviour
 				Debug.Log("destroy clone");
 				Destroy(tempObj);
 				tempTile._isActive = false;
+
 			}
 			CheckStamina();
+			tempTile._event = ""; // Event wasn't being destroyed after it was triggered. This should solve that.
 		}
 	}
 
