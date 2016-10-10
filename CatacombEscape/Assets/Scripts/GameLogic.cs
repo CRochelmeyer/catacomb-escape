@@ -1666,7 +1666,7 @@ public class GameLogic : MonoBehaviour
 				int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
 
 				// Prevent deletion if the tile is an exit or entry.
-				if (tileBoard[temprow, tempcol] != null && !tileBoard[temprow, tempcol]._tileID.Contains("exit") && !tileBoard[temprow, tempcol]._tileID.Contains("entrance"))
+				if (tileBoard[temprow, tempcol] != null && !tileBoard[temprow, tempcol]._tileID.Contains("exit") && !tileBoard[temprow, tempcol]._tileID.Contains("entrance") && tileBoard[temprow, tempcol]._isEntrySet == true)
 				{
 					// Ensure player is not on the target tile.
 					if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))] != tileBoard[temprow, tempcol])
