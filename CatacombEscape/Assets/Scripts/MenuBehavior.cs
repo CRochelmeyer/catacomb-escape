@@ -8,6 +8,7 @@ public class MenuBehavior : MonoBehaviour
 	public GameObject highScorePanel;
 	public GameObject noHighScorePanel;
 	public Text highScoreValue;
+	public Text diamondAmount;
 
 	public GameObject statsPanel;
 	public Text highscore;
@@ -27,6 +28,9 @@ public class MenuBehavior : MonoBehaviour
 			highScorePanel.SetActive (true);
 			highScoreValue.text = hs;
 		}
+
+		if (PlayerPrefs.HasKey ("Diamonds"))
+			diamondAmount.text = "x " + PlayerPrefs.GetInt ("Diamonds").ToString();
 	}
 
 	public void LoadScene(string sceneName)
