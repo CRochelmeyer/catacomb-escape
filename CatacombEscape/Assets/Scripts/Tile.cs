@@ -13,6 +13,9 @@ public class Tile
     public string _event { get; set; }
     public int combat { get; set; }
     public string _boardLocation { get; set; }
+    public int heuristic = 0;
+    public int total = 0;
+    public int cost = 0;
 
 	protected Tile() { _isEntrySet = false; }
 
