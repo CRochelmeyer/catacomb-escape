@@ -80,10 +80,11 @@ public class GameLogic : MonoBehaviour
 	public Transform stamPopupsContainer;
 	public GameObject stamUpPrefab;
 	public GameObject stamDownPrefab;
-	#endregion
+    #endregion
 
-	//boolean game conditions
-	private bool gameover = false;
+    //boolean game conditions
+    public bool UserInput { get; set; }
+    private bool gameover = false;
 	private bool emptyhand = true;
 	private bool nextlevel = false;
 	private bool exiting = false;
@@ -134,7 +135,7 @@ public class GameLogic : MonoBehaviour
     void Awake()
     {
 		PlayerPrefs.SetString ("TutorialScene", "false");
-
+        UserInput = false;
         //refresh and initialse redstep per awake call
         redstep = 0;
         audioSource = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<AudioSource> ();
@@ -249,7 +250,11 @@ public class GameLogic : MonoBehaviour
             }
             else if (!exiting)
             {
-                PlayerClick();
+                Debug.Log(UserInput);
+                if (UserInput != true)
+                {
+                    PlayerClick();
+                }
             }
 
             if (nextlevel)
@@ -324,7 +329,6 @@ public class GameLogic : MonoBehaviour
 			// Seems to have worked, for now...
 			tileBoard [System.Int32.Parse (playerLoc.Substring (0, 1)), System.Int32.Parse (playerLoc.Substring (1, 1))]._event = "";
         }
-        Debug.Log("SetPlayerLoc playerloc: " + playerLoc);
         //check if next level...
         if (playerLoc == exit)
         {
@@ -355,7 +359,6 @@ public class GameLogic : MonoBehaviour
         playerStamina--;
         InstantiateStamDownPanel("-1", movePlayer.PlayerLocation);
         UpdateUI();
-        Debug.Log("set player loc start" + loc);
         playerLoc = loc;
         //play event for event tiles    
         if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
@@ -510,9 +513,7 @@ public class GameLogic : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             string clickLoc = "";
-
             clickLoc = MouseLocation;
-
             if (clickLoc != "")
             {
                 int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
@@ -524,6 +525,7 @@ public class GameLogic : MonoBehaviour
                 }
                 if ((tileBoard[temprow, tempcol]._isEntrySet) && (playerLoc != ""))
                 {
+                    UserInput = true;
                     if (validMove.MoveDirection(playerLoc, clickLoc) != "invalid move" && validMove.InRange(playerLoc, clickLoc))
                     {
                         if (validMove.Move(playerLoc, clickLoc, ref tileBoard))
@@ -548,14 +550,16 @@ public class GameLogic : MonoBehaviour
                         List<string> path = Pathing.PathFind(tileBoard, playerLoc, clickLoc);
                         if (!path.Contains("invalid") || !path.Contains("Invalid"))
                         {
+                            //updateUI and the playerstam calculations missing from above method is within the new setplayerloc this uses.
                             destLoc = clickLoc;
-                            movePlayer.UpdatePlayer(gridPanels, path, tileBoard);
+                            movePlayer.UpdatePlayer(gridPanels, path);
                         }
                     }
                 }
                 else
                 {
                     Debug.Log("Invalid player move");
+                    UserInput = false;
                 }
             }
         }

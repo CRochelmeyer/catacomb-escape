@@ -105,7 +105,11 @@ public class PlayerMove : MonoBehaviour
 						if (PlayerPrefs.GetString ("TutorialScene") == "true")
 							tutorialLogic.SetPlayerLoc ();
 						else
-							gameLogic.SetPlayerLoc ();
+                        {
+                            gameLogic.SetPlayerLoc();
+                            //set UserInput to false
+                            gameLogic.UserInput = false;
+                        }
 					}
 				}
 			}
@@ -161,9 +165,9 @@ public class PlayerMove : MonoBehaviour
     /// <summary>
     /// overload for the above method taking in multiple paths
     /// </summary>
-    public void UpdatePlayer(GameObject[] panel, List<string> path , Tile[,] pboard)
+    public void UpdatePlayer(GameObject[] panel, List<string> path)
     {
-        StartCoroutine(MovePath(panel, path, pboard));
+        StartCoroutine(MovePath(panel, path));
     }
     /// <summary>
     /// First coroutine that handles data is passed thru from gameLogic, which than runs a loop to call a second coroutine
@@ -172,28 +176,28 @@ public class PlayerMove : MonoBehaviour
     /// <param name="panel"></param>
     /// <param name="path"></param>
     /// <returns></returns>
-    IEnumerator MovePath(GameObject[] panel, List<string> path , Tile[,] pboard)
+    IEnumerator MovePath(GameObject[] panel, List<string> path)
     {
         for (int i = 0; i < (path.Count - 1); i++)
         {
             int index;
             cellindex.TryGetValue(path[i + 1], out index);
             float distance = Vector3.Distance(player.transform.localPosition, panel[index].transform.localPosition);
-            float overTime = distance / 100;
+            float overTime = distance / 150;
             //set animation get pDirection
             string direction = moveDir.MoveDirection(path[i], path[i + 1]);
             SetAnimation(direction);
+            string loc = path[i + 1];
             StartCoroutine(UpdatePlayerCoroutine(player.transform.localPosition, panel[index].transform.localPosition, overTime));
             if (crRunning == true)
             {
+                gameLogic.SetPlayerLoc(path[i + 1]);
                 yield return new WaitForSeconds(overTime);
                 //update logic of the player position per tile grid move allowing enemies to move. having this code here as this coroutine contains playerloc already
-                GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic>();
-                gameLogic.SetPlayerLoc(path[i + 1]);
             }
         }
-        Debug.Log("MovePath end");
         yield return null;
+        gameLogic.UserInput = false;
     }
     IEnumerator UpdatePlayerCoroutine(Vector3 start, Vector3 target, float overTime)
     {
@@ -201,10 +205,7 @@ public class PlayerMove : MonoBehaviour
         float startTime = Time.time;
         while (Time.time < (startTime + overTime))
         {
-            //Debug.Log(Time.time + " :: " + (startTime + overTime) + "overTime : "+ overTime);
-            //Debug.Log("While COroutine");
             player.transform.localPosition = Vector3.Lerp(start, target, (Time.time - startTime) / overTime);
-            //Debug.Log("Distance between :: " + Vector3.Distance(player.transform.localPosition, target));
             if (Vector3.Distance(player.transform.localPosition, target) < 3)
             {
                 //set player to target and stop animation
