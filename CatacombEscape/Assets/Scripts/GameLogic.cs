@@ -397,7 +397,8 @@ public class GameLogic : MonoBehaviour
 		playerStamina--;
 		InstantiateStamDownPanel("-1", movePlayer.PlayerLocation);
 		UpdateUI();
-		Debug.Log("set player loc start" + loc);
+        coinCont.UpdateCoins(-1, playerLoc);
+        Debug.Log("set player loc start" + loc);
 		playerLoc = loc;
 		//play event for event tiles    
 		if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")

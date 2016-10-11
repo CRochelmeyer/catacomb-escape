@@ -16,8 +16,10 @@ public class PlayerMove : MonoBehaviour
 	private string pDirection = "";
 	private Vector3 targetPosition;
 	private Vector3 initialPosition;
-
-	public float speed = 0.01f;
+    private bool coinUpdated = false;
+    CoinController coinCont;
+    private string coinString="";
+    public float speed = 0.01f;
 	private float startTime;
 	private float journeyLength;
 	private bool moving = false;
@@ -35,7 +37,8 @@ public class PlayerMove : MonoBehaviour
 
 	void Start ()
 	{
-		if (PlayerPrefs.GetString ("TutorialScene") == "true")
+        coinCont = GameObject.FindGameObjectWithTag("Scripts").GetComponent<CoinController>();
+        if (PlayerPrefs.GetString ("TutorialScene") == "true")
 			tutorialLogic = GameObject.FindObjectOfType<TutorialLogic> ();
 		else
 			gameLogic = GameObject.FindObjectOfType<GameLogic> ();
@@ -62,24 +65,6 @@ public class PlayerMove : MonoBehaviour
 			
 			if (pDirection != "" && pDirection != "invalid move")
 			{
-                /*switch (pDirection)
-				{
-					case "up":
-						animator.SetInteger ("Direction", 3); //3=climb
-						break;
-
-					case "down":
-						animator.SetInteger ("Direction", 3); //3=climb
-						break;
-
-					case "left":
-						animator.SetInteger ("Direction", 1); //1=left
-						break;
-
-					case "right":
-						animator.SetInteger ("Direction", 2); //2=right
-						break;
-				}*/
                 SetAnimation(pDirection);
                 Debug.Log("DistCov :" + distCovered);
                 Debug.Log("fracJourney :" + fracJourney);
@@ -188,6 +173,17 @@ public class PlayerMove : MonoBehaviour
             //set animation get pDirection
             string direction = moveDir.MoveDirection(path[i], path[i + 1]);
             SetAnimation(direction);
+            string tempCoin = coinString;
+            if (coinUpdated != true && (coinString != "" || coinString != tempCoin ) )
+            {
+                coinString = path[i];
+                coinUpdated = true;
+            }
+            if (coinUpdated)
+            {
+                coinCont.UpdateCoins(-1, coinString);
+                coinUpdated = false;
+            }
             StartCoroutine(UpdatePlayerCoroutine(player.transform.localPosition, panel[index].transform.localPosition, overTime));
             if (crRunning == true)
             {
