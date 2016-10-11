@@ -62,7 +62,7 @@ public class PlayerMove : MonoBehaviour
 			
 			if (pDirection != "" && pDirection != "invalid move")
 			{
-				switch (pDirection)
+                /*switch (pDirection)
 				{
 					case "up":
 						animator.SetInteger ("Direction", 3); //3=climb
@@ -79,8 +79,10 @@ public class PlayerMove : MonoBehaviour
 					case "right":
 						animator.SetInteger ("Direction", 2); //2=right
 						break;
-				}
-
+				}*/
+                SetAnimation(pDirection);
+                Debug.Log("DistCov :" + distCovered);
+                Debug.Log("fracJourney :" + fracJourney);
 				player.transform.localPosition = Vector3.Lerp (initialPosition, targetPosition, fracJourney);
 
 				if (player.transform.localPosition == targetPosition)
@@ -105,7 +107,10 @@ public class PlayerMove : MonoBehaviour
 						if (PlayerPrefs.GetString ("TutorialScene") == "true")
 							tutorialLogic.SetPlayerLoc ();
 						else
-							gameLogic.SetPlayerLoc ();
+                        {
+                            gameLogic.SetPlayerLoc();
+                            gameLogic.mouseClicked = false;
+                        }
 					}
 				}
 			}
@@ -179,7 +184,7 @@ public class PlayerMove : MonoBehaviour
             int index;
             cellindex.TryGetValue(path[i + 1], out index);
             float distance = Vector3.Distance(player.transform.localPosition, panel[index].transform.localPosition);
-            float overTime = distance / 100;
+            float overTime = distance / 145;
             //set animation get pDirection
             string direction = moveDir.MoveDirection(path[i], path[i + 1]);
             SetAnimation(direction);
@@ -192,8 +197,9 @@ public class PlayerMove : MonoBehaviour
                 gameLogic.SetPlayerLoc(path[i + 1]);
             }
         }
-        Debug.Log("MovePath end");
         yield return null;
+        gameLogic.mouseClicked = false;
+
     }
     IEnumerator UpdatePlayerCoroutine(Vector3 start, Vector3 target, float overTime)
     {
@@ -204,6 +210,7 @@ public class PlayerMove : MonoBehaviour
             //Debug.Log(Time.time + " :: " + (startTime + overTime) + "overTime : "+ overTime);
             //Debug.Log("While COroutine");
             player.transform.localPosition = Vector3.Lerp(start, target, (Time.time - startTime) / overTime);
+            Debug.Log( (Time.time - startTime)/ overTime);
             //Debug.Log("Distance between :: " + Vector3.Distance(player.transform.localPosition, target));
             if (Vector3.Distance(player.transform.localPosition, target) < 3)
             {

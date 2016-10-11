@@ -93,9 +93,10 @@ public class GameLogic : MonoBehaviour
 	public GameObject removeTilePopUp;
 	public ManageRemoveTile manageRemoveTileScript;
 	private bool showRemoveTilePop = true;
-	#endregion
+    #endregion
 
-	//boolean game conditions
+    //boolean game conditions
+    public bool mouseClicked{ get; set; }
 	private bool gameover = false;
 	private bool emptyhand = true;
 	private bool nextlevel = false;
@@ -148,6 +149,8 @@ public class GameLogic : MonoBehaviour
 	//awake called behind start
 	void Awake()
 	{
+        //initialising mouseCLicked false
+        mouseClicked = false;
 		if (PlayerPrefs.HasKey ("Diamonds"))
 		{
 			diamonds = PlayerPrefs.GetInt ("Diamonds");
@@ -278,7 +281,10 @@ public class GameLogic : MonoBehaviour
 			}
 			else if (!exiting)
 			{
-				PlayerClick();
+                if (mouseClicked == false)
+                {
+                    PlayerClick();
+                }
 			}
 
 			if (nextlevel)
@@ -559,6 +565,7 @@ public class GameLogic : MonoBehaviour
 				// _isEntrySet doesn't mean entry or exit tile. It seems to be true for all tiles.
 				if ((tileBoard[temprow, tempcol]._isEntrySet) && (playerLoc != ""))
 				{
+                    mouseClicked = true;
 					if (validMove.MoveDirection(playerLoc, clickLoc) != "invalid move" && validMove.InRange(playerLoc, clickLoc))
 					{
 						if (validMove.Move(playerLoc, clickLoc, ref tileBoard))
@@ -591,6 +598,7 @@ public class GameLogic : MonoBehaviour
 				}
 				else
 				{
+                    mouseClicked = false;
 					Debug.Log("Invalid player move");
 				}
 			}
