@@ -69,8 +69,6 @@ public class PlayerMove : MonoBehaviour
 			if (pDirection != "" && pDirection != "invalid move")
 			{
                 SetAnimation(pDirection);
-                Debug.Log("DistCov :" + distCovered);
-                Debug.Log("fracJourney :" + fracJourney);
 				player.transform.localPosition = Vector3.Lerp (initialPosition, targetPosition, fracJourney);
 
 				if (player.transform.localPosition == targetPosition)
@@ -177,17 +175,20 @@ public class PlayerMove : MonoBehaviour
             string direction = moveDir.MoveDirection(path[i], path[i + 1]);
             SetAnimation(direction);
             string tempCoin = coinString;
-            if (coinUpdated != true && (coinString != "" || coinString != tempCoin ) )
+            Debug.Log("tempCoin :" + tempCoin +" coinstring : "+coinString);
+            if (coinUpdated != true )
             {
                 coinString = path[i];
                 coinUpdated = true;
+                Debug.Log("coin updated");
             }
+            StartCoroutine(UpdatePlayerCoroutine(player.transform.localPosition, panel[index].transform.localPosition, overTime));
             if (coinUpdated)
             {
+                Debug.Log("animate coin");
                 coinCont.UpdateCoins(-1, coinString);
                 coinUpdated = false;
             }
-            StartCoroutine(UpdatePlayerCoroutine(player.transform.localPosition, panel[index].transform.localPosition, overTime));
             if (crRunning == true)
             {
                 yield return new WaitForSeconds(overTime);
@@ -207,10 +208,7 @@ public class PlayerMove : MonoBehaviour
         while (Time.time < (startTime + overTime))
         {
             //Debug.Log(Time.time + " :: " + (startTime + overTime) + "overTime : "+ overTime);
-            //Debug.Log("While COroutine");
             player.transform.localPosition = Vector3.Lerp(start, target, (Time.time - startTime) / overTime);
-            Debug.Log( (Time.time - startTime)/ overTime);
-            //Debug.Log("Distance between :: " + Vector3.Distance(player.transform.localPosition, target));
             if (Vector3.Distance(player.transform.localPosition, target) < 3)
             {
                 //set player to target and stop animation

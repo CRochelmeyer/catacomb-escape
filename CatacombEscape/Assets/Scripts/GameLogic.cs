@@ -519,7 +519,7 @@ public class GameLogic : MonoBehaviour
 
 				GameObject tempObj = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation);
 
-				Debug.Log("tempObj = " + pcell.Substring(0,1) + " , " + pcell.Substring(1, 1));
+				//Debug.Log("tempObj = " + pcell.Substring(0,1) + " , " + pcell.Substring(1, 1));
 
 				//decrease stamina
 				int rand = Random.Range(0, placementClips.Length);
