@@ -154,7 +154,15 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     public void UpdatePlayer(GameObject[] panel, List<string> path , Tile[,] pboard)
     {
-        StartCoroutine(MovePath(panel, path, pboard));
+        if (path.Count > 2)
+        {
+            StartCoroutine(MovePath(panel, path, pboard));
+        }
+        else
+        {
+            Debug.Log("Path not long enough. Not starting co-routine.");
+        }
+        
     }
     /// <summary>
     /// First coroutine that handles data is passed thru from gameLogic, which than runs a loop to call a second coroutine
@@ -165,6 +173,7 @@ public class PlayerMove : MonoBehaviour
     /// <returns></returns>
     IEnumerator MovePath(GameObject[] panel, List<string> path , Tile[,] pboard)
     {
+        Debug.Log("MovePath Co-routine");
         for (int i = 0; i < (path.Count - 1); i++)
         {
             int index;
@@ -203,6 +212,8 @@ public class PlayerMove : MonoBehaviour
     }
     IEnumerator UpdatePlayerCoroutine(Vector3 start, Vector3 target, float overTime)
     {
+        Debug.Log("UpdatePlayerCoroutine");
+
         crRunning = true;
         float startTime = Time.time;
         while (Time.time < (startTime + overTime))
