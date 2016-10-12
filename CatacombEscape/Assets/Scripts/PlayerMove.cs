@@ -9,7 +9,8 @@ public class PlayerMove : MonoBehaviour
 {
 	public GameObject player;
 	public int playerDisp = 4; // The y amount the player's center is away from the center of a tile
-
+    //multispeed @default 145
+    public float multispeed { get; set; }
 	public Animator animator;
 	private GameObject tempobj;
 	private Rigidbody2D rb2d;
@@ -37,6 +38,8 @@ public class PlayerMove : MonoBehaviour
 
 	void Start ()
 	{
+        //multispeed @default 145
+        multispeed = 145;
         coinCont = GameObject.FindGameObjectWithTag("Scripts").GetComponent<CoinController>();
         if (PlayerPrefs.GetString ("TutorialScene") == "true")
 			tutorialLogic = GameObject.FindObjectOfType<TutorialLogic> ();
@@ -169,7 +172,7 @@ public class PlayerMove : MonoBehaviour
             int index;
             cellindex.TryGetValue(path[i + 1], out index);
             float distance = Vector3.Distance(player.transform.localPosition, panel[index].transform.localPosition);
-            float overTime = distance / 145;
+            float overTime = distance / multispeed;
             //set animation get pDirection
             string direction = moveDir.MoveDirection(path[i], path[i + 1]);
             SetAnimation(direction);
