@@ -589,7 +589,7 @@ public class GameLogic : MonoBehaviour
 					else // If the click was out of range. In other words, more than one tile.
 					{
 						List<string> path = Pathing.PathFind(tileBoard, playerLoc, clickLoc);
-						if ((!path.Contains("invalid") || !path.Contains("Invalid")) && path.Count > 2 )
+						if ((!path.Contains("invalid") || !path.Contains("Invalid")) && path.Count > 1 )
 						{
                             Debug.Log("Valid Path!");
                             destLoc = clickLoc;
@@ -597,7 +597,8 @@ public class GameLogic : MonoBehaviour
 						}
                         else
                         {
-                            Debug.LogError("Path is invalid");
+                            mouseClicked = false;
+                            Debug.Log("Path is invalid");
                         }
 					}
 				}

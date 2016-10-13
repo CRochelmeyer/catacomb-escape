@@ -50,7 +50,7 @@ public class PathFinder : MonoBehaviour
             List<string> adjacentTiles = this.GetAdjacentTiles(this.currentTile);
             
 			//check adjacentTiles exist
-            if (!adjacentTiles.Contains("Invalid") || !adjacentTiles.Contains("invalid"))
+            if (!adjacentTiles.Contains("Invalid") && !adjacentTiles.Contains("invalid"))
             {
                 foreach (string current in adjacentTiles)
                 {
@@ -96,7 +96,7 @@ public class PathFinder : MonoBehaviour
             // 120 should be more than enough loops to determine any viable path.
             if (count > 120)
             {
-                Debug.LogError("Valid path not found (Getpath loop timed out.)");
+                Debug.Log("Valid path not found (Getpath loop timed out.)");
                 
                 // Delete the path, since there were so many loops, and the path is therefore invalid.
                 Path.Clear();
