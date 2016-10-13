@@ -26,6 +26,8 @@ public class PathFinder : MonoBehaviour
 	/// <param name="pclickloc">Pclickloc.</param>
     public List<string> PathFind(Tile[,] pboard, string pplayerloc, string pclickloc)
     {
+        //Debug.Log("Trying to find a path...");
+
         bool adjFound = false;
         this.closedList.Clear();
         this.openList.Clear();
@@ -56,6 +58,7 @@ public class PathFinder : MonoBehaviour
                 {
                     if (!this.openList.Contains(current) && !this.closedList.Contains(current))
                     {
+                        //Debug.Log("Current: " + current);
                         this.openList.Add(current);
                         Tile tile = this.grid[this.GetRow(current), this.GetCol(current)];
                         tile.cost = this.grid[this.GetRow(this.currentTile), this.GetCol(this.currentTile)].cost + 1;
@@ -103,6 +106,7 @@ public class PathFinder : MonoBehaviour
 
                 break;
             }
+
             List<string> adjacentTiles = this.GetAdjacentTiles(this.currentTile);
             if (!adjacentTiles.Contains("Invalid") || !adjacentTiles.Contains("invalid"))
             {

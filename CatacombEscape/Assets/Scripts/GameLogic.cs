@@ -553,7 +553,7 @@ public class GameLogic : MonoBehaviour
 		//check for right click
 		if (Input.GetMouseButtonDown(0))
 		{
-			string clickLoc = "";
+            string clickLoc = "";
 
 			clickLoc = MouseLocation;
 
@@ -586,12 +586,17 @@ public class GameLogic : MonoBehaviour
 							coinCont.UpdateCoins (-1, playerLoc);
 						}
 					}
-					else // If the click was out of range. In other words, more than one tile.
-					{
+                    else if (validMove.InRange(playerLoc, clickLoc)) // In range, but invalid move.
+                    {
+                        mouseClicked = false;
+                        Debug.Log("Invalid player move");
+                    }
+                    else // If the click was out of range.Use pathfinding.
+                    {
 						List<string> path = Pathing.PathFind(tileBoard, playerLoc, clickLoc);
 						if ((!path.Contains("invalid") || !path.Contains("Invalid")) && path.Count > 1 )
 						{
-                            Debug.Log("Valid Path!");
+                            //Debug.Log("Valid Path!");
                             destLoc = clickLoc;
 							movePlayer.UpdatePlayer(gridPanels, path, tileBoard);
 						}
@@ -601,14 +606,17 @@ public class GameLogic : MonoBehaviour
                             Debug.Log("Path is invalid");
                         }
 					}
-				}
+                    mouseClicked = false;
+                    Debug.Log("Invalid player move");
+                }
 				else
 				{
                     mouseClicked = false;
 					Debug.Log("Invalid player move");
 				}
 			}
-		}
+            Debug.Log("mouseClicked: "+ mouseClicked);
+        }
 	}
 
 	#endregion
@@ -862,13 +870,6 @@ public class GameLogic : MonoBehaviour
 			}
 		}
 
-		//Debug.Log("Event Tiles: " + debug);
-
-		//Debug.Log(">>>> Current Tile info: " + "_isEntrySet: " + currentTile._isEntrySet + "| Boardlocation: " + curLocStr + " | Event: " + currentTile._event + " | ID: " + currentTile._tileID);
-		//Debug.Log(">>>> Target Tile info: "+ "_isEntrySet: "+ newTile._isEntrySet + "| Boardlocation: " + newLocStr + " | Event: " + newTile._event + " | ID: " + newTile._tileID);
-
-		//Debug.Log("Checking for move [" + curRow + "," + curCol + "] -> [" + (curRow - 1) + "," + curCol + "]");
-
 		string debugStr = "[Trying move [" + currentTile._boardLocation + " -> " + newTile._boardLocation + "] (" + dir + ")"; // Rather than having a million debug messages, add messages to this string, and use one debug.log
 
 		// Moving from a tile placed by the player.
@@ -1088,7 +1089,7 @@ public class GameLogic : MonoBehaviour
 				{
 					int newMove = Random.Range(0,moves.Count);
 					//Debug.Log("Selecting number from 1 to " + moves.Count);
-					Debug.Log("Enemy at [" + currow.ToString() + curcol.ToString() + "] moving " + moves[newMove].ToString());
+					//Debug.Log("Enemy at [" + currow.ToString() + curcol.ToString() + "] moving " + moves[newMove].ToString());
 
 					MoveEnemy(moves[newMove], currow, curcol, i);
 				}
