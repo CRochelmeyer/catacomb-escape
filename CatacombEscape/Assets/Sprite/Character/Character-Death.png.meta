@@ -1,0 +1,196 @@
+fileFormatVersion: 2
+guid: b30c52179fa672e4fbdfe0c8de93fce0
+timeCreated: 1476525869
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Character-Death_0
+    21300002: Character-Death_1
+    21300004: Character-Death_2
+    21300006: Character-Death_3
+    21300008: Character-Death_4
+    21300010: Character-Death_5
+    21300012: Character-Death_6
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Character-Death_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 36
+        width: 124
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 15, y: 45.5}
+        - {x: 13, y: 39.5}
+        - {x: 13, y: -19.5}
+        - {x: 22, y: -45.5}
+        - {x: 44, y: -45.5}
+        - {x: 62, y: -2.5}
+        - {x: 62, y: 41.5}
+        - {x: 54, y: 45.5}
+    - name: Character-Death_1
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 36
+        width: 124
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 15, y: 45.5}
+        - {x: 15, y: -0.5}
+        - {x: 19, y: -26.5}
+        - {x: 24, y: -45.5}
+        - {x: 54, y: -45.5}
+        - {x: 62, y: -7.5}
+        - {x: 62, y: 45.5}
+    - name: Character-Death_2
+      rect:
+        serializedVersion: 2
+        x: 286
+        y: 36
+        width: 124
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 1, y: 45.5}
+        - {x: 1, y: -9.5}
+        - {x: 23, y: -45.5}
+        - {x: 48, y: -45.5}
+        - {x: 51, y: -17.5}
+        - {x: 51, y: 38.5}
+        - {x: 46, y: 45.5}
+    - name: Character-Death_3
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 36
+        width: 124
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -30, y: -4.5}
+        - {x: 10, y: -45.5}
+        - {x: 38, y: -45.5}
+        - {x: 38, y: -0.5}
+        - {x: 27, y: 40.5}
+        - {x: -22, y: 40.5}
+        - {x: -30, y: 33.5}
+    - name: Character-Death_4
+      rect:
+        serializedVersion: 2
+        x: 574
+        y: 36
+        width: 124
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 5, y: 30.5}
+        - {x: -33, y: 30.5}
+        - {x: -41, y: 20.5}
+        - {x: -41, y: -5.5}
+        - {x: -11, y: -36.5}
+        - {x: 22, y: -45.5}
+        - {x: 33, y: -45.5}
+        - {x: 39, y: -38.5}
+        - {x: 39, y: -29.5}
+        - {x: 12, y: 28.5}
+    - name: Character-Death_5
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 36
+        width: 124
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -58, y: -40.5}
+        - {x: -32, y: -45.5}
+        - {x: 31, y: -45.5}
+        - {x: 34, y: -41.5}
+        - {x: 34, y: -24.5}
+        - {x: -3, y: 14.5}
+        - {x: -49, y: 14.5}
+        - {x: -58, y: -1.5}
+    - name: Character-Death_6
+      rect:
+        serializedVersion: 2
+        x: 900
+        y: 36
+        width: 124
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -19, y: 2.5}
+        - {x: -54, y: 2.5}
+        - {x: -62, y: -5.5}
+        - {x: -62, y: -33.5}
+        - {x: -56, y: -45.5}
+        - {x: 32, y: -45.5}
+        - {x: 32, y: -31.5}
+        - {x: 28, y: -28.5}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

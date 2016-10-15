@@ -74,6 +74,7 @@ public class GameLogic : MonoBehaviour
 	public Text tileNoPlacedText;
 	public Text pointTot;
 	public GameObject newHighscore;
+	public Animator characterDeath;
 	// Pause components
     public Text pauseLvlText;
     public Text pauseGreenText;
@@ -283,8 +284,15 @@ public class GameLogic : MonoBehaviour
                 GameOverHS();
                 statPanel.SetActive(true);
 				audioSource.PlayOneShot (gameOverClip);
+				StartCoroutine (PlayDeathAnimation());
             }
         }
+
+		if (Input.GetKeyDown (KeyCode.D))
+		{
+			playerStamina = 0;
+			CheckStamina();
+		}
     }
 
     private int CalculateDecrement()
@@ -383,6 +391,12 @@ public class GameLogic : MonoBehaviour
 			playerStamina = standardStamina;
 			UpdateUI();
 		}
+	}
+
+	IEnumerator PlayDeathAnimation()
+	{
+		yield return new WaitForSeconds (0.1f);
+		characterDeath.SetBool ("playDeath", true);
 	}
 
     #endregion
