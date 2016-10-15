@@ -102,6 +102,11 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 			else
 			{
 				this.gameObject.GetComponent<Transform> ().position = locationToReturn;
+
+				if (PlayerPrefs.GetString ("TutorialScene") == "true")
+					tutorialLogic.audioSource.PlayOneShot (tutorialLogic.noPlacementClip);
+				else
+					gameLogic.audioSource.PlayOneShot (gameLogic.noPlacementClip);
 			}
 		}
 	}

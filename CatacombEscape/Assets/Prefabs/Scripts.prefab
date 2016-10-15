@@ -105,7 +105,7 @@ MonoBehaviour:
   player: {fileID: 0}
   playerDisp: 4
   animator: {fileID: 0}
-  speed: 0.01
+  speed: 150
 --- !u!114 &11436122
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -151,12 +151,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameLogic: {fileID: 0}
+  tutLogic: {fileID: 0}
   silverPrefab: {fileID: 162004, guid: 75ffa20db23f99b4aa5826d17471bbf5, type: 2}
-  silverCoinsSource: {fileID: 0}
+  goldPrefab: {fileID: 150486, guid: 0baf410b591bad741a7b9f2cae2f2be6, type: 2}
+  coinSource: {fileID: 0}
   newHandButtonTransform: {fileID: 0}
   coinWait: 0.1
-  coinSpeed: 3
-  coinShortClip: {fileID: 8300000, guid: b9a296ff20017924f92b5d05b7cc2236, type: 3}
+  coinTotTime: 0.5
+  coinShortClip: {fileID: 8300000, guid: 7539fb9bb32ba404e8f9d6d3e6c36ce0, type: 3}
 --- !u!114 &11499976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -169,8 +171,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseUI: {fileID: 0}
-  pauseClip: {fileID: 8300000, guid: 682caf33143b9984e99cd3a6fb76e0bb, type: 3}
-  unpauseClip: {fileID: 8300000, guid: b558922f39bb93d40adab86a10f62f30, type: 3}
+  pauseClip: {fileID: 8300000, guid: 3ffa3fc35001df5489be7827218d47ea, type: 3}
+  unpauseClip: {fileID: 8300000, guid: 5f5cd65e55bf2a645bac9877949af5e7, type: 3}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

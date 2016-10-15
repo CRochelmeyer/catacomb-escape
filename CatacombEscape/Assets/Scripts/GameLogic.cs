@@ -43,16 +43,19 @@ public class GameLogic : MonoBehaviour
 	public Sprite[] eventEnemy;
 	#endregion
 
-	private AudioSource audioSource;
+	public AudioSource audioSource;
 	#region audioClips
 	[Header("Audio Clips")]
 	public AudioClip startGameClip;
+	public AudioClip chestPlacementClip;
+	public AudioClip noPlacementClip;
 	public AudioClip[] placementClips;
 	public AudioClip[] dealingClips;
 	public AudioClip[] movementClips;
 	public AudioClip[] greenTileClips;
 	public AudioClip[] redTileClips;
 	public AudioClip[] lvlCompClips;
+	public AudioClip gameOverClip;
 	#endregion
 
 	#region uiPanels
@@ -160,8 +163,7 @@ public class GameLogic : MonoBehaviour
 
         //refresh and initialse redstep per awake call
         redstep = 0;
-        audioSource = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<AudioSource> ();
-        audioSource.PlayOneShot (startGameClip, 0.5f);
+        audioSource.PlayOneShot (startGameClip, 1f);
 
         GameObject mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
         if (mainCamera != null)
@@ -277,8 +279,10 @@ public class GameLogic : MonoBehaviour
             }
             else if (gameover)
             {
+				PlayerPrefs.SetString ("Paused", "true");
                 GameOverHS();
                 statPanel.SetActive(true);
+				audioSource.PlayOneShot (gameOverClip);
             }
         }
     }
@@ -464,18 +468,26 @@ public class GameLogic : MonoBehaviour
                     {
 						// Chest sprite is replaced with smaller sprite once a tile has been placed over the top of it.
                         GameObject temp = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
-                        temp.GetComponent<Image>().sprite = eventGreenSml as Sprite;
+						temp.GetComponent<Image>().sprite = eventGreenSml as Sprite;
+
+						audioSource.PlayOneShot(chestPlacementClip);
                     }
                     else if (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._event == "red")
                     {
 						// Enemy sprite is also updated once a tile has been placed on top of it.
                         GameObject temp = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation + "(Clone)");
-                        temp.GetComponent<Image>().sprite = eventEnemy[Random.Range(0, eventEnemy.Length)] as Sprite;
+						temp.GetComponent<Image>().sprite = eventEnemy[Random.Range(0, eventEnemy.Length)] as Sprite;
+
+						int rand = Random.Range(0, placementClips.Length);
+						audioSource.PlayOneShot(placementClips[rand]);
                     }
                 }
                 else
                 {
-                    tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))] = ptile;
+					tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))] = ptile;
+
+					int rand = Random.Range(0, placementClips.Length);
+					audioSource.PlayOneShot(placementClips[rand]);
                 }
 
                 GameObject tempObj = GameObject.Find(tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._boardLocation);
@@ -483,8 +495,6 @@ public class GameLogic : MonoBehaviour
                 Debug.Log("tempObj = " + pcell.Substring(0,1) + " , " + pcell.Substring(1, 1));
 
                 //decrease stamina
-                int rand = Random.Range(0, placementClips.Length);
-                audioSource.PlayOneShot(placementClips[rand], 0.5f);
                 playerStamina -= 2;
                 InstantiateStamDownPanel("-2", tempObj.transform.position);
                 //increment tileplaced

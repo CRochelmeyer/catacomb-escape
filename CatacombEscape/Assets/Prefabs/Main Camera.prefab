@@ -15,6 +15,7 @@ GameObject:
   - 82: {fileID: 8261376}
   - 114: {fileID: 11430276}
   - 114: {fileID: 11476574}
+  - 114: {fileID: 11481026}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -44,7 +45,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.21960784, g: 0.21960784, b: 0.46666667, a: 1}
+  m_BackGroundColor: {r: 0.1137255, g: 0.0627451, b: 0.007843138, a: 1}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -85,7 +86,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 1ade506bfd0ea2a4cae801078db10944, type: 3}
+  m_audioClip: {fileID: 8300000, guid: cb24a91d879fd044da271b9a50b086f6, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -169,7 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   source: {fileID: 8261376}
-  bgSound1: {fileID: 8300000, guid: 1ade506bfd0ea2a4cae801078db10944, type: 3}
+  bgSound1: {fileID: 8300000, guid: cb24a91d879fd044da271b9a50b086f6, type: 3}
   bgSound2: {fileID: 8300000, guid: 8b8e8bedf3ce91d4f866035520a6f013, type: 3}
 --- !u!114 &11476574
 MonoBehaviour:
@@ -192,7 +193,8 @@ MonoBehaviour:
   minGreenNo: 4
   greenLvlDecr: 5
   greenAmt: 10
-  discardCost: 3
+  newHandCost: 3
+  removeTileCost: 3
   tileSprite:
   - {fileID: 21300000, guid: ace2033c313885b44a70da746418ed8e, type: 3}
   - {fileID: 21300000, guid: 928c2150b33758b42a81a9323d951500, type: 3}
@@ -216,29 +218,35 @@ MonoBehaviour:
   eventRed: {fileID: 21300000, guid: 8b433a604f9c07344bc51d1ab7010c50, type: 3}
   eventEnemy:
   - {fileID: 21300000, guid: 64a81c3da9ed9b74fb1c30fcc0a22e92, type: 3}
+  audioSource: {fileID: 8261376}
   startGameClip: {fileID: 8300000, guid: 0ab30f4d2c5ebbe409e4bcad31e6c4ff, type: 3}
+  chestPlacementClip: {fileID: 8300000, guid: 3b5571e9fe630df44a32951f14c13812, type: 3}
+  noPlacementClip: {fileID: 8300000, guid: 61a631a8f2f2d714a9ce1ff0c39c5c37, type: 3}
   placementClips:
-  - {fileID: 8300000, guid: 873a189bef2ec964996ea78716b12028, type: 3}
-  - {fileID: 8300000, guid: 5789de64f1dcfed41baf1cc07832b891, type: 3}
-  - {fileID: 8300000, guid: 0e59910e69c0ba1419861df3bcc87abc, type: 3}
-  - {fileID: 8300000, guid: 94a4f644b7ac81e49be17fa5cde70de8, type: 3}
-  - {fileID: 8300000, guid: ca9fba4575a70c34db7d060794b39a16, type: 3}
+  - {fileID: 8300000, guid: 618ea43f375eee44a972dc6f133371d6, type: 3}
+  - {fileID: 8300000, guid: 28c9c9f5f5dd98b4da7b1abc5870a93f, type: 3}
+  - {fileID: 8300000, guid: bbdb24f719d28af438091310aeccfc26, type: 3}
+  - {fileID: 8300000, guid: 5caf852d90c430e4ab28c27aaa4eaa8d, type: 3}
+  - {fileID: 8300000, guid: c30aee2ff45958a4eae5cc4177893aa3, type: 3}
   dealingClips:
-  - {fileID: 8300000, guid: 521088514a9121f40a9797cf18921cb1, type: 3}
+  - {fileID: 8300000, guid: 54f6fc8cd7f9c6842ba6bcdd6b1bd734, type: 3}
   movementClips:
-  - {fileID: 8300000, guid: 89b6bea371f4e1140b27846808cbd9c5, type: 3}
-  - {fileID: 8300000, guid: 7afd77310659af746b83392094683810, type: 3}
+  - {fileID: 8300000, guid: bdf078b189146fa41b6c08dc49a89940, type: 3}
+  - {fileID: 8300000, guid: 59b960a94fa18834eb017e3208ae36c8, type: 3}
   greenTileClips:
-  - {fileID: 8300000, guid: 1468de06f3954934a94bea0e132b4750, type: 3}
+  - {fileID: 8300000, guid: 1eccf4d7773c39a4f96a2a8ae1e05dbc, type: 3}
   redTileClips:
-  - {fileID: 8300000, guid: 22ac66faaf9aef745a9580fbd6d6c9b8, type: 3}
-  - {fileID: 8300000, guid: 68ec013717c1b6140bf4c5f289e36619, type: 3}
+  - {fileID: 8300000, guid: 9854b57d685e22746bdbaf2dd6f18c36, type: 3}
+  - {fileID: 8300000, guid: 165bba2d95a24ac459ca1c570a6d58fa, type: 3}
   lvlCompClips:
-  - {fileID: 8300000, guid: 23ec5ef9f656ad5469e70bfcade7758f, type: 3}
-  - {fileID: 8300000, guid: 9466af4a8c0feee45b3cff7d54c450b1, type: 3}
+  - {fileID: 8300000, guid: 2426cf4e97ea7ea418c3f83af9d91923, type: 3}
+  - {fileID: 8300000, guid: dc2c74ef2fda6c24d89ffb323c33d76f, type: 3}
+  gameOverClip: {fileID: 8300000, guid: 361c52f4a6afac2409867cd0e549a920, type: 3}
   fadeTime: 1
   enemyPanel: {fileID: 0}
   enemyStamDown: {fileID: 0}
+  gameScore: {fileID: 0}
+  diamondAmount: {fileID: 0}
   statPanel: {fileID: 0}
   lvlNoClearedText: {fileID: 0}
   greenCollectedText: {fileID: 0}
@@ -254,6 +262,21 @@ MonoBehaviour:
   stamPopupsContainer: {fileID: 0}
   stamUpPrefab: {fileID: 155558, guid: 71af497b49f595145a75a7a2fdca389d, type: 2}
   stamDownPrefab: {fileID: 132916, guid: af05a3e5220d2484886c87a84f88fdd9, type: 2}
+  newHandButton: {fileID: 0}
+  removeTileButton: {fileID: 0}
+  removeTilePopUp: {fileID: 0}
+  manageRemoveTileScript: {fileID: 0}
+--- !u!114 &11481026
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 119238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a05a452c2002b040bf1523177b4936f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!124 &12404896
 Behaviour:
   m_ObjectHideFlags: 1

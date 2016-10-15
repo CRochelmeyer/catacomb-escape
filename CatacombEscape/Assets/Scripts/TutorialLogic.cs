@@ -38,10 +38,12 @@ public class TutorialLogic : MonoBehaviour
 	public Sprite[] eventEnemy;
 	#endregion
 
-	private AudioSource audioSource;
+	public AudioSource audioSource;
 	#region audioClips
 	[Header("Audio Clips")]
 	public AudioClip startGameClip;
+	public AudioClip chestPlacementClip;
+	public AudioClip noPlacementClip;
 	public AudioClip[] placementClips;
 	public AudioClip[] dealingClips;
 	public AudioClip[] movementClips;
@@ -567,23 +569,29 @@ public class TutorialLogic : MonoBehaviour
 					{
 						GameObject temp = GameObject.Find (tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))]._boardLocation + "(Clone)");
 						temp.GetComponent <Image>().sprite = eventGreenSml as Sprite; 
+
+						audioSource.PlayOneShot (chestPlacementClip);
 					}
 					else if (tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))]._event == "red")
 					{
 						GameObject temp = GameObject.Find (tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))]._boardLocation + "(Clone)");
 						temp.GetComponent <Image>().sprite = eventEnemy [Random.Range (0, eventEnemy.Length)] as Sprite; 
+
+						int rand = Random.Range (0,placementClips.Length);
+						audioSource.PlayOneShot (placementClips[rand]);
 					}
 				}
 				else
 				{
 					tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))] = ptile;
+
+					int rand = Random.Range (0,placementClips.Length);
+					audioSource.PlayOneShot (placementClips[rand]);
 				}
 
 				GameObject tempObj = GameObject.Find (tileBoard [System.Int32.Parse (pcell.Substring (0, 1)), System.Int32.Parse (pcell.Substring (1, 1))]._boardLocation);
 
 				//decrease stamina
-				int rand = Random.Range (0,placementClips.Length);
-				audioSource.PlayOneShot (placementClips[rand], 0.5f);
 				playerStamina -= 2;
 				InstantiateStamDownPanel ("-2", tempObj.transform.position);
 

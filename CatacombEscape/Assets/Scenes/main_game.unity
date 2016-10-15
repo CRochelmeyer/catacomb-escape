@@ -3578,7 +3578,7 @@ MonoBehaviour:
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9,
     type: 2}
-  m_PrefabInternal: {fileID: 1635412629}
+  m_PrefabInternal: {fileID: 1929961366}
   m_Script: {fileID: 11500000, guid: cb6d1697ec79d6646922ca0052fb3b72, type: 3}
 --- !u!95 &922040517 stripped
 Animator:
@@ -3848,7 +3848,7 @@ Prefab:
 Camera:
   m_PrefabParentObject: {fileID: 2012328, guid: 6281424b91878e445b894668e7ce0ef9,
     type: 2}
-  m_PrefabInternal: {fileID: 1635412629}
+  m_PrefabInternal: {fileID: 1929961366}
 --- !u!224 &1005218524 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 22491068, guid: 4cfb0ffb71ab3334fbe490de96795911,
@@ -4609,18 +4609,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: gameLogic
+    - target: {fileID: 11434810, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: player
       value: 
-      objectReference: {fileID: 898376829}
-    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: silverCoinsSource
+      objectReference: {fileID: 2133908197}
+    - target: {fileID: 11434810, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: animator
       value: 
-      objectReference: {fileID: 504433934}
-    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: newHandButtonTransform
-      value: 
-      objectReference: {fileID: 1362456920}
+      objectReference: {fileID: 922040517}
     - target: {fileID: 11422870, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
       propertyPath: panel00
       value: 
@@ -4741,14 +4737,18 @@ Prefab:
       propertyPath: panel54
       value: 
       objectReference: {fileID: 396602616}
-    - target: {fileID: 11434810, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: player
+    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: gameLogic
       value: 
-      objectReference: {fileID: 2133908197}
-    - target: {fileID: 11434810, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: animator
+      objectReference: {fileID: 898376829}
+    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: coinSource
       value: 
-      objectReference: {fileID: 922040517}
+      objectReference: {fileID: 504433934}
+    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
+      propertyPath: newHandButtonTransform
+      value: 
+      objectReference: {fileID: 1362456920}
     - target: {fileID: 11411676, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
       propertyPath: topPanelOverlay
       value: 
@@ -4765,38 +4765,6 @@ Prefab:
       propertyPath: pauseUI
       value: 
       objectReference: {fileID: 1176781623}
-    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: coinSpeed
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: coinShortClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 7539fb9bb32ba404e8f9d6d3e6c36ce0, type: 3}
-    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: coinWait
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11434810, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: speed
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: coinTotTime
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: coinSource
-      value: 
-      objectReference: {fileID: 504433934}
-    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: goldPrefab
-      value: 
-      objectReference: {fileID: 150486, guid: 0baf410b591bad741a7b9f2cae2f2be6, type: 2}
-    - target: {fileID: 11486182, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
-      propertyPath: removeTileButtonTransform
-      value: 
-      objectReference: {fileID: 155218129}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
   m_IsPrefabParent: 0
@@ -4890,167 +4858,6 @@ GameObject:
 GameObject:
   m_PrefabParentObject: {fileID: 134146, guid: 4cfb0ffb71ab3334fbe490de96795911, type: 2}
   m_PrefabInternal: {fileID: 686223272}
---- !u!1001 &1635412629
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -20
-      objectReference: {fileID: 0}
-    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: enemyPanel
-      value: 
-      objectReference: {fileID: 627131822}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: enemyStamDown
-      value: 
-      objectReference: {fileID: 1850199937}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: statPanel
-      value: 
-      objectReference: {fileID: 956577113}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: lvlNoClearedText
-      value: 
-      objectReference: {fileID: 318548136}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: greenCollectedText
-      value: 
-      objectReference: {fileID: 527560965}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: redAvoidedText
-      value: 
-      objectReference: {fileID: 894697833}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: tileNoPlacedText
-      value: 
-      objectReference: {fileID: 1847558925}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: pointTot
-      value: 
-      objectReference: {fileID: 1245938508}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: newHighscore
-      value: 
-      objectReference: {fileID: 1006590692}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: pauseLvlText
-      value: 
-      objectReference: {fileID: 21621800}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: pauseGreenText
-      value: 
-      objectReference: {fileID: 896921362}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: pauseRedText
-      value: 
-      objectReference: {fileID: 1935952071}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: pauseTileText
-      value: 
-      objectReference: {fileID: 72013461}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: pauseTotText
-      value: 
-      objectReference: {fileID: 771322598}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: stamPopupsContainer
-      value: 
-      objectReference: {fileID: 1368675360}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: newHandButton
-      value: 
-      objectReference: {fileID: 772591895}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: manageRemoveTileScript
-      value: 
-      objectReference: {fileID: 729012539}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: removeTilePopUp
-      value: 
-      objectReference: {fileID: 1145748552}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: newHandCost
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: removeTileCost
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: removeTileButton
-      value: 
-      objectReference: {fileID: 155218130}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: gameScore
-      value: 
-      objectReference: {fileID: 173914586}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: diamondAmount
-      value: 
-      objectReference: {fileID: 93748508}
-    - target: {fileID: 2012328, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: m_BackGroundColor.r
-      value: 0.1137255
-      objectReference: {fileID: 0}
-    - target: {fileID: 2012328, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: m_BackGroundColor.g
-      value: 0.0627451
-      objectReference: {fileID: 0}
-    - target: {fileID: 2012328, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: m_BackGroundColor.b
-      value: 0.007843138
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-  m_IsPrefabParent: 0
---- !u!1 &1635412630 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 119238, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-  m_PrefabInternal: {fileID: 1635412629}
---- !u!114 &1635412631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1635412630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a05a452c2002b040bf1523177b4936f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1640316428
 GameObject:
   m_ObjectHideFlags: 0
@@ -5858,6 +5665,132 @@ CanvasRenderer:
 GameObject:
   m_PrefabParentObject: {fileID: 146372, guid: 4cfb0ffb71ab3334fbe490de96795911, type: 2}
   m_PrefabInternal: {fileID: 686223272}
+--- !u!1001 &1929961366
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: enemyPanel
+      value: 
+      objectReference: {fileID: 627131822}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: enemyStamDown
+      value: 
+      objectReference: {fileID: 1850199937}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: gameScore
+      value: 
+      objectReference: {fileID: 173914586}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: diamondAmount
+      value: 
+      objectReference: {fileID: 93748508}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: statPanel
+      value: 
+      objectReference: {fileID: 956577113}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: lvlNoClearedText
+      value: 
+      objectReference: {fileID: 318548136}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: greenCollectedText
+      value: 
+      objectReference: {fileID: 527560965}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: redAvoidedText
+      value: 
+      objectReference: {fileID: 894697833}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: tileNoPlacedText
+      value: 
+      objectReference: {fileID: 1847558925}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: pointTot
+      value: 
+      objectReference: {fileID: 1245938508}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: newHighscore
+      value: 
+      objectReference: {fileID: 1006590692}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: pauseLvlText
+      value: 
+      objectReference: {fileID: 21621800}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: pauseGreenText
+      value: 
+      objectReference: {fileID: 896921362}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: pauseRedText
+      value: 
+      objectReference: {fileID: 1935952071}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: pauseTileText
+      value: 
+      objectReference: {fileID: 72013461}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: pauseTotText
+      value: 
+      objectReference: {fileID: 771322598}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: stamPopupsContainer
+      value: 
+      objectReference: {fileID: 1368675360}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: newHandButton
+      value: 
+      objectReference: {fileID: 772591895}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: removeTileButton
+      value: 
+      objectReference: {fileID: 155218130}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: removeTilePopUp
+      value: 
+      objectReference: {fileID: 1145748552}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: manageRemoveTileScript
+      value: 
+      objectReference: {fileID: 729012539}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+  m_IsPrefabParent: 0
 --- !u!114 &1935952071 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11464336, guid: aba066add4a931343b373c5d64eda8a9,
