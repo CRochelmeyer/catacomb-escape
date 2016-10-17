@@ -131,6 +131,7 @@ public class GameLogic : MonoBehaviour
 	private PlayerMove movePlayer;
 	private PathFinder Pathing;
 	private CoinController coinCont;
+	public GemController gemCont;
 	private GameObject[] gridPanels;
 	private Tile[,] tileBoard;
 
@@ -353,18 +354,8 @@ public class GameLogic : MonoBehaviour
 		//check if next level...
 		if (playerLoc == exit)
 		{
-			int rand = Random.Range(0, movementClips.Length);
-			int pindex = 0;
 			exiting = true;
-			audioSource.PlayOneShot(movementClips[rand], 1.0f);
-
-			// Award diamond to player
-			diamonds++;
-			UpdateUI();
-
-			// Move player out of level
-			cellindex.TryGetValue(playerLoc, out pindex);
-			movePlayer.PlayerExits(gridPanels[pindex]);
+			StartCoroutine (AwardLevelGem());
 		}
 		else
 		{
@@ -397,19 +388,10 @@ public class GameLogic : MonoBehaviour
 		}
 
 		//check if next level...
-		if (playerLoc == exit) {
-			int randNum = Random.Range (0, movementClips.Length);
-			int pindex = 0;
+		if (playerLoc == exit)
+		{
 			exiting = true;
-			audioSource.PlayOneShot (movementClips [randNum], 1.0f);
-
-			// Award diamond to player
-			diamonds++;
-			UpdateUI ();
-
-			// Move player out of level
-			cellindex.TryGetValue (playerLoc, out pindex);
-			movePlayer.PlayerExits (gridPanels [pindex]);
+			StartCoroutine (AwardLevelGem());
 		} else {
 			//move events
 			MoveEvents ();
@@ -437,6 +419,29 @@ public class GameLogic : MonoBehaviour
 	{
 		yield return new WaitForSeconds (0.1f);
 		characterDeath.SetBool ("playDeath", true);
+	}
+
+	IEnumerator AwardLevelGem ()
+	{
+		// Player raises arms
+		movePlayer.PlayerGetsGem ();
+		gemCont.AddGem (GetGridPanelPosition (exit));
+
+		while (!gemCont.GemGetFinished)
+		{
+			yield return null;
+		}
+
+		// Award diamond to player
+		diamonds++;
+		UpdateUI();
+
+		// Move player out of level
+		int randNum = Random.Range (0, movementClips.Length);
+		int pindex = 0;
+		audioSource.PlayOneShot (movementClips [randNum]);
+		cellindex.TryGetValue (playerLoc, out pindex);
+		movePlayer.PlayerExits (gridPanels [pindex]);
 	}
 
 	#endregion
