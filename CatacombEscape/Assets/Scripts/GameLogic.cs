@@ -73,6 +73,7 @@ public class GameLogic : MonoBehaviour
 	public Text tileNoPlacedText;
 	public Text pointTot;
 	public GameObject newHighscore;
+	public Animator characterDeath;
 	// Pause components
 	public Text pauseLvlText;
 	public Text pauseGreenText;
@@ -179,19 +180,9 @@ public class GameLogic : MonoBehaviour
 		//TutorialBehaviour tutorialScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<TutorialBehaviour> ();
 
 		playerStamina = standardStamina;
-		// Possibly play add coins animation here
-		// coinCont.UpdateCoins(playerStamina);
 		UpdateUI();
 
 		InitGame(level);
-
-		/*
-		//Run tutorial each time game is launched from main menu
-		if (PlayerPrefs.GetString ("PlayFromMenu") == "true")
-		{
-			tutorialScript.RunTutorial ();
-			PlayerPrefs.SetString ("PlayFromMenu", "false");
-		}*/
 	}
 
 	/// <summary>
@@ -401,6 +392,12 @@ public class GameLogic : MonoBehaviour
 			int pindex = 0;
 			exiting = true;
 			audioSource.PlayOneShot(movementClips[randNum], 1.0f);
+
+			// Award diamond to player
+			diamonds++;
+			UpdateUI();
+
+			// Move player out of level
 			cellindex.TryGetValue(playerLoc, out pindex);
 			movePlayer.PlayerExits(gridPanels[pindex]);
 		}
@@ -412,14 +409,13 @@ public class GameLogic : MonoBehaviour
 	// Initialise player data
 	public void InitPlayer()
 	{
-		CheckStamina();
 		if (playerStamina < standardStamina)
 		{
 			int stamUpAmt = standardStamina - playerStamina;
 			string stamUpStr = stamUpAmt.ToString();
 			coinCont.UpdateCoins (stamUpAmt, playerLoc);
 			Vector3 playerPos = GetGridPanelPosition (playerLoc);
-			InstantiateStamUpPanel (stamUpStr, playerPos);
+			InstantiateStamUpPanel ("+" + stamUpStr, playerPos);
 			playerStamina = standardStamina;
 			UpdateUI();
 		}
