@@ -361,6 +361,7 @@ public class GameLogic : MonoBehaviour
 			//move events
 			MoveEvents();
 			CheckStamina();
+			PlanEnemyMoves ();
 		}
 	}
 
@@ -386,24 +387,25 @@ public class GameLogic : MonoBehaviour
 		}
 
 		//check if next level...
-		if (playerLoc == exit)
-		{
-			int randNum = Random.Range(0, movementClips.Length);
+		if (playerLoc == exit) {
+			int randNum = Random.Range (0, movementClips.Length);
 			int pindex = 0;
 			exiting = true;
-			audioSource.PlayOneShot(movementClips[randNum], 1.0f);
+			audioSource.PlayOneShot (movementClips [randNum], 1.0f);
 
 			// Award diamond to player
 			diamonds++;
-			UpdateUI();
+			UpdateUI ();
 
 			// Move player out of level
-			cellindex.TryGetValue(playerLoc, out pindex);
-			movePlayer.PlayerExits(gridPanels[pindex]);
+			cellindex.TryGetValue (playerLoc, out pindex);
+			movePlayer.PlayerExits (gridPanels [pindex]);
+		} else {
+			//move events
+			MoveEvents ();
+			CheckStamina ();
+			PlanEnemyMoves ();
 		}
-		//move events
-		MoveEvents();
-		CheckStamina();
 	}
 
 	// Initialise player data
@@ -1029,6 +1031,7 @@ public class GameLogic : MonoBehaviour
 
 		//update objclone name to be used for destroying the game obj
 		eventTiles[enemyIndex].name = newLoc + "(Clone)";
+
 	}
 
 	/// <summary>
@@ -1094,8 +1097,60 @@ public class GameLogic : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Plans enemy moves so they can be displayed.
+	/// </summary>
+	public void PlanEnemyMoves()
+	{
+		string etloc = "";
+		int currow = 0;
+		int curcol = 0;
+
+		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
+		for (int i = 0; i < eventTiles.Length; i++) 
+		{
+			// For red tiles only. Green tiles don't move.
+			if (eventTiles [i].GetComponent<Image> ().sprite.name == "enemyCharA") 
+			{
+				etloc = eventTiles[i].name.Substring(0, 2);
+				System.Int32.TryParse(etloc.Substring(0, 1), out currow);
+				System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
+
+				Tile enemyTile = tileBoard[currow, curcol];
+
+				var moves = new List<string>();
+
+				// Check for available moves
+				if (CheckEnemyMove ("up", currow, curcol)) {
+					moves.Add ("up");
+				}
+
+				if (CheckEnemyMove ("down", currow, curcol)) {
+					moves.Add ("down");
+				}
+
+				if (CheckEnemyMove ("left", currow, curcol)) {
+					moves.Add ("left");
+				}
+
+				if (CheckEnemyMove ("right", currow, curcol)) {
+					moves.Add ("right");
+				}
+					
+				// Select a random valid direction and set it to the enemy's next move.
+				if (moves.Count != 0)
+				{
+					int newMove = Random.Range(0,moves.Count);
+
+					enemyTile._nextMove = moves [newMove];
+					Debug.Log ("Enemy at [" + etloc + "] is planning to move " + moves[newMove]);
+				}
+			}
+
+		}
+	}
+
+	/// <summary>
 	/// Handles movement of the red event tiles
-	/// 
 	/// </summary>
 	public void MoveEvents()
 	{
@@ -1329,6 +1384,9 @@ public class GameLogic : MonoBehaviour
 				}
 			}
 		}
+
+		// Call PlanEnemyMoves once to give them their first move.
+		PlanEnemyMoves();
 	}
 
 	/// <summary>
