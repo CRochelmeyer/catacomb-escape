@@ -8,11 +8,16 @@ public class Tile
     public string _tileID {get; set;}
     public bool _isOccupied { get; set; }
     public bool _isActive { get; set; }
+
+    // Is used to check if tile is player-placed
     public bool _isEntrySet { get; set; }
     public bool _isDummy { get; set; }
     public string _event { get; set; }
     public int combat { get; set; }
     public string _boardLocation { get; set; }
+    public int heuristic = 0;
+    public int total = 0;
+    public int cost = 0;
 
 	protected Tile() { _isEntrySet = false; }
 

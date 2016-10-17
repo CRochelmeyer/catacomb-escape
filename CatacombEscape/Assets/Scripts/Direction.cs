@@ -39,9 +39,7 @@ public class Direction : MonoBehaviour
                     {
                         //Debug.Log("valid move/entry");  
                         //change isOccupied
-                        pboard[crow, ccol]._isOccupied = false;
-                        //Debug.Log(" new occupied " + pNext._boardLocation);
-                        pboard[nrow, ncol]._isOccupied = true;
+                        UpdateOccupiedTile(pCurrent, pNext);
                         valid = true;
                         //call movement function
                     }
@@ -65,7 +63,14 @@ public class Direction : MonoBehaviour
         nextcol = System.Int32.Parse(pNext.Substring(1, 1));
         return this.Move( pboard[currow, curcol] , pboard[nextrow, nextcol] , ref pboard,currow,curcol,nextrow,nextcol);
     }
-
+    public void UpdateOccupiedTile(Tile pcurrent, Tile pnext)
+    {
+        if (pcurrent._isOccupied)
+        {
+            pcurrent._isOccupied = false;
+            pnext._isOccupied = true;
+        }
+    }
     //Placement for checking valid tile placements of tiles
     // Seems not to be in use. 8/9/16
     /*
@@ -189,14 +194,6 @@ public class Direction : MonoBehaviour
 
     public bool ValidMovement(string pdir,Tile pCurrent, Tile pNext)
     {
-        //Debug.Log("pCurrent VM ::start");
-        //pCurrent.test();
-        //Debug.Log("pCurrent VM ::end");
-        //Debug.Log("pNext VM ::start");
-        //pNext.test();
-        //Debug.Log("pNext VM ::end");
-        //Debug.Log("ValidMovement :" + pCurrent.ValidMove(pdir) +" ::: "+pNext.ValidEntry(pdir));
-
         bool valid = false;
         if ( (pCurrent.ValidMove(pdir)) && (pNext.ValidEntry(pdir)) )
         {

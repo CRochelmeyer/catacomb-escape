@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// Handles moving the player character.
@@ -8,33 +9,55 @@ public class PlayerMove : MonoBehaviour
 {
 	public GameObject player;
 	public int playerDisp = 4; // The y amount the player's center is away from the center of a tile
-
+    //multispeed @default 145
+    public float multispeed { get; set; }
 	public Animator animator;
 	private GameObject tempobj;
 	private Rigidbody2D rb2d;
 	private string pDirection = "";
 	private Vector3 targetPosition;
 	private Vector3 initialPosition;
-
-	public float speed = 0.01f;
+    private bool coinUpdated = false;
+    CoinController coinCont;
+    private string coinString="";
+    public float speed = 0.01f;
 	private float startTime;
 	private float journeyLength;
 	private bool moving = false;
 	private bool enteringLevel = true;
 	private bool exitingLevel = false;
-
-	private float panelHeight;
+    private bool crRunning = false;
+    private bool crUpdatePlayer = false;
+    //dictionary to match cell strings of 00-04 10-14 to an index from 0-29
+    Dictionary<string, int> cellindex = new Dictionary<string, int>();
+    private Direction moveDir;
+    private float panelHeight;
 
 	private GameLogic gameLogic = null;
 	private TutorialLogic tutorialLogic = null;
 
 	void Start ()
 	{
-		if (PlayerPrefs.GetString ("TutorialScene") == "true")
+        //multispeed @default 145
+        multispeed = 145;
+        coinCont = GameObject.FindGameObjectWithTag("Scripts").GetComponent<CoinController>();
+        if (PlayerPrefs.GetString ("TutorialScene") == "true")
 			tutorialLogic = GameObject.FindObjectOfType<TutorialLogic> ();
 		else
 			gameLogic = GameObject.FindObjectOfType<GameLogic> ();
-	}
+
+        cellindex.Clear();
+        int temp = 0;
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                cellindex.Add(i.ToString() + j.ToString(), temp);
+                temp++;
+            }
+        }
+        moveDir = GameObject.FindGameObjectWithTag("Scripts").GetComponent<Direction>();
+    }
 
 	public void FixedUpdate()
 	{
@@ -45,25 +68,7 @@ public class PlayerMove : MonoBehaviour
 			
 			if (pDirection != "" && pDirection != "invalid move")
 			{
-				switch (pDirection)
-				{
-					case "up":
-						animator.SetInteger ("Direction", 3); //3=climb
-						break;
-
-					case "down":
-						animator.SetInteger ("Direction", 3); //3=climb
-						break;
-
-					case "left":
-						animator.SetInteger ("Direction", 1); //1=left
-						break;
-
-					case "right":
-						animator.SetInteger ("Direction", 2); //2=right
-						break;
-				}
-
+                SetAnimation(pDirection);
 				player.transform.localPosition = Vector3.Lerp (initialPosition, targetPosition, fracJourney);
 
 				if (player.transform.localPosition == targetPosition)
@@ -96,7 +101,10 @@ public class PlayerMove : MonoBehaviour
 						if (PlayerPrefs.GetString ("TutorialScene") == "true")
 							tutorialLogic.SetPlayerLoc ();
 						else
-							gameLogic.SetPlayerLoc ();
+                        {
+                            gameLogic.SetPlayerLoc();
+                            gameLogic.mouseClicked = false;
+                        }
 					}
 				}
 			}
@@ -149,12 +157,120 @@ public class PlayerMove : MonoBehaviour
 		startTime = Time.time;
 		moving = true;
 	}
+    /// <summary>
+    /// overload for the above method taking in multiple paths
+    /// </summary>
+    public void UpdatePlayer(GameObject[] panel, List<string> path , Tile[,] pboard)
+    {
+        if (path.Count > 2)
+        {
+            StartCoroutine(MovePath(panel, path, pboard));
+        }
+        else
+        {
+            Debug.Log("Path not long enough. Not starting co-routine.");
+        }
+        
+    }
+    /// <summary>
+    /// First coroutine that handles data is passed thru from gameLogic, which than runs a loop to call a second coroutine
+    /// **came to this solution due to functions/loops not waiting fro the end of a coroutine or lerp before beginning, this method could possible be polished/refined for performance.
+    /// </summary>
+    /// <param name="panel"></param>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    IEnumerator MovePath(GameObject[] panel, List<string> path , Tile[,] pboard)
+    {
+        Debug.Log("MovePath Co-routine");
+        for (int i = 0; i < (path.Count - 1); i++)
+        {
+            int index;
+            cellindex.TryGetValue(path[i + 1], out index);
+            float distance = Vector3.Distance(player.transform.localPosition, panel[index].transform.localPosition);
+            float overTime = distance / multispeed;
+            //set animation get pDirection
+            string direction = moveDir.MoveDirection(path[i], path[i + 1]);
+            SetAnimation(direction);
+            string tempCoin = coinString;
+            Debug.Log("tempCoin :" + tempCoin +" coinstring : "+coinString);
+            if (coinUpdated != true )
+            {
+                coinString = path[i];
+                coinUpdated = true;
+                Debug.Log("coin updated");
+            }
+            StartCoroutine(UpdatePlayerCoroutine(player.transform.localPosition, panel[index].transform.localPosition, overTime));
+            if (coinUpdated)
+            {
+                Debug.Log("animate coin");
+                coinCont.UpdateCoins(-1, coinString);
+                coinUpdated = false;
+            }
+            if (crRunning == true)
+            {
+                yield return new WaitForSeconds(overTime);
+                //update logic of the player position per tile grid move allowing enemies to move. having this code here as this coroutine contains playerloc already
+                GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic>();
+                gameLogic.SetPlayerLoc(path[i + 1]);
+            }
+        }
+        yield return null;
+        gameLogic.mouseClicked = false;
 
-	/// <summary>
-	/// When the player clicks on the exit tile, this sets the target location
-	/// as the area below the exit tile
-	/// </summary>
-	public void PlayerExits (GameObject panel)
+    }
+    IEnumerator UpdatePlayerCoroutine(Vector3 start, Vector3 target, float overTime)
+    {
+        Debug.Log("UpdatePlayerCoroutine");
+
+        crRunning = true;
+        float startTime = Time.time;
+        while (Time.time < (startTime + overTime))
+        {
+            //Debug.Log(Time.time + " :: " + (startTime + overTime) + "overTime : "+ overTime);
+            player.transform.localPosition = Vector3.Lerp(start, target, (Time.time - startTime) / overTime);
+            if (Vector3.Distance(player.transform.localPosition, target) < 3)
+            {
+                //set player to target and stop animation
+                //disable animation
+                SetAnimation("stop");
+                player.transform.localPosition = target;
+            }
+            yield return null;
+        }
+        crRunning = false;
+    }
+    public void SetAnimation(string pDirection)
+    {
+        if (pDirection != "" && pDirection != "invalid move")
+        {
+            switch (pDirection)
+            {
+                case "up":
+                    animator.SetInteger("Direction", 3); //3=climb
+                    break;
+
+                case "down":
+                    animator.SetInteger("Direction", 3); //3=climb
+                    break;
+
+                case "left":
+                    animator.SetInteger("Direction", 1); //1=left
+                    break;
+
+                case "right":
+                    animator.SetInteger("Direction", 2); //2=right
+                    break;
+                case "stop":
+                    animator.SetInteger("Direction", 0);
+                    break;
+            }
+        }
+    }
+    /// <summary>
+    /// When the player clicks on the exit tile, this sets the target location
+    /// as the area below the exit tile
+    /// </summary>
+    public void PlayerExits (GameObject panel)
 	{
 		pDirection = "down";
 		GameObject exitPanel = panel;
@@ -163,8 +279,8 @@ public class PlayerMove : MonoBehaviour
 		tempPos = new Vector3 (tempPos.x, tempPos.y - playerDisp - panelHeight, tempPos.z);
 		targetPosition = tempPos;
 		initialPosition = player.transform.localPosition;
-		Debug.Log ("Initial Position: " + initialPosition);
-		Debug.Log ("Target Position: " + targetPosition);
+		//Debug.Log ("Initial Position: " + initialPosition);
+		//Debug.Log ("Target Position: " + targetPosition);
 		journeyLength = Vector3.Distance (initialPosition, targetPosition);
 		startTime = Time.time;
 		moving = true;
