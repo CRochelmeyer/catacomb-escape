@@ -113,8 +113,8 @@ public class CoinController : MonoBehaviour
 		}
 
 		updateDone = true;
-		if (PlayerPrefs.GetString ("TutorialScene") != "true")
-			gameLogic.UpdateUI();
+		//if (PlayerPrefs.GetString ("TutorialScene") != "true")
+			//gameLogic.UpdateUI();
 		coinUpdateStack.RemoveAt (0);
 	}
 

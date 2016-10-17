@@ -43,10 +43,12 @@ public class GameLogic : MonoBehaviour
 	public Sprite[] eventEnemy;
 	#endregion
 
-	private AudioSource audioSource;
+	public AudioSource audioSource;
 	#region audioClips
 	[Header("Audio Clips")]
 	public AudioClip startGameClip;
+	public AudioClip chestPlacementClip;
+	public AudioClip noPlacementClip;
 	public AudioClip[] placementClips;
 	public AudioClip[] dealingClips;
 	public AudioClip[] movementClips;
@@ -164,7 +166,6 @@ public class GameLogic : MonoBehaviour
 
 		//refresh and initialse redstep per awake call
 		redstep = 0;
-		audioSource = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<AudioSource> ();
 		audioSource.PlayOneShot (startGameClip, 0.5f);
 
 		GameObject mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
@@ -227,18 +228,6 @@ public class GameLogic : MonoBehaviour
 		FindGridPanels();
 
 		PlayerPrefs.SetString ("Paused", "false");
-
-		//initialise player data
-		CheckStamina();
-		if (playerStamina < standardStamina)
-		{
-			int stamUpAmt = standardStamina - playerStamina;
-			string stamUpStr = stamUpAmt.ToString();
-			coinCont.UpdateCoins (stamUpAmt, playerLoc);
-			Vector3 playerPos = GetGridPanelPosition (playerLoc);
-			InstantiateStamUpPanel (stamUpStr, playerPos);
-			playerStamina = standardStamina;
-		}
 
 		GameObject tempObj = GameObject.FindGameObjectWithTag ("GameLevel");
 		tempObj.GetComponent<Text>().text = "Lvl " + pLevel;
@@ -418,6 +407,22 @@ public class GameLogic : MonoBehaviour
 		//move events
 		MoveEvents();
 		CheckStamina();
+	}
+
+	// Initialise player data
+	public void InitPlayer()
+	{
+		CheckStamina();
+		if (playerStamina < standardStamina)
+		{
+			int stamUpAmt = standardStamina - playerStamina;
+			string stamUpStr = stamUpAmt.ToString();
+			coinCont.UpdateCoins (stamUpAmt, playerLoc);
+			Vector3 playerPos = GetGridPanelPosition (playerLoc);
+			InstantiateStamUpPanel (stamUpStr, playerPos);
+			playerStamina = standardStamina;
+			UpdateUI();
+		}
 	}
 
 	#endregion
