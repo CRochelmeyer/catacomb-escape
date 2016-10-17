@@ -55,6 +55,7 @@ public class GameLogic : MonoBehaviour
 	public AudioClip[] greenTileClips;
 	public AudioClip[] redTileClips;
 	public AudioClip[] lvlCompClips;
+	public AudioClip gameOverClip;
 	#endregion
 
 	#region uiPanels
@@ -167,7 +168,7 @@ public class GameLogic : MonoBehaviour
 
 		//refresh and initialse redstep per awake call
 		redstep = 0;
-		audioSource.PlayOneShot (startGameClip, 0.5f);
+		audioSource.PlayOneShot (startGameClip);
 
 		GameObject mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
 		if (mainCamera != null)
@@ -276,9 +277,18 @@ public class GameLogic : MonoBehaviour
 			}
 			else if (gameover)
 			{
+				PlayerPrefs.SetString ("Paused", "true");
 				GameOverHS();
 				statPanel.SetActive(true);
+				audioSource.PlayOneShot (gameOverClip);
+				StartCoroutine (PlayDeathAnimation());
 			}
+		}
+
+		if (Input.GetKeyDown (KeyCode.D))
+		{
+			playerStamina = 0;
+			CheckStamina();
 		}
 	}
 
@@ -421,6 +431,12 @@ public class GameLogic : MonoBehaviour
 			playerStamina = standardStamina;
 			UpdateUI();
 		}
+	}
+
+	IEnumerator PlayDeathAnimation()
+	{
+		yield return new WaitForSeconds (0.1f);
+		characterDeath.SetBool ("playDeath", true);
 	}
 
 	#endregion
