@@ -157,6 +157,7 @@ public class PlayerMove : MonoBehaviour
 		startTime = Time.time;
 		moving = true;
 	}
+
     /// <summary>
     /// overload for the above method taking in multiple paths
     /// </summary>
@@ -172,6 +173,7 @@ public class PlayerMove : MonoBehaviour
         }
         
     }
+
     /// <summary>
     /// First coroutine that handles data is passed thru from gameLogic, which than runs a loop to call a second coroutine
     /// **came to this solution due to functions/loops not waiting fro the end of a coroutine or lerp before beginning, this method could possible be polished/refined for performance.
@@ -218,6 +220,7 @@ public class PlayerMove : MonoBehaviour
         gameLogic.mouseClicked = false;
 
     }
+
     IEnumerator UpdatePlayerCoroutine(Vector3 start, Vector3 target, float overTime)
     {
         Debug.Log("UpdatePlayerCoroutine");
@@ -239,6 +242,7 @@ public class PlayerMove : MonoBehaviour
         }
         crRunning = false;
     }
+
     public void SetAnimation(string pDirection)
     {
         if (pDirection != "" && pDirection != "invalid move")
@@ -266,6 +270,12 @@ public class PlayerMove : MonoBehaviour
             }
         }
     }
+
+	public void PlayerGetsGem ()
+	{
+		animator.SetInteger ("Direction", 5); // Set animation to gem get
+	}
+
     /// <summary>
     /// When the player clicks on the exit tile, this sets the target location
     /// as the area below the exit tile

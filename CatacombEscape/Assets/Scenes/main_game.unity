@@ -100,6 +100,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f934ab61bde07f41acafaded639df94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &13632089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 13632087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4f302146a1917e46add0dc4d721acd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gemPrefab: {fileID: 144424, guid: 65973fc1e961ffa42a4ef0f3782faa5b, type: 2}
+  gemSource: {fileID: 1728463016}
+  gemMoveTime: 0.3
+  gemRiseTime: 0.8
+  gemRiseDist: 0.6
+  source: {fileID: 1302326025}
+  gemGetClip: {fileID: 8300000, guid: 7539fb9bb32ba404e8f9d6d3e6c36ce0, type: 3}
 --- !u!114 &21621800 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11486746, guid: aba066add4a931343b373c5d64eda8a9,
@@ -3244,6 +3262,10 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 7da0b357a060fff4b9fa788947c61dbf,
         type: 3}
+    - target: {fileID: 22431972, guid: 4cfb0ffb71ab3334fbe490de96795911, type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 246
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4cfb0ffb71ab3334fbe490de96795911, type: 2}
   m_IsPrefabParent: 0
@@ -4502,6 +4524,11 @@ GameObject:
 GameObject:
   m_PrefabParentObject: {fileID: 182080, guid: 4cfb0ffb71ab3334fbe490de96795911, type: 2}
   m_PrefabInternal: {fileID: 686223272}
+--- !u!82 &1302326025 stripped
+AudioSource:
+  m_PrefabParentObject: {fileID: 8261376, guid: 6281424b91878e445b894668e7ce0ef9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1929961366}
 --- !u!1 &1358541432 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 134730, guid: 4cfb0ffb71ab3334fbe490de96795911, type: 2}
@@ -5197,6 +5224,11 @@ GameObject:
 GameObject:
   m_PrefabParentObject: {fileID: 108470, guid: 4cfb0ffb71ab3334fbe490de96795911, type: 2}
   m_PrefabInternal: {fileID: 686223272}
+--- !u!224 &1728463016 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 22419896, guid: 9a0fa0a378dbe5c49beae160c02f7490,
+    type: 2}
+  m_PrefabInternal: {fileID: 986309891}
 --- !u!1001 &1755199822
 Prefab:
   m_ObjectHideFlags: 0
@@ -6034,6 +6066,10 @@ Prefab:
       propertyPath: characterDeath
       value: 
       objectReference: {fileID: 440300295}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: gemCont
+      value: 
+      objectReference: {fileID: 13632089}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
   m_IsPrefabParent: 0
