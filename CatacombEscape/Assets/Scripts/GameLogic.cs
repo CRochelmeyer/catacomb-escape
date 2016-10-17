@@ -560,6 +560,9 @@ public class GameLogic : MonoBehaviour
 			emptyhand = true;
 		}
 		CheckStamina();
+
+		// Check for stuck enemies, and kill them
+		AreEnemiesStuck();
 	}
 
 	/// <summary>
@@ -788,7 +791,7 @@ public class GameLogic : MonoBehaviour
 	/// <param name="dir">Dir.</param>
 	public bool CheckEnemyMove(string dir, int curRow, int curCol)
 	{
-
+		
 		bool isValidMove = false;
 
 		Tile currentTile = tileBoard [curRow, curCol];
@@ -1045,8 +1048,70 @@ public class GameLogic : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Checks all enemies to see if they can move.
+	/// </summary>
+	public void AreEnemiesStuck()
+	{
+		string etloc = "";
+		int currow = 0;
+		int curcol = 0;
+
+		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
+
+		for (int i = 0; i < eventTiles.Length; i++) 
+		{
+			
+			// For red tiles only. Green tiles don't move.
+			if (eventTiles [i].GetComponent<Image> ().sprite.name == "enemyCharA") 
+			{
+				etloc = eventTiles[i].name.Substring(0, 2);
+
+				System.Int32.TryParse (etloc.Substring (0, 1), out currow);
+				System.Int32.TryParse (etloc.Substring (1, 1), out curcol);
+
+				Tile enemyTile = tileBoard[currow, curcol];
+
+				GameObject enemyGameObj = GameObject.Find(enemyTile._boardLocation + "(Clone)");
+
+				bool enemyCanMove = false;
+
+				if (CheckEnemyMove ("up", currow, curcol)) {
+					enemyCanMove = true;
+				}
+
+				if (CheckEnemyMove ("down", currow, curcol)) {
+					enemyCanMove = true;
+				}
+
+				if (CheckEnemyMove ("left", currow, curcol)) {
+					enemyCanMove = true;
+				}
+
+				if (CheckEnemyMove ("right", currow, curcol)) {
+					enemyCanMove = true;
+				}
+
+				// Add gem animation etc here
+				if (!enemyCanMove) 
+				{
+					Debug.Log ("Enemy at [" + etloc + "] cannot move. Destroy it.");
+					enemyTile._event = ""; // Kill the enemy
+
+					if (enemyGameObj != null)
+					{
+						Debug.Log("destroy clone");
+						Destroy(enemyGameObj);
+						enemyTile._isActive = false;
+
+					}
+				}
+			}
+		}
+	}
+
+	/// <summary>
 	/// Handles movement of the red event tiles
-	/// I'm going to re-write this to create a list of available moves, and then choose from one of them. ~ Nick
+	/// 
 	/// </summary>
 	public void MoveEvents()
 	{
@@ -1061,9 +1126,9 @@ public class GameLogic : MonoBehaviour
 			if (eventTiles[i].GetComponent<Image>().sprite.name == "enemyCharA")
 			{
 				etloc = eventTiles[i].name.Substring(0, 2);
-				//Debug.Log("etloc: " + etloc);
 				System.Int32.TryParse(etloc.Substring(0, 1), out currow);
 				System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
+
 
 				var moves = new List<string>();
 
@@ -1090,14 +1155,6 @@ public class GameLogic : MonoBehaviour
 				if (CheckEnemyMove ("right", currow, curcol)) {
 					moves.Add ("right");
 					//Debug.Log ("["+ currow +"," + curcol +"] can move right.");
-				}
-
-
-				//Debug.Log("Available moves for enemy " + etloc + ": ");
-
-				foreach (string move in moves)
-				{
-					//Debug.Log(move.ToString());
 				}
 
 				// Here's hoping this works lol
@@ -1699,67 +1756,71 @@ public class GameLogic : MonoBehaviour
 				int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
 				int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
 
-				// Prevent deletion if the tile is an exit or entry.
-				if (tileBoard[temprow, tempcol] != null && !tileBoard[temprow, tempcol]._tileID.Contains("exit") && !tileBoard[temprow, tempcol]._tileID.Contains("entrance") && tileBoard[temprow, tempcol]._isEntrySet == true)
+				// Ensure only player-placed tiles can be deleted.
+				if ( tileBoard[temprow, tempcol]._isEntrySet ) 
 				{
-					// Ensure player is not on the target tile.
-					if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))] != tileBoard[temprow, tempcol])
+					// Prevent deletion if the tile is an exit or entry.
+					if (tileBoard[temprow, tempcol] != null && !tileBoard[temprow, tempcol]._tileID.Contains("exit") && !tileBoard[temprow, tempcol]._tileID.Contains("entrance") )
 					{
-
-						int pIndex;                        
-						Debug.Log("Removing tileBoard object at " + "[" + temprow + "," + tempcol + "]");
-						Debug.Log("Tile ID: " + tileBoard[temprow,tempcol]._tileID);
-
-						// The sprite for the tile is in a separate array for some reason.
-						// It's also a one dimensional arraym, so we must retrieve the correct index.
-						cellindex.TryGetValue(tileBoard[temprow, tempcol]._boardLocation, out pIndex);
-
-						// Now we can delete the sprite for the tile.
-						gridPanels[pIndex].GetComponent<Image>().sprite = null;
-						gridPanels[pIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 0f);
-
-						Tile tileToDelete = tileBoard[temprow, tempcol];
-						tileBoard[temprow, tempcol] = new Tile(0);
-
-						// Preserve any events on the tile.
-						if (tileToDelete._event != "")
+						// Ensure player is not on the target tile.
+						if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))] != tileBoard[temprow, tempcol])
 						{
-							Debug.LogWarning("Tile contains an event.");
-							tileBoard[temprow, tempcol]._event = tileToDelete._event;
-							tileBoard[temprow, tempcol]._eventItem = tileToDelete._eventItem;
-							tileBoard[temprow, tempcol].combat = tileToDelete.combat;
 
-							// Need to reset the sprite for the chest events (It stays small once the tile is removed).
-							if (tileBoard[temprow,tempcol]._event == "green")
+							int pIndex;                        
+							Debug.Log("Removing tileBoard object at " + "[" + temprow + "," + tempcol + "]");
+							Debug.Log("Tile ID: " + tileBoard[temprow,tempcol]._tileID);
+
+							// The sprite for the tile is in a separate array for some reason.
+							// It's also a one dimensional arraym, so we must retrieve the correct index.
+							cellindex.TryGetValue(tileBoard[temprow, tempcol]._boardLocation, out pIndex);
+
+							// Now we can delete the sprite for the tile.
+							gridPanels[pIndex].GetComponent<Image>().sprite = null;
+							gridPanels[pIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 0f);
+
+							Tile tileToDelete = tileBoard[temprow, tempcol];
+							tileBoard[temprow, tempcol] = new Tile(0);
+
+							// Preserve any events on the tile.
+							if (tileToDelete._event != "")
 							{
-								Debug.Log ("Attempting to update chest sprite at [" + temprow + "," + tempcol + "]");
-								GameObject temp = GameObject.Find(temprow.ToString() + tempcol.ToString() + "(Clone)");
-								if (temp != null) 
+								Debug.LogWarning("Tile contains an event.");
+								tileBoard[temprow, tempcol]._event = tileToDelete._event;
+								tileBoard[temprow, tempcol]._eventItem = tileToDelete._eventItem;
+								tileBoard[temprow, tempcol].combat = tileToDelete.combat;
+
+								// Need to reset the sprite for the chest events (It stays small once the tile is removed).
+								if (tileBoard[temprow,tempcol]._event == "green")
 								{
-									temp.GetComponent<Image> ().sprite = eventGreenLrg as Sprite;
-								} 
-								else 
-								{
-									Debug.Log(temprow.ToString() + tempcol.ToString() + "(Clone)");
-									Debug.Log ("Error: could not find gameobject.");
+									Debug.Log ("Attempting to update chest sprite at [" + temprow + "," + tempcol + "]");
+									GameObject temp = GameObject.Find(temprow.ToString() + tempcol.ToString() + "(Clone)");
+									if (temp != null) 
+									{
+										temp.GetComponent<Image> ().sprite = eventGreenLrg as Sprite;
+									} 
+									else 
+									{
+										Debug.Log(temprow.ToString() + tempcol.ToString() + "(Clone)");
+										Debug.Log ("Error: could not find gameobject.");
+									}
 								}
 							}
+
+							InstantiateStamDownPanel("-" + removeTileCost, GetGridPanelPosition (clickLoc));
+							playerStamina += -removeTileCost;
+							UpdateUI();
+							coinCont.UpdateCoins (-removeTileCost, clickLoc);
+							CheckStamina();
+
+							// Toggle tile deletion, so player deletes only one tile per button press.
+							DeleteTileToggle(); 
 						}
-
-						InstantiateStamDownPanel("-" + removeTileCost, GetGridPanelPosition (clickLoc));
-						playerStamina += -removeTileCost;
-						UpdateUI();
-						coinCont.UpdateCoins (-removeTileCost, clickLoc);
-						CheckStamina();
-
-						// Toggle tile deletion, so player deletes only one tile per button press.
-						DeleteTileToggle(); 
 					}
-				}
-				else
-				{
-					Debug.Log("Invalid target: this tile is an entrance or exit!");
-					Debug.Log(tileBoard[temprow,tempcol]._entry);
+					else
+					{
+						Debug.Log("Invalid target: this tile is an entrance or exit!");
+						Debug.Log(tileBoard[temprow,tempcol]._entry);
+					}
 				}
 			}
 		}
