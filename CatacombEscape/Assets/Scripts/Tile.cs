@@ -8,9 +8,8 @@ public class Tile
     public string _tileID {get; set;}
     public bool _isOccupied { get; set; }
     public bool _isActive { get; set; }
-
-    // Is used to check if tile is player-placed
-    public bool _isEntrySet { get; set; }
+	public string _nextMove = "";				// Used to show the enemy's movement direction to the player.
+	public bool _isEntrySet { get; set; }	// Is used to check if tile is player-placed
     public bool _isDummy { get; set; }
     public string _event { get; set; }
     public int combat { get; set; }
@@ -89,6 +88,7 @@ public class Tile
     {
         _event = "";
         _eventItem = "";
+		_nextMove = "";
         combat = 0;
 
     }
