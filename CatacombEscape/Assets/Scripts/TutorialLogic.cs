@@ -25,7 +25,8 @@ public class TutorialLogic : MonoBehaviour
 	public int redLocIdx;
 	public int initRedDmg;
 	public int greenAmt;
-	public int discardCost;
+	public int newHandCost;
+	public int removeTileCost;
 	#endregion
 
 	#region sprites
@@ -69,6 +70,15 @@ public class TutorialLogic : MonoBehaviour
 	public GameObject stamDownPrefab;
 	#endregion
 
+	#region removeTileFunctions
+	[Header("Remove Tile Function")]
+	public Button newHandButton;
+	public Button removeTileButton;
+	public GameObject removeTilePopUp;
+	public ManageRemoveTile manageRemoveTileScript;
+	private bool showRemoveTilePop = true;
+	#endregion
+
 	#region tutorialPanels
 	[Header("Tutorial Panels")]
 	public GameObject stage1a;
@@ -96,6 +106,7 @@ public class TutorialLogic : MonoBehaviour
 	private string playerLoc="";
 	private string destLoc = "";
 	private string mouseLocation = "";
+	private bool deletingTile = false;
 
 	//tutorial conditions
 	private GameObject handTile0 = null;
@@ -103,9 +114,8 @@ public class TutorialLogic : MonoBehaviour
 	private GameObject handTile2 = null;
 	private GameObject handTile3 = null;
 	private int feedHand = 0;
-	private string[] placementLocations = new string[] {"10", "11", "21", "20", "22"};
+	private string[] placementLocations = new string[] {"10", "11", "21", "20", "22", "22"};
 	private int placementIndex = 0;
-	public Button discardButton;
 	private int stage = 1;
 
 	//dictionary to match cell strings of 00-04 10-14 to an index from 0-29
@@ -152,16 +162,19 @@ public class TutorialLogic : MonoBehaviour
 		playerStamina = standardStamina;
 		UpdateUI();
 
-		discardButton.interactable = false;
+		newHandButton.interactable = false;
+		removeTileButton.interactable = false;
 
 		// Stage 1: Tile 1
 		// Stage 2: Tile 2
 		// Stage 3: Tile 3
 		// Stage 4: Tile 4
 		// Stage 5: Move to chest
-		// Stage 6: Discard hand
-		// Stage 7: Tile 5
-		// Stage 8: Move to exit
+		// Stage 6: Tile 5
+		// Stage 7: Remove tile 5
+		// Stage 8: Discard hand
+		// Stage 9: Tile 6
+		// Stage 10: Move to exit
 
 		InitLevel(level);
 
@@ -201,17 +214,22 @@ public class TutorialLogic : MonoBehaviour
 		case 6:
 			stage5a.SetActive (false);
 			stage5b.SetActive (false);
-			stage6a.SetActive (true);
-			//stage6b.SetActive (true);
-			discardButton.interactable = true;
 			break;
 		case 7:
+			removeTileButton.interactable = true;
+			break;
+		case 8:
+			stage6a.SetActive (true);
+			//stage6b.SetActive (true);
+			newHandButton.interactable = true;
+			break;
+		case 9:
 			stage6a.SetActive (false);
 			//stage6b.SetActive (false);
 			stage7a.SetActive (true);
 			//stage7b.SetActive (true);
 			break;
-		case 8:
+		case 10:
 			stage7a.SetActive (false);
 			//stage7b.SetActive (false);
 			stage8a.SetActive (true);
@@ -228,7 +246,7 @@ public class TutorialLogic : MonoBehaviour
 				if (feedHand == 0)
 				{
 					// Generate hand with "right,left", "down,left", "up,right,down" and "up, right, left"
-					GenerateHand (3, 0, 8, 9);
+					GenerateHand (3, 2, 8, 10);
 					feedHand++;
 					emptyhand = false;
 					handTile2.AddComponent<Draggable>();
@@ -242,7 +260,16 @@ public class TutorialLogic : MonoBehaviour
 				}
 			}
 
-			PlayerClick();
+			if (deletingTile)
+			{
+				// Needs to run in update to check for the mouse click.
+				DeleteTile();
+			}
+			else// if (mouseClicked == false)
+			{
+				PlayerClick();				
+			}
+
 
 			if (nextlevel)
 			{
@@ -264,14 +291,14 @@ public class TutorialLogic : MonoBehaviour
 		case 0:
 			handTile2.AddComponent<Draggable>();
 			break;
-		case 3:
-			handTile0.AddComponent<Draggable>();
+		case 1:
+			handTile1.AddComponent<Draggable>();
 			break;
 		case 2:
 			handTile3.AddComponent<Draggable>();
 			break;
-		case 1:
-			handTile1.AddComponent<Draggable>();
+		case 3:
+			handTile0.AddComponent<Draggable>();
 			break;
 		}
 	}
@@ -349,6 +376,7 @@ public class TutorialLogic : MonoBehaviour
 		if (playerLoc == "20")
 		{
 			stage++;
+			handTile3.AddComponent<Draggable>();
 		}
 
 		//check if next level...
@@ -672,19 +700,19 @@ public class TutorialLogic : MonoBehaviour
 				Destroy(handTilesDrag[i]);
 			}
 		}
-		InstantiateStamDownPanel ("-" + discardCost, movePlayer.PlayerLocation);
-		playerStamina += - discardCost;
+		InstantiateStamDownPanel ("-" + newHandCost, movePlayer.PlayerLocation);
+		playerStamina += - newHandCost;
 
 		// Generate hand with "up,down", "right,left", "up,down,left" and "up, right, left"
-		GenerateHand (4, 3, 5, 9);
+		GenerateHand (4, 3, 5, 10);
 		feedHand++;
 		emptyhand = false;
 
 		stage++;
 		UpdateUI();
-		coinCont.UpdateCoins (-discardCost, "newHandButton");
+		coinCont.UpdateCoins (-newHandCost, "newHandButton");
 
-		discardButton.interactable = false;
+		newHandButton.interactable = false;
 
 		handTile2.AddComponent<Draggable>();
 	}
@@ -1050,6 +1078,124 @@ public class TutorialLogic : MonoBehaviour
 				//store event red tiles into eventred list
 				eventindex.Add(tempPanel.name, "event_red");
 
+			}
+		}
+	}
+
+	/// <summary>
+	/// Toggles the ability to delete tiles.
+	/// </summary>
+	public void DeleteTileToggle()
+	{
+		deletingTile = !deletingTile;
+
+		if (deletingTile)
+		{
+			Debug.Log("Selecting tile to delete.");
+			newHandButton.interactable = false;
+
+			manageRemoveTileScript.DisplayOverlays ("33");
+
+			if (showRemoveTilePop)
+			{
+				DisplayClickPanel (removeTilePopUp);
+				showRemoveTilePop = false;
+			}
+		}
+		else
+		{
+			Debug.Log("No longer deleting tile.");
+			removeTileButton.interactable = false;
+			manageRemoveTileScript.HidePanelOverlays();
+			stage++;
+		}
+	}
+
+	/// <summary>
+	/// Performs the deletion of a tile.
+	/// This is done by creating a blank tile to replace the one being "deleted".
+	/// </summary>
+	private void DeleteTile()
+	{
+		string clickLoc;
+
+		clickLoc = MouseLocation;
+
+		// If mouse has been clicked
+		if (Input.GetMouseButtonDown(0) && PlayerPrefs.GetString ("Paused") == "false")
+		{
+			if (clickLoc != "")
+			{
+				// row and column of tile that was clicked.
+				int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
+				int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
+
+				// Ensure only player-placed tiles can be deleted.
+				if ( tileBoard[temprow, tempcol]._isEntrySet ) 
+				{
+					// Prevent deletion if the tile is an exit or entry.
+					if (tileBoard[temprow, tempcol] != null && !tileBoard[temprow, tempcol]._tileID.Contains("exit") && !tileBoard[temprow, tempcol]._tileID.Contains("entrance") )
+					{
+						// Ensure player is not on the target tile.
+						if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))] != tileBoard[temprow, tempcol])
+						{
+
+							int pIndex;                        
+							Debug.Log("Removing tileBoard object at " + "[" + temprow + "," + tempcol + "]");
+							Debug.Log("Tile ID: " + tileBoard[temprow,tempcol]._tileID);
+
+							// The sprite for the tile is in a separate array for some reason.
+							// It's also a one dimensional arraym, so we must retrieve the correct index.
+							cellindex.TryGetValue(tileBoard[temprow, tempcol]._boardLocation, out pIndex);
+
+							// Now we can delete the sprite for the tile.
+							gridPanels[pIndex].GetComponent<Image>().sprite = null;
+							gridPanels[pIndex].GetComponent<Image>().color = new Color(255f, 255f, 255f, 0f);
+
+							Tile tileToDelete = tileBoard[temprow, tempcol];
+							tileBoard[temprow, tempcol] = new Tile(0);
+
+							// Preserve any events on the tile.
+							if (tileToDelete._event != "")
+							{
+								Debug.LogWarning("Tile contains an event.");
+								tileBoard[temprow, tempcol]._event = tileToDelete._event;
+								tileBoard[temprow, tempcol]._eventItem = tileToDelete._eventItem;
+								tileBoard[temprow, tempcol].combat = tileToDelete.combat;
+
+								// Need to reset the sprite for the chest events (It stays small once the tile is removed).
+								if (tileBoard[temprow,tempcol]._event == "green")
+								{
+									Debug.Log ("Attempting to update chest sprite at [" + temprow + "," + tempcol + "]");
+									GameObject temp = GameObject.Find(temprow.ToString() + tempcol.ToString() + "(Clone)");
+									if (temp != null) 
+									{
+										temp.GetComponent<Image> ().sprite = eventGreenLrg as Sprite;
+									} 
+									else 
+									{
+										Debug.Log(temprow.ToString() + tempcol.ToString() + "(Clone)");
+										Debug.Log ("Error: could not find gameobject.");
+									}
+								}
+							}
+
+							InstantiateStamDownPanel("-" + removeTileCost, GetGridPanelPosition (clickLoc));
+							playerStamina += -removeTileCost;
+							UpdateUI();
+							coinCont.UpdateCoins (-removeTileCost, clickLoc);
+							CheckStamina();
+
+							// Toggle tile deletion, so player deletes only one tile per button press.
+							DeleteTileToggle(); 
+						}
+					}
+					else
+					{
+						Debug.Log("Invalid target: this tile is an entrance or exit!");
+						Debug.Log(tileBoard[temprow,tempcol]._entry);
+					}
+				}
 			}
 		}
 	}

@@ -40,6 +40,24 @@ public class ManageRemoveTile : MonoBehaviour
 		}
 	}
 
+	public void DisplayOverlays (string validTileName)
+	{
+		topPanelOverlay.SetActive (true);
+		bottomPanelOverlay.SetActive (true);
+
+		currentPanelIndex = new int[29];
+		int idx = 0;
+		for (int i = 0; i < gridPanelsOverlay.Length; i++)
+		{
+			if (gridPanelsOverlay[i].name != validTileName)
+			{
+				gridPanelsOverlay[i].SetActive (true);
+				currentPanelIndex[idx] = i;
+				idx++;
+			}
+		}
+	}
+
 	public void HidePanelOverlays ()
 	{
 		topPanelOverlay.SetActive (false);
