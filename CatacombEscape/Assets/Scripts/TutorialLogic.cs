@@ -26,7 +26,6 @@ public class TutorialLogic : MonoBehaviour
 	public int initRedDmg;
 	public int greenAmt;
 	public int newHandCost;
-	public int removeTileCost;
 	#endregion
 
 	#region sprites
@@ -74,29 +73,14 @@ public class TutorialLogic : MonoBehaviour
 	[Header("Remove Tile Function")]
 	public Button newHandButton;
 	public Button removeTileButton;
-	public GameObject removeTilePopUp;
 	public ManageRemoveTile manageRemoveTileScript;
-	private bool showRemoveTilePop = true;
 	#endregion
 
 	#region tutorialPanels
 	[Header("Tutorial Panels")]
-	public GameObject stage1a;
-	public GameObject stage1b;
-	public GameObject stage2a;
-	public GameObject stage2b;
-	public GameObject stage3a;
-	public GameObject stage3b;
-	public GameObject stage4a;
-	public GameObject stage4b;
-	public GameObject stage5a;
-	public GameObject stage5b;
-	public GameObject stage6a;
-	public GameObject stage6b;
-	public GameObject stage7a;
-	public GameObject stage7b;
-	public GameObject stage8a;
-	public GameObject stage8b;
+	public GameObject[] arrows;
+	private int arrowIdx = 0;
+	public GameObject[] tileOverlays;
 	#endregion
 
 	//boolean game conditions
@@ -165,79 +149,19 @@ public class TutorialLogic : MonoBehaviour
 		newHandButton.interactable = false;
 		removeTileButton.interactable = false;
 
-		// Stage 1: Tile 1
-		// Stage 2: Tile 2
-		// Stage 3: Tile 3
-		// Stage 4: Tile 4
-		// Stage 5: Move to chest
-		// Stage 6: Tile 5
-		// Stage 7: Remove tile 5
-		// Stage 8: Discard hand
-		// Stage 9: Tile 6
-		// Stage 10: Move to exit
-
 		InitLevel(level);
 
+		// Stage 1: Tile 1
+		arrows[0].SetActive (true);
+		/*
 		stage1a.SetActive (true);
 		stage1b.SetActive (true);
+		*/
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		switch (stage)
-		{
-		case 2:
-			stage1a.SetActive (false);
-			stage1b.SetActive (false);
-			stage2a.SetActive (true);
-			stage2b.SetActive (true);
-			break;
-		case 3:
-			stage2a.SetActive (false);
-			stage2b.SetActive (false);
-			stage3a.SetActive (true);
-			stage3b.SetActive (true);
-			break;
-		case 4:
-			stage3a.SetActive (false);
-			stage3b.SetActive (false);
-			stage4a.SetActive (true);
-			stage4b.SetActive (true);
-			break;
-		case 5:
-			stage4a.SetActive (false);
-			stage4b.SetActive (false);
-			stage5a.SetActive (true);
-			stage5b.SetActive (true);
-			break;
-		case 6:
-			stage5a.SetActive (false);
-			stage5b.SetActive (false);
-			break;
-		case 7:
-			removeTileButton.interactable = true;
-			break;
-		case 8:
-			stage6a.SetActive (true);
-			//stage6b.SetActive (true);
-			newHandButton.interactable = true;
-			break;
-		case 9:
-			stage6a.SetActive (false);
-			//stage6b.SetActive (false);
-			stage7a.SetActive (true);
-			//stage7b.SetActive (true);
-			break;
-		case 10:
-			stage7a.SetActive (false);
-			//stage7b.SetActive (false);
-			stage8a.SetActive (true);
-			//stage8b.SetActive (true);
-			break;
-		}
-
-
 		if (PlayerPrefs.GetString ("Paused") != "true")
 		{
 			//check if handTiles has been filled
@@ -277,6 +201,60 @@ public class TutorialLogic : MonoBehaviour
 				tutCompletePanel.SetActive (true);
 			}
 		}
+	}
+
+	private void UpdateStage ()
+	{
+		switch (stage)
+		{
+		case 2:	// Stage 2: Tile 2
+			NextArrow ();
+			tileOverlays[2].SetActive (true);
+			tileOverlays[1].SetActive (false);
+			break;
+		case 3:	// Stage 3: Tile 3
+			NextArrow ();
+			tileOverlays[1].SetActive (true);
+			tileOverlays[3].SetActive (false);
+			break;
+		case 4:	// Stage 4: Tile 4
+			NextArrow ();
+			tileOverlays[3].SetActive (true);
+			tileOverlays[0].SetActive (false);
+			break;
+		case 5:	// Stage 5: Move to chest
+			NextArrow ();
+			tileOverlays[0].SetActive (true);
+			break;
+		case 6:	// Stage 6: Tile 5
+			NextArrow ();
+			tileOverlays[3].SetActive (false);
+			break;
+		case 7:	// Stage 7: Remove tile 5
+			removeTileButton.interactable = true;
+			NextArrow ();
+			tileOverlays[3].SetActive (true);
+			break;
+		case 8:	// Stage 8: Discard hand
+			NextArrow ();
+			newHandButton.interactable = true;
+			break;
+		case 9:	// Stage 9: Tile 6
+			NextArrow ();
+			tileOverlays[2].SetActive (false);
+			break;
+		case 10: // Stage 10: Move to exit
+			NextArrow ();
+			tileOverlays[2].SetActive (true);
+			break;
+		}
+	}
+
+	private void NextArrow ()
+	{
+		arrows[arrowIdx].SetActive (false);
+		arrowIdx++;
+		arrows[arrowIdx].SetActive (true);
 	}
 
 	public bool SetNextLevel
@@ -376,6 +354,7 @@ public class TutorialLogic : MonoBehaviour
 		if (playerLoc == "20")
 		{
 			stage++;
+			UpdateStage ();
 			handTile3.AddComponent<Draggable>();
 		}
 
@@ -448,14 +427,6 @@ public class TutorialLogic : MonoBehaviour
 			// Display click panel: Haha, very funny. Get moving!
 		}
 	}
-
-
-	//
-	//
-	//	Enemies movements will be set
-	//
-	//
-
 
 	/// <summary>
 	/// Handles movement of the red event tiles
@@ -623,7 +594,8 @@ public class TutorialLogic : MonoBehaviour
 				playerStamina -= 2;
 				InstantiateStamDownPanel ("-2", tempObj.transform.position);
 
-				stage ++;
+				stage++;
+				UpdateStage ();
 				UpdateUI();
 				coinCont.UpdateCoins (-2, tempObj.name);
 				break;
@@ -709,6 +681,7 @@ public class TutorialLogic : MonoBehaviour
 		emptyhand = false;
 
 		stage++;
+		UpdateStage ();
 		UpdateUI();
 		coinCont.UpdateCoins (-newHandCost, "newHandButton");
 
@@ -1094,13 +1067,8 @@ public class TutorialLogic : MonoBehaviour
 			Debug.Log("Selecting tile to delete.");
 			newHandButton.interactable = false;
 
+			NextArrow ();
 			manageRemoveTileScript.DisplayOverlays ("33");
-
-			if (showRemoveTilePop)
-			{
-				DisplayClickPanel (removeTilePopUp);
-				showRemoveTilePop = false;
-			}
 		}
 		else
 		{
@@ -1108,6 +1076,7 @@ public class TutorialLogic : MonoBehaviour
 			removeTileButton.interactable = false;
 			manageRemoveTileScript.HidePanelOverlays();
 			stage++;
+			UpdateStage ();
 		}
 	}
 
@@ -1179,12 +1148,6 @@ public class TutorialLogic : MonoBehaviour
 									}
 								}
 							}
-
-							InstantiateStamDownPanel("-" + removeTileCost, GetGridPanelPosition (clickLoc));
-							playerStamina += -removeTileCost;
-							UpdateUI();
-							coinCont.UpdateCoins (-removeTileCost, clickLoc);
-							CheckStamina();
 
 							// Toggle tile deletion, so player deletes only one tile per button press.
 							DeleteTileToggle(); 

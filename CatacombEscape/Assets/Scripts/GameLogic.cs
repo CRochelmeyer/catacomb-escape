@@ -30,7 +30,6 @@ public class GameLogic : MonoBehaviour
 	public int greenLvlDecr; // After X levels, loot number decreases
 	public int greenAmt;
 	public int newHandCost;
-	public int removeTileCost;
 	#endregion
 
 	#region sprites
@@ -94,9 +93,7 @@ public class GameLogic : MonoBehaviour
 	[Header("Remove Tile Function")]
 	public Button newHandButton;
 	public Button removeTileButton;
-	public GameObject removeTilePopUp;
 	public ManageRemoveTile manageRemoveTileScript;
-	private bool showRemoveTilePop = true;
     #endregion
 
     //boolean game conditions
@@ -1758,16 +1755,6 @@ public class GameLogic : MonoBehaviour
 			array[i] = list[i];
 		}
 
-		/*
-		if (entrance == playerLoc) // only need two elements in the array
-		{
-			array = new string[2] {entrance, exit};
-		}
-		else
-		{
-			array = new string[3] {entrance, playerLoc, exit};
-		}*/
-
 		return array;
 	}
 
@@ -1785,12 +1772,6 @@ public class GameLogic : MonoBehaviour
 
 			string[] invalidTileNames = FindInvalidRemoveTiles();
 			manageRemoveTileScript.DisplayOverlays (invalidTileNames);
-
-			if (showRemoveTilePop)
-			{
-				DisplayClickPanel (removeTilePopUp);
-				showRemoveTilePop = false;
-			}
 		}
 		else
 		{
@@ -1868,12 +1849,6 @@ public class GameLogic : MonoBehaviour
 									}
 								}
 							}
-
-							InstantiateStamDownPanel("-" + removeTileCost, GetGridPanelPosition (clickLoc));
-							playerStamina += -removeTileCost;
-							UpdateUI();
-							coinCont.UpdateCoins (-removeTileCost, clickLoc);
-							CheckStamina();
 
 							// Toggle tile deletion, so player deletes only one tile per button press.
 							DeleteTileToggle(); 
