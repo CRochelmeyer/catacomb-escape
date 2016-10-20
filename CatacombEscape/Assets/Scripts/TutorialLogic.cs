@@ -73,6 +73,9 @@ public class TutorialLogic : MonoBehaviour
 	[Header("Remove Tile Function")]
 	public Button newHandButton;
 	public Button removeTileButton;
+	public Image removeTileImage;
+	public Sprite pickaxeSprite;
+	public Sprite backArrowSprite;
 	public ManageRemoveTile manageRemoveTileScript;
 	#endregion
 
@@ -1066,6 +1069,8 @@ public class TutorialLogic : MonoBehaviour
 		{
 			Debug.Log("Selecting tile to delete.");
 			newHandButton.interactable = false;
+			removeTileButton.interactable = false;
+			removeTileImage.sprite = backArrowSprite;
 
 			NextArrow ();
 			manageRemoveTileScript.DisplayOverlays ("33");
@@ -1074,6 +1079,7 @@ public class TutorialLogic : MonoBehaviour
 		{
 			Debug.Log("No longer deleting tile.");
 			removeTileButton.interactable = false;
+			removeTileImage.sprite = pickaxeSprite;
 			manageRemoveTileScript.HidePanelOverlays();
 			stage++;
 			UpdateStage ();

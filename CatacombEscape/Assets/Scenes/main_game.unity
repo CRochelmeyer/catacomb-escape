@@ -3121,6 +3121,12 @@ GameObject:
 GameObject:
   m_PrefabParentObject: {fileID: 134146, guid: 4cfb0ffb71ab3334fbe490de96795911, type: 2}
   m_PrefabInternal: {fileID: 686223272}
+--- !u!114 &1631766142 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11454738, guid: c11620fef7c759c4fac47eddb141c3ca,
+    type: 2}
+  m_PrefabInternal: {fileID: 1780629407}
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &1672101412 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 101348, guid: 4cfb0ffb71ab3334fbe490de96795911, type: 2}
@@ -3749,6 +3755,20 @@ Prefab:
       propertyPath: gemCont
       value: 
       objectReference: {fileID: 13632089}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: removeTileImage
+      value: 
+      objectReference: {fileID: 1631766142}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: pickaxeSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4593fad493fdb6449a3304bcdb0320dd,
+        type: 3}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: backArrowSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e11b0dfccef098e4b8eee05f689b0e3b,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
   m_IsPrefabParent: 0

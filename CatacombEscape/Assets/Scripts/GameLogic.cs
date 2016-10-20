@@ -93,6 +93,9 @@ public class GameLogic : MonoBehaviour
 	[Header("Remove Tile Function")]
 	public Button newHandButton;
 	public Button removeTileButton;
+	public Image removeTileImage;
+	public Sprite pickaxeSprite;
+	public Sprite backArrowSprite;
 	public ManageRemoveTile manageRemoveTileScript;
     #endregion
 
@@ -1769,6 +1772,7 @@ public class GameLogic : MonoBehaviour
 		{
 			Debug.Log("Selecting tile to delete.");
 			newHandButton.interactable = false;
+			removeTileImage.sprite = backArrowSprite;
 
 			string[] invalidTileNames = FindInvalidRemoveTiles();
 			manageRemoveTileScript.DisplayOverlays (invalidTileNames);
@@ -1777,6 +1781,7 @@ public class GameLogic : MonoBehaviour
 		{
 			Debug.Log("No longer deleting tile.");
 			newHandButton.interactable = true;
+			removeTileImage.sprite = pickaxeSprite;
 			manageRemoveTileScript.HidePanelOverlays();
 		}
 	}
