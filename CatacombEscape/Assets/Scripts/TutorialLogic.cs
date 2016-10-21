@@ -156,10 +156,6 @@ public class TutorialLogic : MonoBehaviour
 
 		// Stage 1: Tile 1
 		arrows[0].SetActive (true);
-		/*
-		stage1a.SetActive (true);
-		stage1b.SetActive (true);
-		*/
 	}
 
 	// Update is called once per frame
