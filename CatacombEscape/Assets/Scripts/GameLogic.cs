@@ -1188,9 +1188,11 @@ public class GameLogic : MonoBehaviour
 				etloc = eventTiles[i].name.Substring(0, 2);
 				System.Int32.TryParse(etloc.Substring(0, 1), out currow);
 				System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
+                Tile currentTile = tileBoard[currow, curcol];
 
 
-				var moves = new List<string>();
+
+                var moves = new List<string>();
 
 				//Debug.Log("###################################################");
 				//Debug.Log("Checking moves for Enemy at [" + etloc + "]");
@@ -1221,11 +1223,17 @@ public class GameLogic : MonoBehaviour
 				// Moves an enemy, if it is able
 				if (moves.Count != 0)
 				{
-					int newMove = Random.Range(0,moves.Count);
+                    // Testing Planned Movement:
+                    // #########################
+                    Debug.Log("Enemy at [" + etloc + "] moving " + currentTile._nextMove);
+                    MoveEnemy(currentTile._nextMove,currow,curcol,i);
+                    // #########################
+
+					//int newMove = Random.Range(0,moves.Count);
 					//Debug.Log("Selecting number from 1 to " + moves.Count);
 					//Debug.Log("Enemy at [" + currow.ToString() + curcol.ToString() + "] moving " + moves[newMove].ToString());
 
-					MoveEnemy(moves[newMove], currow, curcol, i);
+					//MoveEnemy(moves[newMove], currow, curcol, i);
 				}
 				else
 				{
