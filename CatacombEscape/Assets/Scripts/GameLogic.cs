@@ -566,6 +566,7 @@ public class GameLogic : MonoBehaviour
 				UpdateUI();
 				coinCont.UpdateCoins (-2, tempObj.name);
 				CheckStamina();
+				enemyCont.RecheckPlannedMoves ();
 				break;
 			}
 		}

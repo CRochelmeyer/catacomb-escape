@@ -393,91 +393,114 @@ public class EnemyController : MonoBehaviour
 	/// </summary>
 	public void PlanEnemyMoves()
 	{
+		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
+		for (int i = 0; i < eventTiles.Length; i++) 
+		{
+			SetPlannedMovement (eventTiles [i]);
+		}
+	}
+
+	public void RecheckPlannedMoves()
+	{
+		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
+		for (int i = 0; i < eventTiles.Length; i++) 
+		{
+			string etloc = "";
+			int currow = 0;
+			int curcol = 0;
+
+			etloc = eventTiles [i].name.Substring(0, 2);
+			System.Int32.TryParse(etloc.Substring(0, 1), out currow);
+			System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
+
+			string dir = gameLogic.GetTile (currow, curcol)._nextMove;
+			if (!CheckEnemyMove (dir, currow, curcol))
+				SetPlannedMovement (eventTiles [i]);
+		}
+	}
+
+	public void SetPlannedMovement (GameObject eventTile)
+	{
 		string etloc = "";
 		int currow = 0;
 		int curcol = 0;
 
-		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
-		for (int i = 0; i < eventTiles.Length; i++) 
+		// For red tiles only. Green tiles don't move.
+		if (eventTile.GetComponent<Image> ().sprite.name.Substring(0, 5) == "enemy") 
 		{
-			// For red tiles only. Green tiles don't move.
-			if (eventTiles [i].GetComponent<Image> ().sprite.name.Substring(0, 5) == "enemy") 
+			etloc = eventTile.name.Substring(0, 2);
+			System.Int32.TryParse(etloc.Substring(0, 1), out currow);
+			System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
+
+			Tile enemyTile = gameLogic.GetTile (currow, curcol);
+
+			List<string> moves = new List<string>();
+
+			// Check for available moves
+			if (CheckEnemyMove ("up", currow, curcol))
 			{
-				etloc = eventTiles[i].name.Substring(0, 2);
-				System.Int32.TryParse(etloc.Substring(0, 1), out currow);
-				System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
-
-				Tile enemyTile = gameLogic.GetTile (currow, curcol);
-
-				List<string> moves = new List<string>();
-
-				// Check for available moves
-				if (CheckEnemyMove ("up", currow, curcol))
-				{
-					moves.Add ("up");
-				}
-
-				if (CheckEnemyMove ("down", currow, curcol))
-				{
-					moves.Add ("down");
-				}
-
-				if (CheckEnemyMove ("left", currow, curcol))
-				{
-					moves.Add ("left");
-				}
-
-				if (CheckEnemyMove ("right", currow, curcol))
-				{
-					moves.Add ("right");
-				}
-
-				// Select a random valid direction and set it to the enemy's next move.
-				if (moves.Count != 0)
-				{
-					string moveName = moves [Random.Range(0, moves.Count)];
-					GameObject arrow;
-
-					if (eventTiles [i].transform.childCount <= 0)
-					{
-						arrow = Instantiate (directionArrow);
-						arrow.transform.SetParent (eventTiles[i].transform);
-						arrow.transform.localPosition = eventTiles[i].transform.position;
-						arrow.transform.localScale = new Vector3 (1, 1, 1);
-					}
-					else
-					{
-						arrow = eventTiles[i].transform.GetChild (0).gameObject;
-					}
-
-					switch (moveName)
-					{
-					case "up":
-						arrow.transform.rotation = Quaternion.identity;
-						arrow.transform.Rotate (0, 0, 180);
-						eventTiles [i].GetComponent<Image> ().sprite = enemyFront;
-						break;
-					case "down":
-						arrow.transform.rotation = Quaternion.identity;
-						eventTiles [i].GetComponent<Image> ().sprite = enemyFront;
-						break;
-					case "left":
-						arrow.transform.rotation = Quaternion.identity;
-						arrow.transform.Rotate (0, 0, 270);
-						eventTiles [i].GetComponent<Image> ().sprite = enemyLeft;
-						break;
-					case "right":
-						arrow.transform.rotation = Quaternion.identity;
-						arrow.transform.Rotate (0, 0, 90);
-						eventTiles [i].GetComponent<Image> ().sprite = enemyRight;
-						break;
-					}
-
-					enemyTile._nextMove = moveName;
-					Debug.Log ("Enemy at [" + etloc + "] is planning to move " + moveName);
-				}
+				moves.Add ("up");
 			}
 
+			if (CheckEnemyMove ("down", currow, curcol))
+			{
+				moves.Add ("down");
+			}
+
+			if (CheckEnemyMove ("left", currow, curcol))
+			{
+				moves.Add ("left");
+			}
+
+			if (CheckEnemyMove ("right", currow, curcol))
+			{
+				moves.Add ("right");
+			}
+
+			// Select a random valid direction and set it to the enemy's next move.
+			if (moves.Count != 0)
+			{
+				string moveName = moves [Random.Range(0, moves.Count)];
+				GameObject arrow;
+
+				if (eventTile.transform.childCount <= 0)
+				{
+					arrow = Instantiate (directionArrow);
+					arrow.transform.SetParent (eventTile.transform);
+					arrow.transform.localPosition = eventTile.transform.position;
+					arrow.transform.localScale = new Vector3 (1, 1, 1);
+				}
+				else
+				{
+					arrow = eventTile.transform.GetChild (0).gameObject;
+				}
+
+				switch (moveName)
+				{
+				case "up":
+					arrow.transform.rotation = Quaternion.identity;
+					arrow.transform.Rotate (0, 0, 180);
+					eventTile.GetComponent<Image> ().sprite = enemyFront;
+					break;
+				case "down":
+					arrow.transform.rotation = Quaternion.identity;
+					eventTile.GetComponent<Image> ().sprite = enemyFront;
+					break;
+				case "left":
+					arrow.transform.rotation = Quaternion.identity;
+					arrow.transform.Rotate (0, 0, 270);
+					eventTile.GetComponent<Image> ().sprite = enemyLeft;
+					break;
+				case "right":
+					arrow.transform.rotation = Quaternion.identity;
+					arrow.transform.Rotate (0, 0, 90);
+					eventTile.GetComponent<Image> ().sprite = enemyRight;
+					break;
+				}
+
+				enemyTile._nextMove = moveName;
+				Debug.Log ("Enemy at [" + etloc + "] is planning to move " + moveName);
+			}
 		}
 	}
 
