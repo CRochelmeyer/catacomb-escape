@@ -57,14 +57,17 @@ public class GameLogic : MonoBehaviour
 	public AudioClip gameOverClip;
 	#endregion
 
-	#region uiPanels
-	[Header("UI Panels")]
+	#region UI
+	[Header("UI")]
 	public float fadeTime;
 	private bool faderRunning = false;
 	public GameObject enemyPanel;
 	public Text enemyStamDown;
 	public Text gameScore;
 	public Text diamondAmount;
+	public ObjectPulse coinPulse;
+	public int coinWarningAmt;
+	private bool lowCoinPulse;
 	// Game Over panels and components
 	public GameObject statPanel;
 	public Text lvlNoClearedText;
@@ -327,6 +330,17 @@ public class GameLogic : MonoBehaviour
 		if (playerStamina <= 0)
 		{
 			gameover = true;
+		}
+
+		if (!lowCoinPulse && playerStamina <= coinWarningAmt)
+		{
+			EnableCoinPulse();
+			lowCoinPulse = true;
+		}
+		else if (lowCoinPulse && playerStamina > coinWarningAmt)
+		{
+			EnableCoinPulse();
+			lowCoinPulse = false;
 		}
 	}
 
@@ -1239,6 +1253,11 @@ public class GameLogic : MonoBehaviour
 		}
 		Destroy (stamTrans.parent.gameObject);
 		faderRunning = false;
+	}
+
+	public void EnableCoinPulse()
+	{
+		coinPulse.enabled = !coinPulse.enabled;
 	}
 
 	/// <summary>
