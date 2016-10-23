@@ -123,6 +123,7 @@ public class TutorialLogic : MonoBehaviour
 	private Direction validMove;
 	private PlayerMove movePlayer;
 	private CoinController coinCont;
+	private EnemyController enemyCont;
 	private GameObject[] gridPanels;
 	private Tile[,] tileBoard;
 
@@ -145,6 +146,7 @@ public class TutorialLogic : MonoBehaviour
 		validMove = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<Direction> ();
 		movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
 		coinCont = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<CoinController> ();
+		enemyCont = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<EnemyController> ();
 
 		playerStamina = standardStamina;
 		UpdateUI();
@@ -242,6 +244,7 @@ public class TutorialLogic : MonoBehaviour
 			break;
 		case 9:	// Stage 9: Tile 6
 			NextArrow ();
+			tileOverlays[3].SetActive (true);
 			tileOverlays[2].SetActive (false);
 			break;
 		case 10: // Stage 10: Move to exit
@@ -312,9 +315,6 @@ public class TutorialLogic : MonoBehaviour
 
 		PlayerPrefs.SetString ("Paused", "false");
 
-		//setup board with rng sprites
-		GenerateBoard();
-
 		tileBoard = new Tile[4, 3];
 		for (int i =0; i<4;i++)
 		{
@@ -323,6 +323,9 @@ public class TutorialLogic : MonoBehaviour
 				tileBoard[i, j] = new Tile(0);
 			}
 		}
+
+		//setup board with rng sprites
+		GenerateBoard();
 
 		GenerateBoardLogic();
 	}
@@ -444,7 +447,7 @@ public class TutorialLogic : MonoBehaviour
 		for(int i =0; i<eventTiles.Length;i++)
 		{
 			// For red tiles only. Green tiles don't move.
-			if (eventTiles[i].GetComponent<Image>().sprite.name == "enemyCharA")
+			if (eventTiles[i].GetComponent<Image>().sprite.name.Substring (0, 5) == "enemy")
 			{
 				etloc = eventTiles[i].name.Substring(0, 2);
 				System.Int32.TryParse(etloc.Substring(0, 1), out currow);
@@ -1051,6 +1054,7 @@ public class TutorialLogic : MonoBehaviour
 				//store event red tiles into eventred list
 				eventindex.Add(tempPanel.name, "event_red");
 
+				enemyCont.TutorialSetMovement (panelClone, "left");
 			}
 		}
 	}
@@ -1164,5 +1168,10 @@ public class TutorialLogic : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	public Tile GetTile (int currow, int curcol)
+	{
+		return tileBoard[currow, curcol];
 	}
 }

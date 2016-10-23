@@ -6,10 +6,14 @@ using System.Collections.Generic;
 public class EnemyController : MonoBehaviour
 {
 	public GameLogic gameLogic;
+	public TutorialLogic tutLogic;
+	public GemController gemCont;
 	public GameObject directionArrow;
 	public Sprite enemyFront;
 	public Sprite enemyLeft;
 	public Sprite enemyRight;
+	public Sprite enemySkeleton;
+	public Sprite enemyDustPile;
 
 	/// <summary>
 	/// Updates events. Deals damage etc.
@@ -386,6 +390,13 @@ public class EnemyController : MonoBehaviour
 		//update objclone name to be used for destroying the game obj
 		eventTiles[enemyIndex].name = newLoc + "(Clone)";
 
+		// If enemy moves onto player, play event
+		if (gameLogic.GetPlayerLoc() == newLoc)
+		{
+			PlayEvent(newLoc);
+		}
+
+		//RecheckPlannedMoves();
 	}
 
 	/// <summary>
@@ -504,6 +515,63 @@ public class EnemyController : MonoBehaviour
 		}
 	}
 
+	public void TutorialSetMovement (GameObject eventTile, string direction)
+	{
+		string etloc = "";
+		int currow = 0;
+		int curcol = 0;
+
+		// For red tiles only. Green tiles don't move.
+		if (eventTile.GetComponent<Image> ().sprite.name.Substring(0, 5) == "enemy") 
+		{
+			etloc = eventTile.name.Substring(0, 2);
+			System.Int32.TryParse(etloc.Substring(0, 1), out currow);
+			System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
+
+			Tile enemyTile = tutLogic.GetTile (currow, curcol);
+
+			string moveName = direction;
+			GameObject arrow;
+
+			if (eventTile.transform.childCount <= 0)
+			{
+				arrow = Instantiate (directionArrow);
+				arrow.transform.SetParent (eventTile.transform);
+				arrow.transform.localPosition = eventTile.transform.position;
+				arrow.transform.localScale = new Vector3 (1, 1, 1);
+			}
+			else
+			{
+				arrow = eventTile.transform.GetChild (0).gameObject;
+			}
+
+			switch (moveName)
+			{
+			case "up":
+				arrow.transform.rotation = Quaternion.identity;
+				arrow.transform.Rotate (0, 0, 180);
+				eventTile.GetComponent<Image> ().sprite = enemyFront;
+				break;
+			case "down":
+				arrow.transform.rotation = Quaternion.identity;
+				eventTile.GetComponent<Image> ().sprite = enemyFront;
+				break;
+			case "left":
+				arrow.transform.rotation = Quaternion.identity;
+				arrow.transform.Rotate (0, 0, 270);
+				eventTile.GetComponent<Image> ().sprite = enemyLeft;
+				break;
+			case "right":
+				arrow.transform.rotation = Quaternion.identity;
+				arrow.transform.Rotate (0, 0, 90);
+				eventTile.GetComponent<Image> ().sprite = enemyRight;
+				break;
+			}
+
+			enemyTile._nextMove = moveName;
+		}
+	}
+
 	/// <summary>
 	/// Checks all enemies to see if they can move.
 	/// </summary>
@@ -532,19 +600,20 @@ public class EnemyController : MonoBehaviour
 
 				bool enemyCanMove = false;
 
-				if (CheckEnemyMove ("up", currow, curcol)) {
+				if (CheckEnemyMove ("up", currow, curcol))
+				{
 					enemyCanMove = true;
 				}
-
-				if (CheckEnemyMove ("down", currow, curcol)) {
+				else if (CheckEnemyMove ("down", currow, curcol))
+				{
 					enemyCanMove = true;
 				}
-
-				if (CheckEnemyMove ("left", currow, curcol)) {
+				else if (CheckEnemyMove ("left", currow, curcol))
+				{
 					enemyCanMove = true;
 				}
-
-				if (CheckEnemyMove ("right", currow, curcol)) {
+				else if (CheckEnemyMove ("right", currow, curcol))
+				{
 					enemyCanMove = true;
 				}
 
@@ -556,13 +625,23 @@ public class EnemyController : MonoBehaviour
 
 					if (enemyGameObj != null)
 					{
-						Debug.Log("destroy clone");
-						Destroy(enemyGameObj);
-						enemyTile._isActive = false;
-
+						StartCoroutine (KillStuckEnemy (enemyGameObj, enemyTile));
 					}
 				}
 			}
 		}
+	}
+
+	IEnumerator KillStuckEnemy (GameObject enemyObj, Tile enemyTile)
+	{
+		enemyObj.GetComponent<Image> ().sprite = enemySkeleton;
+		gemCont.AddGem (enemyObj.transform.position);
+		yield return new WaitForSeconds (0.5f);
+		enemyObj.GetComponent<Image> ().sprite = enemyDustPile;
+		yield return new WaitForSeconds (0.5f);
+		Debug.Log("destroy clone");
+		Destroy(enemyObj);
+		enemyTile._isActive = false;
+		gameLogic.IncrementGems ();
 	}
 }

@@ -439,8 +439,7 @@ public class GameLogic : MonoBehaviour
 		}
 
 		// Award diamond to player
-		diamonds++;
-		UpdateUI();
+		IncrementGems();
 
 		// Move player out of level
 		int randNum = Random.Range (0, movementClips.Length);
@@ -448,6 +447,12 @@ public class GameLogic : MonoBehaviour
 		audioSource.PlayOneShot (movementClips [randNum]);
 		cellindex.TryGetValue (playerLoc, out pindex);
 		movePlayer.PlayerExits (gridPanels [pindex]);
+	}
+
+	public void IncrementGems ()
+	{
+		diamonds++;
+		UpdateUI();
 	}
 
 	public string GetPlayerLoc ()
@@ -1084,7 +1089,7 @@ public class GameLogic : MonoBehaviour
 		if (handTiles != null)
 		{
 			int rand = Random.Range(0, dealingClips.Length);
-			audioSource.PlayOneShot(dealingClips[rand], 1.0f);
+			audioSource.PlayOneShot(dealingClips[rand]);
 
 			List<int> spriteIndex = new List<int>(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
 
