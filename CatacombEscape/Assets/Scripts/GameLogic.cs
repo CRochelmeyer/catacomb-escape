@@ -132,6 +132,7 @@ public class GameLogic : MonoBehaviour
 	private PathFinder Pathing;
 	private CoinController coinCont;
 	public GemController gemCont;
+	public EnemyController enemyCont;
 	private GameObject[] gridPanels;
 	private Tile[,] tileBoard;
 
@@ -318,7 +319,7 @@ public class GameLogic : MonoBehaviour
 	/// <summary>
 	/// Updates the gamestate (game over) when stamina reaches 0. 
 	/// </summary>
-	private void CheckStamina()
+	public void CheckStamina()
 	{
 		if (playerStamina <= 0)
 		{
@@ -344,7 +345,7 @@ public class GameLogic : MonoBehaviour
 		//play event for event tiles    
 		if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
 		{
-			PlayEvent(playerLoc);
+			enemyCont.PlayEvent(playerLoc);
 
 			// Testing to see if this fixes some issues relating to tile removal.
 			// Seems to have worked, for now...
@@ -360,9 +361,9 @@ public class GameLogic : MonoBehaviour
 		else
 		{
 			//move events
-			MoveEvents();
+			enemyCont.MoveEvents();
 			CheckStamina();
-			PlanEnemyMoves ();
+			enemyCont.PlanEnemyMoves ();
 		}
 	}
 
@@ -384,7 +385,7 @@ public class GameLogic : MonoBehaviour
 		//play event for event tiles    
 		if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
 		{
-			PlayEvent(playerLoc);
+			enemyCont.PlayEvent(playerLoc);
 		}
 
 		//check if next level...
@@ -392,11 +393,13 @@ public class GameLogic : MonoBehaviour
 		{
 			exiting = true;
 			StartCoroutine (AwardLevelGem());
-		} else {
+		}
+		else
+		{
 			//move events
-			MoveEvents ();
+			enemyCont.MoveEvents ();
 			CheckStamina ();
-			PlanEnemyMoves ();
+			enemyCont.PlanEnemyMoves ();
 		}
 	}
 
@@ -442,6 +445,11 @@ public class GameLogic : MonoBehaviour
 		audioSource.PlayOneShot (movementClips [randNum]);
 		cellindex.TryGetValue (playerLoc, out pindex);
 		movePlayer.PlayerExits (gridPanels [pindex]);
+	}
+
+	public string GetPlayerLoc ()
+	{
+		return playerLoc;
 	}
 
 	#endregion
@@ -569,7 +577,7 @@ public class GameLogic : MonoBehaviour
 		CheckStamina();
 
 		// Check for stuck enemies, and kill them
-		AreEnemiesStuck();
+		enemyCont.AreEnemiesStuck();
 	}
 
 	/// <summary>
@@ -787,535 +795,40 @@ public class GameLogic : MonoBehaviour
 
 	#endregion
 
-	// Events are the enemies
+	// Events are the enemies and loot tiles
 	#region Event Functions
 
-	/// <summary>
-	/// Used in determining valid enemy movement directions.
-	/// Checks a given direction, if the move is valid returns true.
-	/// </summary>
-	/// <returns>True if the move is valid.</returns>
-	/// <param name="dir">Dir.</param>
-	public bool CheckEnemyMove(string dir, int curRow, int curCol)
+	public void DisplayEvent (Tile tempTile, GameObject tempObj)
 	{
-		
-		bool isValidMove = false;
+		string stamText;
 
-		Tile currentTile = tileBoard [curRow, curCol];
-		Tile newTile; // the target tile.
-
-		string curLocStr = curRow.ToString() + curCol.ToString();
-		string newLocStr;
-
-		switch (dir)
+		if (tempTile.combat < 0)
 		{
-		case "up":
-
-			if (curRow - 1 >= 0)
-			{
-				if (tileBoard[curRow - 1, curCol] == null)
-				{
-					Debug.Log("The tile [" + (curRow - 1).ToString() + curCol.ToString() + "] is null.");
-				}
-				newTile = tileBoard[curRow - 1, curCol];
-				newLocStr = (curRow - 1).ToString() + curCol.ToString();
-			}
-			else
-			{
-				return false;
-			}
-			break;
-
-		case "down":
-
-			if (curRow + 1 < 6)
-			{
-				newTile = tileBoard[curRow + 1, curCol];
-				newLocStr = (curRow + 1).ToString() + curCol.ToString();
-			}
-			else
-			{
-				return false;
-			}
-			break;
-
-		case "left":
-
-			if (curCol - 1 >= 0)
-			{
-				newTile = tileBoard[curRow, curCol - 1];
-				newLocStr = (curRow).ToString() + (curCol - 1).ToString();
-			}
-			else
-			{
-				return false;
-			}
-			break;
-
-		case "right":
-			if (curCol + 1 < 5)
-			{
-				newTile = tileBoard[curRow, curCol + 1];
-				newLocStr = (curRow).ToString() + (curCol + 1).ToString();
-			}
-			else
-			{
-				return false;
-			}
-			break;
-
-		default:
-			return false;
+			DisplayClickPanel(enemyPanel);
+			stamText = tempTile.combat.ToString();
+			InstantiateStamDownPanel(stamText, tempObj.transform.position);
+			int rand = Random.Range(0, redTileClips.Length);
+			audioSource.PlayOneShot(redTileClips[rand]);
+			redstep++;
 		}
-
-		// Just some debugging code.
-		// Used for printing tile info to the debug log.
-		string debug = "# ";
-
-		foreach (Tile tile in tileBoard)
-		{
-			if(tile._isEntrySet)
-			{
-				debug += tile._boardLocation + " ";
-
-				if (tile._event != "")
-				{
-					debug += "[" + tile._event + "] ";
-				}
-			}
-		}
-
-		//Debug.Log("_isEntrySet Tiles: " + debug);
-
-		debug = "# ";
-
-		foreach (Tile tile in tileBoard)
-		{
-			if (tile._event == " red" || tile._event == " green")
-			{
-				debug += tile._event;
-			}
-		}
-
-		string debugStr = "[Trying move [" + currentTile._boardLocation + " -> " + newTile._boardLocation + "] (" + dir + ")"; // Rather than having a million debug messages, add messages to this string, and use one debug.log
-
-		// Moving from a tile placed by the player.
-		if (currentTile._isEntrySet)
-		{
-			debugStr += " [Enemy at [" + curLocStr + "] is checking move from a non-empty tile] ";
-
-			// If the target is a tile as well. Prevent moving to entrance, exit, chest tiles and other enemies. 
-			if (newTile._isEntrySet && (newTile._tileID != "tile_exit" && newTile._tileID != "tile_entrance") && (newTile._event != "green" && newTile._event != "red") && (newLocStr != playerLoc))
-			{
-
-				string debugStr2 = "";
-				foreach (string entry in newTile._entry)
-				{
-					debugStr2 += entry + " ";
-				}
-				//Debug.Log("Target tile ("+ newLocStr +") entries: ");
-
-				if (validMove.ValidMovement(dir, currentTile, newTile))
-				{
-					debugStr += " [Target tile ("+ newLocStr +") was placed by player, and is a valid move] ";
-					isValidMove = true;
-				}
-				else
-				{
-					debugStr += " [Target tile (" + newLocStr + ") was placed by player, but is not a valid move] ";
-					isValidMove = false;
-				}
-
-			}
-			else
-			{
-				// Target tile is empty
-				if (!newTile._isEntrySet && currentTile.ValidMove(dir) && (newTile._event != "green" && newTile._event != "red"))
-				{
-					debugStr += " [Target tile (" + newLocStr + ") is empty, and current tile has relevant exit] ";
-					isValidMove = true;
-				}
-				else
-				{
-					debugStr += " [Target tile (" + newLocStr + ") is empty, but current tile does not have relevent exit] ";
-
-					debugStr += "Fucking why? " + "_isEntrySet? " + newTile._isEntrySet + ", Valid move? " + currentTile.ValidMove("dir") + ", An event? " + newTile._event;
-
-					debugStr += " [Tile had ";
-					foreach (string entry in currentTile._entry)
-					{
-						debugStr += entry + " ";
-					}
-					debugStr += "]";
-				}
-			}
-
-		}
-		// Moving from an empty tile
 		else
 		{
-			debugStr += " [Enemy at [" + curLocStr + "] is checking move from an empty tile] ";
-			// Target is not empty
-			if (newTile._isEntrySet && (newTile._tileID != "tile_exit" && newTile._tileID != "tile_entrance") && (newTile._event != "green" && newTile._event != "red") && (newLocStr != playerLoc))
-			{
-				if (newTile.ValidEntry(dir))
-				{
-					debugStr += " [Target tile (" + newLocStr + ") is player-placed, and current tile is empty] ";
-					isValidMove = true;
-				}
-				else
-				{
-					debugStr += " [The target tile does not have the correct entry]";
-				}
-			}
-			else if ((newTile._event == "green") || (newTile._event == "red"))
-			{
-				// If there is an event, then the move is invalid.
-				debugStr += " [Target tile contains a "+ newTile._event + " event, and is thus an invalid move.]";
-			}
-			else if (newTile._tileID == null)
-			{
-				debugStr += " [Target tile (" + newLocStr + ") is empty, and current tile is also empty] ";
-				isValidMove = true;
-			}
+			stamText = "+" + tempTile.combat.ToString();
+			InstantiateStamUpPanel(stamText, tempObj.transform.position);
+			int rand = Random.Range(0, greenTileClips.Length);
+			audioSource.PlayOneShot(greenTileClips[rand]);
+			greencol++;
 		}
 
-
-		//debugStr += " Target tile event: " + newTile._event;
-
-
-		//Debug.Log(debugStr);
-
-		return isValidMove;
-	}
-
-	/// <summary>
-	/// Moves an enemy tile, based upon a given string direction. (up, down, left, right)
-	/// </summary>
-	public void MoveEnemy(string dir, int curRow, int curCol, int enemyIndex)
-	{
-		string newLoc = "";
-		int newRow = 0, newCol = 0;
-
-		switch (dir)
-		{
-		case "up":
-			newLoc = (curRow - 1).ToString() + curCol.ToString();
-			newRow = curRow - 1;
-			newCol = curCol;
-			break;
-
-		case "down":
-			newLoc = (curRow + 1).ToString() + curCol.ToString();
-			newRow = curRow + 1;
-			newCol = curCol;
-			break;
-
-		case "left":
-			newLoc = curRow.ToString() + (curCol - 1).ToString();
-			newRow = curRow;
-			newCol = curCol - 1;
-			break;
-
-		case "right":
-			newLoc = curRow.ToString() + (curCol + 1).ToString();
-			newRow = curRow;
-			newCol = curCol + 1;
-			break;
-		}
-
-		// Used to access gridpanels
-		int panelkey = 0;
-
-		Tile dummy = new Tile(0);
-		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
-
-		cellindex.TryGetValue(newLoc, out panelkey);
-
-		//update tileboard
-		eventTiles[enemyIndex].transform.localPosition = gridPanels[panelkey].transform.localPosition;
-
-		//clone the current tile to dummy
-		dummy.CloneTile(tileBoard[curRow, curCol]);
-
-		//set current tile event that's moving to no event
-		tileBoard[curRow, curCol].ClearEvent();
-
-		//flush dummy entry if it is set from the previous tile cloned
-		if (dummy._isEntrySet)
-		{
-			dummy.FlushEntry();
-		}
-
-		//update the new board position with the dummy clone
-		tileBoard[newRow, newCol].UpdatePosition(dummy);
-
-		//update objclone name to be used for destroying the game obj
-		eventTiles[enemyIndex].name = newLoc + "(Clone)";
+		playerStamina += tempTile.combat;
+		UpdateUI();
+		coinCont.UpdateCoins (tempTile.combat, tempTile._boardLocation);
 
 	}
 
-	/// <summary>
-	/// Checks all enemies to see if they can move.
-	/// </summary>
-	public void AreEnemiesStuck()
+	public bool CheckValidMovement (string dir, Tile currentTile, Tile newTile)
 	{
-		string etloc = "";
-		int currow = 0;
-		int curcol = 0;
-
-		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
-
-		for (int i = 0; i < eventTiles.Length; i++) 
-		{
-			
-			// For red tiles only. Green tiles don't move.
-			if (eventTiles [i].GetComponent<Image> ().sprite.name == "enemyCharA") 
-			{
-				etloc = eventTiles[i].name.Substring(0, 2);
-
-				System.Int32.TryParse (etloc.Substring (0, 1), out currow);
-				System.Int32.TryParse (etloc.Substring (1, 1), out curcol);
-
-				Tile enemyTile = tileBoard[currow, curcol];
-
-				GameObject enemyGameObj = GameObject.Find(enemyTile._boardLocation + "(Clone)");
-
-				bool enemyCanMove = false;
-
-				if (CheckEnemyMove ("up", currow, curcol)) {
-					enemyCanMove = true;
-				}
-
-				if (CheckEnemyMove ("down", currow, curcol)) {
-					enemyCanMove = true;
-				}
-
-				if (CheckEnemyMove ("left", currow, curcol)) {
-					enemyCanMove = true;
-				}
-
-				if (CheckEnemyMove ("right", currow, curcol)) {
-					enemyCanMove = true;
-				}
-
-				// Add gem animation etc here
-				if (!enemyCanMove) 
-				{
-					Debug.Log ("Enemy at [" + etloc + "] cannot move. Destroy it.");
-					enemyTile._event = ""; // Kill the enemy
-
-					if (enemyGameObj != null)
-					{
-						Debug.Log("destroy clone");
-						Destroy(enemyGameObj);
-						enemyTile._isActive = false;
-
-					}
-				}
-			}
-		}
-	}
-
-	/// <summary>
-	/// Plans enemy moves so they can be displayed.
-	/// </summary>
-	public void PlanEnemyMoves()
-	{
-		string etloc = "";
-		int currow = 0;
-		int curcol = 0;
-
-		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
-		for (int i = 0; i < eventTiles.Length; i++) 
-		{
-			// For red tiles only. Green tiles don't move.
-			if (eventTiles [i].GetComponent<Image> ().sprite.name == "enemyCharA") 
-			{
-				etloc = eventTiles[i].name.Substring(0, 2);
-				System.Int32.TryParse(etloc.Substring(0, 1), out currow);
-				System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
-
-				Tile enemyTile = tileBoard[currow, curcol];
-
-				var moves = new List<string>();
-
-				// Check for available moves
-				if (CheckEnemyMove ("up", currow, curcol)) {
-					moves.Add ("up");
-				}
-
-				if (CheckEnemyMove ("down", currow, curcol)) {
-					moves.Add ("down");
-				}
-
-				if (CheckEnemyMove ("left", currow, curcol)) {
-					moves.Add ("left");
-				}
-
-				if (CheckEnemyMove ("right", currow, curcol)) {
-					moves.Add ("right");
-				}
-					
-				// Select a random valid direction and set it to the enemy's next move.
-				if (moves.Count != 0)
-				{
-					int newMove = Random.Range(0,moves.Count);
-
-					enemyTile._nextMove = moves [newMove];
-					Debug.Log ("Enemy at [" + etloc + "] is planning to move " + moves[newMove]);
-				}
-			}
-
-		}
-	}
-
-	/// <summary>
-	/// Handles movement of the red event tiles
-	/// </summary>
-	public void MoveEvents()
-	{
-		string etloc = "";
-		int currow = 0;
-		int curcol = 0;
-
-		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
-		for (int i = 0; i < eventTiles.Length; i++)
-		{
-			// For red tiles only. Green tiles don't move.
-			if (eventTiles[i].GetComponent<Image>().sprite.name == "enemyCharA")
-			{
-				etloc = eventTiles[i].name.Substring(0, 2);
-				System.Int32.TryParse(etloc.Substring(0, 1), out currow);
-				System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
-                Tile currentTile = tileBoard[currow, curcol];
-
-
-
-                var moves = new List<string>();
-
-				//Debug.Log("###################################################");
-				//Debug.Log("Checking moves for Enemy at [" + etloc + "]");
-				//Debug.Log("###################################################");
-
-				// Check for available moves
-				if (CheckEnemyMove ("up", currow, curcol)) {
-					moves.Add ("up");
-					//Debug.Log ("["+ currow +"," + curcol +"] can move up.");
-				}
-
-				if (CheckEnemyMove ("down", currow, curcol)) {
-					moves.Add ("down");
-					//Debug.Log ("["+ currow +"," + curcol +"] can move down.");
-				}
-
-				if (CheckEnemyMove ("left", currow, curcol)) {
-					moves.Add ("left");
-					//Debug.Log ("["+ currow +"," + curcol +"] can move left.");
-				}
-
-				if (CheckEnemyMove ("right", currow, curcol)) {
-					moves.Add ("right");
-					//Debug.Log ("["+ currow +"," + curcol +"] can move right.");
-				}
-
-				// Here's hoping this works lol
-				// Moves an enemy, if it is able
-				if (moves.Count != 0)
-				{
-                    // Testing Planned Movement:
-                    // #########################
-                    Debug.Log("Enemy at [" + etloc + "] moving " + currentTile._nextMove);
-                    MoveEnemy(currentTile._nextMove,currow,curcol,i);
-                    // #########################
-
-					//int newMove = Random.Range(0,moves.Count);
-					//Debug.Log("Selecting number from 1 to " + moves.Count);
-					//Debug.Log("Enemy at [" + currow.ToString() + curcol.ToString() + "] moving " + moves[newMove].ToString());
-
-					//MoveEnemy(moves[newMove], currow, curcol, i);
-				}
-				else
-				{
-					// The enemy can't move.
-					// This else is here for giving the player a bonus if they've trapped an enemy.
-					// May not actually be needed.
-					Debug.Log("Enemy at [" + currow.ToString() + curcol.ToString() + "] can no longer move.");
-				}
-			}
-		}
-	}
-
-	/// <summary>
-	/// Updates events. Deals damage etc.
-	/// </summary>
-	/// <param name="pcell"></param>
-	public void PlayEvent(string pcell)
-	{
-		if (tileBoard[System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1))]._isActive)
-		{
-			int temprow = System.Int32.Parse(pcell.Substring(0, 1));
-			int tempcol = System.Int32.Parse(pcell.Substring(1, 1));
-
-			Tile tempTile = tileBoard[temprow, tempcol];
-			GameObject tempObj = GameObject.Find(tempTile._boardLocation + "(Clone)");
-
-			//play event = remove stamina and destroy the event clone...
-			if (tempTile._event == "red")
-			{
-				//stamUp.text = tempTile.combat.ToString();
-				//stamUp.enabled = true;
-
-				int damage = tempTile.combat;
-
-				// Prevent player gaining stamina from enemy. Don't want no eating of strange creatures...
-				if (damage > 0)
-				{
-					damage = 0;
-				}
-
-				enemyStamDown.text = damage.ToString();
-				DisplayClickPanel(enemyPanel);
-
-				if (damage != 0) //don't show stam popup if stamina is not reduced
-				{
-					string newText = damage.ToString();
-					InstantiateStamDownPanel(newText, tempObj.transform.position);
-					playerStamina += damage;
-					UpdateUI();
-					coinCont.UpdateCoins (damage, tempTile._boardLocation);
-				}
-
-				int rand = Random.Range(0, redTileClips.Length);
-				audioSource.PlayOneShot(redTileClips[rand]);
-
-				redstep++;
-			}
-			else if (tempTile._event == "green")
-			{
-				string newText = "+" + tempTile.combat.ToString();
-				InstantiateStamUpPanel(newText, tempObj.transform.position);
-				playerStamina += tempTile.combat;
-				coinCont.UpdateCoins (tempTile.combat, tempTile._boardLocation);
-
-				int rand = Random.Range(0, greenTileClips.Length);
-				audioSource.PlayOneShot(greenTileClips[rand]);
-
-				//increment the greens taken
-				greencol++;
-				UpdateUI();
-			}
-
-			if (tempObj != null)
-			{
-				Debug.Log("destroy clone");
-				Destroy(tempObj);
-				tempTile._isActive = false;
-
-			}
-			CheckStamina();
-			tempTile._event = ""; // Event wasn't being destroyed after it was triggered. This should solve that.
-		}
+		return validMove.ValidMovement (dir, currentTile, newTile);
 	}
 
 	#endregion
@@ -1415,7 +928,7 @@ public class GameLogic : MonoBehaviour
 		}
 
 		// Call PlanEnemyMoves once to give them their first move.
-		PlanEnemyMoves();
+		enemyCont.PlanEnemyMoves();
 	}
 
 	/// <summary>
@@ -1548,6 +1061,29 @@ public class GameLogic : MonoBehaviour
 
 		return gridPanels[0].transform.position;
 	}
+
+	public Vector3 GetGridPanelPositionByIdx (int idx)
+	{
+		return gridPanels [idx].transform.localPosition;
+	}
+
+	public Tile GetTile (int currow, int curcol)
+	{
+		return tileBoard[currow, curcol];
+	}
+
+	public Tile[,] GetTileBoard ()
+	{
+		return tileBoard;
+	}
+
+	public int TryGetCellIdxValue (string loc)
+	{
+		int value = 0;
+		cellindex.TryGetValue(loc, out value);
+		return value;
+	}
+
 	#endregion
 
 	#region Hand Functions

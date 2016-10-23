@@ -118,6 +118,18 @@ MonoBehaviour:
   gemRiseDist: 0.6
   source: {fileID: 1302326025}
   gemGetClip: {fileID: 8300000, guid: 7539fb9bb32ba404e8f9d6d3e6c36ce0, type: 3}
+--- !u!114 &13632090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 13632087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77b16c46f8dda584eae43ec6f23ebe69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameLogic: {fileID: 898376829}
 --- !u!114 &21621800 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11486746, guid: aba066add4a931343b373c5d64eda8a9,
@@ -2336,10 +2348,6 @@ GameObject:
 GameObject:
   m_PrefabParentObject: {fileID: 176586, guid: 4cfb0ffb71ab3334fbe490de96795911, type: 2}
   m_PrefabInternal: {fileID: 686223272}
---- !u!1 &1145748552 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 115232, guid: 5efde4be6115c0a4e8718550eb954bbc, type: 2}
-  m_PrefabInternal: {fileID: 1964537545}
 --- !u!224 &1145748553 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 22480740, guid: 5efde4be6115c0a4e8718550eb954bbc,
@@ -3028,7 +3036,8 @@ Prefab:
       propertyPath: pauseUI
       value: 
       objectReference: {fileID: 1176781623}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 11465362, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 6b0df55f097267b4289947154dfa89e1, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &1533800873
@@ -3542,10 +3551,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: gridSprite.Array.size
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 468430, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3623,6 +3628,10 @@ Prefab:
       value: 
       objectReference: {fileID: 1006590692}
     - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: characterDeath
+      value: 
+      objectReference: {fileID: 440300295}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
       propertyPath: pauseLvlText
       value: 
       objectReference: {fileID: 21621800}
@@ -3655,120 +3664,21 @@ Prefab:
       value: 
       objectReference: {fileID: 155218130}
     - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: removeTilePopUp
+      propertyPath: removeTileImage
       value: 
-      objectReference: {fileID: 1145748552}
+      objectReference: {fileID: 1631766142}
     - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
       propertyPath: manageRemoveTileScript
       value: 
       objectReference: {fileID: 729012539}
     - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: tileSprite.Array.data[0]
-      value: 
-      objectReference: {fileID: 21300000, guid: dc6ffbf93855a51459133de106d993e3,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: tileSprite.Array.data[1]
-      value: 
-      objectReference: {fileID: 21300000, guid: cff0fe80b7bd08847963ee0da2977498,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: tileSprite.Array.data[2]
-      value: 
-      objectReference: {fileID: 21300000, guid: 5ccb14fc3b63b6845a33cbed8f0d3f39,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: tileSprite.Array.data[3]
-      value: 
-      objectReference: {fileID: 21300000, guid: a7bce5ace6aa96348883ac99672d543b,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: tileSprite.Array.data[4]
-      value: 
-      objectReference: {fileID: 21300000, guid: 889338950b58ab14fa94ae621d537f1e,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: tileSprite.Array.data[5]
-      value: 
-      objectReference: {fileID: 21300000, guid: 6420b91f01109504f97e31b81e286a95,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: tileSprite.Array.data[6]
-      value: 
-      objectReference: {fileID: 21300000, guid: 09b45e4474820e149852b12b547147fa,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: tileSprite.Array.data[7]
-      value: 
-      objectReference: {fileID: 21300000, guid: 05c4ec325683a7f4391f0a2023b3c7b6,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: tileSprite.Array.data[8]
-      value: 
-      objectReference: {fileID: 21300000, guid: 6d661a522f753fb4e871d6a19f460a4a,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: tileSprite.Array.data[9]
-      value: 
-      objectReference: {fileID: 21300000, guid: e9c03e9407a961d47b4255845c9aec7d,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: tileSprite.Array.data[10]
-      value: 
-      objectReference: {fileID: 21300000, guid: 935f9e0a38a6d4749be453e5524ca3eb,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: eventGreenLrg
-      value: 
-      objectReference: {fileID: 21300000, guid: 9adbdd6481da9214ba32d2c87eec16f5,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: eventGreenSml
-      value: 
-      objectReference: {fileID: 21300000, guid: 9adbdd6481da9214ba32d2c87eec16f5,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: gridSprite.Array.data[3]
-      value: 
-      objectReference: {fileID: 21300000, guid: af79ccdbc42cb1b40a9d2e0e15748e01,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: gridSprite.Array.data[4]
-      value: 
-      objectReference: {fileID: 21300000, guid: 8b433a604f9c07344bc51d1ab7010c50,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: gridSprite.Array.data[1]
-      value: 
-      objectReference: {fileID: 21300000, guid: 80dc7d4110746ec4f9f6e2b65a5774c3,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: gridSprite.Array.data[2]
-      value: 
-      objectReference: {fileID: 21300000, guid: e798cae121c503c47b56b388abf06c14,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: characterDeath
-      value: 
-      objectReference: {fileID: 440300295}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
       propertyPath: gemCont
       value: 
       objectReference: {fileID: 13632089}
     - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: removeTileImage
+      propertyPath: enemyCont
       value: 
-      objectReference: {fileID: 1631766142}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: pickaxeSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 4593fad493fdb6449a3304bcdb0320dd,
-        type: 3}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: backArrowSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: e11b0dfccef098e4b8eee05f689b0e3b,
-        type: 3}
+      objectReference: {fileID: 13632090}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
   m_IsPrefabParent: 0
