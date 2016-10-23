@@ -118,6 +118,9 @@ public class GameLogic : MonoBehaviour
 	Dictionary<string, string> eventindex = new Dictionary<string, string>();
 	//sprite holders drag sprites via inspector
 
+	public Transform enemiesParent;
+	public Transform lootTilesParent;
+
 	private GameObject btmPanel;
 	private GameObject[] handTiles;
 	private string entrance;
@@ -952,8 +955,6 @@ public class GameLogic : MonoBehaviour
 
 		if (gridPanels != null)
 		{
-			GameObject gridPanelsParent = gridPanels[0].transform.parent.gameObject;
-
 			//exit tile location will be somewhere in the bottom row
 			int downPanel = Random.Range(25, 30);
 			//entrance tile location will be somewhere in the top row
@@ -1008,15 +1009,14 @@ public class GameLogic : MonoBehaviour
 			for (int i = 0; i < green; i++)
 			{
 				GameObject tempPanel = gridPanels[randomPanels[i]];
-				GameObject panelClone = Instantiate(tempPanel);
-				panelClone.transform.SetParent(gridPanelsParent.transform);
+				GameObject panelClone = Instantiate (tempPanel);
+				panelClone.transform.SetParent (lootTilesParent);
 				panelClone.tag = "eventTile";
 				panelClone.transform.localPosition = tempPanel.transform.localPosition;
-				panelClone.transform.localScale = new Vector3(1, 1, 1);
+				panelClone.transform.localScale = new Vector3 (1, 1, 1);
 				panelClone.GetComponent<Image>().sprite = eventGreenLrg as Sprite;
-				panelClone.GetComponent<Image>().color = new Color(255f, 255f, 255f, 150f);
-				eventindex.Add(tempPanel.name, "event_green");
-
+				panelClone.GetComponent<Image>().color = new Color (255f, 255f, 255f, 150f);
+				eventindex.Add (tempPanel.name, "event_green");
 			}
 
 			//Draw all red tiles
@@ -1024,16 +1024,15 @@ public class GameLogic : MonoBehaviour
 			{
 				GameObject tempPanel = gridPanels[randomPanels[i]];
 				GameObject panelClone = Instantiate(tempPanel);
-				panelClone.transform.SetParent(gridPanelsParent.transform);
+				panelClone.transform.SetParent (enemiesParent);
 				panelClone.tag = "eventTile";
 				panelClone.transform.localPosition = tempPanel.transform.localPosition;
-				panelClone.transform.localScale = new Vector3(1, 1, 1);
-				panelClone.GetComponent<Image>().sprite = eventEnemy[Random.Range(0, eventEnemy.Length)] as Sprite;
-				panelClone.GetComponent<Image>().color = new Color(255f, 255f, 255f, 150f);
+				panelClone.transform.localScale = new Vector3 (1, 1, 1);
+				panelClone.GetComponent<Image>().sprite = eventEnemy [Random.Range (0, eventEnemy.Length)] as Sprite;
+				panelClone.GetComponent<Image>().color = new Color (255f, 255f, 255f, 150f);
 
 				//store event red tiles into eventred list
 				eventindex.Add(tempPanel.name, "event_red");
-
 			}
 		}
 	}
@@ -1047,41 +1046,6 @@ public class GameLogic : MonoBehaviour
 		{
 			gridPanels[i] = gridPanelsScript.GetGridPanel(i);
 		}
-	}
-
-	public Vector3 GetGridPanelPosition (string panelName)
-	{
-		for (int i = 0; i < gridPanels.Length; i++)
-		{
-			if (gridPanels[i].name == panelName)
-			{
-				return gridPanels[i].transform.position;
-			}
-		}
-
-		return gridPanels[0].transform.position;
-	}
-
-	public Vector3 GetGridPanelPositionByIdx (int idx)
-	{
-		return gridPanels [idx].transform.localPosition;
-	}
-
-	public Tile GetTile (int currow, int curcol)
-	{
-		return tileBoard[currow, curcol];
-	}
-
-	public Tile[,] GetTileBoard ()
-	{
-		return tileBoard;
-	}
-
-	public int TryGetCellIdxValue (string loc)
-	{
-		int value = 0;
-		cellindex.TryGetValue(loc, out value);
-		return value;
 	}
 
 	#endregion
@@ -1416,6 +1380,7 @@ public class GameLogic : MonoBehaviour
 	#endregion
 
 	#region tools
+
 	public int GetRow(string pstring)
 	{
 		int num = int.Parse(pstring.Substring(0, 1));
@@ -1427,6 +1392,42 @@ public class GameLogic : MonoBehaviour
 		int num = int.Parse(pstring.Substring(1, 1));
 		return num;
 	}
+
+	public Vector3 GetGridPanelPosition (string panelName)
+	{
+		for (int i = 0; i < gridPanels.Length; i++)
+		{
+			if (gridPanels[i].name == panelName)
+			{
+				return gridPanels[i].transform.position;
+			}
+		}
+
+		return gridPanels[0].transform.position;
+	}
+
+	public Vector3 GetGridPanelPositionByIdx (int idx)
+	{
+		return gridPanels [idx].transform.localPosition;
+	}
+
+	public Tile GetTile (int currow, int curcol)
+	{
+		return tileBoard[currow, curcol];
+	}
+
+	public Tile[,] GetTileBoard ()
+	{
+		return tileBoard;
+	}
+
+	public int TryGetCellIdxValue (string loc)
+	{
+		int value = 0;
+		cellindex.TryGetValue(loc, out value);
+		return value;
+	}
+
 	#endregion
 
 

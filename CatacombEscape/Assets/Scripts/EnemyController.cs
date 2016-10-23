@@ -6,18 +6,10 @@ using System.Collections.Generic;
 public class EnemyController : MonoBehaviour
 {
 	public GameLogic gameLogic;
-
-	// Use this for initialization
-	void Start ()
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
+	public GameObject directionArrow;
+	public Sprite enemyFront;
+	public Sprite enemyLeft;
+	public Sprite enemyRight;
 
 	/// <summary>
 	/// Updates events. Deals damage etc.
@@ -267,7 +259,7 @@ public class EnemyController : MonoBehaviour
 		for (int i = 0; i < eventTiles.Length; i++)
 		{
 			// For red tiles only. Green tiles don't move.
-			if (eventTiles[i].GetComponent<Image>().sprite.name == "enemyCharA")
+			if (eventTiles[i].GetComponent<Image>().sprite.name.Substring(0, 5) == "enemy")
 			{
 				etloc = eventTiles[i].name.Substring(0, 2);
 				System.Int32.TryParse(etloc.Substring(0, 1), out currow);
@@ -409,7 +401,7 @@ public class EnemyController : MonoBehaviour
 		for (int i = 0; i < eventTiles.Length; i++) 
 		{
 			// For red tiles only. Green tiles don't move.
-			if (eventTiles [i].GetComponent<Image> ().sprite.name == "enemyCharA") 
+			if (eventTiles [i].GetComponent<Image> ().sprite.name.Substring(0, 5) == "enemy") 
 			{
 				etloc = eventTiles[i].name.Substring(0, 2);
 				System.Int32.TryParse(etloc.Substring(0, 1), out currow);
@@ -425,25 +417,64 @@ public class EnemyController : MonoBehaviour
 					moves.Add ("up");
 				}
 
-				if (CheckEnemyMove ("down", currow, curcol)) {
+				if (CheckEnemyMove ("down", currow, curcol))
+				{
 					moves.Add ("down");
 				}
 
-				if (CheckEnemyMove ("left", currow, curcol)) {
+				if (CheckEnemyMove ("left", currow, curcol))
+				{
 					moves.Add ("left");
 				}
 
-				if (CheckEnemyMove ("right", currow, curcol)) {
+				if (CheckEnemyMove ("right", currow, curcol))
+				{
 					moves.Add ("right");
 				}
 
 				// Select a random valid direction and set it to the enemy's next move.
 				if (moves.Count != 0)
 				{
-					int newMove = Random.Range(0, moves.Count);
+					string moveName = moves [Random.Range(0, moves.Count)];
+					GameObject arrow;
 
-					enemyTile._nextMove = moves [newMove];
-					Debug.Log ("Enemy at [" + etloc + "] is planning to move " + moves[newMove]);
+					if (eventTiles [i].transform.childCount <= 0)
+					{
+						arrow = Instantiate (directionArrow);
+						arrow.transform.SetParent (eventTiles[i].transform);
+						arrow.transform.localPosition = eventTiles[i].transform.position;
+						arrow.transform.localScale = new Vector3 (1, 1, 1);
+					}
+					else
+					{
+						arrow = eventTiles[i].transform.GetChild (0).gameObject;
+					}
+
+					switch (moveName)
+					{
+					case "up":
+						arrow.transform.rotation = Quaternion.identity;
+						arrow.transform.Rotate (0, 0, 180);
+						eventTiles [i].GetComponent<Image> ().sprite = enemyFront;
+						break;
+					case "down":
+						arrow.transform.rotation = Quaternion.identity;
+						eventTiles [i].GetComponent<Image> ().sprite = enemyFront;
+						break;
+					case "left":
+						arrow.transform.rotation = Quaternion.identity;
+						arrow.transform.Rotate (0, 0, 270);
+						eventTiles [i].GetComponent<Image> ().sprite = enemyLeft;
+						break;
+					case "right":
+						arrow.transform.rotation = Quaternion.identity;
+						arrow.transform.Rotate (0, 0, 90);
+						eventTiles [i].GetComponent<Image> ().sprite = enemyRight;
+						break;
+					}
+
+					enemyTile._nextMove = moveName;
+					Debug.Log ("Enemy at [" + etloc + "] is planning to move " + moveName);
 				}
 			}
 
@@ -465,7 +496,7 @@ public class EnemyController : MonoBehaviour
 		{
 
 			// For red tiles only. Green tiles don't move.
-			if (eventTiles [i].GetComponent<Image> ().sprite.name == "enemyCharA") 
+			if (eventTiles [i].GetComponent<Image> ().sprite.name.Substring(0, 5) == "enemy") 
 			{
 				etloc = eventTiles[i].name.Substring(0, 2);
 

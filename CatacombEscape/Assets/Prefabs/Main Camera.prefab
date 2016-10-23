@@ -214,7 +214,7 @@ MonoBehaviour:
   eventGreenSml: {fileID: 21300000, guid: 9adbdd6481da9214ba32d2c87eec16f5, type: 3}
   eventRed: {fileID: 21300000, guid: 8b433a604f9c07344bc51d1ab7010c50, type: 3}
   eventEnemy:
-  - {fileID: 21300000, guid: 64a81c3da9ed9b74fb1c30fcc0a22e92, type: 3}
+  - {fileID: 21300000, guid: 9be99b2843e10f9409c5e67ef65751ab, type: 3}
   audioSource: {fileID: 8261376}
   startGameClip: {fileID: 8300000, guid: 0ab30f4d2c5ebbe409e4bcad31e6c4ff, type: 3}
   chestPlacementClip: {fileID: 8300000, guid: 3b5571e9fe630df44a32951f14c13812, type: 3}
@@ -266,6 +266,8 @@ MonoBehaviour:
   pickaxeSprite: {fileID: 21300000, guid: 4593fad493fdb6449a3304bcdb0320dd, type: 3}
   backArrowSprite: {fileID: 21300000, guid: e11b0dfccef098e4b8eee05f689b0e3b, type: 3}
   manageRemoveTileScript: {fileID: 0}
+  enemiesParent: {fileID: 0}
+  lootTilesParent: {fileID: 0}
   gemCont: {fileID: 0}
   enemyCont: {fileID: 0}
 --- !u!114 &11481026
