@@ -396,7 +396,7 @@ public class EnemyController : MonoBehaviour
 			PlayEvent(newLoc);
 		}
 
-		//RecheckPlannedMoves();
+		RecheckPlannedMoves();
 	}
 
 	/// <summary>
