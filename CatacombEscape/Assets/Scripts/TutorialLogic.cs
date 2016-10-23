@@ -156,6 +156,9 @@ public class TutorialLogic : MonoBehaviour
 
 		// Stage 1: Tile 1
 		arrows[0].SetActive (true);
+		tileOverlays[0].SetActive (true);
+		tileOverlays[1].SetActive (true);
+		tileOverlays[3].SetActive (true);
 	}
 
 	// Update is called once per frame
@@ -208,22 +211,22 @@ public class TutorialLogic : MonoBehaviour
 		{
 		case 2:	// Stage 2: Tile 2
 			NextArrow ();
-			tileOverlays[2].SetActive (true);
 			tileOverlays[1].SetActive (false);
 			break;
 		case 3:	// Stage 3: Tile 3
 			NextArrow ();
-			tileOverlays[1].SetActive (true);
 			tileOverlays[3].SetActive (false);
 			break;
 		case 4:	// Stage 4: Tile 4
 			NextArrow ();
-			tileOverlays[3].SetActive (true);
 			tileOverlays[0].SetActive (false);
 			break;
 		case 5:	// Stage 5: Move to chest
 			NextArrow ();
 			tileOverlays[0].SetActive (true);
+			tileOverlays[1].SetActive (true);
+			tileOverlays[2].SetActive (true);
+			tileOverlays[3].SetActive (true);
 			break;
 		case 6:	// Stage 6: Tile 5
 			NextArrow ();
@@ -232,7 +235,6 @@ public class TutorialLogic : MonoBehaviour
 		case 7:	// Stage 7: Remove tile 5
 			removeTileButton.interactable = true;
 			NextArrow ();
-			tileOverlays[3].SetActive (true);
 			break;
 		case 8:	// Stage 8: Discard hand
 			NextArrow ();
@@ -244,7 +246,6 @@ public class TutorialLogic : MonoBehaviour
 			break;
 		case 10: // Stage 10: Move to exit
 			NextArrow ();
-			tileOverlays[2].SetActive (true);
 			break;
 		}
 	}

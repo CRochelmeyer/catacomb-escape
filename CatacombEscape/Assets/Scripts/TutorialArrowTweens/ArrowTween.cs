@@ -32,7 +32,7 @@ public class ArrowTween : MonoBehaviour
 	public void MoveArrow ()
 	{
 		gameObject.transform.position = path[0].position;
-		arrowImage.color = new Color (arrowImage.color.r, arrowImage.color.g, arrowImage.color.b, 255f);
+		//arrowImage.color = new Color (arrowImage.color.r, arrowImage.color.g, arrowImage.color.b, 255f);
 		iTween.MoveTo (gameObject, moveHT);
 	}
 
