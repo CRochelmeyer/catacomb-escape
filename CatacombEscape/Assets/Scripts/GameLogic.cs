@@ -623,10 +623,12 @@ public class GameLogic : MonoBehaviour
 				int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
 				int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
 
-				// _isEntrySet doesn't mean entry or exit tile. It seems to be true for all tiles.
+				// Check that the target tile was player-placed.
 				if ((tileBoard[temprow, tempcol]._isEntrySet) && (playerLoc != ""))
 				{
-                    mouseClicked = true;
+                
+					/*
+
 					if (validMove.MoveDirection(playerLoc, clickLoc) != "invalid move" && validMove.InRange(playerLoc, clickLoc))
 					{
 						if (validMove.Move(playerLoc, clickLoc, ref tileBoard))
@@ -667,8 +669,26 @@ public class GameLogic : MonoBehaviour
                             Debug.Log("Path is invalid");
                         }
 					}
-                    mouseClicked = false;
-                    Debug.Log("Invalid player move");
+					*/
+
+					mouseClicked = true;
+
+					// Check for a path
+					List<string> path = Pathing.PathFind(tileBoard, playerLoc, clickLoc);
+					if ((!path.Contains("invalid") || !path.Contains("Invalid")))
+					{
+						//Debug.Log("Valid Path!");
+						destLoc = clickLoc;
+						movePlayer.UpdatePlayer(gridPanels, path, tileBoard);
+					}
+					else
+					{
+						mouseClicked = false;
+						Debug.Log("Path is invalid");
+					}
+
+                    //mouseClicked = false;
+                    //Debug.Log("Invalid player move");
                 }
 				else
 				{

@@ -163,7 +163,7 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     public void UpdatePlayer(GameObject[] panel, List<string> path , Tile[,] pboard)
     {
-        if (path.Count > 2)
+        if (path.Count > 1)
         {
             StartCoroutine(MovePath(panel, path, pboard));
         }
@@ -183,6 +183,7 @@ public class PlayerMove : MonoBehaviour
     /// <returns></returns>
     IEnumerator MovePath(GameObject[] panel, List<string> path , Tile[,] pboard)
     {
+		gameLogic.mouseClicked = true; // Prevent player from making a move whilst moving
         Debug.Log("MovePath Co-routine");
         for (int i = 0; i < (path.Count - 1); i++)
         {
