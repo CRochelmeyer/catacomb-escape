@@ -298,29 +298,20 @@ public class EnemyController : MonoBehaviour
 					moves.Add ("right");
 					//Debug.Log ("["+ currow +"," + curcol +"] can move right.");
 				}
-
-				// Here's hoping this works lol
+					
 				// Moves an enemy, if it is able
 				if (moves.Count != 0)
 				{
-					// Testing Planned Movement:
-					// #########################
 					Debug.Log("Enemy at [" + etloc + "] moving " + currentTile._nextMove);
 					MoveEnemy (currentTile._nextMove, currow, curcol, i);
-					// #########################
-
-					//int newMove = Random.Range(0,moves.Count);
-					//Debug.Log("Selecting number from 1 to " + moves.Count);
-					//Debug.Log("Enemy at [" + currow.ToString() + curcol.ToString() + "] moving " + moves[newMove].ToString());
-
-					//MoveEnemy(moves[newMove], currow, curcol, i);
 				}
 				else
 				{
 					// The enemy can't move.
 					// This else is here for giving the player a bonus if they've trapped an enemy.
-					// May not actually be needed.
+
 					Debug.Log("Enemy at [" + currow.ToString() + curcol.ToString() + "] can no longer move.");
+					KillStuckEnemy (eventTiles[i], currentTile);
 				}
 			}
 		}
