@@ -171,6 +171,7 @@ public class PlayerMove : MonoBehaviour
         else
         {
             Debug.Log("Path not long enough. Not starting co-routine.");
+			gameLogic.mouseClicked = false;
         }
         
     }

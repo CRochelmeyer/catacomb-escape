@@ -144,12 +144,20 @@ public class PathFinder : MonoBehaviour
 
 		foreach(String tileStr in path)
 		{
-			int row = System.Int32.Parse(tileStr.Substring(0, 1));
-			int col = System.Int32.Parse(tileStr.Substring(1, 1));
-
-			if (grid[row,col]._tileID == "tile_exit")
+			if (tileStr != "invalid") 
 			{
-				containsExit = true;
+				Debug.LogWarning ("Errors here somewhere: " + tileStr);
+				int row = System.Int32.Parse(tileStr.Substring(0, 1));
+				int col = System.Int32.Parse(tileStr.Substring(1, 1));
+
+				if (grid[row,col]._tileID == "tile_exit")
+				{
+					containsExit = true;
+				}
+			} 
+			else 
+			{
+				return true;
 			}
 		}
 
