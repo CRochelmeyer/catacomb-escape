@@ -89,6 +89,7 @@ public class Tile
         _event = "";
         _eventItem = "";
 		_nextMove = "";
+		_isActive = false;
         combat = 0;
 
     }

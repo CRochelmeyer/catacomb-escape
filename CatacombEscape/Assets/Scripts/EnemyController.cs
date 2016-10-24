@@ -612,7 +612,7 @@ public class EnemyController : MonoBehaviour
 				if (!enemyCanMove) 
 				{
 					Debug.Log ("Enemy at [" + etloc + "] cannot move. Destroy it.");
-					enemyTile._event = ""; // Kill the enemy
+					enemyTile.ClearEvent(); // Kill the enemy, clear tile fields
 
 					if (enemyGameObj != null)
 					{
@@ -625,6 +625,7 @@ public class EnemyController : MonoBehaviour
 
 	IEnumerator KillStuckEnemy (GameObject enemyObj, Tile enemyTile)
 	{
+		Debug.LogWarning ("Killing enemy: " + enemyObj.name + " | " + enemyTile.ToString());
 		enemyObj.GetComponent<Image> ().sprite = enemySkeleton;
 		gemCont.AddGem (enemyObj.transform.position);
 		yield return new WaitForSeconds (0.5f);
@@ -632,7 +633,7 @@ public class EnemyController : MonoBehaviour
 		yield return new WaitForSeconds (0.5f);
 		Debug.Log("destroy clone");
 		Destroy(enemyObj);
-		enemyTile._isActive = false;
+		enemyTile.ClearEvent(); // Clear all of the event related fields in the tile.
 		gameLogic.IncrementGems ();
 	}
 }
