@@ -163,6 +163,7 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     public void UpdatePlayer(GameObject[] panel, List<string> path , Tile[,] pboard)
     {
+		
         if (path.Count > 1)
         {
             StartCoroutine(MovePath(panel, path, pboard));
@@ -193,6 +194,7 @@ public class PlayerMove : MonoBehaviour
             float overTime = distance / multispeed;
             //set animation get pDirection
             string direction = moveDir.MoveDirection(path[i], path[i + 1]);
+			Debug.LogWarning ("Moving player from " + path[i] + " to " + path[i+1]);
             SetAnimation(direction);
             string tempCoin = coinString;
             Debug.Log("tempCoin :" + tempCoin +" coinstring : "+coinString);

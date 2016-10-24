@@ -626,58 +626,13 @@ public class GameLogic : MonoBehaviour
 				// Check that the target tile was player-placed.
 				if ((tileBoard[temprow, tempcol]._isEntrySet) && (playerLoc != ""))
 				{
-                
-					/*
-
-					if (validMove.MoveDirection(playerLoc, clickLoc) != "invalid move" && validMove.InRange(playerLoc, clickLoc))
-					{
-						if (validMove.Move(playerLoc, clickLoc, ref tileBoard))
-						{
-							int rand = Random.Range(0, movementClips.Length);
-							audioSource.PlayOneShot(movementClips[rand], 1.0f);
-
-							int tempIndex = 0;
-							cellindex.TryGetValue(clickLoc, out tempIndex);
-							movePlayer.UpdatePlayer(gridPanels[tempIndex], validMove.MoveDirection(playerLoc, clickLoc));
-
-							// update the player's location
-							destLoc = clickLoc;
-
-							playerStamina--;
-							InstantiateStamDownPanel("-1", movePlayer.PlayerLocation);
-							UpdateUI();
-							coinCont.UpdateCoins (-1, playerLoc);
-						}
-					}
-                    else if (validMove.InRange(playerLoc, clickLoc)) // In range, but invalid move.
-                    {
-                        mouseClicked = false;
-                        Debug.Log("Invalid player move");
-                    }
-                    else // If the click was out of range.Use pathfinding.
-                    {
-						List<string> path = Pathing.PathFind(tileBoard, playerLoc, clickLoc);
-						if ((!path.Contains("invalid") || !path.Contains("Invalid")) && path.Count > 1 )
-						{
-                            //Debug.Log("Valid Path!");
-                            destLoc = clickLoc;
-							movePlayer.UpdatePlayer(gridPanels, path, tileBoard);
-						}
-                        else
-                        {
-                            mouseClicked = false;
-                            Debug.Log("Path is invalid");
-                        }
-					}
-					*/
-
 					mouseClicked = true;
 
 					// Check for a path
 					List<string> path = Pathing.PathFind(tileBoard, playerLoc, clickLoc);
-					if ((!path.Contains("invalid") || !path.Contains("Invalid")))
+					if ( (!path.Contains("invalid") || !path.Contains("Invalid")) && Pathing.CheckExitIsLast(path))
 					{
-						//Debug.Log("Valid Path!");
+						Pathing.PrintPathTiles ();
 						destLoc = clickLoc;
 						movePlayer.UpdatePlayer(gridPanels, path, tileBoard);
 					}
@@ -686,9 +641,6 @@ public class GameLogic : MonoBehaviour
 						mouseClicked = false;
 						Debug.Log("Path is invalid");
 					}
-
-                    //mouseClicked = false;
-                    //Debug.Log("Invalid player move");
                 }
 				else
 				{
