@@ -103,6 +103,7 @@ public class GameLogic : MonoBehaviour
     #endregion
 
     //boolean game conditions
+    public bool displayingEvent { get; set; }
     public bool mouseClicked{ get; set; }
 	private bool gameover = false;
 	private bool emptyhand = true;
@@ -162,6 +163,7 @@ public class GameLogic : MonoBehaviour
 	void Awake()
 	{
         exiting = false;
+        displayingEvent = false;
         //initialising mouseCLicked false
         mouseClicked = false;
 		if (PlayerPrefs.HasKey ("Diamonds"))
@@ -1153,6 +1155,7 @@ public class GameLogic : MonoBehaviour
 	/// <param name="panel"></param>
 	private void DisplayClickPanel (GameObject panel)
 	{
+        displayingEvent = true;
 		panel.SetActive (true);
 		PlayerPrefs.SetString ("Paused", "true");
 		StartCoroutine (ClickToClose (panel));
@@ -1170,6 +1173,7 @@ public class GameLogic : MonoBehaviour
 			yield return null;
 		}while (!Input.GetMouseButtonUp (0));
 		panel.SetActive (false);
+        displayingEvent = false;
 		PlayerPrefs.SetString ("Paused", "false");
 	}
 

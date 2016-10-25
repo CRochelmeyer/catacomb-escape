@@ -221,6 +221,13 @@ public class PlayerMove : MonoBehaviour
             //add logic to see if player is exiting, break from loop
             if (gameLogic.exiting)
             { break; }
+            if (gameLogic.displayingEvent)
+            {
+                do
+                {
+                    yield return null;
+                } while (gameLogic.displayingEvent);
+            }
         }
         yield return null;
         gameLogic.mouseClicked = false;
