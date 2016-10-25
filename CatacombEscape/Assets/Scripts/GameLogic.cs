@@ -107,7 +107,7 @@ public class GameLogic : MonoBehaviour
 	private bool gameover = false;
 	private bool emptyhand = true;
 	private bool nextlevel = false;
-	private bool exiting = false;
+	public bool exiting { get; set; }
 	private int playerStamina;
 	private int diamonds;
 	private string playerLoc="";
@@ -161,6 +161,7 @@ public class GameLogic : MonoBehaviour
 	//awake called behind start
 	void Awake()
 	{
+        exiting = false;
         //initialising mouseCLicked false
         mouseClicked = false;
 		if (PlayerPrefs.HasKey ("Diamonds"))
@@ -630,8 +631,9 @@ public class GameLogic : MonoBehaviour
 
 					// Check for a path
 					List<string> path = Pathing.PathFind(tileBoard, playerLoc, clickLoc);
-					if ( (!path.Contains("invalid") || !path.Contains("Invalid")) && Pathing.CheckExitIsLast(path))
-					{
+                    //if ( (!path.Contains("invalid") || !path.Contains("Invalid")) && Pathing.CheckExitIsLast(path))
+                    if ((!path.Contains("invalid") || !path.Contains("Invalid")))
+                    {
 						Pathing.PrintPathTiles ();
 						destLoc = clickLoc;
 						movePlayer.UpdatePlayer(gridPanels, path, tileBoard);

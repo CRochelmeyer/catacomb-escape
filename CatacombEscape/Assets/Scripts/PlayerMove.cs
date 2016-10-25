@@ -216,9 +216,11 @@ public class PlayerMove : MonoBehaviour
             {
                 yield return new WaitForSeconds(overTime);
                 //update logic of the player position per tile grid move allowing enemies to move. having this code here as this coroutine contains playerloc already
-                GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic>();
                 gameLogic.SetPlayerLoc(path[i + 1]);
             }
+            //add logic to see if player is exiting, break from loop
+            if (gameLogic.exiting)
+            { break; }
         }
         yield return null;
         gameLogic.mouseClicked = false;
