@@ -88,7 +88,7 @@ public class Tile
     {
 
 		if (_tileID == "event_red"){
-			_tileID = "";
+			_tileID = null;
 		}
         _event = "";
         _eventItem = "";

@@ -606,11 +606,26 @@ public class GameLogic : MonoBehaviour
 		enemyCont.AreEnemiesStuck();
 	}
 
-	/// <summary>
-	/// Handles player movement when there is a mouse click (or finger press)
-	/// </summary>
-	public void PlayerClick()
-	{
+    /// <summary>
+    /// Handles player movement when there is a mouse click (or finger press)
+    /// </summary>
+    public void PlayerClick()
+    {
+        // Debug info on right click
+        if (Input.GetMouseButtonDown(1))
+        {
+            string clickLoc = "";
+
+            clickLoc = MouseLocation;
+
+            if (clickLoc != "")
+            {
+                //Remove later
+                ClickDebug(); // Print tile info
+
+            }
+        }
+
 		//check for right click
 		if (Input.GetMouseButtonDown(0))
 		{
@@ -620,9 +635,6 @@ public class GameLogic : MonoBehaviour
 
 			if (clickLoc != "")
 			{
-				//Remove later
-				ClickDebug(); // Print tile info
-
 				int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
 				int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
 
@@ -1448,7 +1460,7 @@ public class GameLogic : MonoBehaviour
 
 		Tile tile = tileBoard[clickRow, clickCol];
 		Debug.LogWarning ("<---- TILE DEBUG ---->");
-		Debug.Log ("Event: " + tile._event + " | isActive? " + tile._isActive + " | Combat: " + tile.combat);
+		Debug.Log ("["+ Time.time + "] " + "Tile ID: " + tile._tileID + " | isEntrySet?:" + tile._isEntrySet + " | Event: " + tile._event + " | isActive? " + tile._isActive + " | Combat: " + tile.combat);
 	}
 
 	#endregion

@@ -199,25 +199,30 @@ public class PlayerMove : MonoBehaviour
             SetAnimation(direction);
             string tempCoin = coinString;
             Debug.Log("tempCoin :" + tempCoin +" coinstring : "+coinString);
+
             if (coinUpdated != true )
             {
                 coinString = path[i];
                 coinUpdated = true;
                 Debug.Log("coin updated");
             }
+
             StartCoroutine(UpdatePlayerCoroutine(player.transform.localPosition, panel[index].transform.localPosition, overTime));
+
             if (coinUpdated)
             {
                 Debug.Log("animate coin");
                 coinCont.UpdateCoins(-1, coinString);
                 coinUpdated = false;
             }
+
             if (crRunning == true)
             {
                 yield return new WaitForSeconds(overTime);
                 //update logic of the player position per tile grid move allowing enemies to move. having this code here as this coroutine contains playerloc already
                 gameLogic.SetPlayerLoc(path[i + 1]);
             }
+
             //add logic to see if player is exiting, break from loop
             if (gameLogic.exiting)
             { break; }

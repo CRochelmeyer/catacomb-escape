@@ -270,13 +270,7 @@ public class EnemyController : MonoBehaviour
 				System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
 				Tile currentTile = gameLogic.GetTile (currow, curcol);
 
-
-
 				var moves = new List<string>();
-
-				//Debug.Log("###################################################");
-				//Debug.Log("Checking moves for Enemy at [" + etloc + "]");
-				//Debug.Log("###################################################");
 
 				// Check for available moves
 				if (CheckEnemyMove ("up", currow, curcol)) {
