@@ -204,8 +204,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 09b45e4474820e149852b12b547147fa, type: 3}
   - {fileID: 21300000, guid: 05c4ec325683a7f4391f0a2023b3c7b6, type: 3}
   - {fileID: 21300000, guid: 6d661a522f753fb4e871d6a19f460a4a, type: 3}
-  - {fileID: 21300000, guid: e9c03e9407a961d47b4255845c9aec7d, type: 3}
   - {fileID: 21300000, guid: 935f9e0a38a6d4749be453e5524ca3eb, type: 3}
+  - {fileID: 21300000, guid: e9c03e9407a961d47b4255845c9aec7d, type: 3}
   gridSprite:
   - {fileID: 0}
   - {fileID: 21300000, guid: 80dc7d4110746ec4f9f6e2b65a5774c3, type: 3}
@@ -244,6 +244,8 @@ MonoBehaviour:
   enemyStamDown: {fileID: 0}
   gameScore: {fileID: 0}
   diamondAmount: {fileID: 0}
+  coinPulse: {fileID: 0}
+  coinWarningAmt: 10
   statPanel: {fileID: 0}
   lvlNoClearedText: {fileID: 0}
   greenCollectedText: {fileID: 0}

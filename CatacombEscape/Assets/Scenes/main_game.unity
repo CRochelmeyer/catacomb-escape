@@ -3363,6 +3363,10 @@ Prefab:
       value: 
       objectReference: {fileID: 93748508}
     - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: coinPulse
+      value: 
+      objectReference: {fileID: 53821629}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
       propertyPath: statPanel
       value: 
       objectReference: {fileID: 956577113}
@@ -3450,14 +3454,6 @@ Prefab:
       propertyPath: enemyCont
       value: 
       objectReference: {fileID: 13632090}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: coinPulse
-      value: 
-      objectReference: {fileID: 53821629}
-    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
-      propertyPath: coinWarningAmt
-      value: 10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
   m_IsPrefabParent: 0

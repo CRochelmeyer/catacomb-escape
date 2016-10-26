@@ -1080,14 +1080,6 @@ public class GameLogic : MonoBehaviour
 	/// </summary>
 	public void NewHand()
 	{
-		handTiles = GameObject.FindGameObjectsWithTag("handDrag");
-		if (handTiles != null)
-		{
-			for (int i = 0; i < handTiles.Length; i++)
-			{
-				Destroy(handTiles[i]);
-			}
-		}
 		InstantiateStamDownPanel("-" + newHandCost, newHandButton.gameObject.transform.position);
 		playerStamina += -newHandCost;
 		GenerateHand();
@@ -1109,6 +1101,32 @@ public class GameLogic : MonoBehaviour
 			audioSource.PlayOneShot(dealingClips[rand]);
 
 			List<int> spriteIndex = new List<int>(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+
+			GameObject[] oldTiles = GameObject.FindGameObjectsWithTag("handDrag");
+			// If the user had tiles in their hand and then clicked "New Hand" button
+			if (oldTiles != null)
+			{
+				// Loop through each of the remaining tiles in the users hand
+				for (int i = 0; i < oldTiles.Length; i++)
+				{
+					string oldName = oldTiles[i].GetComponent <Image>().sprite.name;
+					Debug.Log ("Name of remaining tile " + i + ": " + oldName);
+
+					// Loop through each tile sprite
+					for (int j = 0; j < spriteIndex.Count; j++)
+					{
+						int index = spriteIndex [j];
+						// Remove tile sprites if they match ones that were previously in the players hand
+						if (index != 10 && tileSprite[index].name == oldName)
+						{
+							spriteIndex.RemoveAt (j);
+							Debug.Log ("Found sprite name match of " + oldName + " and removing from list");
+						}
+					}
+
+					Destroy(oldTiles[i]);
+				}
+			}
 
 			for (int i = 0; i < handTiles.Length; i++)
 			{
