@@ -1901,7 +1901,7 @@ RectTransform:
   - {fileID: 737056586}
   - {fileID: 946286485}
   - {fileID: 520211550}
-  - {fileID: 1571221885}
+  - {fileID: 800588253}
   - {fileID: 142377197}
   - {fileID: 634198052}
   m_Father: {fileID: 1240689604}
@@ -3335,6 +3335,11 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 800316248}
+--- !u!224 &800588253 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 22440228, guid: 66b649f54910fba4a90265f5710a38a0,
+    type: 2}
+  m_PrefabInternal: {fileID: 1269860674}
 --- !u!1 &863479885
 GameObject:
   m_ObjectHideFlags: 0
@@ -6328,11 +6333,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1554817912}
---- !u!224 &1571221885 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 22400138, guid: 66b649f54910fba4a90265f5710a38a0,
-    type: 2}
-  m_PrefabInternal: {fileID: 1269860674}
 --- !u!1 &1604176926
 GameObject:
   m_ObjectHideFlags: 0
@@ -8142,7 +8142,7 @@ MonoBehaviour:
   tutLogic: {fileID: 1967125163}
   silverPrefab: {fileID: 162004, guid: 75ffa20db23f99b4aa5826d17471bbf5, type: 2}
   goldPrefab: {fileID: 150486, guid: 0baf410b591bad741a7b9f2cae2f2be6, type: 2}
-  coinSource: {fileID: 1571221885}
+  coinSource: {fileID: 0}
   newHandButtonTransform: {fileID: 1204921143}
   coinWait: 0.1
   coinTotTime: 0.5
@@ -8176,10 +8176,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameLogic: {fileID: 0}
   tutLogic: {fileID: 1967125163}
+  gemCont: {fileID: 0}
   directionArrow: {fileID: 137158, guid: 19582a7f58f6f934889cc739b3c7ca6f, type: 2}
   enemyFront: {fileID: 21300000, guid: 9be99b2843e10f9409c5e67ef65751ab, type: 3}
   enemyLeft: {fileID: 21300000, guid: d3eebb08cb81c0548b2d25500fe9289c, type: 3}
   enemyRight: {fileID: 21300000, guid: f561ec65d7c6cb640915ef348ceae59b, type: 3}
+  enemySkeleton: {fileID: 0}
+  enemyDustPile: {fileID: 0}
 --- !u!114 &1913443731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9141,7 +9144,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22487382, guid: 57590a5dcd6342d4a905ad3397d563ec, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 22487382, guid: 57590a5dcd6342d4a905ad3397d563ec, type: 2}
       propertyPath: m_AnchoredPosition.x
@@ -9182,10 +9185,6 @@ Prefab:
     - target: {fileID: 22487382, guid: 57590a5dcd6342d4a905ad3397d563ec, type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 152542, guid: 57590a5dcd6342d4a905ad3397d563ec, type: 2}
-      propertyPath: m_Name
-      value: EnemyEventPanel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 57590a5dcd6342d4a905ad3397d563ec, type: 2}
