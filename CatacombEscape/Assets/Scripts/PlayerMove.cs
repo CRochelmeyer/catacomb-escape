@@ -166,6 +166,7 @@ public class PlayerMove : MonoBehaviour
 		
         if (path.Count > 1)
         {
+            StopCoroutine(MovePath(panel, path, pboard));
             StartCoroutine(MovePath(panel, path, pboard));
         }
         else

@@ -23,7 +23,10 @@ public class EnemyController : MonoBehaviour
 	{
 		if (gameLogic.GetTile (System.Int32.Parse(pcell.Substring(0, 1)), System.Int32.Parse(pcell.Substring(1, 1)))._isActive)
 		{
-			int temprow = System.Int32.Parse(pcell.Substring(0, 1));
+
+            Debug.LogWarning("["+Time.time+"] Calling PlayEvent");
+
+            int temprow = System.Int32.Parse(pcell.Substring(0, 1));
 			int tempcol = System.Int32.Parse(pcell.Substring(1, 1));
 
 			Tile tempTile = gameLogic.GetTile (temprow, tempcol);
@@ -41,7 +44,7 @@ public class EnemyController : MonoBehaviour
 
 			if (tempObj != null)
 			{
-				Debug.Log("destroy clone");
+				//Debug.Log("destroy clone");
 				Destroy(tempObj);
 				tempTile._isActive = false;
 			}
@@ -146,8 +149,6 @@ public class EnemyController : MonoBehaviour
 			}
 		}
 
-		//Debug.Log("_isEntrySet Tiles: " + debug);
-
 		debug = "# ";
 
 		foreach (Tile tile in gameLogic.GetTileBoard())
@@ -240,13 +241,6 @@ public class EnemyController : MonoBehaviour
 				isValidMove = true;
 			}
 		}
-
-
-		//debugStr += " Target tile event: " + newTile._event;
-
-
-		//Debug.Log(debugStr);
-
 		return isValidMove;
 	}
 
@@ -255,7 +249,9 @@ public class EnemyController : MonoBehaviour
 	/// </summary>
 	public void MoveEvents()
 	{
-		string etloc = "";
+        Debug.LogWarning("[" + Time.time + "] Calling MoveEvents");
+
+        string etloc = "";
 		int currow = 0;
 		int curcol = 0;
 
@@ -296,7 +292,7 @@ public class EnemyController : MonoBehaviour
 				// Moves an enemy, if it is able
 				if (moves.Count != 0)
 				{
-					Debug.Log("Enemy at [" + etloc + "] moving " + currentTile._nextMove);
+					//Debug.Log("Enemy at [" + etloc + "] moving " + currentTile._nextMove);
 					MoveEnemy (currentTile._nextMove, currow, curcol, i);
 				}
 				else
@@ -495,7 +491,7 @@ public class EnemyController : MonoBehaviour
 				}
 
 				enemyTile._nextMove = moveName;
-				Debug.Log ("Enemy at [" + etloc + "] is planning to move " + moveName);
+				//Debug.Log ("Enemy at [" + etloc + "] is planning to move " + moveName);
 			}
 		}
 	}
@@ -619,13 +615,13 @@ public class EnemyController : MonoBehaviour
 
 	IEnumerator KillStuckEnemy (GameObject enemyObj, Tile enemyTile)
 	{
-		Debug.LogWarning ("Killing enemy: " + enemyObj.name + " | " + enemyTile.ToString());
+		//Debug.LogWarning ("Killing enemy: " + enemyObj.name + " | " + enemyTile.ToString());
 		enemyObj.GetComponent<Image> ().sprite = enemySkeleton;
 		gemCont.AddGem (enemyObj.transform.position);
 		yield return new WaitForSeconds (0.5f);
 		enemyObj.GetComponent<Image> ().sprite = enemyDustPile;
 		yield return new WaitForSeconds (0.5f);
-		Debug.Log("destroy clone");
+		//Debug.Log("destroy clone");
 		Destroy(enemyObj);
 		enemyTile.ClearEvent(); // Clear all of the event related fields in the tile.
 		gameLogic.IncrementGems ();

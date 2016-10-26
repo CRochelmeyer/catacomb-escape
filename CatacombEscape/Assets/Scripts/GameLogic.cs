@@ -402,6 +402,7 @@ public class GameLogic : MonoBehaviour
 		UpdateUI();
         Debug.Log("set player loc start" + loc);
 		playerLoc = loc;
+
 		//play event for event tiles    
 		if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
 		{
@@ -416,8 +417,9 @@ public class GameLogic : MonoBehaviour
 		}
 		else
 		{
-			//move events
-			enemyCont.MoveEvents ();
+            Debug.LogWarning("[" + Time.time + "] About to move events");
+            //move events
+            enemyCont.MoveEvents ();
 			CheckStamina ();
 			enemyCont.PlanEnemyMoves ();
 		}
@@ -648,7 +650,7 @@ public class GameLogic : MonoBehaviour
                     //if ( (!path.Contains("invalid") || !path.Contains("Invalid")) && Pathing.CheckExitIsLast(path))
                     if ((!path.Contains("invalid") || !path.Contains("Invalid")))
                     {
-						Pathing.PrintPathTiles ();
+						//Pathing.PrintPathTiles ();
 						destLoc = clickLoc;
 						movePlayer.UpdatePlayer(gridPanels, path, tileBoard);
 					}
