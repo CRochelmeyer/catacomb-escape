@@ -617,6 +617,9 @@ public class GameLogic : MonoBehaviour
 
 			if (clickLoc != "")
 			{
+				//Remove later
+				ClickDebug(); // Print tile info
+
 				int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
 				int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
 
@@ -1451,6 +1454,23 @@ public class GameLogic : MonoBehaviour
 		int value = 0;
 		cellindex.TryGetValue(loc, out value);
 		return value;
+	}
+
+	/// <summary>
+	/// Prints info about a clicked tile to the debug log.
+	/// </summary>
+	public void ClickDebug()
+	{
+		string clickLoc = "";
+
+		clickLoc = MouseLocation;
+
+		int clickRow = System.Int32.Parse (clickLoc.Substring (0, 1));
+		int clickCol = System.Int32.Parse (clickLoc.Substring (1, 1));
+
+		Tile tile = tileBoard[clickRow, clickCol];
+		Debug.LogWarning ("<---- TILE DEBUG ---->");
+		Debug.Log ("Event: " + tile._event + " | isActive? " + tile._isActive + " | Combat: " + tile.combat);
 	}
 
 	#endregion
