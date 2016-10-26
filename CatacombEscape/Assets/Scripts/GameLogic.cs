@@ -68,6 +68,8 @@ public class GameLogic : MonoBehaviour
 	public ObjectPulse coinPulse;
 	public int coinWarningAmt;
 	private bool lowCoinPulse;
+	public float handTweenWait;
+	public Transform handTileSource;
 	// Game Over panels and components
 	public GameObject statPanel;
 	public Text lvlNoClearedText;
@@ -1094,12 +1096,17 @@ public class GameLogic : MonoBehaviour
 		//actaullyworking just rendered tiny and behind default image too...13/04
 		handTiles = GameObject.FindGameObjectsWithTag("handDefault");
 		btmPanel = GameObject.FindGameObjectWithTag("bottomPanel");
+		GameObject[] dragTiles = new GameObject[4];
+
+		// This gets the hand tiles in the correct order
+		for (int i = 0; i < 4; i++)
+		{
+			handTiles[i] = btmPanel.transform.GetChild (i + 1).gameObject;
+		}
+
 		//check for null
 		if (handTiles != null)
 		{
-			int rand = Random.Range(0, dealingClips.Length);
-			audioSource.PlayOneShot(dealingClips[rand]);
-
 			List<int> spriteIndex = new List<int>(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
 
 			GameObject[] oldTiles = GameObject.FindGameObjectsWithTag("handDrag");
@@ -1110,7 +1117,6 @@ public class GameLogic : MonoBehaviour
 				for (int i = 0; i < oldTiles.Length; i++)
 				{
 					string oldName = oldTiles[i].GetComponent <Image>().sprite.name;
-					Debug.Log ("Name of remaining tile " + i + ": " + oldName);
 
 					// Loop through each tile sprite
 					for (int j = 0; j < spriteIndex.Count; j++)
@@ -1120,7 +1126,6 @@ public class GameLogic : MonoBehaviour
 						if (index != 10 && tileSprite[index].name == oldName)
 						{
 							spriteIndex.RemoveAt (j);
-							Debug.Log ("Found sprite name match of " + oldName + " and removing from list");
 						}
 					}
 
@@ -1130,27 +1135,43 @@ public class GameLogic : MonoBehaviour
 
 			for (int i = 0; i < handTiles.Length; i++)
 			{
-				GameObject newObject = Instantiate(handTiles[i]);
-				newObject.transform.localScale = handTiles[i].transform.localScale;
-				newObject.transform.localPosition = handTiles[i].transform.localPosition;
+				dragTiles[i] = (GameObject) Instantiate(handTiles[i]);
+				dragTiles[i].transform.localScale = handTiles[i].transform.localScale;
+				dragTiles[i].transform.localPosition = handTileSource.localPosition;
+
 				//set tag so handTiles above doesnt grab clones as well.
-				newObject.tag = "handDrag";
-				//assign new object correct parents
-				newObject.transform.SetParent(btmPanel.transform, false);
+				dragTiles[i].tag = "handDrag";
+
+				//assign new object correct parents with bool set to false solved instantiating flipped object....
+				dragTiles[i].transform.SetParent (btmPanel.transform, false);
+
 				//use handdefaults to instantiate objects with rng sprite below and add script....
-				int randIndex = Random.Range(0, spriteIndex.Count);
-				int index = spriteIndex[randIndex];
-				newObject.GetComponent<Image>().sprite = tileSprite[index] as Sprite;
-				newObject.GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
-				newObject.AddComponent<Draggable>();
-				//above method with bool set to false solved instantiating flipped object....
+				int randIndex = Random.Range (0, spriteIndex.Count);
+				int index = spriteIndex [randIndex];
+				dragTiles[i].GetComponent <Image>().sprite = tileSprite [index] as Sprite;
+				dragTiles[i].GetComponent <Image>().color = new Color(255f, 255f, 255f, 255f);
 
 				//remove index from list if it does not represent the crossways tile (10th element)
 				if (index != 10)
 				{
-					spriteIndex.RemoveAt(randIndex);
+					spriteIndex.RemoveAt (randIndex);
 				}
 			}
+
+			StartCoroutine (TweenDragTiles (dragTiles));
+		}
+	}
+
+	IEnumerator TweenDragTiles (GameObject[] dragTiles)
+	{
+		int rand = Random.Range(0, dealingClips.Length);
+		audioSource.PlayOneShot(dealingClips[rand]);
+
+		for (int i = 0; i < dragTiles.Length; i++)
+		{
+			dragTiles[i].GetComponent <HandTileTween>().enabled = true;
+			dragTiles[i].AddComponent<Draggable>();
+			yield return new WaitForSeconds (handTweenWait);
 		}
 	}
 

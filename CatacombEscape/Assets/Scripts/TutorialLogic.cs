@@ -60,6 +60,8 @@ public class TutorialLogic : MonoBehaviour
 	public Text enemyStamDown;
 	public Text diamondAmount;
 	public GameObject tutCompletePanel;
+	public float handTweenWait;
+	public Transform handTileSource;
 	#endregion
 
 	#region stamPanels
@@ -670,9 +672,9 @@ public class TutorialLogic : MonoBehaviour
 		handTilesDrag = GameObject.FindGameObjectsWithTag("handDrag");
 		if (handTilesDrag != null)
 		{
-			for (int i =0; i<handTilesDrag.Length;i++)
+			for (int i = 0; i < handTilesDrag.Length; i++)
 			{
-				Destroy(handTilesDrag[i]);
+				Destroy (handTilesDrag[i]);
 			}
 		}
 		InstantiateStamDownPanel ("-" + newHandCost, movePlayer.PlayerLocation);
@@ -946,51 +948,70 @@ public class TutorialLogic : MonoBehaviour
 			int rand = Random.Range (0, dealingClips.Length);
 			audioSource.PlayOneShot (dealingClips[rand], 1.0f);
 
+			handTilesDrag = new GameObject[4];
+
 			// SET TILE #1
 			handTile0 = Instantiate (handTiles[0]);
 			handTile0.transform.localScale = handTiles [0].transform.localScale;
-			handTile0.transform.localPosition = handTiles [0].transform.localPosition;
+			handTile0.transform.localPosition = handTileSource.localPosition;
 			//set tag so handTiles above doesnt grab clones as well.
 			handTile0.tag = "handDrag";
 			//assign new object correct parents
 			handTile0.transform.SetParent (btmPanel.transform, false);
 			handTile0.GetComponent <Image>().sprite = tileSprite [idx0] as Sprite;
 			handTile0.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
+			handTilesDrag [0] = handTile0;
 
 			// SET TILE #2
 			handTile1 = Instantiate (handTiles[1]);
 			handTile1.transform.localScale = handTiles [1].transform.localScale;
-			handTile1.transform.localPosition = handTiles [1].transform.localPosition;
+			handTile1.transform.localPosition = handTileSource.localPosition;
 			//set tag so handTiles above doesnt grab clones as well.
 			handTile1.tag = "handDrag";
 			//assign new object correct parents
 			handTile1.transform.SetParent (btmPanel.transform, false);
 			handTile1.GetComponent <Image>().sprite = tileSprite [idx1] as Sprite;
 			handTile1.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
+			handTilesDrag [1] = handTile1;
 
 			// SET TILE #3
 			handTile2 = Instantiate (handTiles[2]);
 			handTile2.transform.localScale = handTiles [2].transform.localScale;
-			handTile2.transform.localPosition = handTiles [2].transform.localPosition;
+			handTile2.transform.localPosition = handTileSource.localPosition;
 			//set tag so handTiles above doesnt grab clones as well.
 			handTile2.tag = "handDrag";
 			//assign new object correct parents
 			handTile2.transform.SetParent (btmPanel.transform, false);
 			handTile2.GetComponent <Image>().sprite = tileSprite [idx2] as Sprite;
 			handTile2.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
+			handTilesDrag [2] = handTile2;
 
 			// SET TILE #4
 			handTile3 = Instantiate (handTiles[3]);
 			handTile3.transform.localScale = handTiles [3].transform.localScale;
-			handTile3.transform.localPosition = handTiles [3].transform.localPosition;
+			handTile3.transform.localPosition = handTileSource.localPosition;
 			//set tag so handTiles above doesnt grab clones as well.
 			handTile3.tag = "handDrag";
 			//assign new object correct parents
 			handTile3.transform.SetParent (btmPanel.transform, false);
 			handTile3.GetComponent <Image>().sprite = tileSprite [idx3] as Sprite;
 			handTile3.GetComponent <Image>().color = new Color(255f,255f,255f,255f);
+			handTilesDrag [3] = handTile3;
 
-			handTilesDrag = GameObject.FindGameObjectsWithTag("handDrag");
+			StartCoroutine (TweenDragTiles (handTilesDrag));
+		}
+	}
+
+	IEnumerator TweenDragTiles (GameObject[] dragTiles)
+	{
+		int rand = Random.Range(0, dealingClips.Length);
+		audioSource.PlayOneShot(dealingClips[rand]);
+
+		for (int i = 0; i < dragTiles.Length; i++)
+		{
+			if (dragTiles[i] != null)
+				dragTiles[i].GetComponent <HandTileTween>().enabled = true;
+			yield return new WaitForSeconds (handTweenWait);
 		}
 	}
 
@@ -1100,7 +1121,7 @@ public class TutorialLogic : MonoBehaviour
 		// If mouse has been clicked
 		if (Input.GetMouseButtonDown(0) && PlayerPrefs.GetString ("Paused") == "false")
 		{
-			if (clickLoc != "")
+			if (clickLoc != "" && clickLoc == "22")
 			{
 				// row and column of tile that was clicked.
 				int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));

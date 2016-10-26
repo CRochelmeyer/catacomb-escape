@@ -148,29 +148,12 @@ MonoBehaviour:
 GameObject:
   m_PrefabParentObject: {fileID: 182336, guid: 4cfb0ffb71ab3334fbe490de96795911, type: 2}
   m_PrefabInternal: {fileID: 1826377910}
---- !u!1 &53821628 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 192060, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
-  m_PrefabInternal: {fileID: 1274494797}
---- !u!114 &53821629
+--- !u!114 &53821629 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 53821628}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400962, guid: 66b649f54910fba4a90265f5710a38a0,
+    type: 2}
+  m_PrefabInternal: {fileID: 1274494797}
   m_Script: {fileID: 11500000, guid: 84af77e945ff88d46af525e5d5ac4d3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pulsingSpeed: 0.3
-  pulsingAmount: 0.05
-  midpoint: 1
-  horizontal: 0
-  vertical: 0
-  X: 1
-  Y: 1
-  Z: 0
 --- !u!114 &72013461 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11401840, guid: aba066add4a931343b373c5d64eda8a9,
@@ -731,6 +714,11 @@ Animator:
   m_PrefabParentObject: {fileID: 9509756, guid: 61278d94e705a274da4bce955f34d26c,
     type: 2}
   m_PrefabInternal: {fileID: 842284653}
+--- !u!224 &445207462 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 22482352, guid: c82a046f2e7a5884fb7bf836255cecc5,
+    type: 2}
+  m_PrefabInternal: {fileID: 189330100}
 --- !u!1 &484789452 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 150110, guid: 4cfb0ffb71ab3334fbe490de96795911, type: 2}
@@ -2234,51 +2222,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 11485074, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11485074, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
-      propertyPath: m_Color.g
-      value: 0.9358728
-      objectReference: {fileID: 0}
-    - target: {fileID: 11485074, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
-      propertyPath: m_Color.b
-      value: 0.44117647
-      objectReference: {fileID: 0}
-    - target: {fileID: 11401336, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 9edcf323ced899f449303c1f24c82131,
-        type: 3}
-    - target: {fileID: 11401336, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
-      propertyPath: m_FontData.m_HorizontalOverflow
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11401336, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
-      propertyPath: m_FontData.m_VerticalOverflow
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 22429266, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -3.89
-      objectReference: {fileID: 0}
-    - target: {fileID: 11401336, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
-      propertyPath: m_FontData.m_BestFit
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11401336, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
-      propertyPath: m_Color.r
-      value: 0.43382353
-      objectReference: {fileID: 0}
-    - target: {fileID: 11401336, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
-      propertyPath: m_Color.g
-      value: 0.08293685
-      objectReference: {fileID: 0}
-    - target: {fileID: 11401336, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
-      propertyPath: m_Color.b
-      value: 0.08293685
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 66b649f54910fba4a90265f5710a38a0, type: 2}
   m_IsPrefabParent: 0
@@ -3454,6 +3397,14 @@ Prefab:
       propertyPath: enemyCont
       value: 
       objectReference: {fileID: 13632090}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: handTweenWait
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11476574, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
+      propertyPath: handTileSource
+      value: 
+      objectReference: {fileID: 445207462}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6281424b91878e445b894668e7ce0ef9, type: 2}
   m_IsPrefabParent: 0
