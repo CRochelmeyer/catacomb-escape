@@ -163,13 +163,16 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     public void UpdatePlayer(GameObject[] panel, List<string> path , Tile[,] pboard)
     {
-        if (path.Count > 2)
+		
+        if (path.Count > 1)
         {
+            StopCoroutine(MovePath(panel, path, pboard));
             StartCoroutine(MovePath(panel, path, pboard));
         }
         else
         {
             Debug.Log("Path not long enough. Not starting co-routine.");
+			gameLogic.mouseClicked = false;
         }
         
     }
@@ -183,6 +186,7 @@ public class PlayerMove : MonoBehaviour
     /// <returns></returns>
     IEnumerator MovePath(GameObject[] panel, List<string> path , Tile[,] pboard)
     {
+		gameLogic.mouseClicked = true; // Prevent player from making a move whilst moving
         Debug.Log("MovePath Co-routine");
         for (int i = 0; i < (path.Count - 1); i++)
         {
@@ -192,28 +196,43 @@ public class PlayerMove : MonoBehaviour
             float overTime = distance / multispeed;
             //set animation get pDirection
             string direction = moveDir.MoveDirection(path[i], path[i + 1]);
+			Debug.LogWarning ("Moving player from " + path[i] + " to " + path[i+1]);
             SetAnimation(direction);
             string tempCoin = coinString;
             Debug.Log("tempCoin :" + tempCoin +" coinstring : "+coinString);
+
             if (coinUpdated != true )
             {
                 coinString = path[i];
                 coinUpdated = true;
                 Debug.Log("coin updated");
             }
+
             StartCoroutine(UpdatePlayerCoroutine(player.transform.localPosition, panel[index].transform.localPosition, overTime));
+
             if (coinUpdated)
             {
                 Debug.Log("animate coin");
                 coinCont.UpdateCoins(-1, coinString);
                 coinUpdated = false;
             }
+
             if (crRunning == true)
             {
                 yield return new WaitForSeconds(overTime);
                 //update logic of the player position per tile grid move allowing enemies to move. having this code here as this coroutine contains playerloc already
-                GameLogic gameLogic = GameObject.FindObjectOfType<GameLogic>();
                 gameLogic.SetPlayerLoc(path[i + 1]);
+            }
+
+            //add logic to see if player is exiting, break from loop
+            if (gameLogic.exiting)
+            { break; }
+            if (gameLogic.displayingEvent)
+            {
+                do
+                {
+                    yield return null;
+                } while (gameLogic.displayingEvent);
             }
         }
         yield return null;

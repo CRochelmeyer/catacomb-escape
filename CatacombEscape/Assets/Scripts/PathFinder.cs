@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO
-// Prevent path from containing an exit tile unless it's the last tile.
-// Fix endless loops.
+// #TODO#
+// [TODO] Prevent path from containing an exit tile unless it's the last tile.
+// [DONE] Fix endless loops.
 
 public class PathFinder : MonoBehaviour
 {
@@ -16,6 +16,7 @@ public class PathFinder : MonoBehaviour
     private List<string> closedList = new List<string>();
     private List<string> openList = new List<string>();
     private List<string> Path = new List<string>();
+	private List<Tile> pathTiles = new List<Tile>();
 
 	/// <summary>
 	/// Finds a path, returns a list of tile locations.
@@ -78,6 +79,7 @@ public class PathFinder : MonoBehaviour
         {
             Path.Add("invalid");
         }
+
         return this.Path;
     }
 
@@ -99,7 +101,7 @@ public class PathFinder : MonoBehaviour
             // 120 should be more than enough loops to determine any viable path.
             if (count > 120)
             {
-                Debug.Log("Valid path not found (Getpath loop timed out.)");
+                Debug.Log("Valid path not found (GetPath loop timed out.)");
                 
                 // Delete the path, since there were so many loops, and the path is therefore invalid.
                 Path.Clear();
@@ -122,6 +124,7 @@ public class PathFinder : MonoBehaviour
                     {
                         this.currentTile = current;
                         this.Path.Add(current);
+						pathTiles.Add (grid[GetRow(current),GetCol(current)]);
                         break;
                     }
                 }
@@ -130,6 +133,61 @@ public class PathFinder : MonoBehaviour
         this.Path.Add(startTile);
         this.Path.Reverse();
     }
+
+	/// <summary>
+	/// Checks if the exit is a part of the path. If it is, return true if the exit is the last tile. If the path does not contain an the exit, return true.
+	/// </summary>
+	/// <returns><c>true</c>, if the path contains the exit and it is the last in the list, or there is no exit in the list , <c>false</c> otherwise.</returns>
+	public bool CheckExitIsLast(List<String> path)
+	{
+		bool containsExit = false;
+
+		foreach(String tileStr in path)
+		{
+			if (tileStr != "invalid") 
+			{
+				Debug.LogWarning ("Errors here somewhere: " + tileStr);
+				int row = System.Int32.Parse(tileStr.Substring(0, 1));
+				int col = System.Int32.Parse(tileStr.Substring(1, 1));
+
+				if (grid[row,col]._tileID == "tile_exit")
+				{
+					containsExit = true;
+				}
+			} 
+			else 
+			{
+				return true;
+			}
+		}
+
+		if (containsExit && path.Count != 0) {
+			int row = System.Int32.Parse(path[path.Count - 1].Substring(0, 1));
+			int col = System.Int32.Parse(path[path.Count - 1].Substring(1, 1));
+			
+			if (grid [row, col]._tileID == "tile_exit") {
+				return true;
+			} else {
+				return false;
+			}
+
+		} else {
+			return true;
+		}
+	}
+
+	public void PrintPathTiles()
+	{
+		Debug.LogWarning ("<---- Printing list of tiles in path ---->");
+		String pathStr = "";
+
+		foreach (Tile tile in pathTiles) 
+		{
+			pathStr += tile._boardLocation + "-> ";
+		}
+
+		Debug.Log (pathStr);
+	}
 
     public int ManhattanDistance(string adjTile)
     {

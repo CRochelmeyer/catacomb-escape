@@ -86,6 +86,10 @@ public class Tile
     }
     public void ClearEvent()
     {
+
+		if (_tileID == "event_red"){
+			_tileID = null;
+		}
         _event = "";
         _eventItem = "";
 		_nextMove = "";
