@@ -484,14 +484,19 @@ public class TutorialLogic : MonoBehaviour
 		string location = "invalid location";
 		bool foundMouse = false;
 		int i = 0;
-		while (!foundMouse && i < 12)
+
+		if (stage == 5) // move to chest
+		{
+			i = 6;
+		}
+		else if (stage == 10) // move to exit
+		{
+			i = 11;
+		}
+
+		if (!foundMouse && (i == 6 || i == 11))
 		{
 			location = gridPanels[i].GetComponent<Panel>().MouseClickPanel(pv3);
-			if (location != "invalid location")
-			{
-				foundMouse = true;
-			}
-			i++;
 		}
 		return location;
 	}
@@ -584,33 +589,47 @@ public class TutorialLogic : MonoBehaviour
 
 			if (clickLoc != "")
 			{
-				int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
-				int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
+				string dest = "";
 
-				// Check that the target tile was player-placed.
-				if ((tileBoard[temprow, tempcol]._isEntrySet) && (playerLoc != ""))
+				if (stage == 5) // move to chest
 				{
-					mouseClicked = true;
+					dest = "20";
+				}
+				else if (stage == 10) // move to exit
+				{
+					dest = "32";
+				}
 
-					// Check for a path
-					List<string> path = Pathing.PathFind(tileBoard, playerLoc, clickLoc);
-					//if ( (!path.Contains("invalid") || !path.Contains("Invalid")) && Pathing.CheckExitIsLast(path))
-					if ((!path.Contains("invalid") || !path.Contains("Invalid")))
+				if (clickLoc == dest)
+				{
+					int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
+					int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
+
+					// Check that the target tile was player-placed.
+					if ((tileBoard[temprow, tempcol]._isEntrySet) && (playerLoc != ""))
 					{
-						//Pathing.PrintPathTiles ();
-						destLoc = clickLoc;
-						movePlayer.UpdatePlayer(gridPanels, path, tileBoard);
+						mouseClicked = true;
+
+						// Check for a path
+						List<string> path = Pathing.PathFind(tileBoard, playerLoc, clickLoc);
+						//if ( (!path.Contains("invalid") || !path.Contains("Invalid")) && Pathing.CheckExitIsLast(path))
+						if ((!path.Contains("invalid") || !path.Contains("Invalid")))
+						{
+							//Pathing.PrintPathTiles ();
+							destLoc = clickLoc;
+							movePlayer.UpdatePlayer(gridPanels, path, tileBoard);
+						}
+						else
+						{
+							mouseClicked = false;
+							Debug.Log("Path is invalid");
+						}
 					}
 					else
 					{
 						mouseClicked = false;
-						Debug.Log("Path is invalid");
+						Debug.Log("Invalid player move");
 					}
-				}
-				else
-				{
-					mouseClicked = false;
-					Debug.Log("Invalid player move");
 				}
 			}
 			Debug.Log("mouseClicked: " + mouseClicked);
