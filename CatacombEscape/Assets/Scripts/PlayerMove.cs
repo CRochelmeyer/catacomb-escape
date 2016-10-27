@@ -94,7 +94,7 @@ public class PlayerMove : MonoBehaviour
 						if (PlayerPrefs.GetString ("TutorialScene") == "true")
 							tutorialLogic.SetNextLevel = true;
 						else
-							gameLogic.SetNextLevel = true;
+							gameLogic.EnableTransition ();
 					}
 					else
 					{
