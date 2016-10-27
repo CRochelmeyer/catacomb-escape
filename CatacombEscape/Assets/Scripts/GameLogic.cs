@@ -646,7 +646,7 @@ public class GameLogic : MonoBehaviour
             }
         }
 
-        //check for right click
+        //check for left click
         if (Input.GetMouseButtonDown(0))
         {
             string clickLoc = "";

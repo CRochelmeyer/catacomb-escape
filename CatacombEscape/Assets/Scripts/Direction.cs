@@ -63,6 +63,7 @@ public class Direction : MonoBehaviour
         nextcol = System.Int32.Parse(pNext.Substring(1, 1));
         return this.Move( pboard[currow, curcol] , pboard[nextrow, nextcol] , ref pboard,currow,curcol,nextrow,nextcol);
     }
+
     public void UpdateOccupiedTile(Tile pcurrent, Tile pnext)
     {
         if (pcurrent._isOccupied)

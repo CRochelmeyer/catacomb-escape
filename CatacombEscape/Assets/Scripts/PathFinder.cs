@@ -222,10 +222,23 @@ public class PathFinder : MonoBehaviour
         string text = (this.GetRow(pcurrent) + 1).ToString();
        // Debug.Log("change down " + text);
 
-        if (int.Parse(text) >= 0 && int.Parse(text) <= 5)
+		int xValue;
+		int yValue;
+		if (PlayerPrefs.GetString ("TutorialScene") == "true")
+		{
+			xValue = 2;
+			yValue = 3;
+		}
+		else
+		{
+			xValue = 4;
+			yValue = 5;
+		}
+
+		if (int.Parse(text) >= 0 && int.Parse(text) <= yValue)
         {
             string text2 = (text + pcurrent.Substring(1, 1));
-            if (this.GetRow(text2) >= 0 && this.GetRow(text2) <= 5 && this.grid[this.GetRow(text2), this.GetCol(text2)]._isEntrySet && this.ValidMove.ValidMovement("down", this.grid[this.GetRow(pcurrent), this.GetCol(pcurrent)], this.grid[this.GetRow(text2), this.GetCol(text2)]))
+			if (this.GetRow(text2) >= 0 && this.GetRow(text2) <= yValue && this.grid[this.GetRow(text2), this.GetCol(text2)]._isEntrySet && this.ValidMove.ValidMovement("down", this.grid[this.GetRow(pcurrent), this.GetCol(pcurrent)], this.grid[this.GetRow(text2), this.GetCol(text2)]))
             {
                 list.Add(text2);
                 adjFound = true;
@@ -234,10 +247,10 @@ public class PathFinder : MonoBehaviour
         text = (this.GetCol(pcurrent) - 1).ToString();
         //Debug.Log("change left " + text);
 
-        if (int.Parse(text) >= 0 && int.Parse(text) <= 4)
+		if (int.Parse(text) >= 0 && int.Parse(text) <= xValue)
         {
             string text2 = pcurrent.Substring(0, 1) + text;
-            if (this.GetCol(text2) >= 0 && this.GetCol(text2) <= 4 && this.grid[this.GetRow(text2), this.GetCol(text2)]._isEntrySet && this.ValidMove.ValidMovement("left", this.grid[this.GetRow(pcurrent), this.GetCol(pcurrent)], this.grid[this.GetRow(text2), this.GetCol(text2)]))
+			if (this.GetCol(text2) >= 0 && this.GetCol(text2) <= xValue && this.grid[this.GetRow(text2), this.GetCol(text2)]._isEntrySet && this.ValidMove.ValidMovement("left", this.grid[this.GetRow(pcurrent), this.GetCol(pcurrent)], this.grid[this.GetRow(text2), this.GetCol(text2)]))
             {
                 list.Add(text2);
                 adjFound = true;
@@ -246,10 +259,10 @@ public class PathFinder : MonoBehaviour
         text = (this.GetCol(pcurrent) + 1).ToString();
         //Debug.Log("change right " + text);
 
-        if (int.Parse(text) >= 0 && int.Parse(text) <= 4)
+		if (int.Parse(text) >= 0 && int.Parse(text) <= xValue)
         {
             string text2 = pcurrent.Substring(0, 1) + text;
-            if (this.GetCol(text2) >= 0 && this.GetCol(text2) <= 4 && this.grid[this.GetRow(text2), this.GetCol(text2)]._isEntrySet && this.ValidMove.ValidMovement("right", this.grid[this.GetRow(pcurrent), this.GetCol(pcurrent)], this.grid[this.GetRow(text2), this.GetCol(text2)]))
+			if (this.GetCol(text2) >= 0 && this.GetCol(text2) <= xValue && this.grid[this.GetRow(text2), this.GetCol(text2)]._isEntrySet && this.ValidMove.ValidMovement("right", this.grid[this.GetRow(pcurrent), this.GetCol(pcurrent)], this.grid[this.GetRow(text2), this.GetCol(text2)]))
             {
                 list.Add(text2);
                 adjFound = true;
@@ -258,7 +271,7 @@ public class PathFinder : MonoBehaviour
         text = (this.GetRow(pcurrent) - 1).ToString();
         //Debug.Log("change up " + text);
 
-        if (int.Parse(text) >= 0 && int.Parse(text) <= 5)
+		if (int.Parse(text) >= 0 && int.Parse(text) <= yValue)
         {
             string text2 = text + pcurrent.Substring(1, 1);
 

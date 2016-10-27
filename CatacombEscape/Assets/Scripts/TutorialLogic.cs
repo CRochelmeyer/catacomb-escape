@@ -89,6 +89,9 @@ public class TutorialLogic : MonoBehaviour
 	#endregion
 
 	//boolean game conditions
+	public bool displayingEvent { get; set; }
+	public bool mouseClicked { get; set; }
+	public bool exiting { get; set; }
 	private bool emptyhand = true;
 	private bool nextlevel = false;
 	private int playerStamina;
@@ -124,6 +127,7 @@ public class TutorialLogic : MonoBehaviour
 	private GridPanelsTutorial gridPanelsScript;
 	private Direction validMove;
 	private PlayerMove movePlayer;
+	private PathFinder Pathing;
 	private CoinController coinCont;
 	private EnemyController enemyCont;
 	private GameObject[] gridPanels;
@@ -135,6 +139,10 @@ public class TutorialLogic : MonoBehaviour
 	//awake called behind start
 	void Awake()
 	{
+		exiting = false;
+		displayingEvent = false;
+		mouseClicked = false;
+
 		if (PlayerPrefs.HasKey ("Diamonds"))
 		{
 			diamondAmount.text = PlayerPrefs.GetInt ("Diamonds").ToString();
@@ -148,6 +156,7 @@ public class TutorialLogic : MonoBehaviour
 		if (mainCamera != null)
 			mainCamera.GetComponent<BackGroundMusic> ().ResetScript ();
 
+		Pathing = GameObject.FindGameObjectWithTag("Scripts").GetComponent<PathFinder>(); //PathFinder.cs
 		validMove = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<Direction> ();
 		movePlayer = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<PlayerMove> ();
 		coinCont = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<CoinController> ();
@@ -381,6 +390,47 @@ public class TutorialLogic : MonoBehaviour
 		}
 	}
 
+	//overload for above with a passed in player location
+	public void SetPlayerLoc(string loc)
+	{
+		//udate occupied tile
+		validMove.UpdateOccupiedTile(tileBoard[GetRow(playerLoc), GetCol(playerLoc)], tileBoard[GetRow(loc), GetCol(loc)]);
+		// update the player's location
+		playerStamina--;
+		InstantiateStamDownPanel("-1", movePlayer.PlayerLocation);
+		UpdateUI();
+
+		playerLoc = loc;
+
+		int idxA = System.Int32.Parse(playerLoc.Substring(0, 1));
+		int idxB = System.Int32.Parse(playerLoc.Substring(1, 1));
+
+		//play event for event tiles    
+		if (tileBoard [idxA, idxB]._event != "")
+		{
+			PlayEvent(playerLoc);
+		}
+
+		if (playerLoc == "20")
+		{
+			stage++;
+			UpdateStage ();
+			handTile3.AddComponent<Draggable>();
+		}
+
+		//check if next level...
+		if (playerLoc == exit)
+		{
+			nextlevel = true;
+		}
+		else
+		{
+			//move events
+			MoveEvents();
+			CheckStamina();
+		}
+	}
+
 	// Initialise player data
 	public void InitPlayer()
 	{
@@ -404,9 +454,12 @@ public class TutorialLogic : MonoBehaviour
 	// ~Mouse related method
 	public string MouseLocation
 	{
-		get{UpdateMouseLocation(); 
-			return mouseLocation; }
-		set{ mouseLocation = value; }
+		get
+		{
+			UpdateMouseLocation();
+			return mouseLocation;
+		}
+		set { mouseLocation = value; }
 	}
 
 	// ~Mouse related method
@@ -522,7 +575,7 @@ public class TutorialLogic : MonoBehaviour
 	/// </summary>
 	public void PlayerClick()
 	{
-		//check for right click
+		//check for left click
 		if(Input.GetMouseButtonDown(0))
 		{
 			string clickLoc = "";			
@@ -534,34 +587,33 @@ public class TutorialLogic : MonoBehaviour
 				int temprow = System.Int32.Parse(clickLoc.Substring(0, 1));
 				int tempcol = System.Int32.Parse(clickLoc.Substring(1, 1));
 
-				if ((tileBoard[temprow, tempcol]._isEntrySet) && (playerLoc != "") )
+				// Check that the target tile was player-placed.
+				if ((tileBoard[temprow, tempcol]._isEntrySet) && (playerLoc != ""))
 				{
-					if (validMove.MoveDirection(playerLoc, clickLoc) != "invalid move" && validMove.InRange(playerLoc, clickLoc) )
+					mouseClicked = true;
+
+					// Check for a path
+					List<string> path = Pathing.PathFind(tileBoard, playerLoc, clickLoc);
+					//if ( (!path.Contains("invalid") || !path.Contains("Invalid")) && Pathing.CheckExitIsLast(path))
+					if ((!path.Contains("invalid") || !path.Contains("Invalid")))
 					{
-						if (validMove.Move(playerLoc, clickLoc,ref tileBoard) )
-						{
-							int rand = Random.Range (0,movementClips.Length);
-							audioSource.PlayOneShot (movementClips[rand], 1.0f);
-
-							int tempIndex = 0;
-							cellindex.TryGetValue(clickLoc, out tempIndex);
-							movePlayer.UpdatePlayer(gridPanels[tempIndex], validMove.MoveDirection(playerLoc,clickLoc));
-
-							// update the player's location
-							destLoc = clickLoc;
-
-							playerStamina--;
-							InstantiateStamDownPanel ("-1", movePlayer.PlayerLocation);
-							UpdateUI();
-							coinCont.UpdateCoins (-1, playerLoc);
-						}
+						//Pathing.PrintPathTiles ();
+						destLoc = clickLoc;
+						movePlayer.UpdatePlayer(gridPanels, path, tileBoard);
+					}
+					else
+					{
+						mouseClicked = false;
+						Debug.Log("Path is invalid");
 					}
 				}
 				else
 				{
+					mouseClicked = false;
 					Debug.Log("Invalid player move");
 				}
 			}
+			Debug.Log("mouseClicked: " + mouseClicked);
 		}
 	}
 
@@ -1038,6 +1090,7 @@ public class TutorialLogic : MonoBehaviour
 	/// <param name="panel"></param>
 	private void DisplayClickPanel (GameObject panel)
 	{
+		displayingEvent = true;
 		panel.SetActive (true);
 		PlayerPrefs.SetString ("Paused", "true");
 		StartCoroutine (ClickToClose (panel));
@@ -1055,6 +1108,7 @@ public class TutorialLogic : MonoBehaviour
 			yield return null;
 		}
 		panel.SetActive (false);
+		displayingEvent = false;
 		PlayerPrefs.SetString ("Paused", "false");
 	}
 
@@ -1232,10 +1286,26 @@ public class TutorialLogic : MonoBehaviour
 		}
 	}
 
-           	#endregion
+	#endregion
+
+	#region tools
+
+	public int GetRow(string pstring)
+	{
+		int num = int.Parse(pstring.Substring(0, 1));
+		return num;
+	}
+
+	public int GetCol(string pstring)
+	{
+		int num = int.Parse(pstring.Substring(1, 1));
+		return num;
+	}
 
 	public Tile GetTile (int currow, int curcol)
 	{
 		return tileBoard[currow, curcol];
 	}
+
+	#endregion
 }

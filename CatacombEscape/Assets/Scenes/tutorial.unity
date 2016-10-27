@@ -8111,6 +8111,7 @@ GameObject:
   - 114: {fileID: 1913443734}
   - 114: {fileID: 1913443725}
   - 114: {fileID: 1913443729}
+  - 114: {fileID: 1913443730}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Scripts
@@ -8201,6 +8202,17 @@ MonoBehaviour:
   enemyRight: {fileID: 21300000, guid: f561ec65d7c6cb640915ef348ceae59b, type: 3}
   enemySkeleton: {fileID: 0}
   enemyDustPile: {fileID: 0}
+--- !u!114 &1913443730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1913443724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f934ab61bde07f41acafaded639df94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1913443731
 MonoBehaviour:
   m_ObjectHideFlags: 0

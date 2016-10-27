@@ -27,7 +27,6 @@ public class PlayerMove : MonoBehaviour
 	private bool enteringLevel = true;
 	private bool exitingLevel = false;
     private bool crRunning = false;
-    private bool crUpdatePlayer = false;
     //dictionary to match cell strings of 00-04 10-14 to an index from 0-29
     Dictionary<string, int> cellindex = new Dictionary<string, int>();
     private Direction moveDir;
@@ -42,20 +41,36 @@ public class PlayerMove : MonoBehaviour
         multispeed = 145;
         coinCont = GameObject.FindGameObjectWithTag("Scripts").GetComponent<CoinController>();
         if (PlayerPrefs.GetString ("TutorialScene") == "true")
+		{
 			tutorialLogic = GameObject.FindObjectOfType<TutorialLogic> ();
+
+			cellindex.Clear();
+			int temp = 0;
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					cellindex.Add(i.ToString() + j.ToString(), temp);
+					temp++;
+				}
+			}
+		}
 		else
+		{
 			gameLogic = GameObject.FindObjectOfType<GameLogic> ();
 
-        cellindex.Clear();
-        int temp = 0;
-        for (int i = 0; i < 6; i++)
-        {
-            for (int j = 0; j < 5; j++)
-            {
-                cellindex.Add(i.ToString() + j.ToString(), temp);
-                temp++;
-            }
-        }
+			cellindex.Clear();
+			int temp = 0;
+			for (int i = 0; i < 6; i++)
+			{
+				for (int j = 0; j < 5; j++)
+				{
+					cellindex.Add(i.ToString() + j.ToString(), temp);
+					temp++;
+				}
+			}
+		}
+		        
         moveDir = GameObject.FindGameObjectWithTag("Scripts").GetComponent<Direction>();
     }
 
@@ -172,7 +187,10 @@ public class PlayerMove : MonoBehaviour
         else
         {
             Debug.Log("Path not long enough. Not starting co-routine.");
-			gameLogic.mouseClicked = false;
+			if (PlayerPrefs.GetString ("TutorialScene") == "true")
+				tutorialLogic.mouseClicked = false;
+			else
+				gameLogic.mouseClicked = false;
         }
         
     }
@@ -185,8 +203,11 @@ public class PlayerMove : MonoBehaviour
     /// <param name="path"></param>
     /// <returns></returns>
     IEnumerator MovePath(GameObject[] panel, List<string> path , Tile[,] pboard)
-    {
-		gameLogic.mouseClicked = true; // Prevent player from making a move whilst moving
+	{
+		if (PlayerPrefs.GetString ("TutorialScene") == "true")
+			tutorialLogic.mouseClicked = false;
+		else
+			gameLogic.mouseClicked = true; // Prevent player from making a move whilst moving
         Debug.Log("MovePath Co-routine");
         for (int i = 0; i < (path.Count - 1); i++)
         {
@@ -223,23 +244,48 @@ public class PlayerMove : MonoBehaviour
             if (crRunning == true)
             {
                 yield return new WaitForSeconds(overTime);
-                //update logic of the player position per tile grid move allowing enemies to move. having this code here as this coroutine contains playerloc already
-                gameLogic.SetPlayerLoc(path[i + 1]);
+				//update logic of the player position per tile grid move allowing enemies to move. having this code here as this coroutine contains playerloc already
+				if (PlayerPrefs.GetString ("TutorialScene") == "true")
+					tutorialLogic.SetPlayerLoc (path [i + 1]);
+				else
+                	gameLogic.SetPlayerLoc (path [i + 1]);
             }
 
             //add logic to see if player is exiting, break from loop
-            if (gameLogic.exiting)
-            { break; }
-            if (gameLogic.displayingEvent)
-            {
-                do
-                {
-                    yield return null;
-                } while (gameLogic.displayingEvent);
-            }
+			if (PlayerPrefs.GetString ("TutorialScene") == "true")
+			{
+				if (tutorialLogic.exiting)
+				{
+					break;
+				}
+				if (tutorialLogic.displayingEvent)
+				{
+					do
+					{
+						yield return null;
+					} while (tutorialLogic.displayingEvent);
+				}
+			}
+			else
+			{
+	            if (gameLogic.exiting)
+	            {
+					break;
+				}
+	            if (gameLogic.displayingEvent)
+	            {
+	                do
+	                {
+	                    yield return null;
+	                } while (gameLogic.displayingEvent);
+	            }
+			}
         }
         yield return null;
-        gameLogic.mouseClicked = false;
+		if (PlayerPrefs.GetString ("TutorialScene") == "true")
+			tutorialLogic.mouseClicked = false;
+		else
+        	gameLogic.mouseClicked = false;
 
     }
 
