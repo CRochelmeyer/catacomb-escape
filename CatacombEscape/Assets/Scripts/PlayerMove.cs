@@ -208,7 +208,10 @@ public class PlayerMove : MonoBehaviour
                 Debug.Log("coin updated");
             }
 
-            StartCoroutine(UpdatePlayerCoroutine(player.transform.localPosition, panel[index].transform.localPosition, overTime));
+			Vector3 destPos = panel[index].transform.localPosition;
+			destPos = new Vector3 (destPos.x, destPos.y - playerDisp, destPos.z);
+
+			StartCoroutine(UpdatePlayerCoroutine(player.transform.localPosition, destPos, overTime));
 
             if (coinUpdated)
             {
