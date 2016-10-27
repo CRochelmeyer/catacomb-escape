@@ -355,9 +355,6 @@ public class GameLogic : MonoBehaviour
 	public void EnableTransition ()
 	{
 		transitionPanel.SetActive (true);
-		int randNum = Random.Range (0, movementClips.Length);
-		int pindex = 0;
-		audioSource.PlayOneShot (movementClips [randNum]);
 	}
 
 	#endregion
