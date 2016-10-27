@@ -85,6 +85,7 @@ public class GameLogic : MonoBehaviour
 	public Text pauseRedText;
 	public Text pauseTileText;
 	public Text pauseTotText;
+	public GameObject transitionPanel;
 	#endregion
 
 	#region stamPanels
@@ -351,6 +352,14 @@ public class GameLogic : MonoBehaviour
 		get {return deletingTile;}
 	}
 
+	public void EnableTransition ()
+	{
+		transitionPanel.SetActive (true);
+		int randNum = Random.Range (0, movementClips.Length);
+		int pindex = 0;
+		audioSource.PlayOneShot (movementClips [randNum]);
+	}
+
 	#endregion
 
 	#region Player Functions
@@ -361,14 +370,17 @@ public class GameLogic : MonoBehaviour
 	public void SetPlayerLoc()
 	{
 		playerLoc = destLoc;
-		//play event for event tiles    
-		if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
+		int idxA = System.Int32.Parse(playerLoc.Substring(0, 1));
+		int idxB = System.Int32.Parse(playerLoc.Substring(1, 1));
+
+		//play event for event tiles
+		if (tileBoard [idxA, idxB]._event != "")
 		{
 			enemyCont.PlayEvent(playerLoc);
 
 			// Testing to see if this fixes some issues relating to tile removal.
 			// Seems to have worked, for now...
-			tileBoard [System.Int32.Parse (playerLoc.Substring (0, 1)), System.Int32.Parse (playerLoc.Substring (1, 1))]._event = "";
+			tileBoard [idxA, idxB]._event = "";
 		}
 
 		//check if next level...
@@ -392,17 +404,20 @@ public class GameLogic : MonoBehaviour
 		Debug.Log("checking setpL calls");
 		//udate occupied tile
 		validMove.UpdateOccupiedTile(tileBoard[GetRow(playerLoc),GetCol(playerLoc)], tileBoard[GetRow(loc),GetCol(loc)]);
-		int rand = Random.Range(0, movementClips.Length);
-		audioSource.PlayOneShot(movementClips[rand], 1.0f);
 		// update the player's location
 		Debug.Log("PlayerClick destLoc :" + destLoc);
 		playerStamina--;
 		InstantiateStamDownPanel("-1", movePlayer.PlayerLocation);
 		UpdateUI();
+
         Debug.Log("set player loc start" + loc);
 		playerLoc = loc;
+
+		int idxA = System.Int32.Parse(playerLoc.Substring(0, 1));
+		int idxB = System.Int32.Parse(playerLoc.Substring(1, 1));
+
 		//play event for event tiles    
-		if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
+		if (tileBoard [idxA, idxB]._event != "")
 		{
 			enemyCont.PlayEvent(playerLoc);
 		}
@@ -447,6 +462,7 @@ public class GameLogic : MonoBehaviour
 	{
 		// Player raises arms
 		movePlayer.PlayerGetsGem ();
+		audioSource.PlayOneShot (greenTileClips[1]);
 		gemCont.AddGem (GetGridPanelPosition (exit));
 
 		while (!gemCont.GemGetFinished)
@@ -843,8 +859,7 @@ public class GameLogic : MonoBehaviour
 		{
 			stamText = "+" + tempTile.combat.ToString();
 			InstantiateStamUpPanel(stamText, tempObj.transform.position);
-			int rand = Random.Range(0, greenTileClips.Length);
-			audioSource.PlayOneShot(greenTileClips[rand]);
+			audioSource.PlayOneShot(greenTileClips[0]);
 			greencol++;
 		}
 
