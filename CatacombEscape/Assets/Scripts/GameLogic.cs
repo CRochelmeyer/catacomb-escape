@@ -68,6 +68,8 @@ public class GameLogic : MonoBehaviour
     public ObjectPulse coinPulse;
     public int coinWarningAmt;
     private bool lowCoinPulse;
+	public float handTweenWait;
+	public Transform handTileSource;
     // Game Over panels and components
     public GameObject statPanel;
     public Text lvlNoClearedText;
@@ -356,9 +358,6 @@ public class GameLogic : MonoBehaviour
     public void EnableTransition()
     {
         transitionPanel.SetActive(true);
-        int randNum = Random.Range(0, movementClips.Length);
-        int pindex = 0;
-        audioSource.PlayOneShot(movementClips[randNum]);
     }
 
 
@@ -371,16 +370,19 @@ public class GameLogic : MonoBehaviour
     /// </summary>
     public void SetPlayerLoc()
     {
-        playerLoc = destLoc;
-        //play event for event tiles    
-        if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
-        {
-            enemyCont.PlayEvent(playerLoc);
+		playerLoc = destLoc;
+		int idxA = System.Int32.Parse(playerLoc.Substring(0, 1));
+		int idxB = System.Int32.Parse(playerLoc.Substring(1, 1));
 
-            // Testing to see if this fixes some issues relating to tile removal.
-            // Seems to have worked, for now...
-            tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event = "";
-        }
+		//play event for event tiles
+		if (tileBoard [idxA, idxB]._event != "")
+		{
+			enemyCont.PlayEvent(playerLoc);
+
+			// Testing to see if this fixes some issues relating to tile removal.
+			// Seems to have worked, for now...
+			tileBoard [idxA, idxB]._event = "";
+		}
 
         //check if next level...
         if (playerLoc == exit)
@@ -403,21 +405,23 @@ public class GameLogic : MonoBehaviour
         Debug.Log("checking setpL calls");
         //udate occupied tile
         validMove.UpdateOccupiedTile(tileBoard[GetRow(playerLoc), GetCol(playerLoc)], tileBoard[GetRow(loc), GetCol(loc)]);
-        int rand = Random.Range(0, movementClips.Length);
-        audioSource.PlayOneShot(movementClips[rand], 1.0f);
         // update the player's location
         Debug.Log("PlayerClick destLoc :" + destLoc);
         playerStamina--;
         InstantiateStamDownPanel("-1", movePlayer.PlayerLocation);
         UpdateUI();
-        Debug.Log("set player loc start" + loc);
-        playerLoc = loc;
 
-        //play event for event tiles    
-        if (tileBoard[System.Int32.Parse(playerLoc.Substring(0, 1)), System.Int32.Parse(playerLoc.Substring(1, 1))]._event != "")
-        {
-            enemyCont.PlayEvent(playerLoc);
-        }
+        Debug.Log("set player loc start" + loc);
+		playerLoc = loc;
+
+		int idxA = System.Int32.Parse(playerLoc.Substring(0, 1));
+		int idxB = System.Int32.Parse(playerLoc.Substring(1, 1));
+
+		//play event for event tiles    
+		if (tileBoard [idxA, idxB]._event != "")
+		{
+			enemyCont.PlayEvent(playerLoc);
+		}
 
         //check if next level...
         if (playerLoc == exit)
@@ -459,7 +463,8 @@ public class GameLogic : MonoBehaviour
     IEnumerator AwardLevelGem()
     {
         // Player raises arms
-        movePlayer.PlayerGetsGem();
+		movePlayer.PlayerGetsGem();
+		audioSource.PlayOneShot (greenTileClips[1]);
         gemCont.AddGem(GetGridPanelPosition(exit));
 
         while (!gemCont.GemGetFinished)
@@ -843,9 +848,8 @@ public class GameLogic : MonoBehaviour
         else
         {
             stamText = "+" + tempTile.combat.ToString();
-            InstantiateStamUpPanel(stamText, tempObj.transform.position);
-            int rand = Random.Range(0, greenTileClips.Length);
-            audioSource.PlayOneShot(greenTileClips[rand]);
+			InstantiateStamUpPanel(stamText, tempObj.transform.position);
+			audioSource.PlayOneShot (greenTileClips[0]);
             greencol++;
         }
 
@@ -1083,14 +1087,6 @@ public class GameLogic : MonoBehaviour
     /// </summary>
     public void NewHand()
     {
-        handTiles = GameObject.FindGameObjectsWithTag("handDrag");
-        if (handTiles != null)
-        {
-            for (int i = 0; i < handTiles.Length; i++)
-            {
-                Destroy(handTiles[i]);
-            }
-        }
         InstantiateStamDownPanel("-" + newHandCost, newHandButton.gameObject.transform.position);
         playerStamina += -newHandCost;
         GenerateHand();
@@ -1104,40 +1100,85 @@ public class GameLogic : MonoBehaviour
         //approaching hand generation via grabbing each individual UI element and updating the sprite image and render...didnt work out 13/04
         //actaullyworking just rendered tiny and behind default image too...13/04
         handTiles = GameObject.FindGameObjectsWithTag("handDefault");
-        btmPanel = GameObject.FindGameObjectWithTag("bottomPanel");
+		btmPanel = GameObject.FindGameObjectWithTag("bottomPanel");
+		GameObject[] dragTiles = new GameObject[4];
+
+		// This gets the hand tiles in the correct order
+		for (int i = 0; i < 4; i++)
+		{
+			handTiles[i] = btmPanel.transform.GetChild (i + 1).gameObject;
+		}
+
         //check for null
         if (handTiles != null)
         {
-            int rand = Random.Range(0, dealingClips.Length);
-            audioSource.PlayOneShot(dealingClips[rand]);
-
             List<int> spriteIndex = new List<int>(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
 
-            for (int i = 0; i < handTiles.Length; i++)
-            {
-                GameObject newObject = Instantiate(handTiles[i]);
-                newObject.transform.localScale = handTiles[i].transform.localScale;
-                newObject.transform.localPosition = handTiles[i].transform.localPosition;
-                //set tag so handTiles above doesnt grab clones as well.
-                newObject.tag = "handDrag";
-                //assign new object correct parents
-                newObject.transform.SetParent(btmPanel.transform, false);
-                //use handdefaults to instantiate objects with rng sprite below and add script....
-                int randIndex = Random.Range(0, spriteIndex.Count);
-                int index = spriteIndex[randIndex];
-                newObject.GetComponent<Image>().sprite = tileSprite[index] as Sprite;
-                newObject.GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
-                newObject.AddComponent<Draggable>();
-                //above method with bool set to false solved instantiating flipped object....
+			GameObject[] oldTiles = GameObject.FindGameObjectsWithTag("handDrag");
+			// If the user had tiles in their hand and then clicked "New Hand" button
+			if (oldTiles != null)
+			{
+				// Loop through each of the remaining tiles in the users hand
+				for (int i = 0; i < oldTiles.Length; i++)
+				{
+					string oldName = oldTiles[i].GetComponent <Image>().sprite.name;
 
-                //remove index from list if it does not represent the crossways tile (10th element)
-                if (index != 10)
-                {
-                    spriteIndex.RemoveAt(randIndex);
-                }
-            }
-        }
-    }
+					// Loop through each tile sprite
+					for (int j = 0; j < spriteIndex.Count; j++)
+					{
+						int index = spriteIndex [j];
+						// Remove tile sprites if they match ones that were previously in the players hand
+						if (index != 10 && tileSprite[index].name == oldName)
+						{
+							spriteIndex.RemoveAt (j);
+						}
+					}
+
+					Destroy(oldTiles[i]);
+				}
+			}
+
+			for (int i = 0; i < handTiles.Length; i++)
+			{
+				dragTiles[i] = (GameObject) Instantiate(handTiles[i]);
+				dragTiles[i].transform.localScale = handTiles[i].transform.localScale;
+				dragTiles[i].transform.localPosition = handTileSource.localPosition;
+
+				//set tag so handTiles above doesnt grab clones as well.
+				dragTiles[i].tag = "handDrag";
+
+				//assign new object correct parents with bool set to false solved instantiating flipped object....
+				dragTiles[i].transform.SetParent (btmPanel.transform, false);
+
+				//use handdefaults to instantiate objects with rng sprite below and add script....
+				int randIndex = Random.Range (0, spriteIndex.Count);
+				int index = spriteIndex [randIndex];
+				dragTiles[i].GetComponent <Image>().sprite = tileSprite [index] as Sprite;
+				dragTiles[i].GetComponent <Image>().color = new Color(255f, 255f, 255f, 255f);
+
+				//remove index from list if it does not represent the crossways tile (10th element)
+				if (index != 10)
+				{
+					spriteIndex.RemoveAt (randIndex);
+				}
+			}
+
+			StartCoroutine (TweenDragTiles (dragTiles));
+		}
+	}
+
+	IEnumerator TweenDragTiles (GameObject[] dragTiles)
+	{
+		int rand = Random.Range(0, dealingClips.Length);
+		audioSource.PlayOneShot(dealingClips[rand]);
+
+		for (int i = 0; i < dragTiles.Length; i++)
+		{
+			dragTiles[i].GetComponent <HandTileTween>().enabled = true;
+			dragTiles[i].AddComponent<Draggable>();
+			yield return new WaitForSeconds (handTweenWait);
+		}
+	}
 
     #endregion
 
