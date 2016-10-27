@@ -129,6 +129,9 @@ public class TutorialLogic : MonoBehaviour
 	private GameObject[] gridPanels;
 	private Tile[,] tileBoard;
 
+	// Init, update, awake etc.
+	#region General Game Functions
+
 	//awake called behind start
 	void Awake()
 	{
@@ -163,6 +166,52 @@ public class TutorialLogic : MonoBehaviour
 		tileOverlays[0].SetActive (true);
 		tileOverlays[1].SetActive (true);
 		tileOverlays[3].SetActive (true);
+	}
+
+	// Initialize the level with enemies, loot and entrance/exit tiles
+	void InitLevel(int pLevel)
+	{
+		int temp = 0;
+
+		//fill cellindex dictionary
+		//temp index int to fill dictonary
+		cellindex.Clear();
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				cellindex.Add(i.ToString() + j.ToString(), temp);
+				temp++;
+			}
+		}
+		//if instance is null create instance of this GameLogic 
+		if (instance == null)
+		{
+			instance = this;
+		}
+		//else instance is not null but not this GameLogic destroy 
+		else if (instance != this)
+		{
+			Destroy(gameObject);
+		}
+
+		FindGridPanels();
+
+		PlayerPrefs.SetString ("Paused", "false");
+
+		tileBoard = new Tile[4, 3];
+		for (int i =0; i<4;i++)
+		{
+			for (int j =0; j<3;j++)
+			{
+				tileBoard[i, j] = new Tile(0);
+			}
+		}
+
+		//setup board with rng sprites
+		GenerateBoard();
+
+		GenerateBoardLogic();
 	}
 
 	// Update is called once per frame
@@ -255,16 +304,29 @@ public class TutorialLogic : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Replenishes player stamina when stamina reaches 0. 
+	/// </summary>
+	private void CheckStamina()
+	{
+		if (playerStamina <= 0)
+		{
+			playerStamina = 30;
+			coinCont.UpdateCoins (30, playerLoc);
+			UpdateUI();
+			// Display click panel: Haha, very funny. Get moving!
+		}
+	}
+
+	#endregion
+
+	#region Tutorial Functions
+
 	private void NextArrow ()
 	{
 		arrows[arrowIdx].SetActive (false);
 		arrowIdx++;
 		arrows[arrowIdx].SetActive (true);
-	}
-
-	public bool SetNextLevel
-	{
-		set {nextlevel = value;}
 	}
 
 	private void SetNextDraggable()
@@ -286,65 +348,10 @@ public class TutorialLogic : MonoBehaviour
 		}
 	}
 
-	// Initialize the level with enemies, loot and entrance/exit tiles
-	void InitLevel(int pLevel)
-	{
-		int temp = 0;
+	#endregion
 
-		//fill cellindex dictionary
-		//temp index int to fill dictonary
-		cellindex.Clear();
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				cellindex.Add(i.ToString() + j.ToString(), temp);
-				temp++;
-			}
-		}
-		//if instance is null create instance of this GameLogic 
-		if (instance == null)
-		{
-			instance = this;
-		}
-		//else instance is not null but not this GameLogic destroy 
-		else if (instance != this)
-		{
-			Destroy(gameObject);
-		}
+	#region Player Functions
 
-		FindGridPanels();
-
-		PlayerPrefs.SetString ("Paused", "false");
-
-		tileBoard = new Tile[4, 3];
-		for (int i =0; i<4;i++)
-		{
-			for (int j =0; j<3;j++)
-			{
-				tileBoard[i, j] = new Tile(0);
-			}
-		}
-
-		//setup board with rng sprites
-		GenerateBoard();
-
-		GenerateBoardLogic();
-	}
-
-	// ~Mouse related method
-	public string MouseLocation
-	{
-		get{UpdateMouseLocation(); 
-			return mouseLocation; }
-		set{ mouseLocation = value; }
-	}
-
-	// ~Level related method
-	public int GetLevel
-	{
-		get {return level;}
-	}
 
 	// Called by PlayerMove once the character animation is complete, to stop events from occuring before player has stopped on the destination tile
 	public void SetPlayerLoc()
@@ -390,6 +397,18 @@ public class TutorialLogic : MonoBehaviour
 		}
 	}
 
+	#endregion
+
+	#region Mouse Functions
+
+	// ~Mouse related method
+	public string MouseLocation
+	{
+		get{UpdateMouseLocation(); 
+			return mouseLocation; }
+		set{ mouseLocation = value; }
+	}
+
 	// ~Mouse related method
 	private void UpdateMouseLocation()
 	{
@@ -399,88 +418,6 @@ public class TutorialLogic : MonoBehaviour
 		{
 			foundMouse = gridPanels[i].GetComponent<Panel>().MouseOverPanel();
 			i++;
-		}
-	}
-
-	// ~UI related
-	/// <summary>
-	/// Updates Player Stamina text and Stamina bar.
-	/// </summary>
-	public void UpdateUI()
-	{
-		if (playerStamina > maxStamina )
-		{
-			playerStamina = maxStamina;
-		}else if (playerStamina < 0)
-		{
-			playerStamina = 30;
-		}
-		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
-		tempObj.GetComponent<Text>().text = playerStamina.ToString();
-	}
-
-	/// <summary>
-	/// Replenishes player stamina when stamina reaches 0. 
-	/// </summary>
-	private void CheckStamina()
-	{
-		if (playerStamina <= 0)
-		{
-			playerStamina = 30;
-			coinCont.UpdateCoins (30, playerLoc);
-			UpdateUI();
-			// Display click panel: Haha, very funny. Get moving!
-		}
-	}
-
-	/// <summary>
-	/// Handles movement of the red event tiles
-	/// </summary>
-	public void MoveEvents()
-	{
-		string etloc = "";
-		string newloc = "";
-		int panelkey = 0;
-		int currow = 0;
-		int curcol = 0;
-		int newcol = 0;
-
-		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
-		for(int i =0; i<eventTiles.Length;i++)
-		{
-			// For red tiles only. Green tiles don't move.
-			if (eventTiles[i].GetComponent<Image>().sprite.name.Substring (0, 5) == "enemy")
-			{
-				etloc = eventTiles[i].name.Substring(0, 2);
-				System.Int32.TryParse(etloc.Substring(0, 1), out currow);
-				System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
-				newcol = Mathf.Abs(curcol - 1);
-
-				Tile dummy = new Tile(0);
-
-				newloc = currow.ToString() + newcol.ToString();
-				cellindex.TryGetValue(newloc, out panelkey);
-
-				if ((tileBoard[currow, newcol]._tileID != "tile_exit") && (tileBoard[currow, newcol]._tileID != "tile_entrance") && (newloc != playerLoc) && (tileBoard[currow, newcol]._event != "green") && (tileBoard[currow, newcol]._event != "red"))
-				{
-					//move thetile
-					eventTiles[i].transform.localPosition = gridPanels[panelkey].transform.localPosition;
-					//update tileboard
-					//clone the current tile to dummy
-					dummy.CloneTile(tileBoard[currow, curcol]);
-					//set current tile event htats moving to no event
-					tileBoard[currow, curcol].ClearEvent();
-					//flush dummy entry if it is set from the previous tile cloned
-					if (dummy._isEntrySet)
-					{
-						dummy.FlushEntry();
-					}
-					//update the new board position with the dummy clone
-					tileBoard[currow, newcol].UpdatePosition(dummy);
-					//update objclone name to be used for destroying the game obj
-					eventTiles[i].name = newloc + "(Clone)";
-				}
-			}
 		}
 	}
 
@@ -504,42 +441,6 @@ public class TutorialLogic : MonoBehaviour
 			i++;
 		}
 		return location;
-	}
-
-	private void FindGridPanels()
-	{
-		gridPanelsScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<GridPanelsTutorial> ();
-		gridPanels = new GameObject[12];
-
-		for (int i = 0; i < gridPanels.Length; i++)
-		{
-			gridPanels[i] = gridPanelsScript.GetGridPanel(i);
-		}
-	}
-
-	public Vector3 GetGridPanelPosition (string panelName)
-	{
-		for (int i = 0; i < gridPanels.Length; i++)
-		{
-			if (gridPanels[i].name == panelName)
-			{
-				return gridPanels[i].transform.position;
-			}
-		}
-
-		return gridPanels[0].transform.position;
-	}
-
-	public bool PlacementValid (string cell)
-	{
-		if (placementLocations [placementIndex] == cell)
-		{
-			placementIndex++;
-			SetNextDraggable();
-			return true;
-		}
-		else
-			return false;
 	}
 
 	/// <summary>
@@ -664,35 +565,100 @@ public class TutorialLogic : MonoBehaviour
 		}
 	}
 
-	/// <summary>
-	/// Generate a new hand of tiles
-	/// </summary>
-	public void NewHand()
+	#endregion
+
+	#region Level Functions
+
+	public bool SetNextLevel
 	{
-		handTilesDrag = GameObject.FindGameObjectsWithTag("handDrag");
-		if (handTilesDrag != null)
+		set {nextlevel = value;}
+	}
+
+	// ~Level related method
+	public int GetLevel
+	{
+		get {return level;}
+	}
+
+	#endregion
+
+	// Events are the enemies and loot tiles
+	#region Event Functions
+
+	/// <summary>
+	/// Handles movement of the red event tiles
+	/// </summary>
+	public void MoveEvents()
+	{
+		string etloc = "";
+		string newloc = "";
+		int panelkey = 0;
+		int currow = 0;
+		int curcol = 0;
+		int newcol = 0;
+
+		GameObject[] eventTiles = GameObject.FindGameObjectsWithTag("eventTile");
+		for(int i =0; i<eventTiles.Length;i++)
 		{
-			for (int i = 0; i < handTilesDrag.Length; i++)
+			// For red tiles only. Green tiles don't move.
+			if (eventTiles[i].GetComponent<Image>().sprite.name.Substring (0, 5) == "enemy")
 			{
-				Destroy (handTilesDrag[i]);
+				etloc = eventTiles[i].name.Substring(0, 2);
+				System.Int32.TryParse(etloc.Substring(0, 1), out currow);
+				System.Int32.TryParse(etloc.Substring(1, 1), out curcol);
+				newcol = Mathf.Abs(curcol - 1);
+
+				Tile dummy = new Tile(0);
+
+				newloc = currow.ToString() + newcol.ToString();
+				cellindex.TryGetValue(newloc, out panelkey);
+
+				if ((tileBoard[currow, newcol]._tileID != "tile_exit") && (tileBoard[currow, newcol]._tileID != "tile_entrance") && (newloc != playerLoc) && (tileBoard[currow, newcol]._event != "green") && (tileBoard[currow, newcol]._event != "red"))
+				{
+					//move thetile
+					eventTiles[i].transform.localPosition = gridPanels[panelkey].transform.localPosition;
+					//update tileboard
+					//clone the current tile to dummy
+					dummy.CloneTile(tileBoard[currow, curcol]);
+					//set current tile event htats moving to no event
+					tileBoard[currow, curcol].ClearEvent();
+					//flush dummy entry if it is set from the previous tile cloned
+					if (dummy._isEntrySet)
+					{
+						dummy.FlushEntry();
+					}
+					//update the new board position with the dummy clone
+					tileBoard[currow, newcol].UpdatePosition(dummy);
+					//update objclone name to be used for destroying the game obj
+					eventTiles[i].name = newloc + "(Clone)";
+				}
 			}
 		}
-		InstantiateStamDownPanel ("-" + newHandCost, movePlayer.PlayerLocation);
-		playerStamina += - newHandCost;
+	}
 
-		// Generate hand with "up,down", "right,left", "up,down,left" and "up, right, left"
-		GenerateHand (4, 3, 5, 10);
-		feedHand++;
-		emptyhand = false;
+	public Vector3 GetGridPanelPosition (string panelName)
+	{
+		for (int i = 0; i < gridPanels.Length; i++)
+		{
+			if (gridPanels[i].name == panelName)
+			{
+				return gridPanels[i].transform.position;
+			}
+		}
 
-		stage++;
-		UpdateStage ();
-		UpdateUI();
-		coinCont.UpdateCoins (-newHandCost, "newHandButton");
+		return gridPanels[0].transform.position;
+	}
 
-		newHandButton.interactable = false;
-
-		handTile2.AddComponent<Draggable>();
+	public bool PlacementValid (string cell)
+	{
+		if (placementLocations [placementIndex] == cell)
+		{
+			placementIndex++;
+			SetNextDraggable();
+			return true;
+		}
+		else
+			return false;
 	}
 
 	/// <summary>
@@ -758,90 +724,9 @@ public class TutorialLogic : MonoBehaviour
 		}
 	}
 
-	/// <summary>
-	/// Enables pause panel UI.
-	/// </summary>
-	/// <param name="panel"></param>
-	private void DisplayClickPanel (GameObject panel)
-	{
-		panel.SetActive (true);
-		PlayerPrefs.SetString ("Paused", "true");
-		StartCoroutine (ClickToClose (panel));
-	}
+	#endregion
 
-	/// <summary>
-	/// Closes the pause panel UI.
-	/// </summary>
-	/// <param name="panel"></param>
-	/// <returns></returns>
-	IEnumerator ClickToClose (GameObject panel)
-	{
-		while (!Input.GetMouseButtonUp (0))
-		{
-			yield return null;
-		}
-		panel.SetActive (false);
-		PlayerPrefs.SetString ("Paused", "false");
-	}
-
-	private void InstantiateStamUpPanel (string newText, Vector3 panelPos)
-	{
-		GameObject stamUpPanel = (GameObject) Instantiate (stamUpPrefab);
-		Transform stamUpTrans = stamUpPanel.GetComponent <Transform> ();
-		stamUpTrans.SetParent (stamPopupsContainer, false);
-		stamUpTrans.position = panelPos;
-		Text stamUpText = stamUpTrans.Find ("StamUp").gameObject.GetComponent <Text> ();
-		if (stamUpText != null)
-			StartFade (stamUpText, newText);
-		else
-			Debug.Log ("Couldn't find StamUp text component");
-	}
-
-	private void InstantiateStamDownPanel (string newText, Vector3 panelPos)
-	{
-		GameObject stamDownPanel = (GameObject) Instantiate (stamDownPrefab);
-		Transform stamDownTrans = stamDownPanel.GetComponent <Transform> ();
-		stamDownTrans.SetParent (stamPopupsContainer, false);
-		stamDownTrans.position = panelPos;
-		Text stamDownText = stamDownTrans.Find ("StamDown").gameObject.GetComponent <Text> ();
-		if (stamDownText != null)
-			StartFade (stamDownText, newText);
-		else
-			Debug.Log ("Couldn't find StamDown text component");
-	}
-
-	private void StartFade (Text stamText, string newText)
-	{
-		if (faderRunning)
-		{
-			StopCoroutine ("FadeStamPopup");
-		}
-		Color newColor = stamText.color;
-		newColor.a = 1;
-		stamText.color = newColor;
-		stamText.text = newText;
-
-		StartCoroutine (FadeStamPopup (stamText, fadeTime));
-	}
-
-	IEnumerator FadeStamPopup (Text stamText, float time)
-	{
-		Transform stamTrans = stamText.transform;
-		Vector3 stamInitPos = stamTrans.position;
-		Vector3 stamFinalPos = new Vector3 (stamInitPos.x, stamInitPos.y + 0.5f, stamInitPos.z);
-		faderRunning = true;
-		float alpha = stamText.color.a;
-		for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / time)
-		{
-			Color newColor = stamText.color;
-			newColor.a = Mathf.Lerp (alpha,0,t);
-			stamTrans.position = Vector3.Lerp (stamInitPos, stamFinalPos, t);
-			stamText.color = newColor;
-			yield return null;
-		}
-		Destroy (stamTrans.parent.gameObject);
-		faderRunning = false;
-	}
+	#region Board Functions
 
 	/// <summary>
 	/// 
@@ -936,6 +821,117 @@ public class TutorialLogic : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Generates the game board including the number of green and red event tiles.
+	/// </summary>
+	public void GenerateBoard()
+	{
+		// Generate a number of green tiles.
+		int green = 1;
+
+		// Generate the number of red tiles
+		int red = 1;
+
+		if (gridPanels != null)
+		{
+			GameObject gridPanelsParent = gridPanels[0].transform.parent.gameObject;
+
+			//exit tile location will be in the bottom right
+			int downPanel = 11;
+			//entrance tile location will be in the top left
+			int upPanel = 0;
+
+			//set exit tile
+			gridPanels[downPanel].GetComponent<Image>().sprite = gridSprite[1] as Sprite;
+			gridPanels[downPanel].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
+			//set entrance tile
+			gridPanels[upPanel].GetComponent<Image>().sprite = gridSprite[2] as Sprite;
+			gridPanels[upPanel].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
+
+			//store event green tile into eventgreen list
+			eventindex.Clear();
+
+			//Draw all green tiles
+			for (int i = 0; i < green; i++)
+			{
+				GameObject tempPanel = gridPanels[greenLocIdx];
+				GameObject panelClone = Instantiate(tempPanel);
+				panelClone.transform.SetParent(gridPanelsParent.transform);
+				panelClone.tag = "eventTile";
+				panelClone.transform.localPosition = tempPanel.transform.localPosition;
+				panelClone.transform.localScale = new Vector3(1, 1, 1);
+				panelClone.GetComponent<Image>().sprite = eventGreenLrg as Sprite;
+				panelClone.GetComponent<Image>().color = new Color(255f, 255f, 255f, 150f);
+				eventindex.Add(tempPanel.name, "event_green");
+
+			}
+
+			//Draw all red tiles
+			for (int i = 0 + green; i < red + green; i++)
+			{
+				GameObject tempPanel = gridPanels[redLocIdx];
+				GameObject panelClone = Instantiate(tempPanel);
+				panelClone.transform.SetParent(gridPanelsParent.transform);
+				panelClone.tag = "eventTile";
+				panelClone.transform.localPosition = tempPanel.transform.localPosition;
+				panelClone.transform.localScale = new Vector3(1, 1, 1);
+				panelClone.GetComponent<Image>().sprite = eventEnemy [Random.Range (0, eventEnemy.Length)] as Sprite;
+				panelClone.GetComponent<Image>().color = new Color(255f, 255f, 255f, 150f);
+
+				//store event red tiles into eventred list
+				eventindex.Add(tempPanel.name, "event_red");
+
+				enemyCont.TutorialSetMovement (panelClone, "left");
+			}
+		}
+	}
+
+	private void FindGridPanels()
+	{
+		gridPanelsScript = GameObject.FindGameObjectWithTag ("Scripts").GetComponent<GridPanelsTutorial> ();
+		gridPanels = new GameObject[12];
+
+		for (int i = 0; i < gridPanels.Length; i++)
+		{
+			gridPanels[i] = gridPanelsScript.GetGridPanel(i);
+		}
+	}
+
+	#endregion
+
+	#region Hand Functions
+
+	/// <summary>
+	/// Generate a new hand of tiles
+	/// </summary>
+	public void NewHand()
+	{
+		handTilesDrag = GameObject.FindGameObjectsWithTag("handDrag");
+		if (handTilesDrag != null)
+		{
+			for (int i = 0; i < handTilesDrag.Length; i++)
+			{
+				Destroy (handTilesDrag[i]);
+			}
+		}
+		InstantiateStamDownPanel ("-" + newHandCost, movePlayer.PlayerLocation);
+		playerStamina += - newHandCost;
+
+		// Generate hand with "up,down", "right,left", "up,down,left" and "up, right, left"
+		GenerateHand (4, 3, 5, 10);
+		feedHand++;
+		emptyhand = false;
+
+		stage++;
+		UpdateStage ();
+		UpdateUI();
+		coinCont.UpdateCoins (-newHandCost, "newHandButton");
+
+		newHandButton.interactable = false;
+
+		handTile2.AddComponent<Draggable>();
+	}
+
 	public void GenerateHand(int idx0, int idx1, int idx2, int idx3)
 	{       
 		//approaching hand generation via grabbing each individual UI element and updating the sprite image and render...didnt work out 13/04
@@ -1015,70 +1011,115 @@ public class TutorialLogic : MonoBehaviour
 		}
 	}
 
+	#endregion
+
+	#region UI Functions
+
+	// ~UI related
 	/// <summary>
-	/// Generates the game board including the number of green and red event tiles.
+	/// Updates Player Stamina text and Stamina bar.
 	/// </summary>
-	public void GenerateBoard()
+	public void UpdateUI()
 	{
-		// Generate a number of green tiles.
-		int green = 1;
-
-		// Generate the number of red tiles
-		int red = 1;
-
-		if (gridPanels != null)
+		if (playerStamina > maxStamina )
 		{
-			GameObject gridPanelsParent = gridPanels[0].transform.parent.gameObject;
-
-			//exit tile location will be in the bottom right
-			int downPanel = 11;
-			//entrance tile location will be in the top left
-			int upPanel = 0;
-
-			//set exit tile
-			gridPanels[downPanel].GetComponent<Image>().sprite = gridSprite[1] as Sprite;
-			gridPanels[downPanel].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
-			//set entrance tile
-			gridPanels[upPanel].GetComponent<Image>().sprite = gridSprite[2] as Sprite;
-			gridPanels[upPanel].GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
-
-			//store event green tile into eventgreen list
-			eventindex.Clear();
-
-			//Draw all green tiles
-			for (int i = 0; i < green; i++)
-			{
-				GameObject tempPanel = gridPanels[greenLocIdx];
-				GameObject panelClone = Instantiate(tempPanel);
-				panelClone.transform.SetParent(gridPanelsParent.transform);
-				panelClone.tag = "eventTile";
-				panelClone.transform.localPosition = tempPanel.transform.localPosition;
-				panelClone.transform.localScale = new Vector3(1, 1, 1);
-				panelClone.GetComponent<Image>().sprite = eventGreenLrg as Sprite;
-				panelClone.GetComponent<Image>().color = new Color(255f, 255f, 255f, 150f);
-				eventindex.Add(tempPanel.name, "event_green");
-
-			}
-
-			//Draw all red tiles
-			for (int i = 0 + green; i < red + green; i++)
-			{
-				GameObject tempPanel = gridPanels[redLocIdx];
-				GameObject panelClone = Instantiate(tempPanel);
-				panelClone.transform.SetParent(gridPanelsParent.transform);
-				panelClone.tag = "eventTile";
-				panelClone.transform.localPosition = tempPanel.transform.localPosition;
-				panelClone.transform.localScale = new Vector3(1, 1, 1);
-				panelClone.GetComponent<Image>().sprite = eventEnemy [Random.Range (0, eventEnemy.Length)] as Sprite;
-				panelClone.GetComponent<Image>().color = new Color(255f, 255f, 255f, 150f);
-
-				//store event red tiles into eventred list
-				eventindex.Add(tempPanel.name, "event_red");
-
-				enemyCont.TutorialSetMovement (panelClone, "left");
-			}
+			playerStamina = maxStamina;
+		}else if (playerStamina < 0)
+		{
+			playerStamina = 30;
 		}
+		GameObject tempObj = GameObject.FindGameObjectWithTag("PlayerStam");
+		tempObj.GetComponent<Text>().text = playerStamina.ToString();
 	}
+
+	/// <summary>
+	/// Enables pause panel UI.
+	/// </summary>
+	/// <param name="panel"></param>
+	private void DisplayClickPanel (GameObject panel)
+	{
+		panel.SetActive (true);
+		PlayerPrefs.SetString ("Paused", "true");
+		StartCoroutine (ClickToClose (panel));
+	}
+
+	/// <summary>
+	/// Closes the pause panel UI.
+	/// </summary>
+	/// <param name="panel"></param>
+	/// <returns></returns>
+	IEnumerator ClickToClose (GameObject panel)
+	{
+		while (!Input.GetMouseButtonUp (0))
+		{
+			yield return null;
+		}
+		panel.SetActive (false);
+		PlayerPrefs.SetString ("Paused", "false");
+	}
+
+	private void InstantiateStamUpPanel (string newText, Vector3 panelPos)
+	{
+		GameObject stamUpPanel = (GameObject) Instantiate (stamUpPrefab);
+		Transform stamUpTrans = stamUpPanel.GetComponent <Transform> ();
+		stamUpTrans.SetParent (stamPopupsContainer, false);
+		stamUpTrans.position = panelPos;
+		Text stamUpText = stamUpTrans.Find ("StamUp").gameObject.GetComponent <Text> ();
+		if (stamUpText != null)
+			StartFade (stamUpText, newText);
+		else
+			Debug.Log ("Couldn't find StamUp text component");
+	}
+
+	private void InstantiateStamDownPanel (string newText, Vector3 panelPos)
+	{
+		GameObject stamDownPanel = (GameObject) Instantiate (stamDownPrefab);
+		Transform stamDownTrans = stamDownPanel.GetComponent <Transform> ();
+		stamDownTrans.SetParent (stamPopupsContainer, false);
+		stamDownTrans.position = panelPos;
+		Text stamDownText = stamDownTrans.Find ("StamDown").gameObject.GetComponent <Text> ();
+		if (stamDownText != null)
+			StartFade (stamDownText, newText);
+		else
+			Debug.Log ("Couldn't find StamDown text component");
+	}
+
+	private void StartFade (Text stamText, string newText)
+	{
+		if (faderRunning)
+		{
+			StopCoroutine ("FadeStamPopup");
+		}
+		Color newColor = stamText.color;
+		newColor.a = 1;
+		stamText.color = newColor;
+		stamText.text = newText;
+
+		StartCoroutine (FadeStamPopup (stamText, fadeTime));
+	}
+
+	IEnumerator FadeStamPopup (Text stamText, float time)
+	{
+		Transform stamTrans = stamText.transform;
+		Vector3 stamInitPos = stamTrans.position;
+		Vector3 stamFinalPos = new Vector3 (stamInitPos.x, stamInitPos.y + 0.5f, stamInitPos.z);
+		faderRunning = true;
+		float alpha = stamText.color.a;
+		for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / time)
+		{
+			Color newColor = stamText.color;
+			newColor.a = Mathf.Lerp (alpha,0,t);
+			stamTrans.position = Vector3.Lerp (stamInitPos, stamFinalPos, t);
+			stamText.color = newColor;
+			yield return null;
+		}
+		Destroy (stamTrans.parent.gameObject);
+		faderRunning = false;
+	}
+
+	#endregion
+
+	#region Remove Tile Functions
 
 	/// <summary>
 	/// Toggles the ability to delete tiles.
@@ -1190,6 +1231,8 @@ public class TutorialLogic : MonoBehaviour
 			}
 		}
 	}
+
+           	#endregion
 
 	public Tile GetTile (int currow, int curcol)
 	{

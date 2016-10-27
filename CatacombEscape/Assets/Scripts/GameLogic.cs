@@ -1309,6 +1309,10 @@ public class GameLogic : MonoBehaviour
         coinPulse.enabled = !coinPulse.enabled;
     }
 
+	#endregion
+
+	#region Remove Tile Functions
+
     /// <summary>
     /// Finds the tile names (ie. "00", "03") of the entrance, exit and player locations
     /// </summary>
