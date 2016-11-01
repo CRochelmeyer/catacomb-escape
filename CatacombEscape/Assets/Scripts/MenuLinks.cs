@@ -45,9 +45,9 @@ public class MenuLinks : MonoBehaviour {
 		#endif
 	}
 
-	public void Survey ()
+	public void Website ()
 	{
-		Application.OpenURL("https://goo.gl/forms/yR3EA6tfLgcoxhCs1"); // open Google Forms in browser
+		Application.OpenURL("http://buriedartefact.com/press/sheet.php?p=excavator"); // open Google Forms in browser
 	}
 
 	#if UNITY_ANDROID
