@@ -136,8 +136,7 @@ MonoBehaviour:
   enemyFront: {fileID: 21300000, guid: 9be99b2843e10f9409c5e67ef65751ab, type: 3}
   enemyLeft: {fileID: 21300000, guid: d3eebb08cb81c0548b2d25500fe9289c, type: 3}
   enemyRight: {fileID: 21300000, guid: f561ec65d7c6cb640915ef348ceae59b, type: 3}
-  enemySkeleton: {fileID: 21300000, guid: feb5877d1a498b64b9465875bc29c6c2, type: 3}
-  enemyDustPile: {fileID: 21300000, guid: 509dcafbfb2a7124593620351528e07a, type: 3}
+  enemySkeleton: {fileID: 132752, guid: d091a6ba28eadec4fbe29cb0910aa610, type: 2}
 --- !u!114 &21621800 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11486746, guid: aba066add4a931343b373c5d64eda8a9,

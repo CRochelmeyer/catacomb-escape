@@ -12,8 +12,7 @@ public class EnemyController : MonoBehaviour
 	public Sprite enemyFront;
 	public Sprite enemyLeft;
 	public Sprite enemyRight;
-	public Sprite enemySkeleton;
-	public Sprite enemyDustPile;
+	public GameObject enemySkeleton;
 
 	/// <summary>
 	/// Updates events. Deals damage etc.
@@ -616,13 +615,14 @@ public class EnemyController : MonoBehaviour
 	IEnumerator KillStuckEnemy (GameObject enemyObj, Tile enemyTile)
 	{
 		//Debug.LogWarning ("Killing enemy: " + enemyObj.name + " | " + enemyTile.ToString());
-		enemyObj.GetComponent<Image> ().sprite = enemySkeleton;
-		gemCont.AddGem (enemyObj.transform.position);
-		yield return new WaitForSeconds (0.5f);
-		enemyObj.GetComponent<Image> ().sprite = enemyDustPile;
-		yield return new WaitForSeconds (0.5f);
-		//Debug.Log("destroy clone");
+		GameObject skeleton = Instantiate (enemySkeleton) as GameObject;
+		skeleton.transform.SetParent (enemyObj.transform.parent, false);
+		skeleton.transform.position = enemyObj.transform.position;
 		Destroy(enemyObj);
+		gemCont.AddGem (enemyObj.transform.position);
+		yield return new WaitForSeconds (1.5f);
+		//Debug.Log("destroy clone");
+		Destroy(skeleton);
 		enemyTile.ClearEvent(); // Clear all of the event related fields in the tile.
 		gameLogic.IncrementGems ();
 	}
