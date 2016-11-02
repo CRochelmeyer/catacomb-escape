@@ -33,10 +33,16 @@ public class MenuBehavior : MonoBehaviour
 			diamondAmount.text = "x " + PlayerPrefs.GetInt ("Diamonds").ToString();
 	}
 
-	public void LoadScene(string sceneName)
+	public void LoadGame()
 	{
-		SceneManager.LoadScene (sceneName);
-		PlayerPrefs.SetString ("PlayFromMenu", "true");
+		// If player hasn't played before or game has been reset
+		if (!PlayerPrefs.HasKey ("FirstPlay") || PlayerPrefs.GetString ("FirstPlay") == "true")
+		{
+			PlayerPrefs.SetString ("FirstPlay", "false");
+			SceneManager.LoadScene ("tutorial");
+		}
+		else
+			SceneManager.LoadScene ("main_game");
 	}
 
     public void Quit()
